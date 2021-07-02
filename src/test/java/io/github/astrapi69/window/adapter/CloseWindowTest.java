@@ -64,9 +64,7 @@ public class CloseWindowTest
 	}
 
 	/**
-	 * Test method for.
-	 *
-	 * {@link io.github.astrapi69.window.adapter.CloseWindow#windowClosed(java.awt.event.WindowEvent)}
+	 * Test method for {@link CloseWindow#windowClosed(WindowEvent)}
 	 */
 	@Test
 	@Disabled
@@ -105,8 +103,7 @@ public class CloseWindowTest
 	}
 
 	/**
-	 * Test method for
-	 * {@link io.github.astrapi69.window.adapter.CloseWindow#windowClosing(java.awt.event.WindowEvent)}
+	 * Test method for {@link CloseWindow#windowClosing(WindowEvent)}
 	 */
 	@Test
 	@Disabled
