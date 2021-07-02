@@ -31,6 +31,7 @@ import java.awt.event.WindowEvent;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -68,6 +69,7 @@ public class CloseWindowTest
 	 * {@link io.github.astrapi69.window.adapter.CloseWindow#windowClosed(java.awt.event.WindowEvent)}
 	 */
 	@Test
+	@Disabled
 	public void testWindowClosedWindowEvent()
 	{
 		this.disposeWindow = new DisposeWindow();
@@ -107,6 +109,7 @@ public class CloseWindowTest
 	 * {@link io.github.astrapi69.window.adapter.CloseWindow#windowClosing(java.awt.event.WindowEvent)}
 	 */
 	@Test
+	@Disabled
 	public void testWindowClosingWindowEvent()
 	{
 		this.disposeWindow = new DisposeWindow();
