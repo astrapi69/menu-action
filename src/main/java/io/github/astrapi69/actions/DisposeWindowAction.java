@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2015 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,8 +22,45 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69;
+package io.github.astrapi69.actions;
 
-public class InitialTemplate
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Objects;
+
+import javax.swing.*;
+
+/**
+ * The class {@link DisposeWindowAction}.
+ */
+public class DisposeWindowAction extends AbstractAction
 {
+
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
+	/** The window. */
+	private final Window window;
+
+	/**
+	 * Instantiates a new {@link DisposeWindowAction}.
+	 *
+	 * @param window
+	 *            the window
+	 */
+	public DisposeWindowAction(final Window window)
+	{
+		super("DisposeWindowAction");
+		Objects.requireNonNull(window);
+		this.window = window;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void actionPerformed(final ActionEvent e)
+	{
+		window.setVisible(false);
+		window.dispose();
+	}
 }
