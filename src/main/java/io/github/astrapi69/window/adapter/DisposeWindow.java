@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2015 Asterios Raptis
+ * Copyright (C) 2021 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -27,9 +27,6 @@ package io.github.astrapi69.window.adapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/**
- * The class DisposeWindow.
- */
 /**
  * The class DisposeWindow is an Adapter class for the WindowAdapter to dispose the window and
  * setVisible to false.

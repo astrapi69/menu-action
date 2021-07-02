@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2015 Asterios Raptis
+ * Copyright (C) 2021 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -29,13 +29,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 
-import io.github.astrapi69.swing.actions.OpenBrowserAction;
-import io.github.astrapi69.swing.actions.ShowHelpDialogAction;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import io.github.astrapi69.swing.plaf.LookAndFeels;
+import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
  * The base class {@link LookAndFeelAction} for change a look and feel from the application
@@ -86,9 +84,8 @@ public class LookAndFeelAction extends AbstractAction
 	 */
 	protected void onChangeOfLookAndFeel(final ActionEvent event)
 	{
-		RuntimeExceptionDecorator.decorate(()->
-			LookAndFeels.setLookAndFeel(this.lookAndFeel, this.component)
-		);
+		RuntimeExceptionDecorator
+			.decorate(() -> LookAndFeels.setLookAndFeel(this.lookAndFeel, this.component));
 	}
 
 }

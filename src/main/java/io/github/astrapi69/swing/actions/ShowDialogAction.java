@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2015 Asterios Raptis
+ * Copyright (C) 2021 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -80,7 +80,8 @@ public abstract class ShowDialogAction extends AbstractAction
 	 * @param actionEvent
 	 *            the action event
 	 */
-	protected void onShowDialog(final ActionEvent actionEvent) {
+	protected void onShowDialog(final ActionEvent actionEvent)
+	{
 		final JDialog info = newJDialog(owner, title);
 		info.setVisible(true);
 	}

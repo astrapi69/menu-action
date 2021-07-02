@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2015 Asterios Raptis
+ * Copyright (C) 2021 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -105,8 +105,7 @@ public class MenuFactory
 	 */
 	public static JPopupMenu newJPopupMenu(final String label)
 	{
-		final JPopupMenu popup = new JPopupMenu(label);
-		return popup;
+		return new JPopupMenu(label);
 	}
 
 	/**
