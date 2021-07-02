@@ -29,12 +29,15 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 
 /**
  * The abstract class {@link OpenBrowserAction} for open a browser
  */
 @Getter
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public abstract class OpenBrowserAction extends AbstractAction
 {
 
@@ -42,10 +45,10 @@ public abstract class OpenBrowserAction extends AbstractAction
 	private static final long serialVersionUID = 1L;
 
 	/** The component. */
-	private final Component component;
+	Component component;
 
 	/** The url */
-	private final String url;
+	String url;
 
 	/**
 	 * Instantiates a new {@link OpenBrowserAction} object.

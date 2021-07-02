@@ -54,7 +54,17 @@ public class ExitApplicationAction extends AbstractAction
 	@Override
 	public void actionPerformed(final ActionEvent e)
 	{
-		System.exit(0);
+		onExit(e);
 	}
 
+	/**
+	 * Callback method to interact on exit
+	 *
+	 * @param actionEvent
+	 *            the action event
+	 */
+	protected void onExit(final ActionEvent actionEvent)
+	{
+		System.exit(0);
+	}
 }

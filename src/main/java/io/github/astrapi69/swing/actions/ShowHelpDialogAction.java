@@ -40,8 +40,8 @@ import lombok.extern.java.Log;
  * The class {@link ShowHelpDialogAction} shows the help window of an application
  */
 @Log
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Getter
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ShowHelpDialogAction extends AbstractAction
 {
 
@@ -75,7 +75,18 @@ public class ShowHelpDialogAction extends AbstractAction
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent e)
+	public void actionPerformed(final ActionEvent actionEvent)
+	{
+		onShowHelpDialog(actionEvent);
+	}
+
+	/**
+	 * Callback method to interact on show the help dialog
+	 *
+	 * @param actionEvent
+	 *            the action event
+	 */
+	protected void onShowHelpDialog(final ActionEvent actionEvent)
 	{
 		helpWindow.setLocationRelativeTo(null);
 		try

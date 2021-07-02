@@ -31,12 +31,15 @@ import java.util.Objects;
 
 import javax.swing.*;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link OpenFileAction} can open a file with a file chooser
  */
 @Getter
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public abstract class OpenFileAction extends AbstractAction
 {
 
@@ -44,10 +47,10 @@ public abstract class OpenFileAction extends AbstractAction
 	private static final long serialVersionUID = 1L;
 
 	/** The parent component. */
-	private final Component parent;
+	Component parent;
 
 	/** The file chooser. */
-	private JFileChooser fileChooser;
+	JFileChooser fileChooser;
 
 	/**
 	 * Instantiates a new {@link OpenFileAction} object.
@@ -62,6 +65,17 @@ public abstract class OpenFileAction extends AbstractAction
 		super(name);
 		Objects.requireNonNull(parent);
 		this.parent = parent;
+		this.fileChooser = newJFileChooser();
+	}
+
+	/**
+	 * Factory method for create the {@link JFileChooser} object. Derived class can overwrite
+	 * this method for provide they own {@link JFileChooser} object, i.e. with initial path for the
+	 * {@link JFileChooser} object.
+	 */
+	protected JFileChooser newJFileChooser()
+	{
+		return new JFileChooser();
 	}
 
 	/**
@@ -70,7 +84,6 @@ public abstract class OpenFileAction extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent actionEvent)
 	{
-		fileChooser = new JFileChooser();
 		onFileChoose(fileChooser, actionEvent);
 	}
 

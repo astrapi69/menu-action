@@ -62,6 +62,16 @@ public class NoAction extends AbstractAction
 	@Override
 	public void actionPerformed(final ActionEvent e)
 	{
+		onNoAction(e);
 	}
 
+	/**
+	 * Callback method to interact on no action
+	 *
+	 * @param actionEvent
+	 *            the action event
+	 */
+	protected void onNoAction(final ActionEvent actionEvent)
+	{
+	}
 }

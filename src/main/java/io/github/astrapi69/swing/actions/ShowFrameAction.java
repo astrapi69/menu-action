@@ -29,12 +29,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 /**
  * The abstract class {@link ShowFrameAction}
  */
+@Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public abstract class ShowFrameAction extends AbstractAction
 {

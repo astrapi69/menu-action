@@ -24,6 +24,9 @@
  */
 package io.github.astrapi69.swing.actions;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -32,6 +35,7 @@ import javax.swing.*;
 /**
  * The class {@link ToggleFullScreenAction}
  */
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ToggleFullScreenAction extends AbstractAction
 {
 
@@ -39,7 +43,7 @@ public class ToggleFullScreenAction extends AbstractAction
 	private static final long serialVersionUID = 1L;
 
 	/** The frame. */
-	final JFrame frame;
+	JFrame frame;
 
 	/**
 	 * Instantiates a new {@link ToggleFullScreenAction} object.
@@ -65,7 +69,7 @@ public class ToggleFullScreenAction extends AbstractAction
 	}
 
 	/**
-	 * Callback method to interact on show the dialog
+	 * Callback method to interact on toggle to full screen
 	 *
 	 * @param actionEvent
 	 *            the action event
