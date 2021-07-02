@@ -4,6 +4,10 @@
 Version 1.1-SNAPSHOT
 -------------
 
+ADDED:
+
+- new callback methods in action classes
+
 Version 1
 -------------
 
