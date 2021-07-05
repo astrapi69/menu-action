@@ -24,7 +24,11 @@
  */
 package io.github.astrapi69.swing.menu;
 
+import lombok.NonNull;
+
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
@@ -45,6 +49,58 @@ public final class MenuExtensions
 	public static void setAccelerator(final JMenuItem jmi, final char keyChar)
 	{
 		jmi.setAccelerator(KeyStroke.getKeyStroke(keyChar));
+	}
+
+	/**
+	 * Sets the mnemonic for the given menu from the given key char.
+	 *
+	 * @param menu
+	 *            The JMenu
+	 * @param keyChar
+	 *            the key char
+	 */
+	public static void setMnemonic(final JMenu menu, final char keyChar)
+	{
+		menu.setMnemonic(keyChar);
+	}
+
+	/**
+	 * Sets the mnemonic for the given menu from the given key char.
+	 *
+	 * @param menu
+	 *            The JMenu
+	 * @param mnemonic
+	 *            the key code which represents the mnemonic
+	 */
+	public static void setMnemonic(final JMenu menu, final int mnemonic)
+	{
+		menu.setMnemonic(mnemonic);
+	}
+
+	/**
+	 * Sets the mnemonic for the given JMenuItem from the given key char.
+	 *
+	 * @param menuItem
+	 *            The JMenuItem
+	 * @param keyChar
+	 *            the key char
+	 */
+	public static void setMnemonic(final JMenuItem menuItem, final char keyChar)
+	{
+		menuItem.setMnemonic(keyChar);
+	}
+
+	/**
+	 * Sets the mnemonic for the given JMenuItem from the given key char.
+	 *
+	 * @param menuItem
+	 *            The JMenuItem
+	 * @param mnemonic
+	 *            the key code which represents the mnemonic
+	 */
+	public static void setMnemonic(final JMenuItem menuItem, final int mnemonic)
+	{
+		menuItem.setMnemonic(mnemonic);
 	}
 
 	/**
@@ -136,5 +192,73 @@ public final class MenuExtensions
 	{
 		setAccelerator(jmi, accelerator, Event.CTRL_MASK);
 	}
+
+	/**
+	 * Adds the given <code>ActionListener</code> to the given <code>JMenuItem</code>
+	 *
+	 * @param menuItem
+	 *            The <code>JMenuItem</code> object
+	 * @param actionListener
+	 *            The <code>ActionListener</code> object
+	 */
+	public static void addActionListener(final @NonNull JMenuItem menuItem,
+		final @NonNull ActionListener actionListener)
+	{
+		menuItem.addActionListener(actionListener);
+	}
+
+	/**
+	 * Adds the given <code>JMenuItem</code> to the given <code>JMenu</code>
+	 *
+	 * @param menu
+	 *            The <code>JMenu</code> object
+	 * @param menuItem
+	 *            The <code>JMenuItem</code> object
+	 */
+	public static JMenuItem addMenuItem(final @NonNull JMenu menu, final @NonNull JMenuItem menuItem)
+	{
+		return menu.add(menuItem);
+	}
+
+	/**
+	 * Adds the given <code>ActionListener</code> to the given <code>JMenuItem</code> and finally
+	 * the given <code>JMenuItem</code> is added to the given <code>JMenu</code>
+	 *
+	 * @param menu
+	 *            The <code>JMenu</code> object
+	 * @param menuItem
+	 *            The <code>JMenuItem</code> object
+	 * @param actionListener
+	 *            The <code>ActionListener</code> object
+	 */
+	public static JMenuItem addMenuItem(final @NonNull JMenu menu, final @NonNull JMenuItem menuItem,
+		final @NonNull ActionListener actionListener)
+	{
+		JMenuItem jMenuItem = addMenuItem(menu, menuItem);
+		addActionListener(jMenuItem, actionListener);
+		return jMenuItem;
+	}
+
+	/**
+	 * Adds the given <code>ActionListener</code> to the given <code>JMenuItem</code> and finally
+	 * the given <code>JMenuItem</code> is added to the given <code>JMenu</code>
+	 *
+	 * @param menu
+	 *            The <code>JMenu</code> object
+	 * @param menuItem
+	 *            The <code>JMenuItem</code> object
+	 * @param actionListener
+	 *            The <code>ActionListener</code> object
+	 */
+	public static JMenuItem addMenuItem(final @NonNull JMenu menu, final @NonNull JMenuItem menuItem,
+		final @NonNull KeyStroke keyStroke,
+		final @NonNull ActionListener actionListener)
+	{
+		JMenuItem jMenuItem = addMenuItem(menu, menuItem);
+		jMenuItem.setAccelerator(keyStroke);
+		addActionListener(jMenuItem, actionListener);
+		return jMenuItem;
+	}
+
 
 }

@@ -42,6 +42,16 @@ public class MenuFactory
 {
 
 	/**
+	 * Factory method for create a {@link JMenuBar} object
+	 *
+	 * @return the {@link JMenuBar} object
+	 */
+	public static JMenuBar newJMenuBar()
+	{
+		return new JMenuBar();
+	}
+
+	/**
 	 * Factory method for create a {@link JToolBar} object
 	 *
 	 * @return the {@link JToolBar} object
@@ -49,6 +59,53 @@ public class MenuFactory
 	public static JToolBar newJToolBar()
 	{
 		return new JToolBar();
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenu</code>
+	 * @param mnemonic
+	 *            the keyboard mnemonic for the <code>JMenu</code>
+	 * @return the new {@link JMenu} object
+	 */
+	public static JMenu newJMenu(final @NonNull String text, final int mnemonic)
+	{
+		final JMenu menu = new JMenu(text);
+		menu.setMnemonic(mnemonic);
+		return menu;
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenu</code>
+	 * @param mnemonic
+	 *            the keyboard mnemonic for the <code>JMenu</code>
+	 * @return the new {@link JMenu} object
+	 */
+	public static JMenu newJMenu(final @NonNull String text, final char mnemonic)
+	{
+		final JMenu menu = new JMenu(text);
+		menu.setMnemonic(mnemonic);
+		return menu;
+	}
+
+	/**
+	 * Factory method for create a <code>JMenuItem</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenuItem</code>
+	 * @param mnemonic
+	 *            the keyboard mnemonic for the <code>JMenuItem</code>
+	 * @return the new {@link JMenuItem}
+	 */
+	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic)
+	{
+		final JMenuItem menuItem = new JMenuItem(text, mnemonic);
+		return menuItem;
 	}
 
 	/**
@@ -63,6 +120,25 @@ public class MenuFactory
 	 * @return the new {@link JMenuItem}
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
+		final char accelerator)
+	{
+		final JMenuItem menuItem = new JMenuItem(text, mnemonic);
+		MenuExtensions.setCtrlAccelerator(menuItem, accelerator);
+		return menuItem;
+	}
+
+	/**
+	 * Factory method for create a <code>JMenuItem</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenuItem</code>
+	 * @param mnemonic
+	 *            the keyboard mnemonic for the <code>JMenuItem</code>
+	 * @param accelerator
+	 *            The character that have to push together with the CTRL.
+	 * @return the new {@link JMenuItem}
+	 */
+	public static JMenuItem newJMenuItem(final @NonNull String text, final char mnemonic,
 		final char accelerator)
 	{
 		final JMenuItem menuItem = new JMenuItem(text, mnemonic);
