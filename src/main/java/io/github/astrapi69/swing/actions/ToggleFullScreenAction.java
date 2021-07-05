@@ -24,13 +24,13 @@
  */
 package io.github.astrapi69.swing.actions;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import javax.swing.*;
+
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link ToggleFullScreenAction}

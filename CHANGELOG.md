@@ -9,6 +9,8 @@ ADDED:
 - new callback methods in action classes
 - new factory class for create all components for the help window
 - new extension methods in class MenuExtensions
+- new dependency to javax.help:javahelp in version 2.0.05
+- new dependency to io.github.astrapi69:jobj-core in version 3.9
 
 Version 1
 -------------

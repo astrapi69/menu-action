@@ -24,13 +24,12 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import lombok.NonNull;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 import javax.swing.*;
+
+import lombok.NonNull;
 
 /**
  * The class {@link MenuExtensions}.
@@ -215,7 +214,8 @@ public final class MenuExtensions
 	 * @param menuItem
 	 *            The <code>JMenuItem</code> object
 	 */
-	public static JMenuItem addMenuItem(final @NonNull JMenu menu, final @NonNull JMenuItem menuItem)
+	public static JMenuItem addMenuItem(final @NonNull JMenu menu,
+		final @NonNull JMenuItem menuItem)
 	{
 		return menu.add(menuItem);
 	}
@@ -231,8 +231,8 @@ public final class MenuExtensions
 	 * @param actionListener
 	 *            The <code>ActionListener</code> object
 	 */
-	public static JMenuItem addMenuItem(final @NonNull JMenu menu, final @NonNull JMenuItem menuItem,
-		final @NonNull ActionListener actionListener)
+	public static JMenuItem addMenuItem(final @NonNull JMenu menu,
+		final @NonNull JMenuItem menuItem, final @NonNull ActionListener actionListener)
 	{
 		JMenuItem jMenuItem = addMenuItem(menu, menuItem);
 		addActionListener(jMenuItem, actionListener);
@@ -250,8 +250,8 @@ public final class MenuExtensions
 	 * @param actionListener
 	 *            The <code>ActionListener</code> object
 	 */
-	public static JMenuItem addMenuItem(final @NonNull JMenu menu, final @NonNull JMenuItem menuItem,
-		final @NonNull KeyStroke keyStroke,
+	public static JMenuItem addMenuItem(final @NonNull JMenu menu,
+		final @NonNull JMenuItem menuItem, final @NonNull KeyStroke keyStroke,
 		final @NonNull ActionListener actionListener)
 	{
 		JMenuItem jMenuItem = addMenuItem(menu, menuItem);

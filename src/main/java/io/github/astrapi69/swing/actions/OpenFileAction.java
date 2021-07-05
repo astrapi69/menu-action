@@ -69,8 +69,8 @@ public abstract class OpenFileAction extends AbstractAction
 	}
 
 	/**
-	 * Factory method for create the {@link JFileChooser} object. Derived class can overwrite
-	 * this method for provide they own {@link JFileChooser} object, i.e. with initial path for the
+	 * Factory method for create the {@link JFileChooser} object. Derived class can overwrite this
+	 * method for provide they own {@link JFileChooser} object, i.e. with initial path for the
 	 * {@link JFileChooser} object.
 	 */
 	protected JFileChooser newJFileChooser()
