@@ -92,22 +92,47 @@ public enum LookAndFeels
 	 * @param component
 	 *            the component
 	 * @return the look and feels
-	 * @throws ClassNotFoundException
-	 *             the class not found exception
-	 * @throws InstantiationException
-	 *             the instantiation exception
-	 * @throws IllegalAccessException
-	 *             the illegal access exception
-	 * @throws UnsupportedLookAndFeelException
-	 *             the unsupported look and feel exception
+	 * @exception ClassNotFoundException
+	 *                if the <code>LookAndFeel</code> class could not be found
+	 * @exception InstantiationException
+	 *                if a new instance of the class couldn't be created
+	 * @exception IllegalAccessException
+	 *                if the class or initializer isn't accessible
+	 * @exception UnsupportedLookAndFeelException
+	 *                if <code>lnf.isSupportedLookAndFeel()</code> is false
+	 * @throws ClassCastException
+	 *             if {@code className} does not identify a class that extends {@code LookAndFeel}
 	 */
 	public static LookAndFeels setLookAndFeel(final @NonNull LookAndFeels lookAndFeels,
 		final @NonNull Component component) throws ClassNotFoundException, InstantiationException,
 		IllegalAccessException, UnsupportedLookAndFeelException
 	{
-		UIManager.setLookAndFeel(lookAndFeels.getLookAndFeelName());
+		setLookAndFeel(lookAndFeels);
 		SwingUtilities.updateComponentTreeUI(component);
 		return lookAndFeels;
+	}
+
+	/**
+	 * Sets the given {@link LookAndFeels} to the {@link UIManager}
+	 *
+	 * @param lookAndFeels
+	 *            the look and feels
+	 * @exception ClassNotFoundException
+	 *                if the <code>LookAndFeel</code> class could not be found
+	 * @exception InstantiationException
+	 *                if a new instance of the class couldn't be created
+	 * @exception IllegalAccessException
+	 *                if the class or initializer isn't accessible
+	 * @exception UnsupportedLookAndFeelException
+	 *                if <code>lnf.isSupportedLookAndFeel()</code> is false
+	 * @throws ClassCastException
+	 *             if {@code className} does not identify a class that extends {@code LookAndFeel}
+	 */
+	public static void setLookAndFeel(final @NonNull LookAndFeels lookAndFeels)
+		throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+		UnsupportedLookAndFeelException
+	{
+		UIManager.setLookAndFeel(lookAndFeels.getLookAndFeelName());
 	}
 
 }

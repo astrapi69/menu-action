@@ -4,7 +4,11 @@
 Version 1.2-SNAPSHOT
 -------------
 
-Version 1.1
+ADDED:
+
+- new method in enum class LookAndFeels that sets only the look and feel to the UIManager
+  
+  Version 1.1
 -------------
 
 ADDED:
