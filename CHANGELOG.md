@@ -7,6 +7,7 @@ Version 1.2-SNAPSHOT
 ADDED:
 
 - new method in enum class LookAndFeels that sets only the look and feel to the UIManager
+- new method in LookAndFeels class setLookAndFeel with LookAndFeels and Window argument
   
   Version 1.1
 -------------

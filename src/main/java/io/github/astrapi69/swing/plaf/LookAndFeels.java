@@ -112,6 +112,37 @@ public enum LookAndFeels
 		return lookAndFeels;
 	}
 
+
+	/**
+	 * Sets the given {@link LookAndFeels} to the given {@link Window} and returns given
+	 * {@link LookAndFeels}
+	 *
+	 * @param lookAndFeels
+	 *            the look and feels
+	 * @param window
+	 *            the window
+	 * @return the look and feels
+	 * @exception ClassNotFoundException
+	 *                if the <code>LookAndFeel</code> class could not be found
+	 * @exception InstantiationException
+	 *                if a new instance of the class couldn't be created
+	 * @exception IllegalAccessException
+	 *                if the class or initializer isn't accessible
+	 * @exception UnsupportedLookAndFeelException
+	 *                if <code>lnf.isSupportedLookAndFeel()</code> is false
+	 * @throws ClassCastException
+	 *             if {@code className} does not identify a class that extends {@code LookAndFeel}
+	 */
+	public static LookAndFeels setLookAndFeel(final @NonNull LookAndFeels lookAndFeels,
+		final @NonNull Window window) throws ClassNotFoundException, InstantiationException,
+		IllegalAccessException, UnsupportedLookAndFeelException
+	{
+		UIManager.setLookAndFeel(lookAndFeels.getLookAndFeelName());
+		SwingUtilities.updateComponentTreeUI(window);
+		window.pack();
+		return lookAndFeels;
+	}
+
 	/**
 	 * Sets the given {@link LookAndFeels} to the {@link UIManager}
 	 *
