@@ -8,8 +8,14 @@ ADDED:
 
 - new method in enum class LookAndFeels that sets only the look and feel to the UIManager
 - new method in LookAndFeels class setLookAndFeel with LookAndFeels and Window argument
-  
-  Version 1.1
+
+CHANGED:
+
+- update gradle to new version 7.2
+- update of gradle-lombok-plugin to new version 6.1.0
+- update of test dependency silly-io to new version 1.6
+
+Version 1.1
 -------------
 
 ADDED:
