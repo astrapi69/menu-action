@@ -26,6 +26,7 @@ package io.github.astrapi69.swing.plaf.actions;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.logging.Level;
 
 import javax.swing.*;
 
@@ -34,10 +35,12 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import io.github.astrapi69.swing.plaf.LookAndFeels;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
+import lombok.extern.java.Log;
 
 /**
  * The base class {@link LookAndFeelAction} for change a look and feel from the application
  */
+@Log
 @Getter(AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LookAndFeelAction extends AbstractAction
@@ -84,8 +87,21 @@ public class LookAndFeelAction extends AbstractAction
 	 */
 	protected void onChangeOfLookAndFeel(final ActionEvent event)
 	{
-		RuntimeExceptionDecorator
-			.decorate(() -> LookAndFeels.setLookAndFeel(this.lookAndFeel, this.component));
+		try {
+			LookAndFeels.setLookAndFeel(this.lookAndFeel, this.component);
+		}
+		catch (UnsupportedLookAndFeelException e) {
+			log.log(Level.INFO, "Look and Feel not supported "+this.lookAndFeel.getLookAndFeelName(), e);
+		}
+		catch (ClassNotFoundException e) {
+			log.log(Level.INFO, "Look and Feel class not found "+this.lookAndFeel.getLookAndFeelName(), e);
+		}
+		catch (InstantiationException e) {
+			log.log(Level.INFO, "Look and Feel could not instantiated "+this.lookAndFeel.getLookAndFeelName(), e);
+		}
+		catch (IllegalAccessException e) {
+			log.log(Level.INFO, "Illegal access exception is thrown for the Look and Feel "+this.lookAndFeel.getLookAndFeelName(), e);
+		}
 	}
 
 }

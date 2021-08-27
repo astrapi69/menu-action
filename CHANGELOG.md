@@ -8,6 +8,7 @@ ADDED:
 
 - new method in enum class LookAndFeels that sets only the look and feel to the UIManager
 - new method in LookAndFeels class setLookAndFeel with LookAndFeels and Window argument
+- new field CROSSPLATFORM in enum class LookAndFeels
 
 CHANGED:
 

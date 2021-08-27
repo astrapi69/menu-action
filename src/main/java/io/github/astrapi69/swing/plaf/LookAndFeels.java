@@ -67,6 +67,9 @@ public enum LookAndFeels
 	/** The SYSTEM look and feel class */
 	SYSTEM(UIManager.getSystemLookAndFeelClassName()),
 
+	/** The CROSSPLATFORM look and feel class */
+	CROSSPLATFORM(UIManager.getCrossPlatformLookAndFeelClassName()),
+
 	/** The WINDOWS look and feel class */
 	WINDOWS(LookAndFeels.LOOK_AND_FEEL_WINDOWS);
 
