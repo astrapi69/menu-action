@@ -70,6 +70,9 @@ public enum LookAndFeels
 	/** The CROSSPLATFORM look and feel class */
 	CROSSPLATFORM(UIManager.getCrossPlatformLookAndFeelClassName()),
 
+	/** The WINDOWS_CLASSIC look and feel class */
+	WINDOWS_CLASSIC(LookAndFeels.LOOK_AND_FEEL_WINDOWS_CLASSIC),
+
 	/** The WINDOWS look and feel class */
 	WINDOWS(LookAndFeels.LOOK_AND_FEEL_WINDOWS);
 
@@ -82,6 +85,7 @@ public enum LookAndFeels
 	private static final String LOOK_AND_FEEL_NIMBUS = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
 	private static final String LOOK_AND_FEEL_SYNTH = "javax.swing.plaf.synth.SynthLookAndFeel";
 	private static final String LOOK_AND_FEEL_WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+	private static final String LOOK_AND_FEEL_WINDOWS_CLASSIC = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
 	/** The look and feel name. */
 	@Getter
 	String lookAndFeelName;
@@ -167,6 +171,15 @@ public enum LookAndFeels
 		UnsupportedLookAndFeelException
 	{
 		UIManager.setLookAndFeel(lookAndFeels.getLookAndFeelName());
+	}
+
+	/**
+	 * Returns the current look and feel or <code>null</code> if not set
+	 *
+	 * @return the current look and feel, or <code>null</code> if not set
+	 */
+	public static LookAndFeel getCurrentLookAndFeel() {
+		return UIManager.getLookAndFeel();
 	}
 
 }

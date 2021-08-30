@@ -4,6 +4,11 @@
 Version 1.3-SNAPSHOT
 -------------
 
+ADDED:
+
+- new method in enum class LookAndFeels that gets the current look and feel of the application
+- new field WINDOWS_CLASSIC for the windows classic look and feel in enum class LookAndFeels
+  
 Version 1.2
 -------------
 
