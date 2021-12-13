@@ -63,7 +63,7 @@ public class MenuFactoryAndExtensionsTest extends JFrame
 		setVisible(true);
 	}
 
-	public static void main(String arg[])
+	public static void main(String[] arg)
 	{
 		new MenuFactoryAndExtensionsTest();
 	}

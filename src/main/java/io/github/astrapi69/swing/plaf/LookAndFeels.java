@@ -178,7 +178,8 @@ public enum LookAndFeels
 	 *
 	 * @return the current look and feel, or <code>null</code> if not set
 	 */
-	public static LookAndFeel getCurrentLookAndFeel() {
+	public static LookAndFeel getCurrentLookAndFeel()
+	{
 		return UIManager.getLookAndFeel();
 	}
 

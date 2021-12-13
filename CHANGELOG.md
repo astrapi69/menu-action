@@ -8,7 +8,19 @@ ADDED:
 
 - new method in enum class LookAndFeels that gets the current look and feel of the application
 - new field WINDOWS_CLASSIC for the windows classic look and feel in enum class LookAndFeels
-  
+- new gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' in version 4.1.1
+- new dependency model-api in version 1.10
+
+CHANGED:
+
+- update gradle to new version 7.3.1
+- update of lombok dependency to new version 1.18.22
+- update of gradle-lombok-plugin to new version 6.3.0
+- update of throw-able dependency to new version 1.7
+- update of jobj-core dependency to new version 5
+- update of test dependency junit-jupiter to new version 5.8.2
+- update of test dependency file-worker to new version 8.1
+
 Version 1.2
 -------------
 
