@@ -37,9 +37,11 @@ public class MenuFactoryAndExtensionsTest extends JFrame
 {
 	public MenuFactoryAndExtensionsTest()
 	{
+		JMenuBar bar;
+		JMenu menu;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JMenuBar bar = MenuFactory.newJMenuBar();
-		JMenu menu = MenuFactory.newJMenu("File", 'f');
+		bar = MenuFactory.newJMenuBar();
+		menu = MenuFactory.newJMenu("File", 'f');
 		bar.add(menu);
 
 		MenuExtensions.addMenuItem(menu, MenuFactory.newJMenuItem("Exit", 'x'),
@@ -52,7 +54,9 @@ public class MenuFactoryAndExtensionsTest extends JFrame
 			KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK), printToSop);
 		MenuExtensions.addMenuItem(menu, new JMenuItem("Copy", 'c'),
 			KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK), printToSop);
-		MenuExtensions.addMenuItem(menu, new JMenuItem("Paste", 'p'),
+		JMenuItem pasteMenu = new JMenuItem("Paste", 'p');
+
+		MenuExtensions.addMenuItem(menu, pasteMenu,
 			KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK), printToSop);
 
 		setJMenuBar(bar);

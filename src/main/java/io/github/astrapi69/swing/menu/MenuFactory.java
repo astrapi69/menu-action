@@ -72,8 +72,21 @@ public class MenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text, final int mnemonic)
 	{
-		final JMenu menu = new JMenu(text);
+		final JMenu menu = newJMenu(text);
 		menu.setMnemonic(mnemonic);
+		return menu;
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenu</code>
+	 * @return the new {@link JMenu} object
+	 */
+	public static JMenu newJMenu(final @NonNull String text)
+	{
+		final JMenu menu = new JMenu(text);
 		return menu;
 	}
 

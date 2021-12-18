@@ -4,6 +4,11 @@
 Version 1.4-SNAPSHOT
 -------------
 
+ADDED:
+
+- new class ParentMenuResolver that provides methods for resolve parent and root menus
+- new factory method for create JMenu objects
+
 Version 1.3
 -------------
 
