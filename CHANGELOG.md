@@ -8,6 +8,13 @@ ADDED:
 
 - new class ParentMenuResolver that provides methods for resolve parent and root menus
 - new factory method for create JMenu objects
+- new factory methods with action listeners for create JMenuItem objects
+
+CHANGED:
+
+- update gradle to new version 7.3.3
+- update of com.github.ben-manes.versions.gradle.plugin to new version 0.41.0
+- update of jobj-core dependency to new version 5.2
 
 Version 1.3
 -------------
