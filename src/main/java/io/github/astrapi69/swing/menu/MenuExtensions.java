@@ -115,7 +115,7 @@ public final class MenuExtensions
 	public static void setAccelerator(final JMenuItem jmi, final Character keyChar,
 		final int modifiers)
 	{
-		jmi.setAccelerator(KeyStroke.getKeyStroke(keyChar, modifiers));
+		setAccelerator(jmi, KeyStroke.getKeyStroke(keyChar, modifiers));
 	}
 
 	/**
@@ -130,7 +130,20 @@ public final class MenuExtensions
 	 */
 	public static void setAccelerator(final JMenuItem jmi, final int keyCode, final int modifiers)
 	{
-		jmi.setAccelerator(KeyStroke.getKeyStroke(keyCode, modifiers));
+		setAccelerator(jmi, KeyStroke.getKeyStroke(keyCode, modifiers));
+	}
+
+	/**
+	 * Sets the accelerator for the given menuitem and the given key code and the given modifiers.
+	 *
+	 * @param jmi
+	 *            The JMenuItem
+	 * @param keyStroke
+	 *            The keystroke
+	 */
+	public static void setAccelerator(final JMenuItem jmi, final KeyStroke keyStroke)
+	{
+		jmi.setAccelerator(keyStroke);
 	}
 
 	/**
@@ -148,7 +161,7 @@ public final class MenuExtensions
 	public static void setAccelerator(final JMenuItem jmi, final int keyCode, final int modifiers,
 		final boolean onKeyRelease)
 	{
-		jmi.setAccelerator(KeyStroke.getKeyStroke(keyCode, modifiers, onKeyRelease));
+		setAccelerator(jmi, KeyStroke.getKeyStroke(keyCode, modifiers, onKeyRelease));
 	}
 
 	/**
@@ -161,7 +174,7 @@ public final class MenuExtensions
 	 */
 	public static void setAccelerator(final JMenuItem jmi, final String parsableKeystrokeString)
 	{
-		jmi.setAccelerator(KeyStroke.getKeyStroke(parsableKeystrokeString));
+		setAccelerator(jmi, KeyStroke.getKeyStroke(parsableKeystrokeString));
 	}
 
 	/**
