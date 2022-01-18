@@ -70,8 +70,7 @@ public class MenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text)
 	{
-		final JMenu menu = new JMenu(text);
-		return menu;
+		return new JMenu(text);
 	}
 
 	/**
@@ -149,14 +148,25 @@ public class MenuFactory
 	 *
 	 * @param text
 	 *            the text of the <code>JMenuItem</code>
+	 * @return the new {@link JMenuItem}
+	 */
+	public static JMenuItem newJMenuItem(final @NonNull String text)
+	{
+		return new JMenuItem(text);
+	}
+
+	/**
+	 * Factory method for create a <code>JMenuItem</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenuItem</code>
 	 * @param mnemonic
 	 *            the keyboard mnemonic for the <code>JMenuItem</code>
 	 * @return the new {@link JMenuItem}
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic)
 	{
-		final JMenuItem menuItem = new JMenuItem(text, mnemonic);
-		return menuItem;
+		return new JMenuItem(text, mnemonic);
 	}
 
 	/**
