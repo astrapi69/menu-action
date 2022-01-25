@@ -44,6 +44,8 @@ public class MenuFactoryAndExtensionsTest extends JFrame
 		menu = MenuFactory.newJMenu("File", 'f');
 		bar.add(menu);
 
+		MenuExtensions.addMenuItem(menu, MenuFactory.newJMenuItem("Print to console"),
+			e -> System.out.println("foo bar"));
 		MenuExtensions.addMenuItem(menu, MenuFactory.newJMenuItem("Exit", 'x'),
 			e -> System.exit(0));
 

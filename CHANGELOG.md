@@ -8,6 +8,7 @@ ADDED:
 
 - new class ParentMenuResolver that provides methods for resolve parent and root menus
 - new factory method for create JMenu objects
+- new factory method for create JMenuItem objects
 - new factory methods with action listeners for create JMenuItem objects
 - new factory methods with KeyStroke object for create JMenuItem objects
 - new accelerator method for JMenuItem with KeyStroke object

@@ -70,8 +70,7 @@ public class MenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text)
 	{
-		final JMenu menu = new JMenu(text);
-		return menu;
+		return new JMenu(text);
 	}
 
 	/**
@@ -102,7 +101,7 @@ public class MenuFactory
 	 * @return the new {@link JMenu} object
 	 */
 	public static JMenu newJMenu(final @NonNull String text, final int mnemonic,
-		final ActionListener actionListener)
+		final @NonNull ActionListener actionListener)
 	{
 		final JMenu menu = newJMenu(text, mnemonic);
 		menu.addActionListener(actionListener);
@@ -137,11 +136,37 @@ public class MenuFactory
 	 * @return the new {@link JMenu} object
 	 */
 	public static JMenu newJMenu(final @NonNull String text, final char mnemonic,
-		final ActionListener actionListener)
+		final @NonNull ActionListener actionListener)
 	{
 		final JMenu menu = newJMenu(text, mnemonic);
 		menu.addActionListener(actionListener);
 		return menu;
+	}
+
+	/**
+	 * Factory method for create a <code>JMenuItem</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenuItem</code>
+	 * @return the new {@link JMenuItem}
+	 */
+	public static JMenuItem newJMenuItem(final @NonNull String text)
+	{
+		return new JMenuItem(text);
+	}
+
+	/**
+	 * Factory method for create a <code>JMenuItem</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenuItem</code>
+	 * @return the new {@link JMenuItem}
+	 */
+	public static JMenuItem newJMenuItem(final @NonNull String text, final @NonNull ActionListener actionListener)
+	{
+		final JMenuItem menuItem = newJMenuItem(text);
+		menuItem.addActionListener(actionListener);
+		return menuItem;
 	}
 
 	/**
@@ -155,8 +180,7 @@ public class MenuFactory
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic)
 	{
-		final JMenuItem menuItem = new JMenuItem(text, mnemonic);
-		return menuItem;
+		return new JMenuItem(text, mnemonic);
 	}
 
 	/**
@@ -192,7 +216,7 @@ public class MenuFactory
 	 * @return the new {@link JMenuItem}
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
-		final char accelerator, final ActionListener actionListener)
+		final char accelerator, final @NonNull ActionListener actionListener)
 	{
 		final JMenuItem menuItem = newJMenuItem(text, mnemonic);
 		MenuExtensions.setCtrlAccelerator(menuItem, accelerator);
@@ -214,7 +238,7 @@ public class MenuFactory
 	 * @return the new {@link JMenuItem}
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
-										 final KeyStroke keyStroke, final ActionListener actionListener)
+		final KeyStroke keyStroke, final @NonNull ActionListener actionListener)
 	{
 		final JMenuItem menuItem = newJMenuItem(text, mnemonic);
 		menuItem.setAccelerator(keyStroke);
@@ -276,7 +300,7 @@ public class MenuFactory
 	 * @return the new {@link JMenuItem}
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final char mnemonic,
-		final char accelerator, final ActionListener actionListener)
+		final char accelerator, final @NonNull ActionListener actionListener)
 	{
 		final JMenuItem menuItem = newJMenuItem(text, mnemonic);
 		MenuExtensions.setCtrlAccelerator(menuItem, accelerator);
