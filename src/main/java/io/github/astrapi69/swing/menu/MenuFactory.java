@@ -214,11 +214,32 @@ public class MenuFactory
 	 * @return the new {@link JMenuItem}
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
-		final KeyStroke keyStroke, final ActionListener actionListener)
+										 final KeyStroke keyStroke, final ActionListener actionListener)
 	{
 		final JMenuItem menuItem = newJMenuItem(text, mnemonic);
 		menuItem.setAccelerator(keyStroke);
 		menuItem.addActionListener(actionListener);
+		return menuItem;
+	}
+
+	/**
+	 * Factory method for create a <code>JMenuItem</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenuItem</code>
+	 * @param mnemonic
+	 *            the keyboard mnemonic for the <code>JMenuItem</code>
+	 * @param keyStroke
+	 *            The keystroke
+	 * @param actionListener
+	 *            The action listener for the <code>JMenuItem</code>
+	 * @return the new {@link JMenuItem}
+	 */
+	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
+										 final KeyStroke keyStroke, final ActionListener actionListener, String name)
+	{
+		final JMenuItem menuItem = newJMenuItem(text, mnemonic, keyStroke, actionListener);
+		menuItem.setName(name);
 		return menuItem;
 	}
 
