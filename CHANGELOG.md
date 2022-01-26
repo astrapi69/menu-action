@@ -12,6 +12,7 @@ ADDED:
 - new factory methods with action listeners for create JMenuItem objects
 - new factory methods with KeyStroke object for create JMenuItem objects
 - new accelerator method for JMenuItem with KeyStroke object
+- new JMenuItemInfo class created for build JMenuItem and JMenu objects from given fields
 
 CHANGED:
 

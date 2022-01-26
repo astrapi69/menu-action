@@ -24,11 +24,18 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 /**
- * The class {@link KeyStrokeBean}
+ * The class {@link KeyStrokeInfo}
  */
 @Getter
 @Setter
@@ -36,11 +43,12 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class KeyStrokeBean
+public class KeyStrokeInfo
 {
-	int keyCode;
-	int modifiers;
-	boolean onKeyRelease;
+	Character keyChar;
+	Integer keyCode;
+	Integer modifiers;
+	Boolean onKeyRelease;
 }

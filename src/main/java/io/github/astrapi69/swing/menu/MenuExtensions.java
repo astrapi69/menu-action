@@ -38,6 +38,23 @@ public final class MenuExtensions
 {
 
 	/**
+	 * Converts the given char mnemonic to an int mnemonic
+	 *
+	 * @param charMnemonic
+	 *            The char mnemonic to convert
+	 * @return the converted mnemonic as int
+	 */
+	public static int toMnemonic(char charMnemonic)
+	{
+		int mnemonic = charMnemonic;
+		if (mnemonic >= 'a' && mnemonic <= 'z')
+		{
+			mnemonic -= ('a' - 'A');
+		}
+		return mnemonic;
+	}
+
+	/**
 	 * Sets the accelerator for the given menuitem and the given key char.
 	 *
 	 * @param jmi
@@ -226,6 +243,7 @@ public final class MenuExtensions
 	 *            The <code>JMenu</code> object
 	 * @param menuItem
 	 *            The <code>JMenuItem</code> object
+	 * @return the <code>JMenuItem</code> added
 	 */
 	public static JMenuItem addMenuItem(final @NonNull JMenu menu,
 		final @NonNull JMenuItem menuItem)

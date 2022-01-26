@@ -33,6 +33,7 @@ import java.util.Map;
 import javax.swing.*;
 
 import lombok.NonNull;
+import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
 import io.github.astrapi69.swing.menu.popup.listeners.PopupListener;
 
 /**
@@ -70,7 +71,7 @@ public class MenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text)
 	{
-		return new JMenu(text);
+		return JMenuItemInfo.builder().text(text).build().toJMenu();
 	}
 
 	/**
@@ -84,9 +85,7 @@ public class MenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text, final int mnemonic)
 	{
-		final JMenu menu = newJMenu(text);
-		menu.setMnemonic(mnemonic);
-		return menu;
+		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).build().toJMenu();
 	}
 
 	/**
@@ -103,9 +102,8 @@ public class MenuFactory
 	public static JMenu newJMenu(final @NonNull String text, final int mnemonic,
 		final @NonNull ActionListener actionListener)
 	{
-		final JMenu menu = newJMenu(text, mnemonic);
-		menu.addActionListener(actionListener);
-		return menu;
+		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).actionListener(actionListener)
+			.build().toJMenu();
 	}
 
 	/**
@@ -119,9 +117,8 @@ public class MenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text, final char mnemonic)
 	{
-		final JMenu menu = newJMenu(text);
-		menu.setMnemonic(mnemonic);
-		return menu;
+		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
+			.build().toJMenu();
 	}
 
 	/**
@@ -138,9 +135,8 @@ public class MenuFactory
 	public static JMenu newJMenu(final @NonNull String text, final char mnemonic,
 		final @NonNull ActionListener actionListener)
 	{
-		final JMenu menu = newJMenu(text, mnemonic);
-		menu.addActionListener(actionListener);
-		return menu;
+		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
+			.actionListener(actionListener).build().toJMenu();
 	}
 
 	/**
@@ -152,7 +148,7 @@ public class MenuFactory
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text)
 	{
-		return new JMenuItem(text);
+		return JMenuItemInfo.builder().text(text).build().toJMenuItem();
 	}
 
 	/**
@@ -164,9 +160,8 @@ public class MenuFactory
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final @NonNull ActionListener actionListener)
 	{
-		final JMenuItem menuItem = newJMenuItem(text);
-		menuItem.addActionListener(actionListener);
-		return menuItem;
+		return JMenuItemInfo.builder().text(text).actionListener(actionListener).build()
+			.toJMenuItem();
 	}
 
 	/**
@@ -180,7 +175,7 @@ public class MenuFactory
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic)
 	{
-		return new JMenuItem(text, mnemonic);
+		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).build().toJMenuItem();
 	}
 
 	/**
@@ -197,9 +192,8 @@ public class MenuFactory
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
 		final char accelerator)
 	{
-		final JMenuItem menuItem = newJMenuItem(text, mnemonic);
-		MenuExtensions.setCtrlAccelerator(menuItem, accelerator);
-		return menuItem;
+		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic)
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK)).build().toJMenuItem();
 	}
 
 	/**
@@ -218,10 +212,9 @@ public class MenuFactory
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
-		final JMenuItem menuItem = newJMenuItem(text, mnemonic);
-		MenuExtensions.setCtrlAccelerator(menuItem, accelerator);
-		menuItem.addActionListener(actionListener);
-		return menuItem;
+		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic)
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK)).actionListener(actionListener).build()
+			.toJMenuItem();
 	}
 
 	/**
@@ -240,10 +233,8 @@ public class MenuFactory
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
 		final KeyStroke keyStroke, final @NonNull ActionListener actionListener)
 	{
-		final JMenuItem menuItem = newJMenuItem(text, mnemonic);
-		menuItem.setAccelerator(keyStroke);
-		menuItem.addActionListener(actionListener);
-		return menuItem;
+		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).keyStroke(keyStroke)
+			.actionListener(actionListener).build().toJMenuItem();
 	}
 
 	/**
@@ -262,9 +253,8 @@ public class MenuFactory
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
 										 final KeyStroke keyStroke, final ActionListener actionListener, String name)
 	{
-		final JMenuItem menuItem = newJMenuItem(text, mnemonic, keyStroke, actionListener);
-		menuItem.setName(name);
-		return menuItem;
+		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).keyStroke(keyStroke)
+			.actionListener(actionListener).name(name).build().toJMenuItem();
 	}
 
 	/**
@@ -281,9 +271,8 @@ public class MenuFactory
 	public static JMenuItem newJMenuItem(final @NonNull String text, final char mnemonic,
 		final char accelerator)
 	{
-		final JMenuItem menuItem = newJMenuItem(text, mnemonic);
-		MenuExtensions.setCtrlAccelerator(menuItem, accelerator);
-		return menuItem;
+		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK)).build().toJMenuItem();
 	}
 
 	/**
@@ -302,10 +291,9 @@ public class MenuFactory
 	public static JMenuItem newJMenuItem(final @NonNull String text, final char mnemonic,
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
-		final JMenuItem menuItem = newJMenuItem(text, mnemonic);
-		MenuExtensions.setCtrlAccelerator(menuItem, accelerator);
-		menuItem.addActionListener(actionListener);
-		return menuItem;
+		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK)).actionListener(actionListener).build()
+			.toJMenuItem();
 	}
 
 	/**
