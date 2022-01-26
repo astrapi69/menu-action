@@ -33,11 +33,11 @@ import javax.swing.text.BadLocationException;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.java.Log;
-import io.github.astrapi69.model.api.Model;
+import io.github.astrapi69.model.api.IModel;
 
 /**
  * The class {@link StringBindingListener} acts as listener of the input of a text component and
- * updates the given {@link Model}.
+ * updates the given {@link IModel}.
  *
  */
 @Log
@@ -46,7 +46,7 @@ public class StringBindingListener implements DocumentListener
 {
 
 	/** The model. */
-	private final Model<String> model;
+	private final IModel<String> model;
 
 	/**
 	 * Instantiates a new {@link StringBindingListener}.
@@ -54,7 +54,7 @@ public class StringBindingListener implements DocumentListener
 	 * @param model
 	 *            the model
 	 */
-	public StringBindingListener(@NonNull Model<String> model)
+	public StringBindingListener(@NonNull IModel<String> model)
 	{
 		this.model = model;
 	}

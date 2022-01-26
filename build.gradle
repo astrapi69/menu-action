@@ -210,7 +210,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
     implementation("javax.help:javahelp:$javahelpVersion")
-    implementation("io.github.astrapi69:model-api:$modelApiVersion")
+    implementation("io.github.astrapi69:model-data:$modelDataVersion")
     implementation("io.github.astrapi69:jobj-core:$jobjCoreVersion")
     implementation("io.github.astrapi69:throw-able:$throwAbleVersion")
     testCompileOnly("org.projectlombok:lombok:$lombokVersion")

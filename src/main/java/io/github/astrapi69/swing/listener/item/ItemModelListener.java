@@ -29,7 +29,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import lombok.Getter;
-import io.github.astrapi69.model.api.Model;
+import io.github.astrapi69.model.api.IModel;
 
 /**
  * The listener interface {@link ItemModelListener} receives itemBind events.
@@ -42,7 +42,7 @@ public class ItemModelListener<T> implements ItemListener
 {
 
 	/** The model. */
-	private final Model<T[]> model;
+	private final IModel<T[]> model;
 
 	/**
 	 * Instantiates a new {@link ItemModelListener}.
@@ -50,7 +50,7 @@ public class ItemModelListener<T> implements ItemListener
 	 * @param model
 	 *            the model
 	 */
-	public ItemModelListener(final Model<T[]> model)
+	public ItemModelListener(final IModel<T[]> model)
 	{
 		this.model = model;
 	}
