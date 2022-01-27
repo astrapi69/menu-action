@@ -34,8 +34,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 /**
- * The class {@link JMenuItemInfo} holds the fields for build {@link JMenuItem} and
- * {@link JMenu} objects
+ * The class {@link JMenuItemInfo} holds the fields for build {@link JMenuItem} and {@link JMenu}
+ * objects
  */
 @Data
 @SuperBuilder
@@ -52,6 +52,10 @@ public class JMenuItemInfo
 	{
 		JMenuItem jMenuItem = new JMenuItem();
 		setFields(jMenuItem);
+		if (keyStroke != null)
+		{
+			jMenuItem.setAccelerator(keyStroke);
+		}
 		return jMenuItem;
 	}
 
@@ -62,27 +66,23 @@ public class JMenuItemInfo
 		return jMenu;
 	}
 
-	private void setFields(JMenuItem jMenu)
+	private void setFields(JMenuItem jMenuItem)
 	{
 		if (text != null)
 		{
-			jMenu.setText(text);
+			jMenuItem.setText(text);
 		}
 		if (mnemonic != null)
 		{
-			jMenu.setMnemonic(mnemonic);
-		}
-		if (keyStroke != null)
-		{
-			jMenu.setAccelerator(keyStroke);
+			jMenuItem.setMnemonic(mnemonic);
 		}
 		if (actionListener != null)
 		{
-			jMenu.addActionListener(actionListener);
+			jMenuItem.addActionListener(actionListener);
 		}
 		if (name != null)
 		{
-			jMenu.setName(name);
+			jMenuItem.setName(name);
 		}
 	}
 }
