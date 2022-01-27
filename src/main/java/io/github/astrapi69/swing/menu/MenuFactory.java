@@ -158,7 +158,8 @@ public class MenuFactory
 	 *            the text of the <code>JMenuItem</code>
 	 * @return the new {@link JMenuItem}
 	 */
-	public static JMenuItem newJMenuItem(final @NonNull String text, final @NonNull ActionListener actionListener)
+	public static JMenuItem newJMenuItem(final @NonNull String text,
+		final @NonNull ActionListener actionListener)
 	{
 		return JMenuItemInfo.builder().text(text).actionListener(actionListener).build()
 			.toJMenuItem();
@@ -213,8 +214,8 @@ public class MenuFactory
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic)
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK)).actionListener(actionListener).build()
-			.toJMenuItem();
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK))
+			.actionListener(actionListener).build().toJMenuItem();
 	}
 
 	/**
@@ -251,7 +252,7 @@ public class MenuFactory
 	 * @return the new {@link JMenuItem}
 	 */
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
-										 final KeyStroke keyStroke, final ActionListener actionListener, String name)
+		final KeyStroke keyStroke, final ActionListener actionListener, String name)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).keyStroke(keyStroke)
 			.actionListener(actionListener).name(name).build().toJMenuItem();
@@ -292,8 +293,8 @@ public class MenuFactory
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK)).actionListener(actionListener).build()
-			.toJMenuItem();
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK))
+			.actionListener(actionListener).build().toJMenuItem();
 	}
 
 	/**
