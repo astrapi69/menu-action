@@ -22,56 +22,34 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.actions;
+package io.github.astrapi69.swing.action;
 
-import java.awt.event.ActionEvent;
+import java.awt.*;
 
-import javax.swing.*;
+import lombok.NonNull;
 
 /**
- * The class {@link NoAction} as the name say there is no action
+ * The abstract class {@link ShowInfoDialogAction}
  */
-public class NoAction extends AbstractAction
+public abstract class ShowInfoDialogAction extends ShowDialogAction
 {
 
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link NoAction} object
+	 * Instantiates a new {@link ShowInfoDialogAction}.
 	 *
 	 * @param name
 	 *            the name
+	 * @param owner
+	 *            the owner
+	 * @param title
+	 *            the title
 	 */
-	public NoAction(final String name)
+	public ShowInfoDialogAction(final String name, final @NonNull Frame owner,
+		final @NonNull String title)
 	{
-		super(name);
+		super(name, owner, title);
 	}
 
-	/**
-	 * Instantiates a new {@link NoAction} object
-	 */
-	public NoAction()
-	{
-		this("No action");
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void actionPerformed(final ActionEvent e)
-	{
-		onNoAction(e);
-	}
-
-	/**
-	 * Callback method to interact on no action
-	 *
-	 * @param actionEvent
-	 *            the action event
-	 */
-	protected void onNoAction(final ActionEvent actionEvent)
-	{
-	}
 }

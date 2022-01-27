@@ -22,69 +22,38 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.actions;
+package io.github.astrapi69.swing.action;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
-import javax.swing.*;
-
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
+import io.github.astrapi69.browser.BrowserControlExtensions;
 
 /**
- * The abstract class {@link OpenBrowserAction} for open a browser
+ * The abstract class {@link BaseOpenBrowserAction} for open a browser
  */
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public abstract class OpenBrowserAction extends AbstractAction
+public class BaseOpenBrowserAction extends OpenBrowserAction
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The component. */
-	Component component;
-
-	/** The url */
-	String url;
-
-	/**
-	 * Instantiates a new {@link OpenBrowserAction} object.
-	 *
-	 * @param name
-	 *            the name
-	 * @param component
-	 *            the component
-	 * @param url
-	 *            the url
-	 */
-	public OpenBrowserAction(final String name, final Component component, final String url)
+	public BaseOpenBrowserAction(final String name, final Component component, final String url)
 	{
-		super(name);
-		this.component = component;
-		this.url = url;
+		super(name, component, url);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	public static BaseOpenBrowserAction of(final String name, final Component component,
+		final String url)
+	{
+		return new BaseOpenBrowserAction(name, component, url);
+	}
+
 	@Override
-	public void actionPerformed(final ActionEvent e)
+	protected void onDisplayURLonStandardBrowser(Component component, String url)
 	{
-		onDisplayURLonStandardBrowser(component, url);
+		BrowserControlExtensions.displayURLonStandardBrowser(component, url);
 	}
-
-	/**
-	 * Abstract callback method to interact on file choose approve option.
-	 *
-	 * @param parentComponent
-	 *            The parent component. Can be null.
-	 * @param url
-	 *            An url like "http://www.yahoo.com/"
-	 */
-	protected abstract void onDisplayURLonStandardBrowser(final Component parentComponent,
-		final String url);
 
 }

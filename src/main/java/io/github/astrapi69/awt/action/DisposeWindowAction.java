@@ -22,38 +22,45 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.actions;
+package io.github.astrapi69.awt.action;
 
-import java.awt.*;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.util.Objects;
 
-import lombok.Getter;
-import io.github.astrapi69.browser.BrowserControlExtensions;
+import javax.swing.*;
 
 /**
- * The abstract class {@link BaseOpenBrowserAction} for open a browser
+ * The class {@link DisposeWindowAction}.
  */
-@Getter
-public class BaseOpenBrowserAction extends OpenBrowserAction
+public class DisposeWindowAction extends AbstractAction
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	/** The window. */
+	private final Window window;
 
-	public BaseOpenBrowserAction(final String name, final Component component, final String url)
+	/**
+	 * Instantiates a new {@link DisposeWindowAction}.
+	 *
+	 * @param window
+	 *            the window
+	 */
+	public DisposeWindowAction(final Window window)
 	{
-		super(name, component, url);
+		super("DisposeWindowAction");
+		Objects.requireNonNull(window);
+		this.window = window;
 	}
 
-	public static BaseOpenBrowserAction of(final String name, final Component component,
-		final String url)
-	{
-		return new BaseOpenBrowserAction(name, component, url);
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected void onDisplayURLonStandardBrowser(Component component, String url)
+	public void actionPerformed(final ActionEvent e)
 	{
-		BrowserControlExtensions.displayURLonStandardBrowser(component, url);
+		window.setVisible(false);
+		window.dispose();
 	}
-
 }

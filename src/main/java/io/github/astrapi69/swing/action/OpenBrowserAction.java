@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.actions;
+package io.github.astrapi69.swing.action;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,63 +30,61 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ToggleFullScreenAction}
+ * The abstract class {@link OpenBrowserAction} for open a browser
  */
+@Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ToggleFullScreenAction extends AbstractAction
+public abstract class OpenBrowserAction extends AbstractAction
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The frame. */
-	JFrame frame;
+	/** The component. */
+	Component component;
+
+	/** The url */
+	String url;
 
 	/**
-	 * Instantiates a new {@link ToggleFullScreenAction} object.
+	 * Instantiates a new {@link OpenBrowserAction} object.
 	 *
 	 * @param name
 	 *            the name
-	 * @param frame
-	 *            the frame
+	 * @param component
+	 *            the component
+	 * @param url
+	 *            the url
 	 */
-	public ToggleFullScreenAction(final String name, JFrame frame)
+	public OpenBrowserAction(final String name, final Component component, final String url)
 	{
 		super(name);
-		this.frame = frame;
+		this.component = component;
+		this.url = url;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent actionEvent)
+	public void actionPerformed(final ActionEvent e)
 	{
-		onToggleFullScreen(actionEvent);
+		onDisplayURLonStandardBrowser(component, url);
 	}
 
 	/**
-	 * Callback method to interact on toggle to full screen
+	 * Abstract callback method to interact on file choose approve option.
 	 *
-	 * @param actionEvent
-	 *            the action event
+	 * @param parentComponent
+	 *            The parent component. Can be null.
+	 * @param url
+	 *            An url like "http://www.yahoo.com/"
 	 */
-	protected void onToggleFullScreen(final ActionEvent actionEvent)
-	{
-		GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
-		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-		if (frame.equals(device.getFullScreenWindow()))
-		{
-			device.setFullScreenWindow(null);
-		}
-		else
-		{
-			frame.setVisible(true);
-			device.setFullScreenWindow(frame);
-		}
-	}
+	protected abstract void onDisplayURLonStandardBrowser(final Component parentComponent,
+		final String url);
 
 }

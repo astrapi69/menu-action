@@ -22,49 +22,81 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.actions;
+package io.github.astrapi69.swing.action;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.logging.Level;
 
 import javax.swing.*;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.java.Log;
+
 /**
- * The class {@link ExitApplicationAction} finish the application
+ * The class {@link ShowHelpDialogAction} shows the help window of an application
  */
-public class ExitApplicationAction extends AbstractAction
+@Log
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class ShowHelpDialogAction extends AbstractAction
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/** The help window */
+	Window helpWindow;
+	/** The look and feels class name */
+	String lookAndFeelsClassName;
+
 	/**
-	 * Instantiates a new {@link ExitApplicationAction} object
+	 * Instantiates a new {@link ShowHelpDialogAction}
 	 *
 	 * @param name
 	 *            the name
+	 * @param helpWindow
+	 *            the help window
+	 * @param lookAndFeelsClassName
+	 *            the look and feels class name
 	 */
-	public ExitApplicationAction(final String name)
+	public ShowHelpDialogAction(final String name, final @NonNull Window helpWindow,
+		final @NonNull String lookAndFeelsClassName)
 	{
 		super(name);
+		this.helpWindow = helpWindow;
+		this.lookAndFeelsClassName = lookAndFeelsClassName;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void actionPerformed(final ActionEvent e)
+	public void actionPerformed(final ActionEvent actionEvent)
 	{
-		onExit(e);
+		onShowHelpDialog(actionEvent);
 	}
 
 	/**
-	 * Callback method to interact on exit
+	 * Callback method to interact on show the help dialog
 	 *
 	 * @param actionEvent
 	 *            the action event
 	 */
-	protected void onExit(final ActionEvent actionEvent)
+	protected void onShowHelpDialog(final ActionEvent actionEvent)
 	{
-		System.exit(0);
+		helpWindow.setLocationRelativeTo(null);
+		try
+		{
+			UIManager.setLookAndFeel(this.lookAndFeelsClassName);
+		}
+		catch (final Exception ex)
+		{
+			log.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+		}
+		SwingUtilities.updateComponentTreeUI(helpWindow);
 	}
 }

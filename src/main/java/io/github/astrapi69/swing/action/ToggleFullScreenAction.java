@@ -22,53 +22,41 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.actions;
+package io.github.astrapi69.swing.action;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.logging.Level;
 
 import javax.swing.*;
 
 import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.java.Log;
 
 /**
- * The class {@link ShowHelpDialogAction} shows the help window of an application
+ * The class {@link ToggleFullScreenAction}
  */
-@Log
-@Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ShowHelpDialogAction extends AbstractAction
+public class ToggleFullScreenAction extends AbstractAction
 {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The help window */
-	Window helpWindow;
-	/** The look and feels class name */
-	String lookAndFeelsClassName;
+	/** The frame. */
+	JFrame frame;
 
 	/**
-	 * Instantiates a new {@link ShowHelpDialogAction}
+	 * Instantiates a new {@link ToggleFullScreenAction} object.
 	 *
 	 * @param name
 	 *            the name
-	 * @param helpWindow
-	 *            the help window
-	 * @param lookAndFeelsClassName
-	 *            the look and feels class name
+	 * @param frame
+	 *            the frame
 	 */
-	public ShowHelpDialogAction(final String name, final @NonNull Window helpWindow,
-		final @NonNull String lookAndFeelsClassName)
+	public ToggleFullScreenAction(final String name, JFrame frame)
 	{
 		super(name);
-		this.helpWindow = helpWindow;
-		this.lookAndFeelsClassName = lookAndFeelsClassName;
+		this.frame = frame;
 	}
 
 	/**
@@ -77,26 +65,28 @@ public class ShowHelpDialogAction extends AbstractAction
 	@Override
 	public void actionPerformed(final ActionEvent actionEvent)
 	{
-		onShowHelpDialog(actionEvent);
+		onToggleFullScreen(actionEvent);
 	}
 
 	/**
-	 * Callback method to interact on show the help dialog
+	 * Callback method to interact on toggle to full screen
 	 *
 	 * @param actionEvent
 	 *            the action event
 	 */
-	protected void onShowHelpDialog(final ActionEvent actionEvent)
+	protected void onToggleFullScreen(final ActionEvent actionEvent)
 	{
-		helpWindow.setLocationRelativeTo(null);
-		try
+		GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+		if (frame.equals(device.getFullScreenWindow()))
 		{
-			UIManager.setLookAndFeel(this.lookAndFeelsClassName);
+			device.setFullScreenWindow(null);
 		}
-		catch (final Exception ex)
+		else
 		{
-			log.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+			frame.setVisible(true);
+			device.setFullScreenWindow(frame);
 		}
-		SwingUtilities.updateComponentTreeUI(helpWindow);
 	}
+
 }

@@ -22,36 +22,53 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.actions;
+package io.github.astrapi69.swing.action;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Objects;
 
 import javax.swing.*;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
+
 /**
- * The class {@link DisposeWindowAction}.
+ * The abstract class {@link ShowFrameAction}
  */
-public class DisposeWindowAction extends AbstractAction
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public abstract class ShowFrameAction extends AbstractAction
 {
 
-	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
-	/** The window. */
-	private final Window window;
+
+	/** The title of the frame */
+	String title;
 
 	/**
-	 * Instantiates a new {@link DisposeWindowAction}.
+	 * Instantiates a new {@link ShowFrameAction} object
 	 *
-	 * @param window
-	 *            the window
+	 * @param name
+	 *            the name
 	 */
-	public DisposeWindowAction(final Window window)
+	public ShowFrameAction(final @NonNull String name)
 	{
-		super("DisposeWindowAction");
-		Objects.requireNonNull(window);
-		this.window = window;
+		this(name, name);
+	}
+
+	/**
+	 * Instantiates a new {@link ShowFrameAction} object
+	 *
+	 * @param name
+	 *            the name
+	 * @param title
+	 *            the title
+	 */
+	public ShowFrameAction(final String name, final @NonNull String title)
+	{
+		super(name);
+		this.title = title;
 	}
 
 	/**
@@ -60,7 +77,15 @@ public class DisposeWindowAction extends AbstractAction
 	@Override
 	public void actionPerformed(final ActionEvent e)
 	{
-		window.setVisible(false);
-		window.dispose();
+		onShowFrame(e);
 	}
+
+	/**
+	 * Abstract callback method to interact when the Frame will show
+	 *
+	 * @param e
+	 *            the action event
+	 */
+	protected abstract void onShowFrame(final ActionEvent e);
+
 }
