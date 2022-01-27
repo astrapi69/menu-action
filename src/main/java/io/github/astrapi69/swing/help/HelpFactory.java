@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.swing.help;
 
-import java.awt.*;
+import java.awt.Window;
 import java.net.URL;
 
 import javax.help.CSH;
@@ -32,7 +32,7 @@ import javax.help.DefaultHelpBroker;
 import javax.help.HelpSet;
 import javax.help.HelpSetException;
 import javax.help.WindowPresentation;
-import javax.swing.*;
+import javax.swing.JMenuItem;
 
 import lombok.NonNull;
 import io.github.astrapi69.lang.ClassExtensions;

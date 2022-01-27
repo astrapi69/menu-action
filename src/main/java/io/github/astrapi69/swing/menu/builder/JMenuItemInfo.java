@@ -26,7 +26,9 @@ package io.github.astrapi69.swing.menu.builder;
 
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 import lombok.AccessLevel;
 import lombok.Data;

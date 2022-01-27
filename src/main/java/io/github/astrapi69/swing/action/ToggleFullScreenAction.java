@@ -24,10 +24,12 @@
  */
 package io.github.astrapi69.swing.action;
 
-import java.awt.*;
+import java.awt.Frame;
+import java.awt.GraphicsDevice;
 import java.awt.event.ActionEvent;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.JFrame;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

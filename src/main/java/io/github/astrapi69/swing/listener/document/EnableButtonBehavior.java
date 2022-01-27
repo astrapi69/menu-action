@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.swing.listener.document;
 
-import javax.swing.*;
+import javax.swing.ButtonModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;

@@ -24,13 +24,13 @@
  */
 package io.github.astrapi69.browser;
 
-import java.awt.*;
+import java.awt.Component;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 

@@ -24,13 +24,14 @@
  */
 package io.github.astrapi69.swing.listener.mouse;
 
-import java.awt.*;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.Timer;
 
 /**
  * The class {@link MouseDoubleClickListener} can handle single and double click events on any

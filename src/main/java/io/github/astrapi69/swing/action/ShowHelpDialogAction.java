@@ -24,11 +24,13 @@
  */
 package io.github.astrapi69.swing.action;
 
-import java.awt.*;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import lombok.AccessLevel;
 import lombok.Getter;

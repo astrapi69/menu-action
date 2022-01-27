@@ -24,11 +24,16 @@
  */
 package io.github.astrapi69.window.adapter;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 
 /**
  * The class DrawMessage draws a message to a JComponent to the given Color. You can use it for

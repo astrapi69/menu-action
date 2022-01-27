@@ -26,7 +26,9 @@ package io.github.astrapi69.window.adapter;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.WindowEvent;
 
 import org.junit.jupiter.api.AfterEach;

@@ -24,10 +24,15 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
 import java.util.Optional;
 
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JToolBar;
 
 import lombok.NonNull;
 

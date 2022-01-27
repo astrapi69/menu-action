@@ -28,7 +28,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
 
 /**
  * The class {@link DisposeWindowAction}.

@@ -26,7 +26,7 @@ package io.github.astrapi69.swing.listener.mouse;
 
 import java.awt.event.MouseEvent;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import io.github.astrapi69.window.adapter.CloseWindow;
 

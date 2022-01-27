@@ -26,7 +26,7 @@ package io.github.astrapi69.swing.action;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
 
 import lombok.AccessLevel;
 import lombok.Getter;

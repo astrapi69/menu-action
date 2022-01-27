@@ -24,13 +24,24 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Event;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 import lombok.NonNull;
 import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;

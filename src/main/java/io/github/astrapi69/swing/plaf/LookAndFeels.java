@@ -24,9 +24,13 @@
  */
 package io.github.astrapi69.swing.plaf;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Window;
 
-import javax.swing.*;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

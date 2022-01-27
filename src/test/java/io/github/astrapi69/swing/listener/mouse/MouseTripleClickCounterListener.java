@@ -24,13 +24,14 @@
  */
 package io.github.astrapi69.swing.listener.mouse;
 
-import java.awt.*;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.Timer;
 
 import io.github.astrapi69.window.adapter.CloseWindow;
 

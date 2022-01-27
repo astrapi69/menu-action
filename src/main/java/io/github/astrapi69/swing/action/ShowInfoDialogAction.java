@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.swing.action;
 
-import java.awt.*;
+import java.awt.Frame;
 
 import lombok.NonNull;
 

@@ -24,11 +24,12 @@
  */
 package io.github.astrapi69.swing.plaf.actions;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import lombok.AccessLevel;
 import lombok.Getter;

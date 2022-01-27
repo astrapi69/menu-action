@@ -24,10 +24,11 @@
  */
 package io.github.astrapi69.swing.plaf.actions;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;

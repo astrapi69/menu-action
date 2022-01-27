@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.swing.listener.item;
 
-import java.awt.*;
+import java.awt.ItemSelectable;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
