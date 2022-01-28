@@ -53,6 +53,8 @@ public class HelpFactory
 	 * @param filename
 	 *            the filename of the helpset file
 	 * @return the new {@link HelpSet} object
+	 * @throws HelpSetException
+	 *             is thrown if there are problems parsing the help set
 	 */
 	public static HelpSet newHelpSet(String directory, String filename) throws HelpSetException
 	{
@@ -79,6 +81,8 @@ public class HelpFactory
 	 * @param filename
 	 *            the filename of the helpset file
 	 * @return the new {@link DefaultHelpBroker} object
+	 * @throws HelpSetException
+	 *             is thrown if there are problems parsing the help set
 	 */
 	public static DefaultHelpBroker newHelpBroker(String directory, String filename)
 		throws HelpSetException
