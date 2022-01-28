@@ -13,6 +13,7 @@ ADDED:
 - new factory methods with KeyStroke object for create JMenuItem objects
 - new accelerator method for JMenuItem with KeyStroke object
 - new JMenuItemInfo class created for build JMenuItem and JMenu objects from given fields
+- new method for get recursive all menu elements from the given parent MenuElement object
 
 CHANGED:
 

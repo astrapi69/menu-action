@@ -26,14 +26,17 @@ package io.github.astrapi69.swing.menu;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Container;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
+import javax.swing.MenuElement;
 
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +53,7 @@ class ParentMenuResolverTest
 		Container actual;
 		Container expected;
 		Optional<Container> root;
-		Optional<Class> parentType;
+		Optional<Class<?>> parentType;
 
 		// new scenario parent is JMenuBar object ...
 		menuBar = MenuFactory.newJMenuBar();
@@ -127,7 +130,7 @@ class ParentMenuResolverTest
 		Container actual;
 		Container expected;
 		Optional<Container> root;
-		Optional<Class> parentType;
+		Optional<Class<?>> parentType;
 
 		// new scenario parent is JMenuBar object ...
 		menuBar = MenuFactory.newJMenuBar();
@@ -195,6 +198,30 @@ class ParentMenuResolverTest
 	}
 
 	@Test
+	void getAllMenuElements(){
+		JMenuBar menuBar;
+		JMenu menu;
+		JMenu foo;
+		JMenu bar;
+		List<MenuElement> allMenuElements;
+
+		// new scenario menu has no JMenu as parent so empty Optional is expected ...
+		menuBar = MenuFactory.newJMenuBar();
+		menu = MenuFactory.newJMenu("File", 'f');
+		menuBar.add(menu);
+		foo = MenuFactory.newJMenu("Foo");
+		menu.add(foo);
+		bar = MenuFactory.newJMenu("bar");
+		foo.add(bar);
+		allMenuElements = ParentMenuResolver.getAllMenuElements(menuBar, true);
+		assertNotNull(allMenuElements);
+		assertEquals(allMenuElements.size(), 3);
+		allMenuElements = ParentMenuResolver.getAllMenuElements(menuBar, false);
+		assertNotNull(allMenuElements);
+		assertEquals(allMenuElements.size(), 5);
+	}
+
+	@Test
 	void getParentFromJMenu()
 	{
 		JMenuBar menuBar;
@@ -203,7 +230,7 @@ class ParentMenuResolverTest
 		JMenu actual;
 		JMenu expected;
 		Optional<JMenu> parent;
-		Optional<Class> parentType;
+		Optional<Class<?>> parentType;
 		// new scenario menu has no JMenu as parent so empty Optional is expected ...
 		menuBar = MenuFactory.newJMenuBar();
 		menu = MenuFactory.newJMenu("File", 'f');

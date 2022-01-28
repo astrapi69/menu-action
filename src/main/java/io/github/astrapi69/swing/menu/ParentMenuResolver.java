@@ -26,6 +26,9 @@ package io.github.astrapi69.swing.menu;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.JMenu;
@@ -33,6 +36,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
+import javax.swing.MenuElement;
 
 import lombok.NonNull;
 
@@ -43,6 +47,28 @@ public final class ParentMenuResolver
 {
 	private ParentMenuResolver()
 	{
+	}
+
+	/**
+	 * Gets recursive all menu elements from the given parent {@link MenuElement} object
+	 *
+	 * @param parent
+	 *            The parent {@link MenuElement} object
+	 * @param withoutPopupMenu
+	 *            The flag if {@link JPopupMenu} objects shall be accepted
+	 * @return a list with all menu elements from the given parent {@link MenuElement} object
+	 */
+	public static List<MenuElement> getAllMenuElements(final @NonNull MenuElement parent, boolean withoutPopupMenu) {
+		List<MenuElement> menuElements = new ArrayList<>();
+		for (MenuElement menuElement : parent.getSubElements()) {
+			if(withoutPopupMenu && menuElement instanceof JPopupMenu) {
+				menuElements.addAll(getAllMenuElements(menuElement, withoutPopupMenu));
+			} else {
+				menuElements.add(menuElement);
+				menuElements.addAll(getAllMenuElements(menuElement, withoutPopupMenu));
+			}
+		}
+		return menuElements;
 	}
 
 	/**
@@ -157,7 +183,7 @@ public final class ParentMenuResolver
 	 *            The {@link JMenuItem} object
 	 * @return an optional with the root container class or empty if not found
 	 */
-	public static Optional<Class> getRootType(final @NonNull JMenuItem menu)
+	public static Optional<Class<?>> getRootType(final @NonNull JMenuItem menu)
 	{
 		Container containerParent = menu.getParent();
 		boolean iterate = containerParent != null;
@@ -168,9 +194,9 @@ public final class ParentMenuResolver
 		return getCurrentRootType(containerParent);
 	}
 
-	private static Optional<Class> getCurrentRootType(Container containerParent)
+	private static Optional<Class<?>> getCurrentRootType(Container containerParent)
 	{
-		Optional<Class> current = Optional.empty();
+		Optional<Class<?>> current = Optional.empty();
 		boolean iterate = true;
 		while (iterate)
 		{
@@ -213,7 +239,7 @@ public final class ParentMenuResolver
 	 *            The {@link JMenu} object
 	 * @return an optional with the root container class or empty if not found
 	 */
-	public static Optional<Class> getRootType(final @NonNull JMenu menu)
+	public static Optional<Class<?>> getRootType(final @NonNull JMenu menu)
 	{
 		Container containerParent = menu.getParent();
 		boolean hasNoParent = containerParent == null;
@@ -231,7 +257,7 @@ public final class ParentMenuResolver
 	 *            The {@link JMenu} object
 	 * @return an optional with the parent container class or empty if not found
 	 */
-	public static Optional<Class> getParentType(final @NonNull JMenu menu)
+	public static Optional<Class<?>> getParentType(final @NonNull JMenu menu)
 	{
 		Container containerParent = menu.getParent();
 		if (containerParent instanceof JPopupMenu)
