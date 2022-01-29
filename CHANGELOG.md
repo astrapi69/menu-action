@@ -14,6 +14,7 @@ ADDED:
 - new accelerator method for JMenuItem with KeyStroke object
 - new JMenuItemInfo class created for build JMenuItem and JMenu objects from given fields
 - new method for get recursive all menu elements from the given parent MenuElement object
+- new method in class ParentMenuResolver for get the type of an MenuElement object
 
 CHANGED:
 

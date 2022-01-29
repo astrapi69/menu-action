@@ -35,13 +35,48 @@ import java.util.Optional;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.MenuElement;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
+
 class ParentMenuResolverTest
 {
+
+	@Test
+	void getMenuElementType()
+	{
+		Optional<Class<?>> actual;
+		Optional<Class<?>> expected;
+		JMenuBar menuBar;
+		JMenu menu;
+		JMenuItem menuItem;
+		JPopupMenu popupMenu;
+		// new scenario ...
+		menu = JMenuItemInfo.builder().build().toJMenu();
+		actual = ParentMenuResolver.getMenuElementType(menu);
+		expected = Optional.of(JMenu.class);
+		assertEquals(expected, actual);
+		// new scenario ...
+		menuBar = MenuFactory.newJMenuBar();
+		actual = ParentMenuResolver.getMenuElementType(menuBar);
+		expected = Optional.of(JMenuBar.class);
+		assertEquals(expected, actual);
+		// new scenario ...
+		menuItem = JMenuItemInfo.builder().build().toJMenuItem();
+		actual = ParentMenuResolver.getMenuElementType(menuItem);
+		expected = Optional.of(JMenuItem.class);
+		assertEquals(expected, actual);
+		// new scenario ...
+		popupMenu = MenuFactory.newJPopupMenu();
+		actual = ParentMenuResolver.getMenuElementType(popupMenu);
+		expected = Optional.of(JPopupMenu.class);
+		assertEquals(expected, actual);
+	}
 
 	@Test
 	void getRootJMenu()
@@ -198,7 +233,8 @@ class ParentMenuResolverTest
 	}
 
 	@Test
-	void getAllMenuElements(){
+	void getAllMenuElements()
+	{
 		JMenuBar menuBar;
 		JMenu menu;
 		JMenu foo;

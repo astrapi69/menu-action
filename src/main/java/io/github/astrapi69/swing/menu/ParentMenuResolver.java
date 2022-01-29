@@ -27,7 +27,6 @@ package io.github.astrapi69.swing.menu;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +49,43 @@ public final class ParentMenuResolver
 	}
 
 	/**
+	 * Gets an optional of the menu type from the given {@link MenuElement} object
+	 *
+	 * @param menuElement
+	 *            The {@link MenuElement} object
+	 * @return the optional of the menu type from the given {@link MenuElement} object
+	 */
+	public static Optional<Class<?>> getMenuElementType(final @NonNull MenuElement menuElement)
+	{
+		Component component = menuElement.getComponent();
+		if (component instanceof JMenu)
+		{
+			return Optional.of(JMenu.class);
+		}
+		else if (component instanceof JMenuBar)
+		{
+			return Optional.of(JMenuBar.class);
+		}
+		else if (component instanceof JMenuItem)
+		{
+			return Optional.of(JMenuItem.class);
+		}
+		return Optional.of(JPopupMenu.class);
+	}
+
+	/**
+	 * Gets recursive all menu elements from the given parent {@link MenuElement} object
+	 *
+	 * @param parent
+	 *            The parent {@link MenuElement} object
+	 * @return a list with all menu elements from the given parent {@link MenuElement} object
+	 */
+	public static List<MenuElement> getAllMenuElements(final @NonNull MenuElement parent)
+	{
+		return getAllMenuElements(parent, false);
+	}
+
+	/**
 	 * Gets recursive all menu elements from the given parent {@link MenuElement} object
 	 *
 	 * @param parent
@@ -58,15 +94,17 @@ public final class ParentMenuResolver
 	 *            The flag if {@link JPopupMenu} objects shall be accepted
 	 * @return a list with all menu elements from the given parent {@link MenuElement} object
 	 */
-	public static List<MenuElement> getAllMenuElements(final @NonNull MenuElement parent, boolean withoutPopupMenu) {
+	public static List<MenuElement> getAllMenuElements(final @NonNull MenuElement parent,
+		boolean withoutPopupMenu)
+	{
 		List<MenuElement> menuElements = new ArrayList<>();
-		for (MenuElement menuElement : parent.getSubElements()) {
-			if(withoutPopupMenu && menuElement instanceof JPopupMenu) {
-				menuElements.addAll(getAllMenuElements(menuElement, withoutPopupMenu));
-			} else {
+		for (MenuElement menuElement : parent.getSubElements())
+		{
+			if (!(withoutPopupMenu && menuElement instanceof JPopupMenu))
+			{
 				menuElements.add(menuElement);
-				menuElements.addAll(getAllMenuElements(menuElement, withoutPopupMenu));
 			}
+			menuElements.addAll(getAllMenuElements(menuElement, withoutPopupMenu));
 		}
 		return menuElements;
 	}
