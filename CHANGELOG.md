@@ -20,9 +20,10 @@ CHANGED:
 
 - update gradle to new version 7.3.3
 - update of com.github.ben-manes.versions.gradle.plugin to new version 0.41.0
-- update of jobj-core dependency to new version 5.2
+- update of jobj-core dependency to new version 5.3
 - update of model-data dependency to new version 1.12
 - renamed package actions to action
+- update of test dependency silly-io to new version 1.7
 
 Version 1.3
 -------------
