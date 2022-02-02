@@ -8,6 +8,8 @@
 [![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/menu-actions.svg)](http://www.javadoc.io/doc/io.github.astrapi69/menu-actions)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Donate](https://img.shields.io/badge/donate-❤-ff2244.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8)
+[![Hits Of Code](https://hitsofcode.com/github/astrapi69/menu-actions?branch=main)](https://hitsofcode.com/github/astrapi69/menu-actions/view?branch=main)
+[![Lines Of Code](https://tokei.rs/b1/github/astrapi69/menu-actions)](https://github.com/astrapi69/menu-actions)
 
 </div>
 
@@ -28,6 +30,28 @@ No animals were harmed in the making of this library.
 
 The source code comes under the liberal MIT License, making menu-actions great for all types of swing applications.
 
+## gradle dependency
+
+You can first define the version in the ext section and add than the following gradle dependency to
+your project `build.gradle` if you want to import the core functionality of menu-actions:
+
+define version in file gradle.properties
+```
+menuActionsVersion=1.4
+```
+
+or in build.gradle ext area
+
+```
+    menuActionsVersion = "1.4"
+```
+
+and then add the dependency to the dependencies area
+
+```
+    implementation("io.github.astrapi69:menu-actions:$menuActionsVersion")
+```
+
 ## Maven dependency
 
 Maven dependency is now on sonatype.
@@ -41,7 +65,7 @@ Than you can add the dependency to your dependencies:
 	<properties>
 			...
 		<!-- menu-actions version -->
-		<menu-actions.version>1.3</menu-actions.version>
+		<menu-actions.version>1.4</menu-actions.version>
 			...
 	</properties>
 			...
@@ -55,36 +79,6 @@ Than you can add the dependency to your dependencies:
 			</dependency>
 			...
 		</dependencies>
-
-## gradle dependency
-
-You can first define the version in the ext section and add than the following gradle dependency to
-your project `build.gradle` if you want to import the core functionality of menu-actions:
-
-define version in file gradle.properties
-```
-menuActionsVersion=1.3
-```
-
-or in build.gradle ext area
-
-```
-ext {
-			...
-    menuActionsVersion = "1.3"
-			...
-}
-```
-
-and than add the dependency to the dependencies area
-
-```
-dependencies {
-			...
-    implementation("io.github.astrapi69:menu-actions:$menuActionsVersion")
-			...
-}
-```
 
 # Donations
 
