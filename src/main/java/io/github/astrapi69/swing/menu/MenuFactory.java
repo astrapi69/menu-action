@@ -45,7 +45,7 @@ import javax.swing.KeyStroke;
 
 import lombok.NonNull;
 import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
-import io.github.astrapi69.swing.menu.popup.listeners.PopupListener;
+import io.github.astrapi69.swing.menu.popup.listener.PopupListener;
 
 /**
  * A factory {@link MenuFactory} provides factory methods for create Menu and JToolbar objects

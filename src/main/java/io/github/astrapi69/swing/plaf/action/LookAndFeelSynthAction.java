@@ -22,30 +22,30 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.plaf.actions;
+package io.github.astrapi69.swing.plaf.action;
 
 import java.awt.Component;
 
 import io.github.astrapi69.swing.plaf.LookAndFeels;
 
 /**
- * The class {@link LookAndFeelMultiAction} can change the look and feel to Multi
+ * The class {@link LookAndFeelSynthAction} can change the look and feel to Synth
  */
-public class LookAndFeelMultiAction extends LookAndFeelAction
+public class LookAndFeelSynthAction extends LookAndFeelAction
 {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link LookAndFeelMultiAction} object
+	 * Instantiates a new {@link LookAndFeelSynthAction} object
 	 *
 	 * @param name
 	 *            the name
 	 * @param component
 	 *            the component
 	 */
-	public LookAndFeelMultiAction(final String name, final Component component)
+	public LookAndFeelSynthAction(final String name, final Component component)
 	{
-		super(name, component, LookAndFeels.MULTI);
+		super(name, component, LookAndFeels.SYNTH);
 	}
 }

@@ -22,30 +22,30 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.plaf.actions;
+package io.github.astrapi69.swing.plaf.action;
 
 import java.awt.Component;
 
 import io.github.astrapi69.swing.plaf.LookAndFeels;
 
 /**
- * The class {@link LookAndFeelGTKAction} can change the look and feel to GTK
+ * The class {@link LookAndFeelNimbusAction} can change the look and feel to Nimbus
  */
-public class LookAndFeelGTKAction extends LookAndFeelAction
+public class LookAndFeelNimbusAction extends LookAndFeelAction
 {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link LookAndFeelGTKAction} object
+	 * Instantiates a new {@link LookAndFeelNimbusAction} object
 	 *
 	 * @param name
 	 *            the name
 	 * @param component
 	 *            the component
 	 */
-	public LookAndFeelGTKAction(final String name, final Component component)
+	public LookAndFeelNimbusAction(final String name, final Component component)
 	{
-		super(name, component, LookAndFeels.GTK);
+		super(name, component, LookAndFeels.NIMBUS);
 	}
 }

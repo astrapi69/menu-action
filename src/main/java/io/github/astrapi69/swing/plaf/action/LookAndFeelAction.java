@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.plaf.actions;
+package io.github.astrapi69.swing.plaf.action;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;

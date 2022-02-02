@@ -22,63 +22,30 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.plaf.actions;
+package io.github.astrapi69.swing.plaf.action;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.plaf.metal.DefaultMetalTheme;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.metal.OceanTheme;
 
 import io.github.astrapi69.swing.plaf.LookAndFeels;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
- * The class {@link LookAndFeelMetalAction} can change the look and feel to Metal
+ * The class {@link LookAndFeelSystemAction} can change the look and feel to System
  */
-public class LookAndFeelMetalAction extends LookAndFeelAction
+public class LookAndFeelSystemAction extends LookAndFeelAction
 {
 
-	private static final String OCEAN_THEME_NAME = "Ocean";
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link LookAndFeelMetalAction} object
+	 * Instantiates a new {@link LookAndFeelSystemAction} object
 	 *
 	 * @param name
 	 *            the name
 	 * @param component
 	 *            the component
 	 */
-	public LookAndFeelMetalAction(final String name, final Component component)
+	public LookAndFeelSystemAction(final String name, final Component component)
 	{
-		super(name, component, LookAndFeels.METAL);
-	}
-
-	/**
-	 * Callback method to interact on change of look and feel
-	 *
-	 * @param event
-	 *            the action event
-	 */
-	protected void onChangeOfLookAndFeel(final ActionEvent event)
-	{
-		RuntimeExceptionDecorator.decorate(() -> {
-			UIManager.setLookAndFeel(LookAndFeels.METAL.getLookAndFeelName());
-			SwingUtilities.updateComponentTreeUI(getComponent());
-
-			if (NAME.equals(OCEAN_THEME_NAME))
-			{
-				MetalLookAndFeel.setCurrentTheme(new OceanTheme());
-			}
-			else
-			{
-				MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
-			}
-			UIManager.setLookAndFeel(new MetalLookAndFeel());
-		});
+		super(name, component, LookAndFeels.SYSTEM);
 	}
 }

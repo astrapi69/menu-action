@@ -22,11 +22,9 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu.popup.listeners;
+package io.github.astrapi69.swing.menu.popup.listener;
 
 import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -45,30 +43,24 @@ public class SampleTreeWithPopup extends JFrame
 {
 
 	private static final long serialVersionUID = 1L;
-	private final JPopupMenu menu;
 
 	public SampleTreeWithPopup() throws HeadlessException
 	{
 		super("Tree");
 		final JTree tree = new JTree();
 		JMenuItem menuItem = new JMenuItem("A popup menu item");
-		menuItem.addActionListener(new ActionListener()
-		{
+		menuItem.addActionListener(event -> {
+			TreePath tp = tree.getSelectionPath();
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				TreePath tp = tree.getSelectionPath();
+			System.out.println("TreePath:" + tp);
 
-				System.out.println("TreePath:" + tp);
-
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree
 					.getLastSelectedPathComponent();
-				System.out.println("DefaultMutableTreeNode:" + node);
-
-			}
+			System.out.println("DefaultMutableTreeNode:" + node);
 		});
-		menu = MenuFactory.newJPopupMenu(tree, menuItem, new JMenuItem("A second popup menu item"));
+
+		JPopupMenu menu = MenuFactory.newJPopupMenu(tree, menuItem,
+			new JMenuItem("A second popup menu item"));
 
 		tree.addMouseListener(new MouseAdapter()
 		{
@@ -100,16 +92,11 @@ public class SampleTreeWithPopup extends JFrame
 
 	public static void main(String[] args)
 	{
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				SampleTreeWithPopup st = new SampleTreeWithPopup();
-				st.setSize(200, 200);
-				st.setLocationRelativeTo(null);
-				st.setVisible(true);
-			}
+		SwingUtilities.invokeLater(() -> {
+			SampleTreeWithPopup st = new SampleTreeWithPopup();
+			st.setSize(200, 200);
+			st.setLocationRelativeTo(null);
+			st.setVisible(true);
 		});
 	}
 }
