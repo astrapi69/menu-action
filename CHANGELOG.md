@@ -4,7 +4,9 @@
 Version 1.5-SNAPSHOT
 -------------
 
+ADDED:
 
+- new JToolbarItemInfo class created for build JButton objects from given fields for add on a JToolBar object
 
 Version 1.4
 -------------
