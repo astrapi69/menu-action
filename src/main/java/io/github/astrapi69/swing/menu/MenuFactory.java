@@ -88,6 +88,30 @@ public class MenuFactory
 	/**
 	 * Factory method for create a <code>JMenu</code>.
 	 *
+	 * @param menuItemInfo
+	 *            the information for build a <code>JMenu</code>.
+	 * @return the new {@link JMenu} object
+	 */
+	public static JMenu newJMenu(final @NonNull JMenuItemInfo menuItemInfo)
+	{
+		return menuItemInfo.toJMenu();
+	}
+
+	/**
+	 * Factory method for create a <code>JMenuItem</code>.
+	 *
+	 * @param menuItemInfo
+	 *            the information for build a <code>JMenuItem</code>.
+	 * @return the new {@link JMenuItem}
+	 */
+	public static JMenuItem newJMenuItem(final @NonNull JMenuItemInfo menuItemInfo)
+	{
+		return menuItemInfo.toJMenuItem();
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
 	 * @param text
 	 *            the text of the <code>JMenu</code>
 	 * @param mnemonic
