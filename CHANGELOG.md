@@ -8,6 +8,15 @@ ADDED:
 
 - new factory methods for JMenu and JMenuItem with a JMenuItemInfo as argument
 
+CHANGED:
+
+- update of gradle to new version 7.4.2
+- update of lombok dependency to new patch version 1.18.24
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 6.4.3
+- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.42.0
+- update of test dependency file-worker to new version 8.2
+- update of test dependency silly-io to new version 1.9
+
 Version 1.4
 -------------
 
