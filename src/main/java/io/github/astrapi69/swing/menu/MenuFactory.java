@@ -24,13 +24,7 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import java.awt.Component;
-import java.awt.Event;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -52,6 +46,31 @@ import io.github.astrapi69.swing.menu.popup.listener.PopupListener;
  */
 public class MenuFactory
 {
+
+	/**
+	 * Factory method for create a <code>SystemTray</code> from the given {@link TrayIcon} object
+	 * and the given {@link PopupMenu} object
+	 *
+	 * @param trayIcon
+	 *            the tray icon of the <code>SystemTray</code>
+	 * @param popupMenu
+	 *            the tray popup menu of the <code>SystemTray</code>
+	 * @return the new {@link SystemTray} object
+	 * @throws AWTException
+	 *             is thrown if the desktop system tray is missing
+	 */
+	public static SystemTray newSystemTray(final @NonNull TrayIcon trayIcon,
+		final @NonNull PopupMenu popupMenu) throws AWTException
+	{
+		if (!SystemTray.isSupported())
+		{
+			throw new RuntimeException("SystemTray is not supported");
+		}
+		final SystemTray systemTray = SystemTray.getSystemTray();
+		trayIcon.setPopupMenu(popupMenu);
+		systemTray.add(trayIcon);
+		return systemTray;
+	}
 
 	/**
 	 * Factory method for create a {@link JMenuBar} object

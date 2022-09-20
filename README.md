@@ -13,7 +13,7 @@
 
 </div>
 
-Tiny library for hold utility classes for swing menu and actions. 
+Tiny library for hold utility classes for swing menu and actions.
 
 > Please support this project by simply putting a Github <!-- Place this tag where you want the button to render. -->
 <a class="github-button" href="https://github.com/astrapi69/menu-actions" data-icon="octicon-star" aria-label="Star astrapi69/menu-actions on GitHub">Star ⭐</a>
@@ -57,28 +57,28 @@ and then add the dependency to the dependencies area
 Maven dependency is now on sonatype.
 Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~menu-actions~~~) for latest snapshots and releases.
 
-Add the following maven dependency to your project `pom.xml` if you want to import the core 
+Add the following maven dependency to your project `pom.xml` if you want to import the core
 functionality of menu-actions:
 
 Than you can add the dependency to your dependencies:
 
-	<properties>
-			...
-		<!-- menu-actions version -->
-		<menu-actions.version>1.4</menu-actions.version>
-			...
-	</properties>
-			...
-		<dependencies>
-			...
-			<!-- menu-actions DEPENDENCY -->
-			<dependency>
-				<groupId>io.github.astrapi69</groupId>
-				<artifactId>menu-actions</artifactId>
-				<version>${menu-actions.version}</version>
-			</dependency>
-			...
-		</dependencies>
+    <properties>
+            ...
+        <!-- menu-actions version -->
+        <menu-actions.version>1.4</menu-actions.version>
+            ...
+    </properties>
+            ...
+        <dependencies>
+            ...
+            <!-- menu-actions DEPENDENCY -->
+            <dependency>
+                <groupId>io.github.astrapi69</groupId>
+                <artifactId>menu-actions</artifactId>
+                <version>${menu-actions.version}</version>
+            </dependency>
+            ...
+        </dependencies>
 
 # Donations
 
@@ -178,5 +178,3 @@ Do not hesitate to contact the menu-actions developers with your questions, conc
 |[![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/menu-actions.svg)](http://www.javadoc.io/doc/io.github.astrapi69/menu-actions)|
 |Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
 |     <img width=1000/>     |
-
-
