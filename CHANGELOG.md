@@ -1,6 +1,29 @@
 ## Change log
 ----------------------
 
+Version 2
+-------------
+
+ADDED:
+
+- new factory methods for JMenu and JMenuItem with a JMenuItemInfo as argument
+- new factory method for create SystemTray with TrayIcon and a PopupMenu
+- new gradle plugin spotless for formatting source code
+
+CHANGED:
+
+- update to jdk version 11
+- update of gradle to new version 7.5.1
+- update of lombok dependency to new patch version 1.18.24
+- update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' in version 5.0.0
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 6.5.1
+- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.42.0
+- update of jobj-core dependency to new version 7
+- update of throwable dependency to new version 2.3
+- update of test dependency file-worker to new version 11.3
+- update of test dependency silly-io to new version 2.1
+- update of test dependency junit-jupiter to new version 5.9.1
+
 Version 1.4
 -------------
 
@@ -81,4 +104,3 @@ ADDED:
 
 Notable links:
 [keep a changelog](http://keepachangelog.com/en/1.0.0/) Don’t let your friends dump git logs into changelogs
-

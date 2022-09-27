@@ -55,7 +55,7 @@ public class SampleJTableWithPopup extends JFrame
 			System.out.println("TreePath:" + tp);
 
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree
-					.getLastSelectedPathComponent();
+				.getLastSelectedPathComponent();
 			System.out.println("DefaultMutableTreeNode:" + node);
 		});
 		JPopupMenu menu = MenuFactory.newJPopupMenu(tree, menuItem,
