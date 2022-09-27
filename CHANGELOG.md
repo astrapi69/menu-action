@@ -22,7 +22,7 @@ CHANGED:
 - update of throwable dependency to new version 2.3
 - update of test dependency file-worker to new version 11.3
 - update of test dependency silly-io to new version 2.1
-- update of test dependency junit-jupiter to new version 5.9.0
+- update of test dependency junit-jupiter to new version 5.9.1
 
 Version 1.4
 -------------
