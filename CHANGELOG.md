@@ -1,6 +1,14 @@
 ## Change log
 ----------------------
 
+Version 2.1
+-------------
+
+ADDED:
+
+- new factory method in KeyStrokeExtensions for create a Keystroke over a string object
+
+
 Version 2
 -------------
 

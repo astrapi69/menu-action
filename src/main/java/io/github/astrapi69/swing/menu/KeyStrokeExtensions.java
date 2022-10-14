@@ -90,4 +90,16 @@ public final class KeyStrokeExtensions
 			actionCommand, action);
 	}
 
+	/**
+	 * Gets the given string that represents a keystroke.
+	 * 
+	 * @param keystrokeAsString
+	 *            the keystroke as string object
+	 * @return the corresponding {@link KeyStroke} object
+	 */
+	public static KeyStroke getKeyStroke(String keystrokeAsString)
+	{
+		return KeyStroke.getKeyStroke(keystrokeAsString);
+	}
+
 }
