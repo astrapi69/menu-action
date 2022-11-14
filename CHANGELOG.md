@@ -4,7 +4,14 @@
 Version 2.2-SNAPSHOT
 -------------
 
+ADDED:
 
+- new bean class MenuInfo for store information for create menu items
+
+CHANGED:
+
+- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.44.0
+- update of test dependency file-worker to new version 11.5.1
 
 Version 2.1
 -------------

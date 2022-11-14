@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu;
+package io.github.astrapi69.swing.menu.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -33,9 +33,11 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import io.github.astrapi69.swing.menu.KeyStrokeInfo;
 
 /**
- * The class {@link KeyStrokeInfo}
+ * The class {@link MenuInfo} is intended for store the information of a menu and on need to restore
+ * the menu
  */
 @Getter
 @Setter
@@ -45,11 +47,13 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class KeyStrokeInfo
+public class MenuInfo
 {
-	Character keyChar;
-	Integer keyCode;
-	Integer modifiers;
-	Boolean onKeyRelease;
-	String keystrokeAsString;
+	String actionCommand;
+	String label;
+	String text;
+	Integer mnemonic;
+	KeyStrokeInfo keyStrokeInfo;
+	String name;
+	String actionId;
 }
