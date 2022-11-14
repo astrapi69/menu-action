@@ -28,6 +28,9 @@ import org.junit.jupiter.api.Test;
 
 import javax.swing.KeyStroke;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class KeyStrokeExtensionsTest
@@ -89,6 +92,7 @@ class KeyStrokeExtensionsTest
 		keyStroke = KeyStrokeExtensions.getKeyStroke(expected);
 		actual = keyStroke.toString();
 		assertEquals(expected, actual);
+		KeyStroke keyStroke1 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK);
 		// new scenario ...
 		expected = "alt pressed L";
 		keyStroke = KeyStrokeExtensions.getKeyStroke(expected);
