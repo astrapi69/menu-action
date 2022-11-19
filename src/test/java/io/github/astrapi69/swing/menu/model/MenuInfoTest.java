@@ -30,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
+import io.github.astrapi69.id.generate.LongIdGenerator;
+import io.github.astrapi69.tree.BaseTreeNode;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.swing.menu.BaseMenuId;
@@ -60,5 +62,19 @@ public class MenuInfoTest
 		expected = RuntimeExceptionDecorator
 			.decorate(() -> XmlToObjectExtensions.toObject(xml, MenuInfo.class));
 		assertEquals(actual, expected);
+	}
+
+	@Test
+	public void testWithTreeNode()
+	{
+		BaseTreeNode<MenuInfo, Long> fileTreeNode;
+		BaseTreeNode<MenuInfo, Long> toggleFullscreenTreeNode;
+		BaseTreeNode<MenuInfo, Long> exitTreeNode;
+		LongIdGenerator idGenerator;
+
+		 idGenerator = LongIdGenerator.of(0L);
+		// fileTreeNode = BaseTreeNode.<MenuInfo, Long>
+		// builder().id(idGenerator.getNextId()).value("I'm root")
+		// .build();
 	}
 }
