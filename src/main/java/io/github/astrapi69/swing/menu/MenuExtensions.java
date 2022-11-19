@@ -207,7 +207,7 @@ public final class MenuExtensions
 	 */
 	public static void setAltAccelerator(final JMenuItem jmi, final char accelerator)
 	{
-		setAccelerator(jmi, accelerator, InputEvent.ALT_MASK);
+		setAccelerator(jmi, accelerator, InputEvent.ALT_DOWN_MASK);
 	}
 
 	/**
@@ -221,8 +221,7 @@ public final class MenuExtensions
 	 */
 	public static void setCtrlAccelerator(final JMenuItem jmi, final char accelerator)
 	{
-		String keystrokeAsString = "ctrl pressed " + accelerator;
-		setAccelerator(jmi, accelerator, InputEvent.CTRL_MASK);
+		setAccelerator(jmi, accelerator, InputEvent.CTRL_DOWN_MASK);
 	}
 
 	/**

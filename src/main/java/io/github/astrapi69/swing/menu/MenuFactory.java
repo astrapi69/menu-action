@@ -256,7 +256,7 @@ public class MenuFactory
 		final char accelerator)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic)
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_MASK)).build()
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK)).build()
 			.toJMenuItem();
 	}
 
@@ -277,7 +277,7 @@ public class MenuFactory
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic)
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_MASK))
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK))
 			.actionListener(actionListener).build().toJMenuItem();
 	}
 
@@ -336,7 +336,7 @@ public class MenuFactory
 		final char accelerator)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_MASK)).build()
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK)).build()
 			.toJMenuItem();
 	}
 
@@ -357,7 +357,7 @@ public class MenuFactory
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_MASK))
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK))
 			.actionListener(actionListener).build().toJMenuItem();
 	}
 
