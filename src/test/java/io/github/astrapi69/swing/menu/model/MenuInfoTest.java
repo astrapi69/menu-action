@@ -72,7 +72,7 @@ public class MenuInfoTest
 		BaseTreeNode<MenuInfo, Long> exitTreeNode;
 		LongIdGenerator idGenerator;
 
-		 idGenerator = LongIdGenerator.of(0L);
+		idGenerator = LongIdGenerator.of(0L);
 		// fileTreeNode = BaseTreeNode.<MenuInfo, Long>
 		// builder().id(idGenerator.getNextId()).value("I'm root")
 		// .build();

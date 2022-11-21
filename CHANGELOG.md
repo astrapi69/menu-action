@@ -11,7 +11,7 @@ ADDED:
 CHANGED:
 
 - update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.44.0
-- update of test dependency file-worker to new version 11.5.1
+- update of test dependency file-worker to new version 11.6
 
 Version 2.1
 -------------
