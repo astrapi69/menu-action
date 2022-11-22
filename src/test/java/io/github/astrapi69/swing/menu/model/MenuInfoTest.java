@@ -32,6 +32,7 @@ import java.awt.event.KeyEvent;
 
 import io.github.astrapi69.id.generate.LongIdGenerator;
 import io.github.astrapi69.tree.BaseTreeNode;
+import io.github.astrapi69.tree.TreeIdNode;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.swing.menu.BaseMenuId;
@@ -67,14 +68,37 @@ public class MenuInfoTest
 	@Test
 	public void testWithTreeNode()
 	{
-		BaseTreeNode<MenuInfo, Long> fileTreeNode;
-		BaseTreeNode<MenuInfo, Long> toggleFullscreenTreeNode;
-		BaseTreeNode<MenuInfo, Long> exitTreeNode;
+		TreeIdNode<MenuInfo, Long> fileTreeNode;
+		TreeIdNode<MenuInfo, Long> toggleFullscreenTreeNode;
+		TreeIdNode<MenuInfo, Long> exitTreeNode;
+		MenuInfo fileMenuInfo;
+		MenuInfo toggleFullscreenMenuInfo;
+		MenuInfo exitMenuInfo;
 		LongIdGenerator idGenerator;
 
 		idGenerator = LongIdGenerator.of(0L);
-		// fileTreeNode = BaseTreeNode.<MenuInfo, Long>
-		// builder().id(idGenerator.getNextId()).value("I'm root")
-		// .build();
+
+		fileMenuInfo = MenuInfo.builder().build();
+		fileTreeNode = TreeIdNode.<MenuInfo, Long>builder()
+				.id(idGenerator.getNextId()).value(fileMenuInfo).build();
+
+		toggleFullscreenMenuInfo = MenuInfo.builder().build();
+		toggleFullscreenTreeNode = TreeIdNode.<MenuInfo, Long>builder()
+				.id(idGenerator.getNextId())
+				.parentId(fileTreeNode.getId())
+				.value(toggleFullscreenMenuInfo).build();
+
+		exitMenuInfo = MenuInfo.builder().build();
+		exitTreeNode = TreeIdNode.<MenuInfo, Long>builder()
+				.id(idGenerator.getNextId())
+				.parentId(fileTreeNode.getId())
+				.value(exitMenuInfo).build();
+
+		fileTreeNode.addChild(toggleFullscreenTreeNode);
+		fileTreeNode.addChild(exitTreeNode);
+
+
+		String xml = RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(fileTreeNode));
+		assertNotNull(xml);
 	}
 }
