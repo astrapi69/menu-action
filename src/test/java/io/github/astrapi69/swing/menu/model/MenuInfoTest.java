@@ -29,10 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.Map;
 
 import io.github.astrapi69.id.generate.LongIdGenerator;
 import io.github.astrapi69.tree.BaseTreeNode;
 import io.github.astrapi69.tree.TreeIdNode;
+import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.swing.menu.BaseMenuId;
@@ -68,9 +70,9 @@ public class MenuInfoTest
 	@Test
 	public void testWithTreeNode()
 	{
-		TreeIdNode<MenuInfo, Long> fileTreeNode;
-		TreeIdNode<MenuInfo, Long> toggleFullscreenTreeNode;
-		TreeIdNode<MenuInfo, Long> exitTreeNode;
+		BaseTreeNode<MenuInfo, Long> fileTreeNode;
+		BaseTreeNode<MenuInfo, Long> toggleFullscreenTreeNode;
+		BaseTreeNode<MenuInfo, Long> exitTreeNode;
 		MenuInfo fileMenuInfo;
 		MenuInfo toggleFullscreenMenuInfo;
 		MenuInfo exitMenuInfo;
@@ -79,26 +81,28 @@ public class MenuInfoTest
 		idGenerator = LongIdGenerator.of(0L);
 
 		fileMenuInfo = MenuInfo.builder().build();
-		fileTreeNode = TreeIdNode.<MenuInfo, Long>builder()
+		fileTreeNode = BaseTreeNode.<MenuInfo, Long>builder()
 				.id(idGenerator.getNextId()).value(fileMenuInfo).build();
 
 		toggleFullscreenMenuInfo = MenuInfo.builder().build();
-		toggleFullscreenTreeNode = TreeIdNode.<MenuInfo, Long>builder()
+		toggleFullscreenTreeNode = BaseTreeNode.<MenuInfo, Long>builder()
 				.id(idGenerator.getNextId())
-				.parentId(fileTreeNode.getId())
+				.parent(fileTreeNode)
 				.value(toggleFullscreenMenuInfo).build();
 
 		exitMenuInfo = MenuInfo.builder().build();
-		exitTreeNode = TreeIdNode.<MenuInfo, Long>builder()
+		exitTreeNode = BaseTreeNode.<MenuInfo, Long>builder()
 				.id(idGenerator.getNextId())
-				.parentId(fileTreeNode.getId())
+				.parent(fileTreeNode)
 				.value(exitMenuInfo).build();
 
 		fileTreeNode.addChild(toggleFullscreenTreeNode);
 		fileTreeNode.addChild(exitTreeNode);
 
+		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = BaseTreeNodeTransformer.toKeyMap(fileTreeNode);
 
-		String xml = RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(fileTreeNode));
+
+		String xml = RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
 		assertNotNull(xml);
 	}
 }
