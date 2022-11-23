@@ -29,20 +29,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import io.github.astrapi69.id.generate.LongIdGenerator;
 import io.github.astrapi69.tree.BaseTreeNode;
 import io.github.astrapi69.tree.TreeIdNode;
 import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
+import io.github.astrapi69.xstream.ObjectToXmlExtensions;
+import io.github.astrapi69.xstream.XmlToObjectExtensions;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.swing.menu.BaseMenuId;
 import io.github.astrapi69.swing.menu.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import io.github.astrapi69.xml.jackson.ObjectToXmlExtensions;
-import io.github.astrapi69.xml.jackson.XmlToObjectExtensions;
 
 public class MenuInfoTest
 {
@@ -62,8 +63,7 @@ public class MenuInfoTest
 			.build();
 		String xml = RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(actual));
 		assertNotNull(xml);
-		expected = RuntimeExceptionDecorator
-			.decorate(() -> XmlToObjectExtensions.toObject(xml, MenuInfo.class));
+		expected = RuntimeExceptionDecorator.decorate(() -> XmlToObjectExtensions.toObject(xml));
 		assertEquals(actual, expected);
 	}
 
@@ -80,29 +80,50 @@ public class MenuInfoTest
 
 		idGenerator = LongIdGenerator.of(0L);
 
-		fileMenuInfo = MenuInfo.builder().build();
-		fileTreeNode = BaseTreeNode.<MenuInfo, Long>builder()
-				.id(idGenerator.getNextId()).value(fileMenuInfo).build();
+		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F'))
+			.keyStrokeInfo(
+				KeyStrokeInfo.builder().keyCode(KeyEvent.VK_F11).modifiers(InputEvent.ALT_DOWN_MASK)
+					.keystrokeAsString("alt pressed F").onKeyRelease(false).build())
+			.text("File").label("File").name(BaseMenuId.FILE.propertiesKey()).build();
+		fileTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+			.value(fileMenuInfo).build();
 
-		toggleFullscreenMenuInfo = MenuInfo.builder().build();
-		toggleFullscreenTreeNode = BaseTreeNode.<MenuInfo, Long>builder()
-				.id(idGenerator.getNextId())
-				.parent(fileTreeNode)
-				.value(toggleFullscreenMenuInfo).build();
+		toggleFullscreenMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('T'))
+			.keyStrokeInfo(
+				KeyStrokeInfo.builder().keyCode(KeyEvent.VK_F11).modifiers(InputEvent.ALT_DOWN_MASK)
+					.keystrokeAsString("alt pressed F11").onKeyRelease(false).build())
+			.text("Toggle Fullscreen").label("Toggle Fullscreen")
+			.actionCommand(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey())
+			.actionId(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey())
+			.name(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey()).build();
+		toggleFullscreenTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
+			.id(idGenerator.getNextId()).parent(fileTreeNode).value(toggleFullscreenMenuInfo)
+			.build();
 
-		exitMenuInfo = MenuInfo.builder().build();
-		exitTreeNode = BaseTreeNode.<MenuInfo, Long>builder()
-				.id(idGenerator.getNextId())
-				.parent(fileTreeNode)
-				.value(exitMenuInfo).build();
+		exitMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E'))
+			.keyStrokeInfo(
+				KeyStrokeInfo.builder().keyCode(KeyEvent.VK_F4).modifiers(InputEvent.ALT_DOWN_MASK)
+					.keystrokeAsString("alt pressed F4").onKeyRelease(false).build())
+			.text("Exit").label("Exit").actionCommand(BaseMenuId.EXIT.propertiesKey())
+			.actionId(BaseMenuId.EXIT.propertiesKey()).name(BaseMenuId.EXIT.propertiesKey())
+			.build();
+		exitTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+			.parent(fileTreeNode).value(exitMenuInfo).build();
 
 		fileTreeNode.addChild(toggleFullscreenTreeNode);
 		fileTreeNode.addChild(exitTreeNode);
 
-		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = BaseTreeNodeTransformer.toKeyMap(fileTreeNode);
+		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = BaseTreeNodeTransformer
+			.toKeyMap(fileTreeNode);
 
 
-		String xml = RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
+		final String xml = RuntimeExceptionDecorator
+			.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
 		assertNotNull(xml);
+
+		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap2 = RuntimeExceptionDecorator
+			.decorate(() -> XmlToObjectExtensions.toObject(xml));
+		assertNotNull(treeIdNodeMap2);
+		// TODO create a menu from the map...
 	}
 }
