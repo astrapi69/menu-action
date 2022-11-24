@@ -29,10 +29,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.LinkedHashMap;
+import java.util.Collection;
 import java.util.Map;
 
 import io.github.astrapi69.id.generate.LongIdGenerator;
+import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.tree.BaseTreeNode;
 import io.github.astrapi69.tree.TreeIdNode;
 import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
@@ -40,7 +41,6 @@ import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
 import org.junit.jupiter.api.Test;
 
-import io.github.astrapi69.swing.menu.BaseMenuId;
 import io.github.astrapi69.swing.menu.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
@@ -88,7 +88,8 @@ public class MenuInfoTest
 		fileTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(fileMenuInfo).build();
 
-		toggleFullscreenMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('T'))
+		toggleFullscreenMenuInfo = MenuInfo.builder().item(true)
+			.mnemonic(MenuExtensions.toMnemonic('T'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.builder().keyCode(KeyEvent.VK_F11).modifiers(InputEvent.ALT_DOWN_MASK)
 					.keystrokeAsString("alt pressed F11").onKeyRelease(false).build())
@@ -98,9 +99,9 @@ public class MenuInfoTest
 			.name(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey()).build();
 		toggleFullscreenTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
 			.id(idGenerator.getNextId()).parent(fileTreeNode).value(toggleFullscreenMenuInfo)
-			.build();
+			.leaf(true).build();
 
-		exitMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E'))
+		exitMenuInfo = MenuInfo.builder().item(true).mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.builder().keyCode(KeyEvent.VK_F4).modifiers(InputEvent.ALT_DOWN_MASK)
 					.keystrokeAsString("alt pressed F4").onKeyRelease(false).build())
@@ -108,7 +109,7 @@ public class MenuInfoTest
 			.actionId(BaseMenuId.EXIT.propertiesKey()).name(BaseMenuId.EXIT.propertiesKey())
 			.build();
 		exitTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.parent(fileTreeNode).value(exitMenuInfo).build();
+			.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
 
 		fileTreeNode.addChild(toggleFullscreenTreeNode);
 		fileTreeNode.addChild(exitTreeNode);
@@ -125,5 +126,9 @@ public class MenuInfoTest
 			.decorate(() -> XmlToObjectExtensions.toObject(xml));
 		assertNotNull(treeIdNodeMap2);
 		// TODO create a menu from the map...
+		final BaseTreeNode<MenuInfo, Long> root = BaseTreeNodeTransformer.getRoot(treeIdNodeMap2);
+		assertEquals(fileTreeNode, root);
+		final Collection<BaseTreeNode<MenuInfo, Long>> baseTreeNodes = root.traverse();
+		assertEquals(baseTreeNodes.size(), 3);
 	}
 }

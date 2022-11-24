@@ -6,12 +6,14 @@ Version 2.2-SNAPSHOT
 
 ADDED:
 
+- new bean class KeyStrokeInfo for store keystroke information for create KeyStroke objects
 - new bean class MenuInfo for store information for create menu items
 
 CHANGED:
 
 - update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.44.0
 - update of test dependency file-worker to new version 11.6
+- moved enum class BaseMenuId from swing-base-components to this module
 
 Version 2.1
 -------------
