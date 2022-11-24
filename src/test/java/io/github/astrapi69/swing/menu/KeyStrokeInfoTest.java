@@ -15,9 +15,7 @@ public class KeyStrokeInfoTest
 		KeyStroke expected;
 		KeyStrokeInfo keyStrokeInfo;
 
-		keyStrokeInfo = KeyStrokeInfo.builder()
-				.keystrokeAsString("alt pressed F4")
-				.build();
+		keyStrokeInfo = KeyStrokeInfo.builder().keystrokeAsString("alt pressed F4").build();
 		actual = keyStrokeInfo.toKeyStroke();
 		expected = KeyStroke.getKeyStroke("alt pressed F4");
 		assertEquals(actual, expected);

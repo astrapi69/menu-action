@@ -56,16 +56,16 @@ public class KeyStrokeInfo
 	Boolean onKeyRelease;
 	String keystrokeAsString;
 
-	public static KeyStrokeInfo toKeyStrokeInfo(final @NonNull KeyStroke keyStroke) {
-		return KeyStrokeInfo.builder()
-				.keyCode(keyStroke.getKeyCode())
-				.keyChar(keyStroke.getKeyChar())
-				.modifiers(keyStroke.getModifiers())
-				.onKeyRelease(keyStroke.isOnKeyRelease())
-				.keystrokeAsString(keyStroke.toString())
-				.build();
+	public static KeyStrokeInfo toKeyStrokeInfo(final @NonNull KeyStroke keyStroke)
+	{
+		return KeyStrokeInfo.builder().keyCode(keyStroke.getKeyCode())
+			.keyChar(keyStroke.getKeyChar()).modifiers(keyStroke.getModifiers())
+			.onKeyRelease(keyStroke.isOnKeyRelease()).keystrokeAsString(keyStroke.toString())
+			.build();
 	}
-	public void set(final @NonNull KeyStroke keyStroke) {
+
+	public void set(final @NonNull KeyStroke keyStroke)
+	{
 		this.keyCode = keyStroke.getKeyCode();
 		this.keyChar = keyStroke.getKeyChar();
 		this.modifiers = keyStroke.getModifiers();
