@@ -11,9 +11,13 @@ ADDED:
 
 CHANGED:
 
+- update of gradle to new version 7.6
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 6.6-rc1
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new version 6.12.0
 - update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.44.0
 - update of test dependency file-worker to new version 11.6
 - moved enum class BaseMenuId from swing-base-components to this module
+- replaced deprecated InputEvent constants with the appropriate values
 
 Version 2.1
 -------------
