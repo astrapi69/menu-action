@@ -24,8 +24,8 @@
  */
 package io.github.astrapi69;
 
-import java.awt.Event;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
@@ -58,13 +58,13 @@ public class MenuFactoryAndExtensionsTest extends JFrame
 		bar.add(menu);
 		ActionListener printToSop = e -> System.out.println(e.getActionCommand());
 		MenuExtensions.addMenuItem(menu, new JMenuItem("Cut", 't'),
-			KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK), printToSop);
+			KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK), printToSop);
 		MenuExtensions.addMenuItem(menu, new JMenuItem("Copy", 'c'),
-			KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK), printToSop);
+			KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK), printToSop);
 		JMenuItem pasteMenu = new JMenuItem("Paste", 'p');
 
 		MenuExtensions.addMenuItem(menu, pasteMenu,
-			KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK), printToSop);
+			KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK), printToSop);
 
 		setJMenuBar(bar);
 		getContentPane().add(new JLabel("A label"));

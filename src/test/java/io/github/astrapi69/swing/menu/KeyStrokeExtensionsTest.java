@@ -24,11 +24,14 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class KeyStrokeExtensionsTest
 {
@@ -39,6 +42,7 @@ class KeyStrokeExtensionsTest
 		String actual;
 		String expected;
 		KeyStroke keyStroke;
+		KeyStroke otherKeyStroke;
 		// new scenario ...
 		expected = "ctrl pressed Z";
 		keyStroke = KeyStrokeExtensions.getKeyStroke(expected);
@@ -89,10 +93,20 @@ class KeyStrokeExtensionsTest
 		keyStroke = KeyStrokeExtensions.getKeyStroke(expected);
 		actual = keyStroke.toString();
 		assertEquals(expected, actual);
+		otherKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK);
+		assertEquals(keyStroke, otherKeyStroke);
 		// new scenario ...
 		expected = "alt pressed L";
 		keyStroke = KeyStrokeExtensions.getKeyStroke(expected);
 		actual = keyStroke.toString();
 		assertEquals(expected, actual);
+		// new scenario ...
+		expected = "ctrl alt pressed D";
+		keyStroke = KeyStrokeExtensions.getKeyStroke(expected);
+		actual = keyStroke.toString();
+		assertEquals(expected, actual);
+		otherKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_D,
+			InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK);
+		assertEquals(keyStroke, otherKeyStroke);
 	}
 }

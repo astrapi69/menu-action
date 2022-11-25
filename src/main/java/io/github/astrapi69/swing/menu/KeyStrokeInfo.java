@@ -29,10 +29,13 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+
+import javax.swing.*;
 
 /**
  * The class {@link KeyStrokeInfo}
@@ -51,4 +54,77 @@ public class KeyStrokeInfo
 	Integer keyCode;
 	Integer modifiers;
 	Boolean onKeyRelease;
+	String keystrokeAsString;
+
+	public static KeyStrokeInfo toKeyStrokeInfo(final @NonNull KeyStroke keyStroke)
+	{
+		return KeyStrokeInfo.builder().keyCode(keyStroke.getKeyCode())
+			.keyChar(keyStroke.getKeyChar()).modifiers(keyStroke.getModifiers())
+			.onKeyRelease(keyStroke.isOnKeyRelease()).keystrokeAsString(keyStroke.toString())
+			.build();
+	}
+
+	public void set(final @NonNull KeyStroke keyStroke)
+	{
+		this.keyCode = keyStroke.getKeyCode();
+		this.keyChar = keyStroke.getKeyChar();
+		this.modifiers = keyStroke.getModifiers();
+		this.onKeyRelease = keyStroke.isOnKeyRelease();
+		this.keystrokeAsString = keyStroke.toString();
+	}
+
+	public KeyStroke toKeyStroke()
+	{
+		KeyStroke keyStroke = null;
+		if (keystrokeAsString != null && !keystrokeAsString.isEmpty())
+		{
+			keyStroke = KeyStroke.getKeyStroke(keystrokeAsString);
+			if (keyStroke != null)
+			{
+				return keyStroke;
+			}
+		}
+		if (keyCode != null)
+		{
+
+			if (onKeyRelease != null && modifiers != null)
+			{
+				keyStroke = KeyStroke.getKeyStroke(keyCode.intValue(), modifiers.intValue(),
+					onKeyRelease);
+				if (keyStroke != null)
+				{
+					return keyStroke;
+				}
+			}
+
+			if (modifiers != null)
+			{
+				keyStroke = KeyStroke.getKeyStroke(keyCode.intValue(), modifiers.intValue());
+				if (keyStroke != null)
+				{
+					return keyStroke;
+				}
+			}
+		}
+
+		if (keyChar != null)
+		{
+
+			if (modifiers != null)
+			{
+				keyStroke = KeyStroke.getKeyStroke(keyChar, modifiers.intValue());
+				if (keyStroke != null)
+				{
+					return keyStroke;
+				}
+			}
+
+			keyStroke = KeyStroke.getKeyStroke(keyChar);
+			if (keyStroke != null)
+			{
+				return keyStroke;
+			}
+		}
+		return keyStroke;
+	}
 }

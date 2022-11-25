@@ -24,8 +24,16 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import java.awt.*;
+import java.awt.AWTException;
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
@@ -248,7 +256,8 @@ public class MenuFactory
 		final char accelerator)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic)
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK)).build().toJMenuItem();
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK)).build()
+			.toJMenuItem();
 	}
 
 	/**
@@ -268,7 +277,7 @@ public class MenuFactory
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic)
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK))
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK))
 			.actionListener(actionListener).build().toJMenuItem();
 	}
 
@@ -327,7 +336,8 @@ public class MenuFactory
 		final char accelerator)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK)).build().toJMenuItem();
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK)).build()
+			.toJMenuItem();
 	}
 
 	/**
@@ -347,7 +357,7 @@ public class MenuFactory
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
 		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, Event.CTRL_MASK))
+			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK))
 			.actionListener(actionListener).build().toJMenuItem();
 	}
 

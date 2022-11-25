@@ -24,8 +24,8 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import java.awt.Event;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -207,7 +207,7 @@ public final class MenuExtensions
 	 */
 	public static void setAltAccelerator(final JMenuItem jmi, final char accelerator)
 	{
-		setAccelerator(jmi, accelerator, Event.ALT_MASK);
+		setAccelerator(jmi, accelerator, InputEvent.ALT_DOWN_MASK);
 	}
 
 	/**
@@ -221,7 +221,7 @@ public final class MenuExtensions
 	 */
 	public static void setCtrlAccelerator(final JMenuItem jmi, final char accelerator)
 	{
-		setAccelerator(jmi, accelerator, Event.CTRL_MASK);
+		setAccelerator(jmi, accelerator, InputEvent.CTRL_DOWN_MASK);
 	}
 
 	/**
