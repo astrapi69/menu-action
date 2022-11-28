@@ -7,6 +7,7 @@ Version 2.3-SNAPSHOT
 ADDED:
 
 - new enum class for the menu type
+- new class MenuBarFactory created for create a JMenuBar over xml
 
 Version 2.2
 -------------

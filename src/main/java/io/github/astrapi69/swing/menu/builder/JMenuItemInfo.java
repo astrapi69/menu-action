@@ -26,9 +26,7 @@ package io.github.astrapi69.swing.menu.builder;
 
 import java.awt.event.ActionListener;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -66,6 +64,16 @@ public class JMenuItemInfo
 		JMenu jMenu = new JMenu();
 		setFields(jMenu);
 		return jMenu;
+	}
+
+	public JMenuBar toJMenuBar()
+	{
+		JMenuBar menuBar = new JMenuBar();
+		if (name != null)
+		{
+			menuBar.setName(name);
+		}
+		return menuBar;
 	}
 
 	private void setFields(JMenuItem jMenuItem)

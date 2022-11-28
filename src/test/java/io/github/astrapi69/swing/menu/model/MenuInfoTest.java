@@ -24,9 +24,24 @@
  */
 package io.github.astrapi69.swing.menu.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import io.github.astrapi69.id.generate.LongIdGenerator;
+import io.github.astrapi69.swing.action.ExitApplicationAction;
+import io.github.astrapi69.swing.action.NoAction;
+import io.github.astrapi69.swing.action.ToggleFullScreenAction;
+import io.github.astrapi69.swing.menu.KeyStrokeInfo;
+import io.github.astrapi69.swing.menu.MenuBarFactory;
+import io.github.astrapi69.swing.menu.MenuExtensions;
+import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
+import io.github.astrapi69.swing.menu.enumtype.MenuType;
+import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
+import io.github.astrapi69.tree.BaseTreeNode;
+import io.github.astrapi69.tree.TreeIdNode;
+import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
+import io.github.astrapi69.xstream.ObjectToXmlExtensions;
+import io.github.astrapi69.xstream.XmlToObjectExtensions;
+import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -34,28 +49,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-
-import io.github.astrapi69.swing.menu.enumtype.MenuType;
-import org.junit.jupiter.api.Test;
-
-import io.github.astrapi69.design.pattern.visitor.Visitor;
-import io.github.astrapi69.id.generate.LongIdGenerator;
-import io.github.astrapi69.swing.action.ExitApplicationAction;
-import io.github.astrapi69.swing.action.NoAction;
-import io.github.astrapi69.swing.action.ToggleFullScreenAction;
-import io.github.astrapi69.swing.menu.KeyStrokeInfo;
-import io.github.astrapi69.swing.menu.MenuExtensions;
-import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
-import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import io.github.astrapi69.tree.BaseTreeNode;
-import io.github.astrapi69.tree.TreeIdNode;
-import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
-import io.github.astrapi69.xstream.ObjectToXmlExtensions;
-import io.github.astrapi69.xstream.XmlToObjectExtensions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MenuInfoTest
 {
@@ -82,15 +77,25 @@ public class MenuInfoTest
 	@Test
 	public void testWithTreeNode()
 	{
+		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
 		BaseTreeNode<MenuInfo, Long> fileTreeNode;
 		BaseTreeNode<MenuInfo, Long> toggleFullscreenTreeNode;
 		BaseTreeNode<MenuInfo, Long> exitTreeNode;
+		MenuInfo menuBarInfo;
 		MenuInfo fileMenuInfo;
 		MenuInfo toggleFullscreenMenuInfo;
 		MenuInfo exitMenuInfo;
 		LongIdGenerator idGenerator;
 
 		idGenerator = LongIdGenerator.of(0L);
+
+		menuBarInfo = MenuInfo.builder().type(MenuType.MENU_BAR)
+			.actionCommand(BaseMenuId.MENU_BAR.propertiesKey())
+			.actionId(BaseMenuId.MENU_BAR.propertiesKey()).name(BaseMenuId.MENU_BAR.propertiesKey())
+			.build();
+
+		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+			.value(menuBarInfo).build();
 
 		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F'))
 			.keyStrokeInfo(
@@ -126,92 +131,44 @@ public class MenuInfoTest
 		exitTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
 
+		menuBarTreeNode.addChild(fileTreeNode);
 		fileTreeNode.addChild(toggleFullscreenTreeNode);
 		fileTreeNode.addChild(exitTreeNode);
 
 		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = BaseTreeNodeTransformer
-			.toKeyMap(fileTreeNode);
+			.toKeyMap(menuBarTreeNode);
 
 
 		final String xml = RuntimeExceptionDecorator
 			.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
 		assertNotNull(xml);
 
-		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap2 = RuntimeExceptionDecorator
-			.decorate(() -> XmlToObjectExtensions.toObject(xml));
-		assertNotNull(treeIdNodeMap2);
-		// TODO create a menu from the map...
-		final BaseTreeNode<MenuInfo, Long> root = BaseTreeNodeTransformer.getRoot(treeIdNodeMap2);
-		assertEquals(fileTreeNode, root);
+		final BaseTreeNode<MenuInfo, Long> root = MenuBarFactory.buildRootTreeNode(xml);
+		assertEquals(menuBarTreeNode, root);
 		final Collection<BaseTreeNode<MenuInfo, Long>> baseTreeNodes = root.traverse();
-		assertEquals(baseTreeNodes.size(), 3);
+		assertEquals(baseTreeNodes.size(), 4);
 		final Map<String, ActionListener> actionListenerMap = new HashMap<>();
 
 		actionListenerMap.put(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey(),
 			new ToggleFullScreenAction("Fullscreen", new JFrame()));
 		actionListenerMap.put(BaseMenuId.EXIT.propertiesKey(), new ExitApplicationAction("Exit"));
 		actionListenerMap.put(BaseMenuId.FILE.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.MENU_BAR.propertiesKey(), new NoAction());
+
+		final JMenuBar menuBar = MenuBarFactory.buildMenuBar(root, actionListenerMap);
+		assertNotNull(menuBar);
 
 		final Map<String, JMenu> menuMap = new HashMap<>();
 		final Map<String, JMenuItem> menuItemMap = new HashMap<>();
+		final Map<String, JMenuBar> menuBarMap = new HashMap<>();
 
-		visitAccept(root, actionListenerMap, menuMap, menuItemMap);
-		root.accept(new Visitor<BaseTreeNode<MenuInfo, Long>>()
-		{
-			@Override
-			public void visit(BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode)
-			{
-				visitAccept(menuInfoLongBaseTreeNode, actionListenerMap, menuMap, menuItemMap);
-			}
-		});
-		root.accept(new Visitor<BaseTreeNode<MenuInfo, Long>>()
-		{
-			@Override
-			public void visit(BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode)
-			{
-				final MenuInfo menuInfo = menuInfoLongBaseTreeNode.getValue();
-				MenuType menuType = menuInfo.getType();
-				final String actionId = menuInfo.getActionId();
-				if (MenuType.MENU_ITEM.equals(menuType) && menuInfoLongBaseTreeNode.hasParent())
-				{
-					final JMenuItem menuItem = menuItemMap.get(actionId);
-					final BaseTreeNode<MenuInfo, Long> parent = menuInfoLongBaseTreeNode
-						.getParent();
-					if (menuMap.containsKey(parent.getValue().getActionId()))
-					{
-						final JMenu menu = menuMap.get(parent.getValue().getActionId());
-						menu.add(menuItem);
-					}
-				}
-
-			}
-		});
+		root.accept(menuInfoLongBaseTreeNode -> MenuBarFactory.visitAndAddToMap(
+			menuInfoLongBaseTreeNode, actionListenerMap, menuMap, menuItemMap, menuBarMap));
+		root.accept(menuInfoLongBaseTreeNode -> MenuBarFactory
+			.visitAndAddToMenu(menuInfoLongBaseTreeNode, menuMap, menuItemMap, menuBarMap));
 		assertEquals(menuMap.size(), 1);
+		assertEquals(menuBarMap.size(), 1);
 		assertEquals(menuItemMap.size(), 2);
 	}
 
-	public void visitAccept(final BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode,
-		final Map<String, ActionListener> actionListenerMap, final Map<String, JMenu> menuMap,
-		final Map<String, JMenuItem> menuItemMap)
-	{
-		final MenuInfo menuInfo = menuInfoLongBaseTreeNode.getValue();
-		if (actionListenerMap.containsKey(menuInfo.getActionId()))
-		{
-			final JMenuItemInfo jMenuItemInfo = menuInfo
-				.toJMenuItemInfo(actionListenerMap.get(menuInfo.getActionId()));
-			actionListenerMap.remove(menuInfo.getActionId());
-			MenuType menuType = menuInfo.getType();
-			final boolean item = MenuType.MENU_ITEM.equals(menuType);
-			if (item)
-			{
-				final JMenuItem menuItem = jMenuItemInfo.toJMenuItem();
-				menuItemMap.put(menuInfo.getActionId(), menuItem);
-			}
-			else
-			{
-				final JMenu menu = jMenuItemInfo.toJMenu();
-				menuMap.put(menuInfo.getActionId(), menu);
-			}
-		}
-	}
 }

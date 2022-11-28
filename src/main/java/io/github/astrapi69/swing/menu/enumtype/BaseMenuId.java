@@ -119,8 +119,14 @@ public enum BaseMenuId
 	/**
 	 * The id for the exit application menu
 	 */
-	EXIT(BaseMenuId.EXIT_KEY);
+	EXIT(BaseMenuId.EXIT_KEY),
 
+	/**
+	 * The id for the menu bar of the application
+	 */
+	MENU_BAR(BaseMenuId.MENU_BAR_KEY);
+
+	public static final String MENU_BAR_KEY = "global.menu.bar";
 	public static final String EDIT_KEY = "global.menu.edit";
 	public static final String LOOK_AND_FEEL_KEY = "global.menu.look.and.feel";
 	public static final String LOOK_AND_FEEL_GTK_KEY = "global.menu.look.and.feel.gtk";
@@ -149,6 +155,7 @@ public enum BaseMenuId
 	public static Map<String, Boolean> getBaseMenuIdsAsMap()
 	{
 		Map<String, Boolean> menuIds = new LinkedHashMap<>();
+		menuIds.put(BaseMenuId.MENU_BAR.propertiesKey(), true);
 		menuIds.put(BaseMenuId.EDIT.propertiesKey(), true);
 		menuIds.put(BaseMenuId.FILE.propertiesKey(), true);
 		menuIds.put(BaseMenuId.HELP.propertiesKey(), true);

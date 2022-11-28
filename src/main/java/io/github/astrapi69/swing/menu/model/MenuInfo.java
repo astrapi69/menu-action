@@ -66,8 +66,11 @@ public class MenuInfo
 
 	public JMenuItemInfo toJMenuItemInfo(ActionListener actionListener)
 	{
-		return JMenuItemInfo.builder().actionListener(actionListener).text(this.text)
-			.mnemonic(this.mnemonic).keyStroke(this.keyStrokeInfo.toKeyStroke()).name(this.name)
-			.build();
+		return this.keyStrokeInfo != null
+			? JMenuItemInfo.builder().actionListener(actionListener).text(this.text)
+				.mnemonic(this.mnemonic).keyStroke(this.keyStrokeInfo.toKeyStroke()).name(this.name)
+				.build()
+			: JMenuItemInfo.builder().actionListener(actionListener).text(this.text)
+				.mnemonic(this.mnemonic).name(this.name).build();
 	}
 }
