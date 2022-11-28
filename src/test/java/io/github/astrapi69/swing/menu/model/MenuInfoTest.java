@@ -38,6 +38,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.design.pattern.visitor.Visitor;
@@ -101,7 +102,7 @@ public class MenuInfoTest
 		fileTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(fileMenuInfo).build();
 
-		toggleFullscreenMenuInfo = MenuInfo.builder().item(true)
+		toggleFullscreenMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('T'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.builder().keyCode(KeyEvent.VK_F11).modifiers(InputEvent.ALT_DOWN_MASK)
@@ -114,7 +115,8 @@ public class MenuInfoTest
 			.id(idGenerator.getNextId()).parent(fileTreeNode).value(toggleFullscreenMenuInfo)
 			.leaf(true).build();
 
-		exitMenuInfo = MenuInfo.builder().item(true).mnemonic(MenuExtensions.toMnemonic('E'))
+		exitMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+			.mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.builder().keyCode(KeyEvent.VK_F4).modifiers(InputEvent.ALT_DOWN_MASK)
 					.keystrokeAsString("alt pressed F4").onKeyRelease(false).build())
@@ -168,8 +170,9 @@ public class MenuInfoTest
 			public void visit(BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode)
 			{
 				final MenuInfo menuInfo = menuInfoLongBaseTreeNode.getValue();
+				MenuType menuType = menuInfo.getType();
 				final String actionId = menuInfo.getActionId();
-				if (menuInfo.isItem() && menuInfoLongBaseTreeNode.hasParent())
+				if (MenuType.MENU_ITEM.equals(menuType) && menuInfoLongBaseTreeNode.hasParent())
 				{
 					final JMenuItem menuItem = menuItemMap.get(actionId);
 					final BaseTreeNode<MenuInfo, Long> parent = menuInfoLongBaseTreeNode
@@ -197,7 +200,8 @@ public class MenuInfoTest
 			final JMenuItemInfo jMenuItemInfo = menuInfo
 				.toJMenuItemInfo(actionListenerMap.get(menuInfo.getActionId()));
 			actionListenerMap.remove(menuInfo.getActionId());
-			final boolean item = menuInfo.isItem();
+			MenuType menuType = menuInfo.getType();
+			final boolean item = MenuType.MENU_ITEM.equals(menuType);
 			if (item)
 			{
 				final JMenuItem menuItem = jMenuItemInfo.toJMenuItem();

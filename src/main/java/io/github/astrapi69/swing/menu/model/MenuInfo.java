@@ -26,8 +26,10 @@ package io.github.astrapi69.swing.menu.model;
 
 import java.awt.event.ActionListener;
 
+import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,7 +61,8 @@ public class MenuInfo
 	KeyStrokeInfo keyStrokeInfo;
 	String name;
 	String actionId;
-	boolean item;
+	@Builder.Default
+	MenuType type = MenuType.MENU;
 
 	public JMenuItemInfo toJMenuItemInfo(ActionListener actionListener)
 	{
