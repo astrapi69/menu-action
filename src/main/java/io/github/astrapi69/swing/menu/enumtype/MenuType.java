@@ -22,44 +22,36 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.awt.system;
-
-import java.awt.AWTException;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
-
-import lombok.NonNull;
+package io.github.astrapi69.swing.menu.enumtype;
 
 /**
- * The class {@link SystemTrayFactory} provides factory methods for create system tray Menu
+ * The enum class {@link MenuType} provides all the possible types that a menu can have
  */
-public class SystemTrayFactory
+public enum MenuType
 {
 
 	/**
-	 * Factory method for create a <code>SystemTray</code> from the given {@link TrayIcon} object
-	 * and the given {@link PopupMenu} object
-	 *
-	 * @param trayIcon
-	 *            the tray icon of the <code>SystemTray</code>
-	 * @param popupMenu
-	 *            the tray popup menu of the <code>SystemTray</code>
-	 * @return the new {@link SystemTray} object
-	 * @throws AWTException
-	 *             is thrown if the desktop system tray is missing
+	 * Represents the system tray type
 	 */
-	public static SystemTray newSystemTray(final @NonNull TrayIcon trayIcon,
-		final @NonNull PopupMenu popupMenu) throws AWTException
-	{
-		if (!SystemTray.isSupported())
-		{
-			throw new RuntimeException("SystemTray is not supported");
-		}
-		final SystemTray systemTray = SystemTray.getSystemTray();
-		trayIcon.setPopupMenu(popupMenu);
-		systemTray.add(trayIcon);
-		return systemTray;
-	}
+	SYSTEM_TRAY,
 
+	/**
+	 * Represents the menu bar type
+	 */
+	MENU_BAR,
+
+	/**
+	 * Represents the default menu type
+	 */
+	MENU,
+
+	/**
+	 * Represents the menu item type
+	 */
+	MENU_ITEM,
+
+	/**
+	 * Represents the popup menu type
+	 */
+	POPUP
 }
