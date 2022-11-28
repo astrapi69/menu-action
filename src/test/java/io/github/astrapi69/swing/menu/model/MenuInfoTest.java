@@ -34,25 +34,27 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
+import org.junit.jupiter.api.Test;
+
 import io.github.astrapi69.design.pattern.visitor.Visitor;
 import io.github.astrapi69.id.generate.LongIdGenerator;
 import io.github.astrapi69.swing.action.ExitApplicationAction;
 import io.github.astrapi69.swing.action.NoAction;
 import io.github.astrapi69.swing.action.ToggleFullScreenAction;
+import io.github.astrapi69.swing.menu.KeyStrokeInfo;
+import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
 import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
+import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.tree.BaseTreeNode;
 import io.github.astrapi69.tree.TreeIdNode;
 import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
 import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
-import org.junit.jupiter.api.Test;
-
-import io.github.astrapi69.swing.menu.KeyStrokeInfo;
-import io.github.astrapi69.swing.menu.MenuExtensions;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-
-import javax.swing.*;
 
 public class MenuInfoTest
 {

@@ -24,7 +24,8 @@
  */
 package io.github.astrapi69.swing.menu.model;
 
-import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
+import java.awt.event.ActionListener;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -35,8 +36,7 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import io.github.astrapi69.swing.menu.KeyStrokeInfo;
-
-import java.awt.event.ActionListener;
+import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
 
 /**
  * The class {@link MenuInfo} is intended for store the information of a menu and on need to restore

@@ -24,6 +24,8 @@
  */
 package io.github.astrapi69.swing.menu;
 
+import javax.swing.KeyStroke;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -34,8 +36,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-
-import javax.swing.*;
 
 /**
  * The class {@link KeyStrokeInfo}

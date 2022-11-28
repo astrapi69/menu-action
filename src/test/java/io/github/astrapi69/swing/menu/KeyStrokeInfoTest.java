@@ -24,11 +24,11 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import org.junit.jupiter.api.Test;
-
-import javax.swing.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import javax.swing.KeyStroke;
+
+import org.junit.jupiter.api.Test;
 
 public class KeyStrokeInfoTest
 {
