@@ -35,16 +35,29 @@ import java.awt.*;
 public class SystemTrayFactory
 {
 
+	/**
+	 * Factory method for create a <code>SystemTray</code> from the given {@link TrayIcon} object
+	 * and the given {@link PopupMenu} object
+	 *
+	 * @param trayIcon
+	 *            the tray icon of the <code>SystemTray</code>
+	 * @param popupMenu
+	 *            the tray popup menu of the <code>SystemTray</code>
+	 * @return the new {@link SystemTray} object
+	 * @throws AWTException
+	 *             is thrown if the desktop system tray is missing
+	 */
 	public static SystemTray newSystemTray(final @NonNull TrayIcon trayIcon,
-		final @NonNull PopupMenu popup) throws AWTException
+										   final @NonNull PopupMenu popupMenu) throws AWTException
 	{
 		if (!SystemTray.isSupported())
 		{
 			throw new RuntimeException("SystemTray is not supported");
 		}
 		final SystemTray systemTray = SystemTray.getSystemTray();
-		trayIcon.setPopupMenu(popup);
+		trayIcon.setPopupMenu(popupMenu);
 		systemTray.add(trayIcon);
 		return systemTray;
 	}
+
 }

@@ -4,7 +4,9 @@
 Version 2.3-SNAPSHOT
 -------------
 
+ADDED:
 
+- new enum class for the menu type
 
 Version 2.2
 -------------
