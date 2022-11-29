@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import io.github.astrapi69.swing.menu.model.MenuItemBean;
+import io.github.astrapi69.swing.menu.model.PopupMenuInfo;
 import io.github.astrapi69.swing.menu.popup.listener.PopupListener;
 
 import javax.swing.JMenuItem;
@@ -98,9 +98,9 @@ public class JPopupMenuFactory
 	{
 		// Create the popup menu.
 		final JPopupMenu popup = newJPopupMenu(label);
-		for (final JMenuItem jMenuItem : items)
+		for (final JMenuItem menuItem : items)
 		{
-			popup.add(jMenuItem);
+			popup.add(menuItem);
 		}
 		// Add listener to the component so the popup menu can come up.
 		final MouseListener popupListener = new PopupListener(popup);
@@ -111,19 +111,19 @@ public class JPopupMenuFactory
 	/**
 	 * Factory method for create a {@link PopupMenu} object.
 	 *
-	 * @param menuItemBeans
-	 *            the menu item beans
-	 * @return the new {@link PopupMenu}.
+	 * @param popupMenuInfos
+	 *            the list with the popup menu infos
+	 * @return the new {@link PopupMenu}
 	 */
-	public static PopupMenu newPopupMenu(final List<MenuItemBean> menuItemBeans)
+	public static PopupMenu newPopupMenu(final List<PopupMenuInfo> popupMenuInfos)
 	{
 		final PopupMenu popupMenu = new PopupMenu();
-		for (final MenuItemBean menuItemBean : menuItemBeans)
+		for (final PopupMenuInfo menuItemBean : popupMenuInfos)
 		{
-			final MenuItem miBringToFront = new MenuItem(menuItemBean.getLabel());
-			miBringToFront.setActionCommand(menuItemBean.getCommand());
-			miBringToFront.addActionListener(menuItemBean.getActionListener());
-			popupMenu.add(miBringToFront);
+			final MenuItem menuItem = new MenuItem(menuItemBean.getLabel());
+			menuItem.setActionCommand(menuItemBean.getCommand());
+			menuItem.addActionListener(menuItemBean.getActionListener());
+			popupMenu.add(menuItem);
 		}
 		return popupMenu;
 	}

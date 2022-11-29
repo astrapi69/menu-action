@@ -37,6 +37,9 @@ import javax.swing.KeyStroke;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.MenuFactory;
+import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
+import io.github.astrapi69.swing.menu.factory.JMenuFactory;
+import io.github.astrapi69.swing.menu.factory.JMenuItemFactory;
 
 public class MenuFactoryAndExtensionsTest extends JFrame
 {
@@ -45,16 +48,16 @@ public class MenuFactoryAndExtensionsTest extends JFrame
 		JMenuBar bar;
 		JMenu menu;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		bar = MenuFactory.newJMenuBar();
-		menu = MenuFactory.newJMenu("File", 'f');
+		bar = JMenuBarFactory.newJMenuBar();
+		menu = JMenuFactory.newJMenu("File", 'f');
 		bar.add(menu);
 
-		MenuExtensions.addMenuItem(menu, MenuFactory.newJMenuItem("Print to console"),
+		MenuExtensions.addMenuItem(menu, JMenuItemFactory.newJMenuItem("Print to console"),
 			e -> System.out.println("foo bar"));
-		MenuExtensions.addMenuItem(menu, MenuFactory.newJMenuItem("Exit", 'x'),
+		MenuExtensions.addMenuItem(menu, JMenuItemFactory.newJMenuItem("Exit", 'x'),
 			e -> System.exit(0));
 
-		menu = MenuFactory.newJMenu("Edit", 'e');
+		menu = JMenuFactory.newJMenu("Edit", 'e');
 		bar.add(menu);
 		ActionListener printToSop = e -> System.out.println(e.getActionCommand());
 		MenuExtensions.addMenuItem(menu, new JMenuItem("Cut", 't'),

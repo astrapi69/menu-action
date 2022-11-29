@@ -38,6 +38,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import io.github.astrapi69.swing.menu.MenuFactory;
+import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
 
 public class SampleJTableWithPopup extends JFrame
 {
@@ -58,7 +59,7 @@ public class SampleJTableWithPopup extends JFrame
 				.getLastSelectedPathComponent();
 			System.out.println("DefaultMutableTreeNode:" + node);
 		});
-		JPopupMenu menu = MenuFactory.newJPopupMenu(tree, menuItem,
+		JPopupMenu menu = JPopupMenuFactory.newJPopupMenu(tree, menuItem,
 			new JMenuItem("A second popup menu item"));
 
 		tree.addMouseListener(new MouseAdapter()

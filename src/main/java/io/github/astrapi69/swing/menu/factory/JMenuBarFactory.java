@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
+import io.github.astrapi69.swing.menu.model.JMenuItemInfo;
 import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import io.github.astrapi69.swing.menu.model.MenuInfo;

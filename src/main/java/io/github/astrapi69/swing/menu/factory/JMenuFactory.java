@@ -30,7 +30,7 @@ import javax.swing.JMenu;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import lombok.NonNull;
-import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
+import io.github.astrapi69.swing.menu.model.JMenuItemInfo;
 
 /**
  * A factory {@link JMenuFactory} provides factory methods for create JMenu objects

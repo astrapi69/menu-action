@@ -37,7 +37,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
 
 /**
  * The class {@link MenuInfo} is intended for store the information of a menu and on need to restore

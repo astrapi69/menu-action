@@ -45,10 +45,10 @@ import io.github.astrapi69.swing.menu.factory.JMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuItemFactory;
 import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JToolBarFactory;
-import io.github.astrapi69.swing.menu.model.MenuItemBean;
+import io.github.astrapi69.swing.menu.model.PopupMenuInfo;
 import lombok.NonNull;
 import io.github.astrapi69.awt.system.SystemTrayFactory;
-import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
+import io.github.astrapi69.swing.menu.model.JMenuItemInfo;
 
 /**
  * A factory {@link MenuFactory} provides factory methods for create Menu and JToolbar objects
@@ -506,7 +506,7 @@ public class MenuFactory
 	 *             Note: will be removed in next minor version
 	 */
 	@Deprecated
-	public static PopupMenu newPopupMenu(final List<MenuItemBean> menuItemBeans)
+	public static PopupMenu newPopupMenu(final List<PopupMenuInfo> menuItemBeans)
 	{
 		return JPopupMenuFactory.newPopupMenu(menuItemBeans);
 	}

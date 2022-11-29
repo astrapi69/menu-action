@@ -36,7 +36,7 @@ import javax.swing.JMenuItem;
 
 import lombok.NonNull;
 import io.github.astrapi69.lang.ClassExtensions;
-import io.github.astrapi69.swing.menu.MenuFactory;
+import io.github.astrapi69.swing.menu.factory.JMenuItemFactory;
 
 /**
  * A factory {@link HelpFactory} provides factory methods for create all components for the help
@@ -131,7 +131,7 @@ public class HelpFactory
 		@NonNull String content, @NonNull String overview, char mnemonic, char accelerator)
 	{
 
-		JMenuItem miHelpContent = MenuFactory.newJMenuItem(content, mnemonic, accelerator);
+		JMenuItem miHelpContent = JMenuItemFactory.newJMenuItem(content, mnemonic, accelerator);
 		// 2. assign help to components
 		CSH.setHelpIDString(miHelpContent, overview);
 		// 3. handle events
