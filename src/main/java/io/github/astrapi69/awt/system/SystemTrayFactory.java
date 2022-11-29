@@ -25,9 +25,13 @@
 package io.github.astrapi69.awt.system;
 
 import java.awt.AWTException;
+import java.awt.Image;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ActionListener;
+import java.util.Map;
 
 import lombok.NonNull;
 
@@ -60,6 +64,32 @@ public class SystemTrayFactory
 		trayIcon.setPopupMenu(popupMenu);
 		systemTray.add(trayIcon);
 		return systemTray;
+	}
+
+	/**
+	 * Factory method for create a {@link TrayIcon} object
+	 *
+	 * @param imgFilename
+	 *            the img filename
+	 * @param appName
+	 *            the app name
+	 * @param systemTrayPopupMenu
+	 *            the system tray popup menu
+	 * @param actionListeners
+	 *            the action listeners
+	 * @return the new {@link TrayIcon}
+	 */
+	public static TrayIcon newTrayIcon(final String imgFilename, final String appName,
+		final PopupMenu systemTrayPopupMenu, final Map<String, ActionListener> actionListeners)
+	{
+		final Image image = Toolkit.getDefaultToolkit().getImage(imgFilename);
+		final TrayIcon trayIcon = new TrayIcon(image, appName, systemTrayPopupMenu);
+		for (final Map.Entry<String, ActionListener> actionListener : actionListeners.entrySet())
+		{
+			trayIcon.setActionCommand(actionListener.getKey());
+			trayIcon.addActionListener(actionListener.getValue());
+		}
+		return trayIcon;
 	}
 
 }

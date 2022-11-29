@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu;
+package io.github.astrapi69.swing.menu.factory;
 
 import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
 import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
@@ -40,9 +40,21 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MenuBarFactory
+/**
+ * A factory {@link JMenuBarFactory} provides factory methods for create JMenuBar objects
+ */
+public class JMenuBarFactory
 {
 
+	/**
+	 * Factory method for create a {@link JMenuBar} object
+	 *
+	 * @return the {@link JMenuBar} object
+	 */
+	public static JMenuBar newJMenuBar()
+	{
+		return new JMenuBar();
+	}
 
 	public static JMenuBar buildMenuBar(final @NonNull BaseTreeNode<MenuInfo, Long> root,
 		final Map<String, ActionListener> actionListenerMap)

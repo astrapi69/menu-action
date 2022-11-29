@@ -28,8 +28,7 @@ import io.github.astrapi69.id.generate.LongIdGenerator;
 import io.github.astrapi69.swing.action.ExitApplicationAction;
 import io.github.astrapi69.swing.action.NoAction;
 import io.github.astrapi69.swing.action.ToggleFullScreenAction;
-import io.github.astrapi69.swing.menu.KeyStrokeInfo;
-import io.github.astrapi69.swing.menu.MenuBarFactory;
+import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumtype.MenuType;
@@ -143,7 +142,7 @@ public class MenuInfoTest
 			.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
 		assertNotNull(xml);
 
-		final BaseTreeNode<MenuInfo, Long> root = MenuBarFactory.buildRootTreeNode(xml);
+		final BaseTreeNode<MenuInfo, Long> root = JMenuBarFactory.buildRootTreeNode(xml);
 		assertEquals(menuBarTreeNode, root);
 		final Collection<BaseTreeNode<MenuInfo, Long>> baseTreeNodes = root.traverse();
 		assertEquals(baseTreeNodes.size(), 4);
@@ -155,7 +154,7 @@ public class MenuInfoTest
 		actionListenerMap.put(BaseMenuId.FILE.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.MENU_BAR.propertiesKey(), new NoAction());
 
-		final JMenuBar menuBar = MenuBarFactory.buildMenuBar(root, actionListenerMap);
+		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(root, actionListenerMap);
 		assertNotNull(menuBar);
 	}
 

@@ -26,15 +26,10 @@ package io.github.astrapi69.swing.menu;
 
 import java.awt.AWTException;
 import java.awt.Component;
-import java.awt.Image;
-import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
 
@@ -45,15 +40,150 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
+import io.github.astrapi69.swing.menu.factory.JMenuFactory;
+import io.github.astrapi69.swing.menu.factory.JMenuItemFactory;
+import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
+import io.github.astrapi69.swing.menu.factory.JToolBarFactory;
+import io.github.astrapi69.swing.menu.model.MenuItemBean;
 import lombok.NonNull;
+import io.github.astrapi69.awt.system.SystemTrayFactory;
 import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
-import io.github.astrapi69.swing.menu.popup.listener.PopupListener;
 
 /**
  * A factory {@link MenuFactory} provides factory methods for create Menu and JToolbar objects
+ *
+ * @deprecated use instead the appropriate factory classes <br>
+ *             <br>
+ *             Note: will be removed in next major version
  */
+@Deprecated
 public class MenuFactory
 {
+
+	/**
+	 * Factory method for create a {@link JToolBar} object
+	 *
+	 * @return the {@link JToolBar} object
+	 * @deprecated use instead factory class <code>JToolBarFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
+	 */
+	@Deprecated
+	public static JToolBar newJToolBar()
+	{
+		return JToolBarFactory.newJToolBar();
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenu</code>
+	 * @return the new {@link JMenu} object
+	 * @deprecated use instead factory class <code>JMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
+	 */
+	@Deprecated
+	public static JMenu newJMenu(final @NonNull String text)
+	{
+		return JMenuFactory.newJMenu(text);
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
+	 * @param menuItemInfo
+	 *            the information for build a <code>JMenu</code>.
+	 * @return the new {@link JMenu} object
+	 * @deprecated use instead factory class <code>JMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
+	 */
+	@Deprecated
+	public static JMenu newJMenu(final @NonNull JMenuItemInfo menuItemInfo)
+	{
+		return JMenuFactory.newJMenu(menuItemInfo);
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenu</code>
+	 * @param mnemonic
+	 *            the keyboard mnemonic for the <code>JMenu</code>
+	 * @return the new {@link JMenu} object
+	 * @deprecated use instead factory class <code>JMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
+	 */
+	@Deprecated
+	public static JMenu newJMenu(final @NonNull String text, final int mnemonic)
+	{
+		return JMenuFactory.newJMenu(text, mnemonic);
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenu</code>
+	 * @param mnemonic
+	 *            the keyboard mnemonic for the <code>JMenu</code>
+	 * @param actionListener
+	 *            The action listener for the <code>JMenu</code>
+	 * @return the new {@link JMenu} object
+	 * @deprecated use instead factory class <code>JMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
+	 */
+	@Deprecated
+	public static JMenu newJMenu(final @NonNull String text, final int mnemonic,
+		final @NonNull ActionListener actionListener)
+	{
+		return JMenuFactory.newJMenu(text, mnemonic, actionListener);
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenu</code>
+	 * @param mnemonic
+	 *            the keyboard mnemonic for the <code>JMenu</code>
+	 * @return the new {@link JMenu} object
+	 * @deprecated use instead factory class <code>JMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
+	 */
+	@Deprecated
+	public static JMenu newJMenu(final @NonNull String text, final char mnemonic)
+	{
+		return JMenuFactory.newJMenu(text, mnemonic);
+	}
+
+	/**
+	 * Factory method for create a <code>JMenu</code>.
+	 *
+	 * @param text
+	 *            the text of the <code>JMenu</code>
+	 * @param mnemonic
+	 *            the keyboard mnemonic for the <code>JMenu</code>
+	 * @param actionListener
+	 *            The action listener for the <code>JMenu</code>
+	 * @return the new {@link JMenu} object
+	 * @deprecated use instead factory class <code>JMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
+	 */
+	@Deprecated
+	public static JMenu newJMenu(final @NonNull String text, final char mnemonic,
+		final @NonNull ActionListener actionListener)
+	{
+		return JMenuFactory.newJMenu(text, mnemonic, actionListener);
+	}
 
 	/**
 	 * Factory method for create a <code>SystemTray</code> from the given {@link TrayIcon} object
@@ -66,62 +196,29 @@ public class MenuFactory
 	 * @return the new {@link SystemTray} object
 	 * @throws AWTException
 	 *             is thrown if the desktop system tray is missing
+	 * @deprecated use instead factory class <code>SystemTrayFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static SystemTray newSystemTray(final @NonNull TrayIcon trayIcon,
 		final @NonNull PopupMenu popupMenu) throws AWTException
 	{
-		if (!SystemTray.isSupported())
-		{
-			throw new RuntimeException("SystemTray is not supported");
-		}
-		final SystemTray systemTray = SystemTray.getSystemTray();
-		trayIcon.setPopupMenu(popupMenu);
-		systemTray.add(trayIcon);
-		return systemTray;
+		return SystemTrayFactory.newSystemTray(trayIcon, popupMenu);
 	}
 
 	/**
 	 * Factory method for create a {@link JMenuBar} object
 	 *
 	 * @return the {@link JMenuBar} object
+	 * @deprecated use instead factory class <code>JMenuBarFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuBar newJMenuBar()
 	{
-		return new JMenuBar();
-	}
-
-	/**
-	 * Factory method for create a {@link JToolBar} object
-	 *
-	 * @return the {@link JToolBar} object
-	 */
-	public static JToolBar newJToolBar()
-	{
-		return new JToolBar();
-	}
-
-	/**
-	 * Factory method for create a <code>JMenu</code>.
-	 *
-	 * @param text
-	 *            the text of the <code>JMenu</code>
-	 * @return the new {@link JMenu} object
-	 */
-	public static JMenu newJMenu(final @NonNull String text)
-	{
-		return JMenuItemInfo.builder().text(text).build().toJMenu();
-	}
-
-	/**
-	 * Factory method for create a <code>JMenu</code>.
-	 *
-	 * @param menuItemInfo
-	 *            the information for build a <code>JMenu</code>.
-	 * @return the new {@link JMenu} object
-	 */
-	public static JMenu newJMenu(final @NonNull JMenuItemInfo menuItemInfo)
-	{
-		return menuItemInfo.toJMenu();
+		return JMenuBarFactory.newJMenuBar();
 	}
 
 	/**
@@ -130,75 +227,14 @@ public class MenuFactory
 	 * @param menuItemInfo
 	 *            the information for build a <code>JMenuItem</code>.
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull JMenuItemInfo menuItemInfo)
 	{
-		return menuItemInfo.toJMenuItem();
-	}
-
-	/**
-	 * Factory method for create a <code>JMenu</code>.
-	 *
-	 * @param text
-	 *            the text of the <code>JMenu</code>
-	 * @param mnemonic
-	 *            the keyboard mnemonic for the <code>JMenu</code>
-	 * @return the new {@link JMenu} object
-	 */
-	public static JMenu newJMenu(final @NonNull String text, final int mnemonic)
-	{
-		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).build().toJMenu();
-	}
-
-	/**
-	 * Factory method for create a <code>JMenu</code>.
-	 *
-	 * @param text
-	 *            the text of the <code>JMenu</code>
-	 * @param mnemonic
-	 *            the keyboard mnemonic for the <code>JMenu</code>
-	 * @param actionListener
-	 *            The action listener for the <code>JMenu</code>
-	 * @return the new {@link JMenu} object
-	 */
-	public static JMenu newJMenu(final @NonNull String text, final int mnemonic,
-		final @NonNull ActionListener actionListener)
-	{
-		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).actionListener(actionListener)
-			.build().toJMenu();
-	}
-
-	/**
-	 * Factory method for create a <code>JMenu</code>.
-	 *
-	 * @param text
-	 *            the text of the <code>JMenu</code>
-	 * @param mnemonic
-	 *            the keyboard mnemonic for the <code>JMenu</code>
-	 * @return the new {@link JMenu} object
-	 */
-	public static JMenu newJMenu(final @NonNull String text, final char mnemonic)
-	{
-		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
-			.build().toJMenu();
-	}
-
-	/**
-	 * Factory method for create a <code>JMenu</code>.
-	 *
-	 * @param text
-	 *            the text of the <code>JMenu</code>
-	 * @param mnemonic
-	 *            the keyboard mnemonic for the <code>JMenu</code>
-	 * @param actionListener
-	 *            The action listener for the <code>JMenu</code>
-	 * @return the new {@link JMenu} object
-	 */
-	public static JMenu newJMenu(final @NonNull String text, final char mnemonic,
-		final @NonNull ActionListener actionListener)
-	{
-		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
-			.actionListener(actionListener).build().toJMenu();
+		return JMenuItemFactory.newJMenuItem(menuItemInfo);
 	}
 
 	/**
@@ -207,10 +243,14 @@ public class MenuFactory
 	 * @param text
 	 *            the text of the <code>JMenuItem</code>
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull String text)
 	{
-		return JMenuItemInfo.builder().text(text).build().toJMenuItem();
+		return JMenuItemFactory.newJMenuItem(text);
 	}
 
 	/**
@@ -219,12 +259,15 @@ public class MenuFactory
 	 * @param text
 	 *            the text of the <code>JMenuItem</code>
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull String text,
 		final @NonNull ActionListener actionListener)
 	{
-		return JMenuItemInfo.builder().text(text).actionListener(actionListener).build()
-			.toJMenuItem();
+		return JMenuItemFactory.newJMenuItem(text, actionListener);
 	}
 
 	/**
@@ -235,10 +278,14 @@ public class MenuFactory
 	 * @param mnemonic
 	 *            the keyboard mnemonic for the <code>JMenuItem</code>
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).build().toJMenuItem();
+		return JMenuItemFactory.newJMenuItem(text, mnemonic);
 	}
 
 	/**
@@ -251,13 +298,15 @@ public class MenuFactory
 	 * @param accelerator
 	 *            The character that have to push together with the CTRL.
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
 		final char accelerator)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic)
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK)).build()
-			.toJMenuItem();
+		return JMenuItemFactory.newJMenuItem(text, mnemonic, accelerator);
 	}
 
 	/**
@@ -272,13 +321,15 @@ public class MenuFactory
 	 * @param actionListener
 	 *            The action listener for the <code>JMenuItem</code>
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic)
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK))
-			.actionListener(actionListener).build().toJMenuItem();
+		return JMenuItemFactory.newJMenuItem(text, mnemonic, accelerator, actionListener);
 	}
 
 	/**
@@ -293,12 +344,15 @@ public class MenuFactory
 	 * @param actionListener
 	 *            The action listener for the <code>JMenuItem</code>
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
 		final KeyStroke keyStroke, final @NonNull ActionListener actionListener)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).keyStroke(keyStroke)
-			.actionListener(actionListener).build().toJMenuItem();
+		return JMenuItemFactory.newJMenuItem(text, mnemonic, keyStroke, actionListener);
 	}
 
 	/**
@@ -313,12 +367,15 @@ public class MenuFactory
 	 * @param actionListener
 	 *            The action listener for the <code>JMenuItem</code>
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull String text, final int mnemonic,
 		final KeyStroke keyStroke, final ActionListener actionListener, String name)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).keyStroke(keyStroke)
-			.actionListener(actionListener).name(name).build().toJMenuItem();
+		return JMenuItemFactory.newJMenuItem(text, mnemonic, keyStroke, actionListener, name);
 	}
 
 	/**
@@ -331,13 +388,15 @@ public class MenuFactory
 	 * @param accelerator
 	 *            The character that have to push together with the CTRL.
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull String text, final char mnemonic,
 		final char accelerator)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK)).build()
-			.toJMenuItem();
+		return JMenuItemFactory.newJMenuItem(text, mnemonic, accelerator);
 	}
 
 	/**
@@ -352,23 +411,29 @@ public class MenuFactory
 	 * @param actionListener
 	 *            The action listener for the <code>JMenuItem</code>
 	 * @return the new {@link JMenuItem}
+	 * @deprecated use instead factory class <code>JMenuItemFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JMenuItem newJMenuItem(final @NonNull String text, final char mnemonic,
 		final char accelerator, final @NonNull ActionListener actionListener)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
-			.keyStroke(KeyStroke.getKeyStroke(accelerator, InputEvent.CTRL_DOWN_MASK))
-			.actionListener(actionListener).build().toJMenuItem();
+		return JMenuItemFactory.newJMenuItem(text, mnemonic, accelerator, actionListener);
 	}
 
 	/**
 	 * Factory method for create a <code>JPopupMenu</code>.
 	 *
 	 * @return the new {@link JPopupMenu}.
+	 * @deprecated use instead factory class <code>JPopupMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JPopupMenu newJPopupMenu()
 	{
-		return newJPopupMenu("");
+		return JPopupMenuFactory.newJPopupMenu();
 	}
 
 	/**
@@ -381,10 +446,14 @@ public class MenuFactory
 	 * @param items
 	 *            the <code>JMenuItem</code>s
 	 * @return the new {@link JPopupMenu}.
+	 * @deprecated use instead factory class <code>JPopupMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JPopupMenu newJPopupMenu(final Component component, final JMenuItem... items)
 	{
-		return newJPopupMenu("", component, items);
+		return JPopupMenuFactory.newJPopupMenu(component, items);
 	}
 
 	/**
@@ -393,10 +462,14 @@ public class MenuFactory
 	 * @param label
 	 *            the string that a UI may use to display as a title for the popup menu.
 	 * @return the new {@link JPopupMenu}.
+	 * @deprecated use instead factory class <code>JPopupMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JPopupMenu newJPopupMenu(final String label)
 	{
-		return new JPopupMenu(label);
+		return JPopupMenuFactory.newJPopupMenu(label);
 	}
 
 	/**
@@ -411,20 +484,15 @@ public class MenuFactory
 	 * @param items
 	 *            the <code>JMenuItem</code>s
 	 * @return the new {@link JPopupMenu}.
+	 * @deprecated use instead factory class <code>JPopupMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static JPopupMenu newJPopupMenu(final String label, final Component component,
 		final JMenuItem... items)
 	{
-		// Create the popup menu.
-		final JPopupMenu popup = newJPopupMenu(label);
-		for (final JMenuItem jMenuItem : items)
-		{
-			popup.add(jMenuItem);
-		}
-		// Add listener to the component so the popup menu can come up.
-		final MouseListener popupListener = new PopupListener(popup);
-		component.addMouseListener(popupListener);
-		return popup;
+		return JPopupMenuFactory.newJPopupMenu(label, component, items);
 	}
 
 	/**
@@ -433,18 +501,14 @@ public class MenuFactory
 	 * @param menuItemBeans
 	 *            the menu item beans
 	 * @return the new {@link PopupMenu}.
+	 * @deprecated use instead factory class <code>JPopupMenuFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static PopupMenu newPopupMenu(final List<MenuItemBean> menuItemBeans)
 	{
-		final PopupMenu popupMenu = new PopupMenu();
-		for (final MenuItemBean menuItemBean : menuItemBeans)
-		{
-			final MenuItem miBringToFront = new MenuItem(menuItemBean.getLabel());
-			miBringToFront.setActionCommand(menuItemBean.getCommand());
-			miBringToFront.addActionListener(menuItemBean.getActionListener());
-			popupMenu.add(miBringToFront);
-		}
-		return popupMenu;
+		return JPopupMenuFactory.newPopupMenu(menuItemBeans);
 	}
 
 	/**
@@ -459,17 +523,16 @@ public class MenuFactory
 	 * @param actionListeners
 	 *            the action listeners
 	 * @return the new {@link TrayIcon}.
+	 * @deprecated use instead factory class <code>SystemTrayFactory</code> <br>
+	 *             <br>
+	 *             Note: will be removed in next minor version
 	 */
+	@Deprecated
 	public static TrayIcon newTrayIcon(final String imgFilename, final String appName,
 		final PopupMenu systemTrayPopupMenu, final Map<String, ActionListener> actionListeners)
 	{
-		final Image image = Toolkit.getDefaultToolkit().getImage(imgFilename);
-		final TrayIcon trayIcon = new TrayIcon(image, appName, systemTrayPopupMenu);
-		for (final Map.Entry<String, ActionListener> actionListener : actionListeners.entrySet())
-		{
-			trayIcon.setActionCommand(actionListener.getKey());
-			trayIcon.addActionListener(actionListener.getValue());
-		}
-		return trayIcon;
+		return SystemTrayFactory.newTrayIcon(imgFilename, appName, systemTrayPopupMenu,
+			actionListeners);
 	}
+
 }

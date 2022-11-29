@@ -22,41 +22,20 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu;
+package io.github.astrapi69.swing.menu.factory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import javax.swing.JToolBar;
 
-import javax.swing.KeyStroke;
-
-import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
-import org.junit.jupiter.api.Test;
-
-public class KeyStrokeInfoTest
+public class JToolBarFactory
 {
-	@Test
-	public void test()
+
+	/**
+	 * Factory method for create a {@link JToolBar} object
+	 *
+	 * @return the {@link JToolBar} object
+	 */
+	public static JToolBar newJToolBar()
 	{
-		KeyStroke actual;
-		KeyStroke expected;
-		KeyStrokeInfo keyStrokeInfo;
-
-		keyStrokeInfo = KeyStrokeInfo.builder().keystrokeAsString("alt pressed F4").build();
-		actual = keyStrokeInfo.toKeyStroke();
-		expected = KeyStroke.getKeyStroke("alt pressed F4");
-		assertEquals(actual, expected);
-
-		keyStrokeInfo = KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F5"));
-
-		actual = keyStrokeInfo.toKeyStroke();
-		expected = KeyStroke.getKeyStroke("alt pressed F5");
-		assertEquals(actual, expected);
-
-
-		keyStrokeInfo.set(KeyStroke.getKeyStroke("ctrl pressed D"));
-
-		actual = keyStrokeInfo.toKeyStroke();
-		expected = KeyStroke.getKeyStroke("ctrl pressed D");
-		assertEquals(actual, expected);
-
+		return new JToolBar();
 	}
 }
