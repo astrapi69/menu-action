@@ -11,11 +11,13 @@ dependencies {
     implementation("io.github.astrapi69:xstream-extensions:$xstreamExtensionsVersion")
     testCompileOnly("org.projectlombok:lombok:$lombokVersion")
     testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    testImplementation("org.assertj:assertj-swing:$assertjSwingVersion")
     testImplementation("io.github.astrapi69:silly-io:$sillyIoVersion")
     testImplementation("io.github.astrapi69:file-worker:$fileWorkerVersion")
     testImplementation("io.github.astrapi69:visitor:$designPatternsVersion")
     testImplementation("io.github.astrapi69:data-api:$dataApiVersion")
     testImplementation("org.meanbean:meanbean:$meanbeanVersion")
+    testImplementation("io.github.astrapi69:junit-jupiter-extensions:$junitJupiterExtensionsVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 }
