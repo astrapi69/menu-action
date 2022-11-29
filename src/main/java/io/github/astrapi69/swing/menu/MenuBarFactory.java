@@ -55,7 +55,7 @@ public class MenuBarFactory
 			actionListenerMap, menuMap, menuItemMap, menuBarMap));
 		root.accept(menuInfoLongBaseTreeNode -> visitAndAddToMenu(menuInfoLongBaseTreeNode, menuMap,
 			menuItemMap, menuBarMap));
-		return menuBarMap.get(BaseMenuId.MENU_BAR);
+		return menuBarMap.get(BaseMenuId.MENU_BAR.propertiesKey());
 	}
 
 	public static BaseTreeNode<MenuInfo, Long> buildRootTreeNode(final @NonNull String xml)
