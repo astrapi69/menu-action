@@ -1,13 +1,23 @@
 ## Change log
 ----------------------
 
-Version 2.3-SNAPSHOT
+Version 2.3
 -------------
 
 ADDED:
 
-- new enum class for the menu type
+- new enum class MenuType for the menu type
+- new enum class BaseMenuId for the menu ids
 - new class MenuBarFactory created for create a JMenuBar over xml
+- new dependency io.github.astrapi69:gen-tree in version 7
+- new dependency io.github.astrapi69:visitor in version 6
+- new dependency io.github.astrapi69:id-generate in version 1.1
+- new dependency io.github.astrapi69:xstream-extensions in version 1.1
+- new factory classes for all subtypes of MenuElement created
+
+CHANGED:
+
+- tagged MenuFactory as deprecated and moved all factory methods to appropriate factory classes
 
 Version 2.2
 -------------
