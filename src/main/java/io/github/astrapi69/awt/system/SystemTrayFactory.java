@@ -24,10 +24,16 @@
  */
 package io.github.astrapi69.awt.system;
 
-import io.github.astrapi69.swing.menu.MenuFactory;
-import lombok.NonNull;
+import java.awt.AWTException;
+import java.awt.Image;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.event.ActionListener;
+import java.util.Map;
 
-import java.awt.*;
+import lombok.NonNull;
 
 /**
  * The class {@link SystemTrayFactory} provides factory methods for create system tray Menu
@@ -35,16 +41,55 @@ import java.awt.*;
 public class SystemTrayFactory
 {
 
+	/**
+	 * Factory method for create a <code>SystemTray</code> from the given {@link TrayIcon} object
+	 * and the given {@link PopupMenu} object
+	 *
+	 * @param trayIcon
+	 *            the tray icon of the <code>SystemTray</code>
+	 * @param popupMenu
+	 *            the tray popup menu of the <code>SystemTray</code>
+	 * @return the new {@link SystemTray} object
+	 * @throws AWTException
+	 *             is thrown if the desktop system tray is missing
+	 */
 	public static SystemTray newSystemTray(final @NonNull TrayIcon trayIcon,
-		final @NonNull PopupMenu popup) throws AWTException
+		final @NonNull PopupMenu popupMenu) throws AWTException
 	{
 		if (!SystemTray.isSupported())
 		{
 			throw new RuntimeException("SystemTray is not supported");
 		}
 		final SystemTray systemTray = SystemTray.getSystemTray();
-		trayIcon.setPopupMenu(popup);
+		trayIcon.setPopupMenu(popupMenu);
 		systemTray.add(trayIcon);
 		return systemTray;
 	}
+
+	/**
+	 * Factory method for create a {@link TrayIcon} object
+	 *
+	 * @param imgFilename
+	 *            the img filename
+	 * @param appName
+	 *            the app name
+	 * @param systemTrayPopupMenu
+	 *            the system tray popup menu
+	 * @param actionListeners
+	 *            the action listeners
+	 * @return the new {@link TrayIcon}
+	 */
+	public static TrayIcon newTrayIcon(final String imgFilename, final String appName,
+		final PopupMenu systemTrayPopupMenu, final Map<String, ActionListener> actionListeners)
+	{
+		final Image image = Toolkit.getDefaultToolkit().getImage(imgFilename);
+		final TrayIcon trayIcon = new TrayIcon(image, appName, systemTrayPopupMenu);
+		for (final Map.Entry<String, ActionListener> actionListener : actionListeners.entrySet())
+		{
+			trayIcon.setActionCommand(actionListener.getKey());
+			trayIcon.addActionListener(actionListener.getValue());
+		}
+		return trayIcon;
+	}
+
 }

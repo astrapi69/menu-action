@@ -40,9 +40,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.MenuElement;
 
+import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
+import io.github.astrapi69.swing.menu.factory.JMenuFactory;
+import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
+import io.github.astrapi69.swing.menu.factory.JToolBarFactory;
 import org.junit.jupiter.api.Test;
 
-import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
+import io.github.astrapi69.swing.menu.model.JMenuItemInfo;
 
 class ParentMenuResolverTest
 {
@@ -62,7 +66,7 @@ class ParentMenuResolverTest
 		expected = Optional.of(JMenu.class);
 		assertEquals(expected, actual);
 		// new scenario ...
-		menuBar = MenuFactory.newJMenuBar();
+		menuBar = JMenuBarFactory.newJMenuBar();
 		actual = ParentMenuResolver.getMenuElementType(menuBar);
 		expected = Optional.of(JMenuBar.class);
 		assertEquals(expected, actual);
@@ -72,7 +76,7 @@ class ParentMenuResolverTest
 		expected = Optional.of(JMenuItem.class);
 		assertEquals(expected, actual);
 		// new scenario ...
-		popupMenu = MenuFactory.newJPopupMenu();
+		popupMenu = JPopupMenuFactory.newJPopupMenu();
 		actual = ParentMenuResolver.getMenuElementType(popupMenu);
 		expected = Optional.of(JPopupMenu.class);
 		assertEquals(expected, actual);
@@ -91,8 +95,8 @@ class ParentMenuResolverTest
 		Optional<Class<?>> parentType;
 
 		// new scenario parent is JMenuBar object ...
-		menuBar = MenuFactory.newJMenuBar();
-		menu = MenuFactory.newJMenu("File", 'f');
+		menuBar = JMenuBarFactory.newJMenuBar();
+		menu = JMenuFactory.newJMenu("File", 'f');
 		menuBar.add(menu);
 
 		root = ParentMenuResolver.getRootJMenu(menu);
@@ -102,7 +106,7 @@ class ParentMenuResolverTest
 		expected = menu;
 		assertEquals(expected, actual);
 
-		foo = MenuFactory.newJMenu("Foo");
+		foo = JMenuFactory.newJMenu("Foo");
 		menu.add(foo);
 
 		root = ParentMenuResolver.getRootJMenu(foo);
@@ -113,8 +117,8 @@ class ParentMenuResolverTest
 		assertEquals(expected, actual);
 
 		// new scenario parent is JMenu object ...
-		menu = MenuFactory.newJMenu("File", 'f');
-		foo = MenuFactory.newJMenu("Foo");
+		menu = JMenuFactory.newJMenu("File", 'f');
+		foo = JMenuFactory.newJMenu("Foo");
 		menu.add(foo);
 
 		root = ParentMenuResolver.getRootJMenu(foo);
@@ -124,7 +128,7 @@ class ParentMenuResolverTest
 		assertEquals(expected, actual);
 
 		// new scenario JMenu object has no parent ...
-		menu = MenuFactory.newJMenu("File", 'f');
+		menu = JMenuFactory.newJMenu("File", 'f');
 
 		root = ParentMenuResolver.getRootJMenu(menu);
 		assertTrue(root.isPresent());
@@ -132,7 +136,7 @@ class ParentMenuResolverTest
 		expected = menu;
 		assertEquals(expected, actual);
 		// new scenario parent is JToolBar object ...
-		toolBar = MenuFactory.newJToolBar();
+		toolBar = JToolBarFactory.newJToolBar();
 		toolBar.add(menu);
 
 		root = ParentMenuResolver.getRootJMenu(menu);
@@ -140,7 +144,7 @@ class ParentMenuResolverTest
 		actual = root.get();
 		expected = menu;
 		assertEquals(expected, actual);
-		foo = MenuFactory.newJMenu("Foo");
+		foo = JMenuFactory.newJMenu("Foo");
 		menu.add(foo);
 
 		root = ParentMenuResolver.getRootJMenu(foo);
@@ -168,8 +172,8 @@ class ParentMenuResolverTest
 		Optional<Class<?>> parentType;
 
 		// new scenario parent is JMenuBar object ...
-		menuBar = MenuFactory.newJMenuBar();
-		menu = MenuFactory.newJMenu("File", 'f');
+		menuBar = JMenuBarFactory.newJMenuBar();
+		menu = JMenuFactory.newJMenu("File", 'f');
 		menuBar.add(menu);
 
 		root = ParentMenuResolver.getRoot(menu);
@@ -179,7 +183,7 @@ class ParentMenuResolverTest
 		expected = menuBar;
 		assertEquals(expected, actual);
 
-		foo = MenuFactory.newJMenu("Foo");
+		foo = JMenuFactory.newJMenu("Foo");
 		menu.add(foo);
 
 		root = ParentMenuResolver.getRoot(foo);
@@ -190,8 +194,8 @@ class ParentMenuResolverTest
 		assertEquals(expected, actual);
 
 		// new scenario parent is JMenu object ...
-		menu = MenuFactory.newJMenu("File", 'f');
-		foo = MenuFactory.newJMenu("Foo");
+		menu = JMenuFactory.newJMenu("File", 'f');
+		foo = JMenuFactory.newJMenu("Foo");
 		menu.add(foo);
 
 		root = ParentMenuResolver.getRoot(foo);
@@ -201,7 +205,7 @@ class ParentMenuResolverTest
 		assertEquals(expected, actual);
 
 		// new scenario JMenu object has no parent ...
-		menu = MenuFactory.newJMenu("File", 'f');
+		menu = JMenuFactory.newJMenu("File", 'f');
 
 		root = ParentMenuResolver.getRoot(menu);
 		assertTrue(root.isPresent());
@@ -209,7 +213,7 @@ class ParentMenuResolverTest
 		expected = menu;
 		assertEquals(expected, actual);
 		// new scenario parent is JToolBar object ...
-		toolBar = MenuFactory.newJToolBar();
+		toolBar = JToolBarFactory.newJToolBar();
 		toolBar.add(menu);
 
 		root = ParentMenuResolver.getRoot(menu);
@@ -217,7 +221,7 @@ class ParentMenuResolverTest
 		actual = root.get();
 		expected = toolBar;
 		assertEquals(expected, actual);
-		foo = MenuFactory.newJMenu("Foo");
+		foo = JMenuFactory.newJMenu("Foo");
 		menu.add(foo);
 
 		root = ParentMenuResolver.getRoot(foo);
@@ -242,12 +246,12 @@ class ParentMenuResolverTest
 		List<MenuElement> allMenuElements;
 
 		// new scenario menu has no JMenu as parent so empty Optional is expected ...
-		menuBar = MenuFactory.newJMenuBar();
-		menu = MenuFactory.newJMenu("File", 'f');
+		menuBar = JMenuBarFactory.newJMenuBar();
+		menu = JMenuFactory.newJMenu("File", 'f');
 		menuBar.add(menu);
-		foo = MenuFactory.newJMenu("Foo");
+		foo = JMenuFactory.newJMenu("Foo");
 		menu.add(foo);
-		bar = MenuFactory.newJMenu("bar");
+		bar = JMenuFactory.newJMenu("bar");
 		foo.add(bar);
 		allMenuElements = ParentMenuResolver.getAllMenuElements(menuBar, true);
 		assertNotNull(allMenuElements);
@@ -268,8 +272,8 @@ class ParentMenuResolverTest
 		Optional<JMenu> parent;
 		Optional<Class<?>> parentType;
 		// new scenario menu has no JMenu as parent so empty Optional is expected ...
-		menuBar = MenuFactory.newJMenuBar();
-		menu = MenuFactory.newJMenu("File", 'f');
+		menuBar = JMenuBarFactory.newJMenuBar();
+		menu = JMenuFactory.newJMenu("File", 'f');
 		menuBar.add(menu);
 
 		parentType = ParentMenuResolver.getParentType(menu);
@@ -280,7 +284,7 @@ class ParentMenuResolverTest
 		parent = ParentMenuResolver.getParentMenu(menu);
 		assertFalse(parent.isPresent());
 		// new scenario test if foo menu has as parent menu
-		foo = MenuFactory.newJMenu("Foo");
+		foo = JMenuFactory.newJMenu("Foo");
 		menu.add(foo);
 		parent = ParentMenuResolver.getParentMenu(foo);
 		assertTrue(parent.isPresent());

@@ -24,9 +24,12 @@
  */
 package io.github.astrapi69.swing.menu.model;
 
-import io.github.astrapi69.swing.menu.builder.JMenuItemInfo;
+import java.awt.event.ActionListener;
+
+import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +37,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import io.github.astrapi69.swing.menu.KeyStrokeInfo;
-
-import java.awt.event.ActionListener;
 
 /**
  * The class {@link MenuInfo} is intended for store the information of a menu and on need to restore
@@ -59,12 +59,16 @@ public class MenuInfo
 	KeyStrokeInfo keyStrokeInfo;
 	String name;
 	String actionId;
-	boolean item;
+	@Builder.Default
+	MenuType type = MenuType.MENU;
 
 	public JMenuItemInfo toJMenuItemInfo(ActionListener actionListener)
 	{
-		return JMenuItemInfo.builder().actionListener(actionListener).text(this.text)
-			.mnemonic(this.mnemonic).keyStroke(this.keyStrokeInfo.toKeyStroke()).name(this.name)
-			.build();
+		return this.keyStrokeInfo != null
+			? JMenuItemInfo.builder().actionListener(actionListener).text(this.text)
+				.mnemonic(this.mnemonic).keyStroke(this.keyStrokeInfo.toKeyStroke()).name(this.name)
+				.build()
+			: JMenuItemInfo.builder().actionListener(actionListener).text(this.text)
+				.mnemonic(this.mnemonic).name(this.name).build();
 	}
 }

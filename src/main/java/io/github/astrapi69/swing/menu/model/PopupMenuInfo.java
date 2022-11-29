@@ -22,40 +22,31 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu;
+package io.github.astrapi69.swing.menu.model;
 
-import org.junit.jupiter.api.Test;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class KeyStrokeInfoTest
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class PopupMenuInfo
 {
-	@Test
-	public void test()
-	{
-		KeyStroke actual;
-		KeyStroke expected;
-		KeyStrokeInfo keyStrokeInfo;
-
-		keyStrokeInfo = KeyStrokeInfo.builder().keystrokeAsString("alt pressed F4").build();
-		actual = keyStrokeInfo.toKeyStroke();
-		expected = KeyStroke.getKeyStroke("alt pressed F4");
-		assertEquals(actual, expected);
-
-		keyStrokeInfo = KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F5"));
-
-		actual = keyStrokeInfo.toKeyStroke();
-		expected = KeyStroke.getKeyStroke("alt pressed F5");
-		assertEquals(actual, expected);
-
-
-		keyStrokeInfo.set(KeyStroke.getKeyStroke("ctrl pressed D"));
-
-		actual = keyStrokeInfo.toKeyStroke();
-		expected = KeyStroke.getKeyStroke("ctrl pressed D");
-		assertEquals(actual, expected);
-
-	}
+	ActionListener actionListener;
+	String command;
+	String label;
 }
