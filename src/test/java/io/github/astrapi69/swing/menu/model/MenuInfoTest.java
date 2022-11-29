@@ -157,18 +157,6 @@ public class MenuInfoTest
 
 		final JMenuBar menuBar = MenuBarFactory.buildMenuBar(root, actionListenerMap);
 		assertNotNull(menuBar);
-
-		final Map<String, JMenu> menuMap = new HashMap<>();
-		final Map<String, JMenuItem> menuItemMap = new HashMap<>();
-		final Map<String, JMenuBar> menuBarMap = new HashMap<>();
-
-		root.accept(menuInfoLongBaseTreeNode -> MenuBarFactory.visitAndAddToMap(
-			menuInfoLongBaseTreeNode, actionListenerMap, menuMap, menuItemMap, menuBarMap));
-		root.accept(menuInfoLongBaseTreeNode -> MenuBarFactory
-			.visitAndAddToMenu(menuInfoLongBaseTreeNode, menuMap, menuItemMap, menuBarMap));
-		assertEquals(menuMap.size(), 1);
-		assertEquals(menuBarMap.size(), 1);
-		assertEquals(menuItemMap.size(), 2);
 	}
 
 }
