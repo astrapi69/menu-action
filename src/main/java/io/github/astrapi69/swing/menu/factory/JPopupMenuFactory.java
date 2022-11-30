@@ -24,17 +24,14 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import io.github.astrapi69.swing.menu.model.MenuItemInfo;
-import io.github.astrapi69.swing.menu.model.PopupMenuInfo;
-import io.github.astrapi69.swing.menu.popup.listener.PopupListener;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
+import java.awt.*;
 import java.awt.event.MouseListener;
 import java.util.List;
+
+import javax.swing.*;
+
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
+import io.github.astrapi69.swing.menu.popup.listener.PopupListener;
 
 /**
  * A factory {@link JPopupMenuFactory} provides factory methods for create JPopupMenu objects
@@ -82,9 +79,8 @@ public class JPopupMenuFactory
 	}
 
 	/**
-	 * Factory method for create a <code>JPopupMenu</code> that will be add a
-	 * <code>MouseListener</code> to the given <code>Component</code> and an array of
-	 * <code>JMenuItem</code> that will be added to the popup.
+	 * Factory method for create a new {@link JPopupMenu} object that will be added to the given
+	 * <code>Component</code> and an array of <code>JMenuItem</code> that will be added to the popup
 	 *
 	 * @param label
 	 *            the label
@@ -97,11 +93,57 @@ public class JPopupMenuFactory
 	public static JPopupMenu newJPopupMenu(final String label, final Component component,
 		final JMenuItem... items)
 	{
+		return newJPopupMenu(component, label, items);
+	}
+
+	/**
+	 * Factory method for create a new {@link JPopupMenu} object that will be added to the given
+	 * <code>Component</code> and an array of <code>JMenuItem</code> that will be added to the popup
+	 *
+	 * @param component
+	 *            the component to add the <code>JPopupMenu</code>
+	 * @param label
+	 *            the label from the <code>JPopupMenu</code>
+	 * @param items
+	 *            the <code>JMenuItem</code>s
+	 * @return the new {@link JPopupMenu} object
+	 */
+	public static JPopupMenu newJPopupMenu(final Component component, final String label,
+		final JMenuItem... items)
+	{
 		// Create the popup menu.
 		final JPopupMenu popup = newJPopupMenu(label);
 		for (final JMenuItem menuItem : items)
 		{
 			popup.add(menuItem);
+		}
+		// Add listener to the component so the popup menu can come up.
+		final MouseListener popupListener = new PopupListener(popup);
+		component.addMouseListener(popupListener);
+		return popup;
+	}
+
+	/**
+	 * Factory method for create a new {@link JPopupMenu} object that will be added to the given
+	 * <code>Component</code> and an array of <code>JMenuItem</code> that will be added to the
+	 * popup.
+	 *
+	 * @param component
+	 *            the component to add the <code>JPopupMenu</code>
+	 * @param label
+	 *            the label from the <code>JPopupMenu</code>
+	 * @param items
+	 *            the <code>JMenuItem</code>s
+	 * @return the new {@link JPopupMenu} object
+	 */
+	public static JPopupMenu newJPopupMenu(final Component component, final String label,
+		final MenuItemInfo... items)
+	{
+		// Create the popup menu.
+		final JPopupMenu popup = newJPopupMenu(label);
+		for (final MenuItemInfo menuItem : items)
+		{
+			popup.add(menuItem.toJMenuItem());
 		}
 		// Add listener to the component so the popup menu can come up.
 		final MouseListener popupListener = new PopupListener(popup);
