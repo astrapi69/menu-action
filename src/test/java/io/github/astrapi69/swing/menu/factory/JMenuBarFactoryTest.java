@@ -62,6 +62,10 @@ public class JMenuBarFactoryTest
 		BaseTreeNode<MenuInfo, Long> fileTreeNode;
 		BaseTreeNode<MenuInfo, Long> toggleFullscreenTreeNode;
 		BaseTreeNode<MenuInfo, Long> exitTreeNode;
+		BaseTreeNode<MenuInfo, Long> helpTreeNode;
+		BaseTreeNode<MenuInfo, Long> helpContentTreeNode;
+		MenuInfo helpContentMenuInfo;
+		MenuInfo helpMenuInfo;
 		MenuInfo menuBarInfo;
 		MenuInfo fileMenuInfo;
 		MenuInfo toggleFullscreenMenuInfo;
@@ -80,10 +84,11 @@ public class JMenuBarFactoryTest
 			.value(menuBarInfo).build();
 
 		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
-			.text("File").name(BaseMenuId.FILE.propertiesKey()).build();
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
+				.text("File").name(BaseMenuId.FILE.propertiesKey()).build();
 		fileTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(fileMenuInfo).build();
+				.value(fileMenuInfo).build();
+
 
 		toggleFullscreenMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('T'))
@@ -99,6 +104,18 @@ public class JMenuBarFactoryTest
 			.text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
 		exitTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
+
+		helpMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H'))
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
+				.text("Help").name(BaseMenuId.HELP.propertiesKey()).build();
+		helpTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+				.value(helpMenuInfo).build();
+		helpContentMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H'))
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
+				.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
+		helpContentTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+				.value(helpContentMenuInfo).build();
+		// TODO after add new tree nodes to menubar node create new xml...
 
 		menuBarTreeNode.addChild(fileTreeNode);
 		fileTreeNode.addChild(toggleFullscreenTreeNode);
