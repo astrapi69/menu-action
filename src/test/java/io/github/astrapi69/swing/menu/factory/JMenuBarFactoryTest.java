@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JMenuBarFactoryTest
 {
-
+	@Test
 	public void testBuildRootTreeNodeWithXml() throws IOException
 	{
 		final File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
