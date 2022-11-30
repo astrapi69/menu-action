@@ -41,6 +41,11 @@ public enum MenuType
 	MENU_BAR,
 
 	/**
+	 * Represents the toolbar type
+	 */
+	TOOL_BAR,
+
+	/**
 	 * Represents the default menu type
 	 */
 	MENU,

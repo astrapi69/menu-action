@@ -24,6 +24,7 @@
  */
 package io.github.astrapi69.swing.menu.model;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 import lombok.AccessLevel;
@@ -36,6 +37,13 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * The class {@link PopupMenuInfo} is a bean info class for construct a {@link PopupMenu} object
+ *
+ * @deprecated use instead bean info class <code>MenuItemInfo</code> <br>
+ *             <br>
+ *             Note: will be removed in next minor version
+ */
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -47,6 +55,6 @@ import lombok.experimental.FieldDefaults;
 public class PopupMenuInfo
 {
 	ActionListener actionListener;
-	String command;
+	String actionCommand;
 	String label;
 }

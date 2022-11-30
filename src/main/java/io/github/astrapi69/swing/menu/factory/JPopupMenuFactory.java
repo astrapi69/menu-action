@@ -24,6 +24,7 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import io.github.astrapi69.swing.menu.model.PopupMenuInfo;
 import io.github.astrapi69.swing.menu.popup.listener.PopupListener;
 
@@ -115,15 +116,12 @@ public class JPopupMenuFactory
 	 *            the list with the popup menu infos
 	 * @return the new {@link PopupMenu}
 	 */
-	public static PopupMenu newPopupMenu(final List<PopupMenuInfo> popupMenuInfos)
+	public static PopupMenu newPopupMenu(final List<MenuItemInfo> popupMenuInfos)
 	{
 		final PopupMenu popupMenu = new PopupMenu();
-		for (final PopupMenuInfo menuItemBean : popupMenuInfos)
+		for (final MenuItemInfo menuItemBean : popupMenuInfos)
 		{
-			final MenuItem menuItem = new MenuItem(menuItemBean.getLabel());
-			menuItem.setActionCommand(menuItemBean.getCommand());
-			menuItem.addActionListener(menuItemBean.getActionListener());
-			popupMenu.add(menuItem);
+			popupMenu.add(menuItemBean.toMenuItem());
 		}
 		return popupMenu;
 	}

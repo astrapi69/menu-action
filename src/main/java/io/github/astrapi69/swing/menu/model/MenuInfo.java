@@ -52,23 +52,28 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MenuInfo
 {
-	String actionCommand;
-	String label;
+	/**
+	 * The name of the menu component. The name is used as the id and the action command of the menu
+	 * component
+	 */
+	String name;
+
+	/**
+	 * The text of the menu component. The text is used as the label of the menu component
+	 */
 	String text;
 	Integer mnemonic;
 	KeyStrokeInfo keyStrokeInfo;
-	String name;
-	String actionId;
 	@Builder.Default
 	MenuType type = MenuType.MENU;
 
-	public JMenuItemInfo toJMenuItemInfo(ActionListener actionListener)
+	public MenuItemInfo toMenuItemInfo(ActionListener actionListener)
 	{
 		return this.keyStrokeInfo != null
-			? JMenuItemInfo.builder().actionListener(actionListener).text(this.text)
+			? MenuItemInfo.builder().actionListener(actionListener).text(this.text)
 				.mnemonic(this.mnemonic).keyStroke(this.keyStrokeInfo.toKeyStroke()).name(this.name)
 				.build()
-			: JMenuItemInfo.builder().actionListener(actionListener).text(this.text)
+			: MenuItemInfo.builder().actionListener(actionListener).text(this.text)
 				.mnemonic(this.mnemonic).name(this.name).build();
 	}
 }

@@ -24,11 +24,7 @@
  */
 package io.github.astrapi69.swing.menu;
 
-import java.awt.AWTException;
-import java.awt.Component;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +44,7 @@ import io.github.astrapi69.swing.menu.factory.JToolBarFactory;
 import io.github.astrapi69.swing.menu.model.PopupMenuInfo;
 import lombok.NonNull;
 import io.github.astrapi69.awt.system.SystemTrayFactory;
-import io.github.astrapi69.swing.menu.model.JMenuItemInfo;
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 
 /**
  * A factory {@link MenuFactory} provides factory methods for create Menu and JToolbar objects
@@ -102,7 +98,7 @@ public class MenuFactory
 	 *             Note: will be removed in next minor version
 	 */
 	@Deprecated
-	public static JMenu newJMenu(final @NonNull JMenuItemInfo menuItemInfo)
+	public static JMenu newJMenu(final @NonNull MenuItemInfo menuItemInfo)
 	{
 		return JMenuFactory.newJMenu(menuItemInfo);
 	}
@@ -232,7 +228,7 @@ public class MenuFactory
 	 *             Note: will be removed in next minor version
 	 */
 	@Deprecated
-	public static JMenuItem newJMenuItem(final @NonNull JMenuItemInfo menuItemInfo)
+	public static JMenuItem newJMenuItem(final @NonNull MenuItemInfo menuItemInfo)
 	{
 		return JMenuItemFactory.newJMenuItem(menuItemInfo);
 	}
@@ -508,7 +504,15 @@ public class MenuFactory
 	@Deprecated
 	public static PopupMenu newPopupMenu(final List<PopupMenuInfo> menuItemBeans)
 	{
-		return JPopupMenuFactory.newPopupMenu(menuItemBeans);
+		final PopupMenu popupMenu = new PopupMenu();
+		for (final PopupMenuInfo menuItemBean : menuItemBeans)
+		{
+			final MenuItem menuItem = new MenuItem(menuItemBean.getLabel());
+			menuItem.setActionCommand(menuItemBean.getActionCommand());
+			menuItem.addActionListener(menuItemBean.getActionListener());
+			popupMenu.add(menuItem);
+		}
+		return popupMenu;
 	}
 
 	/**

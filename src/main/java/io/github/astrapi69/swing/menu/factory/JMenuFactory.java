@@ -30,7 +30,7 @@ import javax.swing.JMenu;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import lombok.NonNull;
-import io.github.astrapi69.swing.menu.model.JMenuItemInfo;
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 
 /**
  * A factory {@link JMenuFactory} provides factory methods for create JMenu objects
@@ -47,7 +47,7 @@ public class JMenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text)
 	{
-		return JMenuItemInfo.builder().text(text).build().toJMenu();
+		return MenuItemInfo.builder().text(text).build().toJMenu();
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class JMenuFactory
 	 *            the information for build a <code>JMenu</code>.
 	 * @return the new {@link JMenu} object
 	 */
-	public static JMenu newJMenu(final @NonNull JMenuItemInfo menuItemInfo)
+	public static JMenu newJMenu(final @NonNull MenuItemInfo menuItemInfo)
 	{
 		return menuItemInfo.toJMenu();
 	}
@@ -73,7 +73,7 @@ public class JMenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text, final int mnemonic)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).build().toJMenu();
+		return MenuItemInfo.builder().text(text).mnemonic(mnemonic).build().toJMenu();
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class JMenuFactory
 	public static JMenu newJMenu(final @NonNull String text, final int mnemonic,
 		final @NonNull ActionListener actionListener)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(mnemonic).actionListener(actionListener)
+		return MenuItemInfo.builder().text(text).mnemonic(mnemonic).actionListener(actionListener)
 			.build().toJMenu();
 	}
 
@@ -105,7 +105,7 @@ public class JMenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text, final char mnemonic)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
+		return MenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
 			.build().toJMenu();
 	}
 
@@ -123,7 +123,7 @@ public class JMenuFactory
 	public static JMenu newJMenu(final @NonNull String text, final char mnemonic,
 		final @NonNull ActionListener actionListener)
 	{
-		return JMenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
+		return MenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
 			.actionListener(actionListener).build().toJMenu();
 	}
 

@@ -24,6 +24,30 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-public class MenuBarFactoryTest
+import io.github.astrapi69.file.create.FileFactory;
+import io.github.astrapi69.file.read.ReadFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.swing.menu.model.MenuInfo;
+import io.github.astrapi69.tree.BaseTreeNode;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class JMenuBarFactoryTest
 {
+
+	public void testBuildRootTreeNodeWithXml() throws IOException
+	{
+		final File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
+		File xmlFile = FileFactory.newFileQuietly(srcTestResourcesDir, "app-menu.xml");
+		final String xml = ReadFileExtensions.fromFile(xmlFile);
+		final BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode = JMenuBarFactory
+			.buildRootTreeNode(xml);
+		assertNotNull(menuInfoLongBaseTreeNode);
+		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
+	}
 }

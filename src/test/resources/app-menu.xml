@@ -6,8 +6,7 @@
             <parentId class="long">1</parentId>
             <childrenIds/>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
-                <actionCommand>global.menu.file.toggle.fullscreen</actionCommand>
-                <label>Toggle Fullscreen</label>
+                <name>global.menu.file.toggle.fullscreen</name>
                 <text>Toggle Fullscreen</text>
                 <mnemonic>84</mnemonic>
                 <keyStrokeInfo>
@@ -16,8 +15,6 @@
                     <onKeyRelease>false</onKeyRelease>
                     <keystrokeAsString>alt pressed F11</keystrokeAsString>
                 </keyStrokeInfo>
-                <name>global.menu.file.toggle.fullscreen</name>
-                <actionId>global.menu.file.toggle.fullscreen</actionId>
                 <type>MENU_ITEM</type>
             </value>
             <leaf>true</leaf>
@@ -30,8 +27,7 @@
             <parentId class="long">1</parentId>
             <childrenIds/>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
-                <actionCommand>global.menu.file.exit</actionCommand>
-                <label>Exit</label>
+                <name>global.menu.file.exit</name>
                 <text>Exit</text>
                 <mnemonic>69</mnemonic>
                 <keyStrokeInfo>
@@ -40,8 +36,6 @@
                     <onKeyRelease>false</onKeyRelease>
                     <keystrokeAsString>alt pressed F4</keystrokeAsString>
                 </keyStrokeInfo>
-                <name>global.menu.file.exit</name>
-                <actionId>global.menu.file.exit</actionId>
                 <type>MENU_ITEM</type>
             </value>
             <leaf>true</leaf>
@@ -57,8 +51,7 @@
                 <long>3</long>
             </childrenIds>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
-                <actionCommand>global.menu.file</actionCommand>
-                <label>File</label>
+                <name>global.menu.file</name>
                 <text>File</text>
                 <mnemonic>70</mnemonic>
                 <keyStrokeInfo>
@@ -67,8 +60,6 @@
                     <onKeyRelease>false</onKeyRelease>
                     <keystrokeAsString>alt pressed F</keystrokeAsString>
                 </keyStrokeInfo>
-                <name>global.menu.file</name>
-                <actionId>global.menu.file</actionId>
                 <type>MENU</type>
             </value>
             <leaf>false</leaf>
@@ -82,9 +73,7 @@
                 <long>1</long>
             </childrenIds>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
-                <actionCommand>global.menu.bar</actionCommand>
                 <name>global.menu.bar</name>
-                <actionId>global.menu.bar</actionId>
                 <type>MENU_BAR</type>
             </value>
             <leaf>false</leaf>
