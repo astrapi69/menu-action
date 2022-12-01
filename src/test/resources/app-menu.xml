@@ -69,11 +69,81 @@
         </io.github.astrapi69.tree.TreeIdNode>
     </entry>
     <entry>
+        <long>5</long>
+        <io.github.astrapi69.tree.TreeIdNode>
+            <id class="long">5</id>
+            <parentId class="long">4</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.help.content</name>
+                <text>Help Content</text>
+                <mnemonic>67</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>72</keyCode>
+                    <modifiers>650</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>ctrl alt pressed H</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>6</long>
+        <io.github.astrapi69.tree.TreeIdNode>
+            <id class="long">6</id>
+            <parentId class="long">4</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.help.info</name>
+                <text>Info</text>
+                <mnemonic>73</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>73</keyCode>
+                    <modifiers>130</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>ctrl pressed I</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>4</long>
+        <io.github.astrapi69.tree.TreeIdNode>
+            <id class="long">4</id>
+            <parentId class="long">0</parentId>
+            <childrenIds>
+                <long>5</long>
+                <long>6</long>
+            </childrenIds>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.help</name>
+                <text>Help</text>
+                <mnemonic>72</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>72</keyCode>
+                    <modifiers>520</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>alt pressed H</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.tree.TreeIdNode>
+    </entry>
+    <entry>
         <long>0</long>
         <io.github.astrapi69.tree.TreeIdNode>
             <id class="long">0</id>
             <childrenIds>
                 <long>1</long>
+                <long>4</long>
             </childrenIds>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.bar</name>

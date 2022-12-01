@@ -32,6 +32,7 @@ import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.tree.BaseTreeNode;
 import io.github.astrapi69.tree.TreeIdNode;
 import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
+import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
 import lombok.NonNull;
 
@@ -70,12 +71,6 @@ public class JMenuBarFactory
 		return menuBarMap.get(BaseMenuId.MENU_BAR.propertiesKey());
 	}
 
-	public static BaseTreeNode<MenuInfo, Long> buildRootTreeNode(final @NonNull String xml)
-	{
-		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = RuntimeExceptionDecorator
-			.decorate(() -> XmlToObjectExtensions.toObject(xml));
-		return BaseTreeNodeTransformer.getRoot(treeIdNodeMap);
-	}
 
 	public static void visitAndAddToMenu(
 		final @NonNull BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode,

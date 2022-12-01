@@ -35,6 +35,7 @@ import java.util.Map;
 
 import javax.swing.*;
 
+import io.github.astrapi69.swing.menu.model.transform.MenuInfoTreeNodeConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -64,8 +65,10 @@ public class JMenuBarFactoryTest
 		BaseTreeNode<MenuInfo, Long> exitTreeNode;
 		BaseTreeNode<MenuInfo, Long> helpTreeNode;
 		BaseTreeNode<MenuInfo, Long> helpContentTreeNode;
+		BaseTreeNode<MenuInfo, Long> infoTreeNode;
 		MenuInfo helpContentMenuInfo;
 		MenuInfo helpMenuInfo;
+		MenuInfo infoMenuInfo;
 		MenuInfo menuBarInfo;
 		MenuInfo fileMenuInfo;
 		MenuInfo toggleFullscreenMenuInfo;
@@ -84,11 +87,10 @@ public class JMenuBarFactoryTest
 			.value(menuBarInfo).build();
 
 		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F'))
-				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
-				.text("File").name(BaseMenuId.FILE.propertiesKey()).build();
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
+			.text("File").name(BaseMenuId.FILE.propertiesKey()).build();
 		fileTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-				.value(fileMenuInfo).build();
-
+			.value(fileMenuInfo).build();
 
 		toggleFullscreenMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('T'))
@@ -106,27 +108,35 @@ public class JMenuBarFactoryTest
 			.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
 
 		helpMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H'))
-				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
-				.text("Help").name(BaseMenuId.HELP.propertiesKey()).build();
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
+			.text("Help").name(BaseMenuId.HELP.propertiesKey()).build();
 		helpTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-				.value(helpMenuInfo).build();
-		helpContentMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H'))
-				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
-				.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
+			.value(helpMenuInfo).build();
+		helpContentMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('C'))
+			.keyStrokeInfo(
+				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
+			.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
 		helpContentTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-				.value(helpContentMenuInfo).build();
-		// TODO after add new tree nodes to menubar node create new xml...
+			.value(helpContentMenuInfo).build();
+
+		infoMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('I'))
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed I")))
+			.text("Info").name(BaseMenuId.HELP_INFO.propertiesKey()).build();
+		infoTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+			.value(infoMenuInfo).build();
 
 		menuBarTreeNode.addChild(fileTreeNode);
+		menuBarTreeNode.addChild(helpTreeNode);
 		fileTreeNode.addChild(toggleFullscreenTreeNode);
 		fileTreeNode.addChild(exitTreeNode);
+		helpTreeNode.addChild(helpContentTreeNode);
+		helpTreeNode.addChild(infoTreeNode);
 
 		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), "app-menu.xml");
 		xml = ReadFileExtensions.fromFile(xmlFile);
-		menuInfoLongBaseTreeNode = JMenuBarFactory.buildRootTreeNode(xml);
+		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(xml);
 		assertNotNull(menuInfoLongBaseTreeNode);
 		assertEquals(menuInfoLongBaseTreeNode, menuBarTreeNode);
-
 	}
 
 	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
@@ -136,8 +146,8 @@ public class JMenuBarFactoryTest
 		final File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
 		File xmlFile = FileFactory.newFileQuietly(srcTestResourcesDir, "app-menu.xml");
 		final String xml = ReadFileExtensions.fromFile(xmlFile);
-		final BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode = JMenuBarFactory
-			.buildRootTreeNode(xml);
+		final BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter
+			.toMenuInfoTreeNode(xml);
 		assertNotNull(menuInfoLongBaseTreeNode);
 		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
 
@@ -148,6 +158,9 @@ public class JMenuBarFactoryTest
 		actionListenerMap.put(BaseMenuId.EXIT.propertiesKey(), new ExitApplicationAction("Exit"));
 		actionListenerMap.put(BaseMenuId.FILE.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.MENU_BAR.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_CONTENT.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_INFO.propertiesKey(), new NoAction());
 
 		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
 			actionListenerMap);
