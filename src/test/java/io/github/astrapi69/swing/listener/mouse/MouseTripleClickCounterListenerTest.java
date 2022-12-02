@@ -22,33 +22,45 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.browser;
+package io.github.astrapi69.swing.listener.mouse;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.awt.event.MouseEvent;
 
-import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import javax.swing.JFrame;
+
+import io.github.astrapi69.window.adapter.CloseWindow;
 
 /**
- * The unit test class for the class {@link BrowserControlExtensions}
+ * The unit test class for the class {@link MouseTripleClickCounterListener}
  */
-class BrowserControlExtensionsTest
+public class MouseTripleClickCounterListenerTest
 {
 
-	/**
-	 * Test display ur lon standard browser.
-	 */
-	@Test
-	@Disabled
-	public void testDisplayURLonStandardBrowser()
+
+	public static void main(String[] args)
 	{
+		JFrame frame = new JFrame("Test Double and Triple Click");
+		frame.addWindowListener(new CloseWindow());
+		frame.addMouseListener(new MouseTripleClickCounterListener()
+		{
+			public void singleClick(MouseEvent e)
+			{
+				System.out.println("single click");
+			}
 
-		final String url = "http://jaulp.sourceforge.net";
+			public void doubleClick(MouseEvent e)
+			{
+				System.out.println("double click");
+			}
 
-		final Object obj = BrowserControlExtensions.displayURLonStandardBrowser(null, url);
-
-		assertNotNull(obj);
-
+			@Override
+			public void tripleClick(MouseEvent mouseEvent)
+			{
+				System.out.println("triple click");
+			}
+		});
+		frame.setSize(200, 200);
+		frame.setVisible(true);
 	}
+
 }

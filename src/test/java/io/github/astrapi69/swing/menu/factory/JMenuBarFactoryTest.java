@@ -54,6 +54,9 @@ import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.tree.BaseTreeNode;
 
+/**
+ * The unit test class for the class {@link JMenuBarFactory}
+ */
 public class JMenuBarFactoryTest
 {
 	@Test
