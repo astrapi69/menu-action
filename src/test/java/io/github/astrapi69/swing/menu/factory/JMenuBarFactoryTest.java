@@ -91,51 +91,7 @@ public class JMenuBarFactoryTest
 		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
 			actionListenerMap);
 		assertNotNull(menuBar);
-
-		actionListenerMap = new HashMap<>();
-
-		MenuInfo menuBarInfo;
-		LongIdGenerator idGenerator;
-		idGenerator = LongIdGenerator.of(0L);
-		menuBarInfo = MenuInfoTreeNodeConverter.fromJMenuBar();
-		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
-
-		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(menuBarInfo).build();
-
-		MenuElement[] menuElements = menuBar.getSubElements();
-		assertEquals(menuElements.length, 2);
-		for (MenuElement menuElement : menuElements)
-		{
-			Component component = menuElement.getComponent();
-			MenuInfo menuInfo = null;
-			if (component instanceof JMenu)
-			{
-				JMenu menu = (JMenu) component;
-				menuInfo = MenuInfoTreeNodeConverter.fromJMenu(menu);
-				Map<String, ActionListener> finalActionListenerMap = actionListenerMap;
-				MenuInfo finalMenuInfo = menuInfo;
-				Arrays.stream(menu.getActionListeners()).findFirst().ifPresent(actionListener ->
-						finalActionListenerMap.put(finalMenuInfo.getName(), actionListener));
-			}
-			else if (component instanceof JMenuBar)
-			{
-				JMenuBar menu = (JMenuBar) component;
-				menuInfo = MenuInfoTreeNodeConverter.fromJMenuBar();
-			}
-			else if (component instanceof JMenuItem)
-			{
-				JMenuItem menu = (JMenuItem) component;
-				menuInfo = MenuInfoTreeNodeConverter.fromJMenuItem(menu);
-				Map<String, ActionListener> finalActionListenerMap = actionListenerMap;
-				MenuInfo finalMenuInfo = menuInfo;
-				Arrays.stream(menu.getActionListeners()).findFirst().ifPresent(actionListener ->
-						finalActionListenerMap.put(finalMenuInfo.getName(), actionListener));
-			}
-		}
-		System.out.println(menuElements);
 	}
-
 	@Test
 	public void testBuildRootTreeNodeWithXml() throws IOException
 	{
