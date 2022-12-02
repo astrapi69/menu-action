@@ -31,8 +31,8 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
-import lombok.NonNull;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
+import lombok.NonNull;
 
 /**
  * A factory {@link JMenuItemFactory} provides factory methods for create JMenuItem objects

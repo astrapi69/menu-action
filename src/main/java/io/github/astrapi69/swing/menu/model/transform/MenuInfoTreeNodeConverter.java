@@ -24,6 +24,10 @@
  */
 package io.github.astrapi69.swing.menu.model.transform;
 
+import java.util.Map;
+
+import javax.swing.*;
+
 import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
@@ -35,9 +39,6 @@ import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
 import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
 import lombok.NonNull;
-
-import javax.swing.*;
-import java.util.Map;
 
 public class MenuInfoTreeNodeConverter
 {
@@ -58,26 +59,26 @@ public class MenuInfoTreeNodeConverter
 		return xml;
 	}
 
-	public static MenuInfo fromJMenuBar() {
-		return MenuInfo.builder().type(MenuType.MENU_BAR)
-				.name(BaseMenuId.MENU_BAR.propertiesKey()).build();
+	public static MenuInfo fromJMenuBar()
+	{
+		return MenuInfo.builder().type(MenuType.MENU_BAR).name(BaseMenuId.MENU_BAR.propertiesKey())
+			.build();
 	}
-	public static MenuInfo fromJMenu(final @NonNull JMenu menu) {
-		return MenuInfo.builder()
-				.type(MenuType.MENU)
-				.name(menu.getName())
-				.text(menu.getText())
-				.mnemonic(menu.getMnemonic())
-				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator()))
-				.build();
+
+	public static MenuInfo fromJMenu(final @NonNull JMenu menu)
+	{
+		return menu.getAccelerator() != null ?
+				MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+						.mnemonic(menu.getMnemonic())
+						.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator())).build()
+				:MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+				.mnemonic(menu.getMnemonic()).build();
 	}
-	public static MenuInfo fromJMenuItem(final @NonNull JMenuItem menu) {
-		return MenuInfo.builder()
-				.type(MenuType.MENU)
-				.name(menu.getName())
-				.text(menu.getText())
-				.mnemonic(menu.getMnemonic())
-				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator()))
-				.build();
+
+	public static MenuInfo fromJMenuItem(final @NonNull JMenuItem menu)
+	{
+		return MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+			.mnemonic(menu.getMnemonic())
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator())).build();
 	}
 }

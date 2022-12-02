@@ -28,8 +28,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.swing.KeyStroke;
 
-import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import org.junit.jupiter.api.Test;
+
+import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 
 public class KeyStrokeInfoTest
 {

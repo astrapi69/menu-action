@@ -31,11 +31,11 @@ import java.util.logging.Level;
 import javax.swing.AbstractAction;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import io.github.astrapi69.swing.plaf.LookAndFeels;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.java.Log;
-import io.github.astrapi69.swing.plaf.LookAndFeels;
 
 /**
  * The base class {@link LookAndFeelAction} for change a look and feel from the application

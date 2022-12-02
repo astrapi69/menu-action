@@ -24,10 +24,16 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import io.github.astrapi69.swing.menu.model.MenuItemInfo;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.*;
+
 import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.tree.BaseTreeNode;
 import io.github.astrapi69.tree.TreeIdNode;
@@ -35,11 +41,6 @@ import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
 import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
 import lombok.NonNull;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A factory {@link JMenuBarFactory} provides factory methods for create JMenuBar objects

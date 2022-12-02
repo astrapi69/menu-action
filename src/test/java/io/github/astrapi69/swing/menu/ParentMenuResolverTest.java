@@ -40,12 +40,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.MenuElement;
 
+import org.junit.jupiter.api.Test;
+
 import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JToolBarFactory;
-import org.junit.jupiter.api.Test;
-
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 
 class ParentMenuResolverTest

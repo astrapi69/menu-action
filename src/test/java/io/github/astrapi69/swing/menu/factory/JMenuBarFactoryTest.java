@@ -27,16 +27,17 @@ package io.github.astrapi69.swing.menu.factory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.swing.*;
 
-import io.github.astrapi69.swing.menu.ParentMenuResolver;
-import io.github.astrapi69.swing.menu.model.transform.MenuInfoTreeNodeConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -49,10 +50,12 @@ import io.github.astrapi69.swing.action.ExitApplicationAction;
 import io.github.astrapi69.swing.action.NoAction;
 import io.github.astrapi69.swing.action.ToggleFullScreenAction;
 import io.github.astrapi69.swing.menu.MenuExtensions;
+import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
+import io.github.astrapi69.swing.menu.model.transform.MenuInfoTreeNodeConverter;
 import io.github.astrapi69.tree.BaseTreeNode;
 
 /**
@@ -63,19 +66,21 @@ public class JMenuBarFactoryTest
 
 
 	@Test
-	public void testBuildXmlFromMenubar() throws IOException {
+	public void testBuildXmlFromMenubar() throws IOException
+	{
+		Map<String, ActionListener> actionListenerMap;
 		final File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
 		File xmlFile = FileFactory.newFileQuietly(srcTestResourcesDir, "app-menu.xml");
 		final String xml = ReadFileExtensions.fromFile(xmlFile);
 		final BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter
-				.toMenuInfoTreeNode(xml);
+			.toMenuInfoTreeNode(xml);
 		assertNotNull(menuInfoLongBaseTreeNode);
 		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
 
-		final Map<String, ActionListener> actionListenerMap = new HashMap<>();
+		actionListenerMap = new HashMap<>();
 
 		actionListenerMap.put(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey(),
-				new ToggleFullScreenAction("Fullscreen", new JFrame()));
+			new ToggleFullScreenAction("Fullscreen", new JFrame()));
 		actionListenerMap.put(BaseMenuId.EXIT.propertiesKey(), new ExitApplicationAction("Exit"));
 		actionListenerMap.put(BaseMenuId.FILE.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.MENU_BAR.propertiesKey(), new NoAction());
@@ -84,8 +89,10 @@ public class JMenuBarFactoryTest
 		actionListenerMap.put(BaseMenuId.HELP_INFO.propertiesKey(), new NoAction());
 
 		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
-				actionListenerMap);
+			actionListenerMap);
 		assertNotNull(menuBar);
+
+		actionListenerMap = new HashMap<>();
 
 		MenuInfo menuBarInfo;
 		LongIdGenerator idGenerator;
@@ -94,15 +101,41 @@ public class JMenuBarFactoryTest
 		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
 
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-				.value(menuBarInfo).build();
+			.value(menuBarInfo).build();
 
 		MenuElement[] menuElements = menuBar.getSubElements();
 		assertEquals(menuElements.length, 2);
-		for(MenuElement menuElement: menuElements){
-			ParentMenuResolver.getMenuElementType(menuElement);
+		for (MenuElement menuElement : menuElements)
+		{
+			Component component = menuElement.getComponent();
+			MenuInfo menuInfo = null;
+			if (component instanceof JMenu)
+			{
+				JMenu menu = (JMenu) component;
+				menuInfo = MenuInfoTreeNodeConverter.fromJMenu(menu);
+				Map<String, ActionListener> finalActionListenerMap = actionListenerMap;
+				MenuInfo finalMenuInfo = menuInfo;
+				Arrays.stream(menu.getActionListeners()).findFirst().ifPresent(actionListener ->
+						finalActionListenerMap.put(finalMenuInfo.getName(), actionListener));
+			}
+			else if (component instanceof JMenuBar)
+			{
+				JMenuBar menu = (JMenuBar) component;
+				menuInfo = MenuInfoTreeNodeConverter.fromJMenuBar();
+			}
+			else if (component instanceof JMenuItem)
+			{
+				JMenuItem menu = (JMenuItem) component;
+				menuInfo = MenuInfoTreeNodeConverter.fromJMenuItem(menu);
+				Map<String, ActionListener> finalActionListenerMap = actionListenerMap;
+				MenuInfo finalMenuInfo = menuInfo;
+				Arrays.stream(menu.getActionListeners()).findFirst().ifPresent(actionListener ->
+						finalActionListenerMap.put(finalMenuInfo.getName(), actionListener));
+			}
 		}
-
+		System.out.println(menuElements);
 	}
+
 	@Test
 	public void testBuildRootTreeNodeWithXml() throws IOException
 	{

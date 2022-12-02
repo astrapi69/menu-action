@@ -29,8 +29,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
-import lombok.NonNull;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
+import lombok.NonNull;
 
 /**
  * A factory {@link JMenuFactory} provides factory methods for create JMenu objects

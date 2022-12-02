@@ -36,15 +36,15 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import io.github.astrapi69.awt.system.SystemTrayFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuItemFactory;
 import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JToolBarFactory;
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import io.github.astrapi69.swing.menu.model.PopupMenuInfo;
 import lombok.NonNull;
-import io.github.astrapi69.awt.system.SystemTrayFactory;
-import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 
 /**
  * A factory {@link MenuFactory} provides factory methods for create Menu and JToolbar objects

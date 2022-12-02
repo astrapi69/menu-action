@@ -26,8 +26,8 @@ package io.github.astrapi69.swing.action;
 
 import java.awt.Component;
 
-import lombok.Getter;
 import io.github.astrapi69.browser.BrowserControlExtensions;
+import lombok.Getter;
 
 /**
  * The abstract class {@link BaseOpenBrowserAction} for open a browser
