@@ -35,6 +35,7 @@ import java.util.Map;
 
 import javax.swing.*;
 
+import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.model.transform.MenuInfoTreeNodeConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -97,6 +98,9 @@ public class JMenuBarFactoryTest
 
 		MenuElement[] menuElements = menuBar.getSubElements();
 		assertEquals(menuElements.length, 2);
+		for(MenuElement menuElement: menuElements){
+			ParentMenuResolver.getMenuElementType(menuElement);
+		}
 
 	}
 	@Test
