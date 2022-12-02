@@ -89,7 +89,7 @@ public class JMenuBarFactoryTest
 		MenuInfo menuBarInfo;
 		LongIdGenerator idGenerator;
 		idGenerator = LongIdGenerator.of(0L);
-		menuBarInfo = MenuInfo.fromJMenuBar();
+		menuBarInfo = MenuInfoTreeNodeConverter.fromJMenuBar();
 		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
 
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
@@ -123,7 +123,7 @@ public class JMenuBarFactoryTest
 
 		idGenerator = LongIdGenerator.of(0L);
 
-		menuBarInfo = MenuInfo.fromJMenuBar();
+		menuBarInfo = MenuInfoTreeNodeConverter.fromJMenuBar();
 
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(menuBarInfo).build();

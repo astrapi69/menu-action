@@ -72,27 +72,4 @@ public class MenuInfo
 			: MenuItemInfo.builder().actionListener(actionListener).text(this.text)
 				.mnemonic(this.mnemonic).name(this.name).build();
 	}
-
-	public static MenuInfo fromJMenuBar() {
-		return MenuInfo.builder().type(MenuType.MENU_BAR)
-				.name(BaseMenuId.MENU_BAR.propertiesKey()).build();
-	}
-	public static MenuInfo fromJMenu(final @NonNull JMenu menu) {
-		return MenuInfo.builder()
-				.type(MenuType.MENU)
-				.name(menu.getName())
-				.text(menu.getText())
-				.mnemonic(menu.getMnemonic())
-				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator()))
-				.build();
-	}
-	public static MenuInfo fromJMenuItem(final @NonNull JMenuItem menu) {
-		return MenuInfo.builder()
-				.type(MenuType.MENU)
-				.name(menu.getName())
-				.text(menu.getText())
-				.mnemonic(menu.getMnemonic())
-				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator()))
-				.build();
-	}
 }
