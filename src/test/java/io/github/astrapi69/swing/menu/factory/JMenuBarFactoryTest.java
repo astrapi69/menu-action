@@ -59,6 +59,46 @@ import io.github.astrapi69.tree.BaseTreeNode;
  */
 public class JMenuBarFactoryTest
 {
+
+
+	@Test
+	public void testBuildXmlFromMenubar() throws IOException {
+		final File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
+		File xmlFile = FileFactory.newFileQuietly(srcTestResourcesDir, "app-menu.xml");
+		final String xml = ReadFileExtensions.fromFile(xmlFile);
+		final BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter
+				.toMenuInfoTreeNode(xml);
+		assertNotNull(menuInfoLongBaseTreeNode);
+		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
+
+		final Map<String, ActionListener> actionListenerMap = new HashMap<>();
+
+		actionListenerMap.put(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey(),
+				new ToggleFullScreenAction("Fullscreen", new JFrame()));
+		actionListenerMap.put(BaseMenuId.EXIT.propertiesKey(), new ExitApplicationAction("Exit"));
+		actionListenerMap.put(BaseMenuId.FILE.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.MENU_BAR.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_CONTENT.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_INFO.propertiesKey(), new NoAction());
+
+		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
+				actionListenerMap);
+		assertNotNull(menuBar);
+
+		MenuInfo menuBarInfo;
+		LongIdGenerator idGenerator;
+		idGenerator = LongIdGenerator.of(0L);
+		menuBarInfo = MenuInfo.fromJMenuBar();
+		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
+
+		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+				.value(menuBarInfo).build();
+
+		MenuElement[] menuElements = menuBar.getSubElements();
+		assertEquals(menuElements.length, 2);
+
+	}
 	@Test
 	public void testBuildRootTreeNodeWithXml() throws IOException
 	{
@@ -83,8 +123,7 @@ public class JMenuBarFactoryTest
 
 		idGenerator = LongIdGenerator.of(0L);
 
-		menuBarInfo = MenuInfo.builder().type(MenuType.MENU_BAR)
-			.name(BaseMenuId.MENU_BAR.propertiesKey()).build();
+		menuBarInfo = MenuInfo.fromJMenuBar();
 
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(menuBarInfo).build();
@@ -169,4 +208,5 @@ public class JMenuBarFactoryTest
 			actionListenerMap);
 		assertNotNull(menuBar);
 	}
+
 }

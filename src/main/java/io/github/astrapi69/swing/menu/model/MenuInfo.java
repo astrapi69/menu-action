@@ -26,17 +26,13 @@ package io.github.astrapi69.swing.menu.model;
 
 import java.awt.event.ActionListener;
 
+import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumtype.MenuType;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+
+import javax.swing.*;
 
 /**
  * The class {@link MenuInfo} is intended for store the information of a menu and on need to restore
@@ -75,5 +71,28 @@ public class MenuInfo
 				.build()
 			: MenuItemInfo.builder().actionListener(actionListener).text(this.text)
 				.mnemonic(this.mnemonic).name(this.name).build();
+	}
+
+	public static MenuInfo fromJMenuBar() {
+		return MenuInfo.builder().type(MenuType.MENU_BAR)
+				.name(BaseMenuId.MENU_BAR.propertiesKey()).build();
+	}
+	public static MenuInfo fromJMenu(final @NonNull JMenu menu) {
+		return MenuInfo.builder()
+				.type(MenuType.MENU)
+				.name(menu.getName())
+				.text(menu.getText())
+				.mnemonic(menu.getMnemonic())
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator()))
+				.build();
+	}
+	public static MenuInfo fromJMenuItem(final @NonNull JMenuItem menu) {
+		return MenuInfo.builder()
+				.type(MenuType.MENU)
+				.name(menu.getName())
+				.text(menu.getText())
+				.mnemonic(menu.getMnemonic())
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator()))
+				.build();
 	}
 }
