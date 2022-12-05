@@ -92,6 +92,7 @@ public class JMenuBarFactoryTest
 			actionListenerMap);
 		assertNotNull(menuBar);
 	}
+
 	@Test
 	public void testBuildRootTreeNodeWithXml() throws IOException
 	{

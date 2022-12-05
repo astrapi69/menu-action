@@ -67,11 +67,11 @@ public class MenuInfoTreeNodeConverter
 
 	public static MenuInfo fromJMenu(final @NonNull JMenu menu)
 	{
-		return menu.getAccelerator() != null ?
-				MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
-						.mnemonic(menu.getMnemonic())
-						.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator())).build()
-				:MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+		return menu.getAccelerator() != null
+			? MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+				.mnemonic(menu.getMnemonic())
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator())).build()
+			: MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
 				.mnemonic(menu.getMnemonic()).build();
 	}
 

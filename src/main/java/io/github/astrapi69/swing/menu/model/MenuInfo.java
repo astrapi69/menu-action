@@ -26,6 +26,7 @@ package io.github.astrapi69.swing.menu.model;
 
 import java.awt.event.ActionListener;
 
+import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +37,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import io.github.astrapi69.swing.menu.enumtype.MenuType;
 
 /**
  * The class {@link MenuInfo} is intended for store the information of a menu and on need to restore
