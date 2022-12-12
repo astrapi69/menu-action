@@ -4,7 +4,10 @@
 Version 2.5-SNAPSHOT
 -------------
 
+ADDED:
 
+- new extension class for visit menus
+- new factory method for create a menu from a BaseTreeNode and a action map
 
 Version 2.4
 -------------

@@ -59,80 +59,18 @@ public class JMenuBarFactory
 	}
 
 	public static JMenuBar buildMenuBar(final @NonNull BaseTreeNode<MenuInfo, Long> root,
-		final Map<String, ActionListener> actionListenerMap)
+		final @NonNull Map<String, ActionListener> actionListenerMap)
 	{
 		final Map<String, JMenu> menuMap = new HashMap<>();
 		final Map<String, JMenuItem> menuItemMap = new HashMap<>();
 		final Map<String, JMenuBar> menuBarMap = new HashMap<>();
-		visitAndAddToMap(root, actionListenerMap, menuMap, menuItemMap, menuBarMap);
-		root.accept(menuInfoLongBaseTreeNode -> visitAndAddToMap(menuInfoLongBaseTreeNode,
-			actionListenerMap, menuMap, menuItemMap, menuBarMap));
-		root.accept(menuInfoLongBaseTreeNode -> visitAndAddToMenu(menuInfoLongBaseTreeNode, menuMap,
-			menuItemMap, menuBarMap));
+		MenuVisitorExtensions.visitAndAddToMap(root, actionListenerMap, menuMap, menuItemMap,
+			menuBarMap);
+		root.accept(menuInfoLongBaseTreeNode -> MenuVisitorExtensions.visitAndAddToMap(
+			menuInfoLongBaseTreeNode, actionListenerMap, menuMap, menuItemMap, menuBarMap));
+		root.accept(menuInfoLongBaseTreeNode -> MenuVisitorExtensions
+			.visitAndAddToMenu(menuInfoLongBaseTreeNode, menuMap, menuItemMap, menuBarMap));
 		return menuBarMap.get(BaseMenuId.MENU_BAR.propertiesKey());
 	}
 
-
-	public static void visitAndAddToMenu(
-		final @NonNull BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode,
-		final @NonNull Map<String, JMenu> menuMap,
-		final @NonNull Map<String, JMenuItem> menuItemMap,
-		final @NonNull Map<String, JMenuBar> menuBarMap)
-	{
-		final MenuInfo menuInfo = menuInfoLongBaseTreeNode.getValue();
-		MenuType menuType = menuInfo.getType();
-		final String actionId = menuInfo.getName();
-		final BaseTreeNode<MenuInfo, Long> parent = menuInfoLongBaseTreeNode.getParent();
-		switch (menuType)
-		{
-			case MENU_ITEM :
-				final JMenuItem menuItem = menuItemMap.get(actionId);
-				if (menuMap.containsKey(parent.getValue().getName()))
-				{
-					final JMenu menu = menuMap.get(parent.getValue().getName());
-					menu.add(menuItem);
-				}
-				break;
-			case MENU :
-				final JMenu menu = menuMap.get(actionId);
-				if (menuBarMap.containsKey(parent.getValue().getName()))
-				{
-					final JMenuBar menuBar = menuBarMap.get(parent.getValue().getName());
-					menuBar.add(menu);
-				}
-				break;
-		}
-	}
-
-	public static void visitAndAddToMap(
-		final @NonNull BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode,
-		final @NonNull Map<String, ActionListener> actionListenerMap,
-		final @NonNull Map<String, JMenu> menuMap,
-		final @NonNull Map<String, JMenuItem> menuItemMap,
-		final @NonNull Map<String, JMenuBar> menuBarMap)
-	{
-		final MenuInfo menuInfo = menuInfoLongBaseTreeNode.getValue();
-		if (actionListenerMap.containsKey(menuInfo.getName()))
-		{
-			final MenuItemInfo menuItemInfo = menuInfo
-				.toMenuItemInfo(actionListenerMap.get(menuInfo.getName()));
-			actionListenerMap.remove(menuInfo.getName());
-			MenuType menuType = menuInfo.getType();
-			switch (menuType)
-			{
-				case MENU_BAR :
-					final JMenuBar menuBar = menuItemInfo.toJMenuBar();
-					menuBarMap.put(menuInfo.getName(), menuBar);
-					break;
-				case MENU_ITEM :
-					final JMenuItem menuItem = menuItemInfo.toJMenuItem();
-					menuItemMap.put(menuInfo.getName(), menuItem);
-					break;
-				case MENU :
-					final JMenu menu = menuItemInfo.toJMenu();
-					menuMap.put(menuInfo.getName(), menu);
-					break;
-			}
-		}
-	}
 }
