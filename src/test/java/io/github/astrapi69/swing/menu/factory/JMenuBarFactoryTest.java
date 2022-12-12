@@ -64,7 +64,7 @@ import io.github.astrapi69.tree.BaseTreeNode;
 public class JMenuBarFactoryTest
 {
 
-
+	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
 	@Test
 	public void testBuildXmlFromMenubar() throws IOException
 	{
