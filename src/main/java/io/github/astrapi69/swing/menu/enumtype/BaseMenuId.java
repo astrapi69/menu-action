@@ -124,8 +124,14 @@ public enum BaseMenuId
 	/**
 	 * The id for the menu bar of the application
 	 */
-	MENU_BAR(BaseMenuId.MENU_BAR_KEY);
+	MENU_BAR(BaseMenuId.MENU_BAR_KEY),
 
+	/**
+	 * The id for the toolbar of the application
+	 */
+	TOOL_BAR(BaseMenuId.TOOL_BAR_KEY);
+
+	public static final String TOOL_BAR_KEY = "global.tool.bar";
 	public static final String MENU_BAR_KEY = "global.menu.bar";
 	public static final String EDIT_KEY = "global.menu.edit";
 	public static final String LOOK_AND_FEEL_KEY = "global.menu.look.and.feel";
@@ -155,9 +161,12 @@ public enum BaseMenuId
 	public static Map<String, Boolean> getBaseMenuIdsAsMap()
 	{
 		Map<String, Boolean> menuIds = new LinkedHashMap<>();
+		menuIds.put(BaseMenuId.TOOL_BAR.propertiesKey(), true);
 		menuIds.put(BaseMenuId.MENU_BAR.propertiesKey(), true);
-		menuIds.put(BaseMenuId.EDIT.propertiesKey(), true);
 		menuIds.put(BaseMenuId.FILE.propertiesKey(), true);
+		menuIds.put(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey(), true);
+		menuIds.put(BaseMenuId.EXIT.propertiesKey(), true);
+		menuIds.put(BaseMenuId.EDIT.propertiesKey(), true);
 		menuIds.put(BaseMenuId.HELP.propertiesKey(), true);
 		menuIds.put(BaseMenuId.HELP_CONTENT.propertiesKey(), true);
 		menuIds.put(BaseMenuId.HELP_DONATE.propertiesKey(), true);
@@ -171,8 +180,6 @@ public enum BaseMenuId
 		menuIds.put(BaseMenuId.LOOK_AND_FEEL_NIMBUS.propertiesKey(), true);
 		menuIds.put(BaseMenuId.LOOK_AND_FEEL_SYSTEM.propertiesKey(), true);
 		menuIds.put(BaseMenuId.LOOK_AND_FEEL_SYSTEM.propertiesKey(), true);
-		menuIds.put(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey(), true);
-		menuIds.put(BaseMenuId.EXIT.propertiesKey(), true);
 		return menuIds;
 	}
 }

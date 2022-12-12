@@ -22,8 +22,45 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu.factory;
+package io.github.astrapi69.swing.listener.mouse;
 
-public class MenuBarFactoryTest
+import java.awt.event.MouseEvent;
+
+import javax.swing.JFrame;
+
+import io.github.astrapi69.window.adapter.CloseWindow;
+
+/**
+ * The unit test class for the class {@link MouseTripleClickCounterListener}
+ */
+public class MouseTripleClickCounterListenerTest
 {
+
+
+	public static void main(String[] args)
+	{
+		JFrame frame = new JFrame("Test Double and Triple Click");
+		frame.addWindowListener(new CloseWindow());
+		frame.addMouseListener(new MouseTripleClickCounterListener()
+		{
+			public void singleClick(MouseEvent e)
+			{
+				System.out.println("single click");
+			}
+
+			public void doubleClick(MouseEvent e)
+			{
+				System.out.println("double click");
+			}
+
+			@Override
+			public void tripleClick(MouseEvent mouseEvent)
+			{
+				System.out.println("triple click");
+			}
+		});
+		frame.setSize(200, 200);
+		frame.setVisible(true);
+	}
+
 }

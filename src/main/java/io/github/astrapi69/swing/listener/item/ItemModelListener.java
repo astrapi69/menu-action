@@ -28,8 +28,8 @@ import java.awt.ItemSelectable;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import lombok.Getter;
 import io.github.astrapi69.model.api.IModel;
+import lombok.Getter;
 
 /**
  * The listener interface {@link ItemModelListener} receives itemBind events.

@@ -30,11 +30,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import io.github.astrapi69.window.adapter.CloseWindow;
-
+/**
+ * The listener class {@link MouseTripleClickCounterListener} for listen for double and triple click
+ */
 public class MouseTripleClickCounterListener extends MouseAdapter implements ActionListener
 {
 
@@ -56,32 +56,6 @@ public class MouseTripleClickCounterListener extends MouseAdapter implements Act
 	{
 		this.delay = delay;
 		this.timer = new Timer(delay, this);
-	}
-
-	public static void main(String[] args)
-	{
-		JFrame frame = new JFrame("Test Double Click");
-		frame.addWindowListener(new CloseWindow());
-		frame.addMouseListener(new MouseTripleClickCounterListener()
-		{
-			public void singleClick(MouseEvent e)
-			{
-				System.out.println("single click");
-			}
-
-			public void doubleClick(MouseEvent e)
-			{
-				System.out.println("double click");
-			}
-
-			@Override
-			public void tripleClick(MouseEvent mouseEvent)
-			{
-				System.out.println("triple click");
-			}
-		});
-		frame.setSize(200, 200);
-		frame.setVisible(true);
 	}
 
 	public void mouseClicked(MouseEvent mouseEvent)

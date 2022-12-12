@@ -40,13 +40,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.MenuElement;
 
+import org.junit.jupiter.api.Test;
+
 import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JToolBarFactory;
-import org.junit.jupiter.api.Test;
-
-import io.github.astrapi69.swing.menu.model.JMenuItemInfo;
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 
 class ParentMenuResolverTest
 {
@@ -61,7 +61,7 @@ class ParentMenuResolverTest
 		JMenuItem menuItem;
 		JPopupMenu popupMenu;
 		// new scenario ...
-		menu = JMenuItemInfo.builder().build().toJMenu();
+		menu = MenuItemInfo.builder().build().toJMenu();
 		actual = ParentMenuResolver.getMenuElementType(menu);
 		expected = Optional.of(JMenu.class);
 		assertEquals(expected, actual);
@@ -71,7 +71,7 @@ class ParentMenuResolverTest
 		expected = Optional.of(JMenuBar.class);
 		assertEquals(expected, actual);
 		// new scenario ...
-		menuItem = JMenuItemInfo.builder().build().toJMenuItem();
+		menuItem = MenuItemInfo.builder().build().toJMenuItem();
 		actual = ParentMenuResolver.getMenuElementType(menuItem);
 		expected = Optional.of(JMenuItem.class);
 		assertEquals(expected, actual);

@@ -24,21 +24,23 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import io.github.astrapi69.swing.menu.model.JMenuItemInfo;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.*;
+
 import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.tree.BaseTreeNode;
 import io.github.astrapi69.tree.TreeIdNode;
 import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
+import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
 import lombok.NonNull;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A factory {@link JMenuBarFactory} provides factory methods for create JMenuBar objects
@@ -70,12 +72,6 @@ public class JMenuBarFactory
 		return menuBarMap.get(BaseMenuId.MENU_BAR.propertiesKey());
 	}
 
-	public static BaseTreeNode<MenuInfo, Long> buildRootTreeNode(final @NonNull String xml)
-	{
-		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = RuntimeExceptionDecorator
-			.decorate(() -> XmlToObjectExtensions.toObject(xml));
-		return BaseTreeNodeTransformer.getRoot(treeIdNodeMap);
-	}
 
 	public static void visitAndAddToMenu(
 		final @NonNull BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode,
@@ -85,23 +81,23 @@ public class JMenuBarFactory
 	{
 		final MenuInfo menuInfo = menuInfoLongBaseTreeNode.getValue();
 		MenuType menuType = menuInfo.getType();
-		final String actionId = menuInfo.getActionId();
+		final String actionId = menuInfo.getName();
 		final BaseTreeNode<MenuInfo, Long> parent = menuInfoLongBaseTreeNode.getParent();
 		switch (menuType)
 		{
 			case MENU_ITEM :
 				final JMenuItem menuItem = menuItemMap.get(actionId);
-				if (menuMap.containsKey(parent.getValue().getActionId()))
+				if (menuMap.containsKey(parent.getValue().getName()))
 				{
-					final JMenu menu = menuMap.get(parent.getValue().getActionId());
+					final JMenu menu = menuMap.get(parent.getValue().getName());
 					menu.add(menuItem);
 				}
 				break;
 			case MENU :
 				final JMenu menu = menuMap.get(actionId);
-				if (menuBarMap.containsKey(parent.getValue().getActionId()))
+				if (menuBarMap.containsKey(parent.getValue().getName()))
 				{
-					final JMenuBar menuBar = menuBarMap.get(parent.getValue().getActionId());
+					final JMenuBar menuBar = menuBarMap.get(parent.getValue().getName());
 					menuBar.add(menu);
 				}
 				break;
@@ -116,25 +112,25 @@ public class JMenuBarFactory
 		final @NonNull Map<String, JMenuBar> menuBarMap)
 	{
 		final MenuInfo menuInfo = menuInfoLongBaseTreeNode.getValue();
-		if (actionListenerMap.containsKey(menuInfo.getActionId()))
+		if (actionListenerMap.containsKey(menuInfo.getName()))
 		{
-			final JMenuItemInfo jMenuItemInfo = menuInfo
-				.toJMenuItemInfo(actionListenerMap.get(menuInfo.getActionId()));
-			actionListenerMap.remove(menuInfo.getActionId());
+			final MenuItemInfo menuItemInfo = menuInfo
+				.toMenuItemInfo(actionListenerMap.get(menuInfo.getName()));
+			actionListenerMap.remove(menuInfo.getName());
 			MenuType menuType = menuInfo.getType();
 			switch (menuType)
 			{
 				case MENU_BAR :
-					final JMenuBar menuBar = jMenuItemInfo.toJMenuBar();
-					menuBarMap.put(menuInfo.getActionId(), menuBar);
+					final JMenuBar menuBar = menuItemInfo.toJMenuBar();
+					menuBarMap.put(menuInfo.getName(), menuBar);
 					break;
 				case MENU_ITEM :
-					final JMenuItem menuItem = jMenuItemInfo.toJMenuItem();
-					menuItemMap.put(menuInfo.getActionId(), menuItem);
+					final JMenuItem menuItem = menuItemInfo.toJMenuItem();
+					menuItemMap.put(menuInfo.getName(), menuItem);
 					break;
 				case MENU :
-					final JMenu menu = jMenuItemInfo.toJMenu();
-					menuMap.put(menuInfo.getActionId(), menu);
+					final JMenu menu = menuItemInfo.toJMenu();
+					menuMap.put(menuInfo.getName(), menu);
 					break;
 			}
 		}

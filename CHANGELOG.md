@@ -1,6 +1,22 @@
 ## Change log
 ----------------------
 
+Version 2.4
+-------------
+
+ADDED:
+
+- new converter class for transform MenuInfo to BaseTreeNode and back
+- new listener class for listen on double and triple clicks
+
+CHANGED:
+
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 6.6
+- removed duplicated fields in MenuInfo
+- renamed JMenuItemInfo to MenuItemInfo
+- tagged PopupMenuInfo as deprecated so only MenuItemInfo will be used
+
+
 Version 2.3
 -------------
 

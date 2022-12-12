@@ -28,8 +28,13 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
+import io.github.astrapi69.browser.BrowserControlExtensions;
 import io.github.astrapi69.window.adapter.CloseWindow;
 
+
+/**
+ * The unit test class for the class {@link MouseDoubleClickListener}
+ */
 class MouseDoubleClickListenerTest
 {
 

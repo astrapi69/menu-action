@@ -24,6 +24,7 @@
  */
 package io.github.astrapi69.swing.menu.model;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
@@ -34,15 +35,16 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 /**
- * The class {@link JMenuItemInfo} holds the fields for build {@link JMenuItem} and {@link JMenu}
+ * The class {@link MenuItemInfo} holds the fields for build {@link JMenuItem} and {@link JMenu}
  * objects
  */
 @Data
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class JMenuItemInfo
+public class MenuItemInfo
 {
 	String text;
+	String actionCommand;
 	Integer mnemonic;
 	KeyStroke keyStroke;
 	ActionListener actionListener;
@@ -57,6 +59,33 @@ public class JMenuItemInfo
 			jMenuItem.setAccelerator(keyStroke);
 		}
 		return jMenuItem;
+	}
+
+	public MenuItem toMenuItem()
+	{
+		MenuItem menuItem = new MenuItem();
+
+		if (text != null)
+		{
+			menuItem.setLabel(text);
+		}
+		if (mnemonic != null)
+		{
+			menuItem.setShortcut(new MenuShortcut(mnemonic));
+		}
+		if (actionListener != null)
+		{
+			menuItem.addActionListener(actionListener);
+		}
+		if (name != null)
+		{
+			menuItem.setName(name);
+		}
+		if (actionCommand != null)
+		{
+			menuItem.setActionCommand(actionCommand);
+		}
+		return menuItem;
 	}
 
 	public JMenu toJMenu()
@@ -76,23 +105,27 @@ public class JMenuItemInfo
 		return menuBar;
 	}
 
-	private void setFields(JMenuItem jMenuItem)
+	private void setFields(JMenuItem menuItem)
 	{
 		if (text != null)
 		{
-			jMenuItem.setText(text);
+			menuItem.setText(text);
 		}
 		if (mnemonic != null)
 		{
-			jMenuItem.setMnemonic(mnemonic);
+			menuItem.setMnemonic(mnemonic);
 		}
 		if (actionListener != null)
 		{
-			jMenuItem.addActionListener(actionListener);
+			menuItem.addActionListener(actionListener);
 		}
 		if (name != null)
 		{
-			jMenuItem.setName(name);
+			menuItem.setName(name);
+		}
+		if (actionCommand != null)
+		{
+			menuItem.setActionCommand(actionCommand);
 		}
 	}
 }
