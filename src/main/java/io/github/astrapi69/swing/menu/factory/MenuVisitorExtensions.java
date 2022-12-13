@@ -31,7 +31,7 @@ public class MenuVisitorExtensions
 		{
 			case MENU_ITEM :
 				final JMenuItem menuItem = menuItemMap.get(actionId);
-				if (menuMap.containsKey(parent.getValue().getName()))
+				if (parent != null && menuMap.containsKey(parent.getValue().getName()))
 				{
 					final JMenu menu = menuMap.get(parent.getValue().getName());
 					menu.add(menuItem);
