@@ -37,7 +37,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import io.github.astrapi69.swing.menu.MenuFactory;
 import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
 
 public class SampleJTableWithPopup extends JFrame

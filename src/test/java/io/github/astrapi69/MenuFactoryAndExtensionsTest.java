@@ -36,7 +36,6 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
-import io.github.astrapi69.swing.menu.MenuFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuItemFactory;
