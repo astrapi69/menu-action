@@ -27,17 +27,17 @@ package io.github.astrapi69.swing.menu.factory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.KeyStroke;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -50,12 +50,12 @@ import io.github.astrapi69.swing.action.ExitApplicationAction;
 import io.github.astrapi69.swing.action.NoAction;
 import io.github.astrapi69.swing.action.ToggleFullScreenAction;
 import io.github.astrapi69.swing.menu.MenuExtensions;
-import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumtype.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.transform.MenuInfoTreeNodeConverter;
+import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.tree.BaseTreeNode;
 
 /**
@@ -64,16 +64,26 @@ import io.github.astrapi69.tree.BaseTreeNode;
 public class JMenuBarFactoryTest
 {
 
+	File xmlFile;
+	String xml;
+
+	@BeforeEach
+	public void beforeEach()
+	{
+		String filename;
+		filename = "app-menubar.xml";
+		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
+		xml = RuntimeExceptionDecorator.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
+	}
+
 	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
 	@Test
-	public void testBuildXmlFromMenubar() throws IOException
+	public void testBuildMenubarFromXml() throws IOException
 	{
 		Map<String, ActionListener> actionListenerMap;
-		final File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
-		File xmlFile = FileFactory.newFileQuietly(srcTestResourcesDir, "app-menu.xml");
-		final String xml = ReadFileExtensions.fromFile(xmlFile);
-		final BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter
-			.toMenuInfoTreeNode(xml);
+		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
+
+		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(xml);
 		assertNotNull(menuInfoLongBaseTreeNode);
 		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
 
@@ -111,8 +121,7 @@ public class JMenuBarFactoryTest
 		MenuInfo toggleFullscreenMenuInfo;
 		MenuInfo exitMenuInfo;
 		LongIdGenerator idGenerator;
-		File xmlFile;
-		String xml;
+
 		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
 
 		idGenerator = LongIdGenerator.of(0L);
@@ -168,39 +177,9 @@ public class JMenuBarFactoryTest
 		helpTreeNode.addChild(helpContentTreeNode);
 		helpTreeNode.addChild(infoTreeNode);
 
-		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), "app-menu.xml");
-		xml = ReadFileExtensions.fromFile(xmlFile);
 		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(xml);
 		assertNotNull(menuInfoLongBaseTreeNode);
 		assertEquals(menuInfoLongBaseTreeNode, menuBarTreeNode);
-	}
-
-	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
-	@Test
-	public void testBuildMenuBarWithXml() throws IOException
-	{
-		final File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
-		File xmlFile = FileFactory.newFileQuietly(srcTestResourcesDir, "app-menu.xml");
-		final String xml = ReadFileExtensions.fromFile(xmlFile);
-		final BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter
-			.toMenuInfoTreeNode(xml);
-		assertNotNull(menuInfoLongBaseTreeNode);
-		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
-
-		final Map<String, ActionListener> actionListenerMap = new HashMap<>();
-
-		actionListenerMap.put(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey(),
-			new ToggleFullScreenAction("Fullscreen", new JFrame()));
-		actionListenerMap.put(BaseMenuId.EXIT.propertiesKey(), new ExitApplicationAction("Exit"));
-		actionListenerMap.put(BaseMenuId.FILE.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.MENU_BAR.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.HELP.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.HELP_CONTENT.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.HELP_INFO.propertiesKey(), new NoAction());
-
-		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
-			actionListenerMap);
-		assertNotNull(menuBar);
 	}
 
 }
