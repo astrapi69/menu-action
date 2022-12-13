@@ -37,13 +37,13 @@ your project `build.gradle` if you want to import the core functionality of menu
 
 define version in file gradle.properties
 ```
-menuActionsVersion=2.4
+menuActionsVersion=2.5
 ```
 
 or in build.gradle ext area
 
 ```
-    menuActionsVersion = "2.4"
+    menuActionsVersion = "2.5"
 ```
 
 and then add the dependency to the dependencies area
@@ -65,7 +65,7 @@ Than you can add the dependency to your dependencies:
     <properties>
             ...
         <!-- menu-actions version -->
-        <menu-actions.version>2.4</menu-actions.version>
+        <menu-actions.version>2.5</menu-actions.version>
             ...
     </properties>
             ...
