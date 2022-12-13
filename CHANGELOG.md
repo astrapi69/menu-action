@@ -1,13 +1,17 @@
 ## Change log
 ----------------------
 
-Version 2.5-SNAPSHOT
+Version 3-SNAPSHOT
 -------------
 
 ADDED:
 
 - new extension class for visit menus
 - new factory method for create a menu from a BaseTreeNode and a action map
+
+CHANGED:
+
+- rename of module from menu-actions to menu-action
 
 Version 2.4
 -------------
