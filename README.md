@@ -2,21 +2,21 @@
 
 <div style="text-align: center">
 
-[![Build Status](https://travis-ci.com/astrapi69/menu-actions.svg?branch=master)](https://travis-ci.com/github/astrapi69/menu-actions)
-[![Open Issues](https://img.shields.io/github/issues/astrapi69/menu-actions.svg?style=flat)](https://github.com/astrapi69/menu-actions/issues)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-actions/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-actions)
-[![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/menu-actions.svg)](http://www.javadoc.io/doc/io.github.astrapi69/menu-actions)
+[![Build Status](https://travis-ci.com/astrapi69/menu-action.svg?branch=master)](https://travis-ci.com/github/astrapi69/menu-action)
+[![Open Issues](https://img.shields.io/github/issues/astrapi69/menu-action.svg?style=flat)](https://github.com/astrapi69/menu-action/issues)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-action/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-action)
+[![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/menu-action.svg)](http://www.javadoc.io/doc/io.github.astrapi69/menu-action)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Donate](https://img.shields.io/badge/donate-❤-ff2244.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8)
-[![Hits Of Code](https://hitsofcode.com/github/astrapi69/menu-actions?branch=main)](https://hitsofcode.com/github/astrapi69/menu-actions/view?branch=main)
-[![Lines Of Code](https://tokei.rs/b1/github/astrapi69/menu-actions)](https://github.com/astrapi69/menu-actions)
+[![Hits Of Code](https://hitsofcode.com/github/astrapi69/menu-action?branch=main)](https://hitsofcode.com/github/astrapi69/menu-action/view?branch=main)
+[![Lines Of Code](https://tokei.rs/b1/github/astrapi69/menu-action)](https://github.com/astrapi69/menu-action)
 
 </div>
 
 Tiny library for hold utility classes for swing menu and actions.
 
 > Please support this project by simply putting a Github <!-- Place this tag where you want the button to render. -->
-<a class="github-button" href="https://github.com/astrapi69/menu-actions" data-icon="octicon-star" aria-label="Star astrapi69/menu-actions on GitHub">Star ⭐</a>
+<a class="github-button" href="https://github.com/astrapi69/menu-action" data-icon="octicon-star" aria-label="Star astrapi69/menu-action on GitHub">Star ⭐</a>
 >
 > Share this library with friends on Twitter and everywhere else you can
 >
@@ -28,54 +28,54 @@ No animals were harmed in the making of this library.
 
 ## License
 
-The source code comes under the liberal MIT License, making menu-actions great for all types of swing applications.
+The source code comes under the liberal MIT License, making menu-action great for all types of swing applications.
 
 ## gradle dependency
 
 You can first define the version in the ext section and add than the following gradle dependency to
-your project `build.gradle` if you want to import the core functionality of menu-actions:
+your project `build.gradle` if you want to import the core functionality of menu-action:
 
 define version in file gradle.properties
 ```
-menuActionsVersion=2.5
+menuActionVersion=2.5
 ```
 
 or in build.gradle ext area
 
 ```
-    menuActionsVersion = "2.5"
+    menuActionVersion = "2.5"
 ```
 
 and then add the dependency to the dependencies area
 
 ```
-    implementation("io.github.astrapi69:menu-actions:$menuActionsVersion")
+    implementation("io.github.astrapi69:menu-action:$menuActionVersion")
 ```
 
 ## Maven dependency
 
 Maven dependency is now on sonatype.
-Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~menu-actions~~~) for latest snapshots and releases.
+Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~menu-action~~~) for latest snapshots and releases.
 
 Add the following maven dependency to your project `pom.xml` if you want to import the core
-functionality of menu-actions:
+functionality of menu-action:
 
 Than you can add the dependency to your dependencies:
 
     <properties>
             ...
-        <!-- menu-actions version -->
-        <menu-actions.version>2.5</menu-actions.version>
+        <!-- menu-action version -->
+        <menu-action.version>2.5</menu-action.version>
             ...
     </properties>
             ...
         <dependencies>
             ...
-            <!-- menu-actions DEPENDENCY -->
+            <!-- menu-action DEPENDENCY -->
             <dependency>
                 <groupId>io.github.astrapi69</groupId>
-                <artifactId>menu-actions</artifactId>
-                <version>${menu-actions.version}</version>
+                <artifactId>menu-action</artifactId>
+                <version>${menu-action.version}</version>
             </dependency>
             ...
         </dependencies>
@@ -136,7 +136,7 @@ or over the donation buttons at the top.
 
 ## Semantic Versioning
 
-The versions of menu-actions are maintained with the Semantic Versioning guidelines.
+The versions of menu-action are maintained with the Semantic Versioning guidelines.
 
 Release version numbers will be incremented in the following format:
 
@@ -146,18 +146,18 @@ For detailed information on versioning you can visit the [wiki page](https://git
 
 ## Want to Help and improve it? ###
 
-The source code for menu-actions are on GitHub. Please feel free to fork and send pull requests!
+The source code for menu-action are on GitHub. Please feel free to fork and send pull requests!
 
-Create your own fork of [astrapi69/menu-actions/fork](https://github.com/astrapi69/menu-actions/fork)
+Create your own fork of [astrapi69/menu-action/fork](https://github.com/astrapi69/menu-action/fork)
 
-To share your changes, [submit a pull request](https://github.com/astrapi69/menu-actions/pull/new/develop).
+To share your changes, [submit a pull request](https://github.com/astrapi69/menu-action/pull/new/develop).
 
 Don't forget to add new units tests on your changes.
 
 ## Contacting the Developers
 
-Do not hesitate to contact the menu-actions developers with your questions, concerns, comments, bug reports, or feature requests.
-- Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/menu-actions/issues).
+Do not hesitate to contact the menu-action developers with your questions, concerns, comments, bug reports, or feature requests.
+- Feature requests, questions and bug reports can be reported at the [issues page](https://github.com/astrapi69/menu-action/issues).
 
 ## Credits
 
@@ -169,12 +169,12 @@ Do not hesitate to contact the menu-actions developers with your questions, conc
 
 |**Nexus Sonatype repositories**|
 |     :---:      |
-|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/io.github.astrapi69/menu-actions.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~menu-actions~~~)|
+|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/io.github.astrapi69/menu-action.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~menu-action~~~)|
 |Special thanks to [sonatype repository](https://www.sonatype.com) for providing a free maven repository service for open source projects|
 |     <img width=1000/>     |
 
 |**javadoc.io**|
 |     :---:      |
-|[![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/menu-actions.svg)](http://www.javadoc.io/doc/io.github.astrapi69/menu-actions)|
+|[![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/menu-action.svg)](http://www.javadoc.io/doc/io.github.astrapi69/menu-action)|
 |Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
 |     <img width=1000/>     |
