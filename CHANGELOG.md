@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 3-SNAPSHOT
+Version 2.5-SNAPSHOT
 -------------
 
 ADDED:
@@ -11,6 +11,7 @@ ADDED:
 
 CHANGED:
 
+- removed deprecated classes MenuFactory and PopupMenuInfo
 - rename of module from menu-actions to menu-action
 
 Version 2.4
