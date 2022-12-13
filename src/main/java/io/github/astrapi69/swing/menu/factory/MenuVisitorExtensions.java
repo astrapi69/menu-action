@@ -39,7 +39,7 @@ public class MenuVisitorExtensions
 				break;
 			case MENU :
 				final JMenu menu = menuMap.get(actionId);
-				if (menuBarMap.containsKey(parent.getValue().getName()))
+				if (parent != null && menuBarMap.containsKey(parent.getValue().getName()))
 				{
 					final JMenuBar menuBar = menuBarMap.get(parent.getValue().getName());
 					menuBar.add(menu);

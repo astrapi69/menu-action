@@ -1,0 +1,70 @@
+<linked-hash-map>
+    <entry>
+        <long>1</long>
+        <io.github.astrapi69.tree.TreeIdNode>
+            <id class="long">1</id>
+            <parentId class="long">0</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.file.toggle.fullscreen</name>
+                <text>Toggle Fullscreen</text>
+                <mnemonic>84</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>122</keyCode>
+                    <modifiers>520</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>alt pressed F11</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU_ITEM</type>
+            </value>
+            <leaf>true</leaf>
+        </io.github.astrapi69.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>2</long>
+        <io.github.astrapi69.tree.TreeIdNode>
+            <id class="long">2</id>
+            <parentId class="long">0</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.file.exit</name>
+                <text>Exit</text>
+                <mnemonic>69</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>115</keyCode>
+                    <modifiers>520</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>alt pressed F4</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU_ITEM</type>
+            </value>
+            <leaf>true</leaf>
+        </io.github.astrapi69.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>0</long>
+        <io.github.astrapi69.tree.TreeIdNode>
+            <id class="long">0</id>
+            <childrenIds>
+                <long>1</long>
+                <long>2</long>
+            </childrenIds>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.file</name>
+                <text>File</text>
+                <mnemonic>70</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>70</keyCode>
+                    <modifiers>520</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>alt pressed F</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.tree.TreeIdNode>
+    </entry>
+</linked-hash-map>

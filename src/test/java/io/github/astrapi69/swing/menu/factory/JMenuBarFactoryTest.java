@@ -104,7 +104,7 @@ public class JMenuBarFactoryTest
 	}
 
 	@Test
-	public void testBuildRootTreeNodeWithXml() throws IOException
+	public void testBuildRootTreeNodeFromXml() throws IOException
 	{
 		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
 		BaseTreeNode<MenuInfo, Long> fileTreeNode;
