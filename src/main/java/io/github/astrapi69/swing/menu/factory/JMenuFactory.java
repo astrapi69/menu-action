@@ -33,7 +33,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
-import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import io.github.astrapi69.tree.BaseTreeNode;

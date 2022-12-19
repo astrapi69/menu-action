@@ -28,8 +28,8 @@ import java.util.Map;
 
 import javax.swing.*;
 
-import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
-import io.github.astrapi69.swing.menu.enumtype.MenuType;
+import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
+import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;

@@ -27,31 +27,14 @@ package io.github.astrapi69.swing.menu.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import io.github.astrapi69.id.generate.LongIdGenerator;
-import io.github.astrapi69.junit.jupiter.callback.before.test.IgnoreHeadlessExceptionExtension;
-import io.github.astrapi69.swing.action.ExitApplicationAction;
-import io.github.astrapi69.swing.action.NoAction;
-import io.github.astrapi69.swing.action.ToggleFullScreenAction;
 import io.github.astrapi69.swing.menu.MenuExtensions;
-import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
-import io.github.astrapi69.swing.menu.enumtype.MenuType;
-import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
+import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import io.github.astrapi69.tree.BaseTreeNode;
-import io.github.astrapi69.tree.TreeIdNode;
-import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
 import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
 
