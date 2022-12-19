@@ -4,6 +4,9 @@
 Version 2.6-SNAPSHOT
 -------------
 
+CHANGED:
+
+- moved enum types from package 'enumtype' to new 'enumeration' package
 
 Version 2.5
 -------------
