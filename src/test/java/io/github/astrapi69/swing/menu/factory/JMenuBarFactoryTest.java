@@ -31,12 +31,15 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
+import javax.swing.MenuElement;
 
+import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -101,6 +104,10 @@ public class JMenuBarFactoryTest
 		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
 			actionListenerMap);
 		assertNotNull(menuBar);
+
+		List<MenuElement> allMenuElements = ParentMenuResolver.getAllMenuElements(menuBar, true);
+		assertNotNull(allMenuElements);
+
 	}
 
 	@Test
