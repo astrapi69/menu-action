@@ -37,6 +37,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -98,7 +99,7 @@ public class JMenuFactoryTest
 
 
 	@Test
-	public void testBuildRootTreeNodeFromXml() throws IOException
+	public void testBuildRootTreeNodeFromXmlForFileMenu()
 	{
 		BaseTreeNode<MenuInfo, Long> fileTreeNode;
 		BaseTreeNode<MenuInfo, Long> toggleFullscreenTreeNode;
@@ -114,25 +115,25 @@ public class JMenuFactoryTest
 		idGenerator = LongIdGenerator.of(0L);
 
 		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
-			.text("File").name(BaseMenuId.FILE.propertiesKey()).build();
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
+				.text("File").name(BaseMenuId.FILE.propertiesKey()).build();
 		fileTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(fileMenuInfo).build();
+				.value(fileMenuInfo).build();
 
 		toggleFullscreenMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
-			.mnemonic(MenuExtensions.toMnemonic('T'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F11")))
-			.text("Toggle Fullscreen").name(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey()).build();
+				.mnemonic(MenuExtensions.toMnemonic('T'))
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F11")))
+				.text("Toggle Fullscreen").name(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey()).build();
 		toggleFullscreenTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
-			.id(idGenerator.getNextId()).parent(fileTreeNode).value(toggleFullscreenMenuInfo)
-			.leaf(true).build();
+				.id(idGenerator.getNextId()).parent(fileTreeNode).value(toggleFullscreenMenuInfo)
+				.leaf(true).build();
 
 		exitMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
-			.mnemonic(MenuExtensions.toMnemonic('E'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F4")))
-			.text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
+				.mnemonic(MenuExtensions.toMnemonic('E'))
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F4")))
+				.text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
 		exitTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
+				.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
 
 		fileTreeNode.addChild(toggleFullscreenTreeNode);
 		fileTreeNode.addChild(exitTreeNode);
@@ -142,5 +143,94 @@ public class JMenuFactoryTest
 		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(treeNodeAsXml);
 		assertNotNull(menuInfoLongBaseTreeNode);
 		assertEquals(menuInfoLongBaseTreeNode, fileTreeNode);
+	}
+
+
+
+	@Test
+	public void testBuildRootTreeNodeFromXmlForEditMenu()
+	{
+		BaseTreeNode<MenuInfo, Long> editTreeNode;
+		MenuInfo editMenuInfo;
+		LongIdGenerator idGenerator;
+		String treeNodeAsXml;
+
+		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
+
+		idGenerator = LongIdGenerator.of(0L);
+
+		editMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E'))
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed E")))
+				.text("Edit").name(BaseMenuId.EDIT.propertiesKey()).build();
+
+
+		editTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+				.value(editMenuInfo).build();
+
+		treeNodeAsXml = MenuInfoTreeNodeConverter.toXml(editTreeNode);
+
+		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(treeNodeAsXml);
+		assertNotNull(menuInfoLongBaseTreeNode);
+		assertEquals(menuInfoLongBaseTreeNode, editTreeNode);
+	}
+
+	@Test
+	public void testBuildRootTreeNodeFromXmlForHelpMenu()
+	{
+		BaseTreeNode<MenuInfo, Long> helpTreeNode;
+		BaseTreeNode<MenuInfo, Long> helpContentTreeNode;
+		BaseTreeNode<MenuInfo, Long> donateTreeNode;
+		BaseTreeNode<MenuInfo, Long> licenseTreeNode;
+		BaseTreeNode<MenuInfo, Long> infoTreeNode;
+		MenuInfo helpMenuInfo;
+		MenuInfo helpContentMenuInfo;
+		MenuInfo donateMenuInfo;
+		MenuInfo licenseMenuInfo;
+		MenuInfo infoMenuInfo;
+		LongIdGenerator idGenerator;
+		String treeNodeAsXml;
+
+		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
+
+		idGenerator = LongIdGenerator.of(0L);
+
+		helpMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H'))
+				.text("Help").name(BaseMenuId.HELP.propertiesKey()).build();
+		helpTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+				.value(helpMenuInfo).build();
+
+		helpContentMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+				.mnemonic(MenuExtensions.toMnemonic('c'))
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
+				.text("Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
+		helpContentTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
+				.id(idGenerator.getNextId()).value(helpContentMenuInfo)
+				.leaf(true).build();
+
+		donateMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+				.text("Donate").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
+		donateTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+				.leaf(true).value(donateMenuInfo).build();
+
+		licenseMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+				.text("Licence").name(BaseMenuId.HELP_LICENSE.propertiesKey()).build();
+		licenseTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+				.leaf(true).value(licenseMenuInfo).build();
+
+		infoMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+				.text("Info").name(BaseMenuId.HELP_INFO.propertiesKey()).build();
+		infoTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+				.leaf(true).value(infoMenuInfo).build();
+
+		helpTreeNode.addChild(helpContentTreeNode);
+		helpTreeNode.addChild(donateTreeNode);
+		helpTreeNode.addChild(licenseTreeNode);
+		helpTreeNode.addChild(infoTreeNode);
+
+		treeNodeAsXml = MenuInfoTreeNodeConverter.toXml(helpTreeNode);
+
+		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(treeNodeAsXml);
+		assertNotNull(menuInfoLongBaseTreeNode);
+		assertEquals(menuInfoLongBaseTreeNode, helpTreeNode);
 	}
 }

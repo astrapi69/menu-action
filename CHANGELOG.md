@@ -7,6 +7,7 @@ Version 2.6-SNAPSHOT
 CHANGED:
 
 - moved enum types from package 'enumtype' to new 'enumeration' package
+- update of test dependency gen-tree to new version 7.1
 
 Version 2.5
 -------------
