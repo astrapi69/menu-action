@@ -56,6 +56,16 @@ public enum MenuType
 	MENU_ITEM,
 
 	/**
+	 * Represents the checkbox menu item type
+	 */
+	CHECK_BOX_MENU_ITEM,
+
+	/**
+	 * Represents the radio button menu item type
+	 */
+	RADIO_BUTTON_MENU_ITEM,
+
+	/**
 	 * Represents the popup menu type
 	 */
 	POPUP

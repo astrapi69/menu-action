@@ -6,6 +6,7 @@ Version 2.6-SNAPSHOT
 
 CHANGED:
 
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 6.6.1
 - moved enum types from package 'enumtype' to new 'enumeration' package
 - update of test dependency gen-tree to new version 7.1
 

@@ -24,18 +24,15 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import java.awt.event.ActionListener;
-import java.util.Map;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import io.github.astrapi69.tree.BaseTreeNode;
 import lombok.NonNull;
+
+import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.util.*;
 
 public class MenuVisitorExtensions
 {
@@ -51,34 +48,56 @@ public class MenuVisitorExtensions
 		MenuType menuType = menuInfo.getType();
 		final String actionId = menuInfo.getName();
 		final BaseTreeNode<MenuInfo, Long> parent = menuInfoLongBaseTreeNode.getParent();
-		switch (menuType)
-		{
-			case MENU_ITEM :
+		switch (menuType) {
+			case MENU_ITEM:
 				final JMenuItem menuItem = menuItemMap.get(actionId);
-				if (parent != null && menuMap.containsKey(parent.getValue().getName()))
-				{
-					final JMenu menu = menuMap.get(parent.getValue().getName());
-					menu.add(menuItem);
-				}
+				addToMenu(menuInfoLongBaseTreeNode, menuMap, parent, menuItem);
 				break;
-			case MENU :
+			case MENU:
 				final JMenu menu = menuMap.get(actionId);
-				if (parent != null && menuBarMap.containsKey(parent.getValue().getName()))
-				{
+				if (parent != null && menuBarMap.containsKey(parent.getValue().getName())) {
 					final JMenuBar menuBar = menuBarMap.get(parent.getValue().getName());
-					menuBar.add(menu);
+					int length = menuBar.getSubElements().length;
+					if (0 < length) {
+						int indexOf = getSortedList(parent).indexOf(menuInfoLongBaseTreeNode);
+						menuBar.add(menu, indexOf);
+					} else {
+						menuBar.add(menu);
+					}
 				}
+				addToMenu(menuInfoLongBaseTreeNode, menuMap, parent, menu);
 				break;
 		}
 	}
 
+	private static void addToMenu(BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode,
+								  Map<String, JMenu> menuMap, BaseTreeNode<MenuInfo, Long> parent, JMenuItem menuItem) {
+		if (parent != null && menuMap.containsKey(parent.getValue().getName())) {
+			final JMenu menu = menuMap.get(parent.getValue().getName());
+			int length = menu.getSubElements().length;
+			if (0 < length) {
+				int indexOf = getSortedList(parent).indexOf(menuInfoLongBaseTreeNode);
+				menu.add(menuItem, indexOf);
+			} else {
+				menu.add(menuItem);
+			}
+		}
+	}
+
+	private static List<BaseTreeNode<MenuInfo, Long>> getSortedList(
+			BaseTreeNode<MenuInfo, Long> parent) {
+		Collection<BaseTreeNode<MenuInfo, Long>> children = parent.getChildren();
+		List<BaseTreeNode<MenuInfo, Long>> list = new ArrayList<>(children);
+		Collections.sort(list, (o1, o2) -> o1.getId().compareTo(o2.getId()));
+		return list;
+	}
+
 	public static void visitAndAddToMap(
-		final @NonNull BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode,
-		final @NonNull Map<String, ActionListener> actionListenerMap,
-		final @NonNull Map<String, JMenu> menuMap,
-		final @NonNull Map<String, JMenuItem> menuItemMap,
-		final @NonNull Map<String, JMenuBar> menuBarMap)
-	{
+			final @NonNull BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode,
+			final @NonNull Map<String, ActionListener> actionListenerMap,
+			final @NonNull Map<String, JMenu> menuMap,
+			final @NonNull Map<String, JMenuItem> menuItemMap,
+			final @NonNull Map<String, JMenuBar> menuBarMap) {
 		final MenuInfo menuInfo = menuInfoLongBaseTreeNode.getValue();
 		if (actionListenerMap.containsKey(menuInfo.getName()))
 		{

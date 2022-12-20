@@ -24,26 +24,6 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.KeyStroke;
-import javax.swing.MenuElement;
-
-import io.github.astrapi69.swing.menu.ParentMenuResolver;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
 import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
@@ -53,6 +33,7 @@ import io.github.astrapi69.swing.action.ExitApplicationAction;
 import io.github.astrapi69.swing.action.NoAction;
 import io.github.astrapi69.swing.action.ToggleFullScreenAction;
 import io.github.astrapi69.swing.menu.MenuExtensions;
+import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
@@ -60,19 +41,67 @@ import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.transform.MenuInfoTreeNodeConverter;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.tree.BaseTreeNode;
+import io.github.astrapi69.window.adapter.CloseWindow;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * The unit test class for the class {@link JMenuBarFactory}
  */
-public class JMenuBarFactoryTest
-{
+public class JMenuBarFactoryTest {
 
 	File xmlFile;
 	String xml;
 
+	public static void main(String[] args) {
+		JFrame frame;
+		String filename;
+		filename = "app-menubar.xml";
+		frame = new JFrame("Test Double Click");
+		File xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
+		String xml = RuntimeExceptionDecorator.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
+
+		Map<String, ActionListener> actionListenerMap;
+		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
+
+		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(xml);
+		actionListenerMap = new LinkedHashMap<>();
+
+		actionListenerMap.put(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey(),
+				new ToggleFullScreenAction("Fullscreen", frame));
+		actionListenerMap.put(BaseMenuId.EXIT.propertiesKey(), new ExitApplicationAction("Exit"));
+		actionListenerMap.put(BaseMenuId.FILE.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.MENU_BAR.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_CONTENT.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_INFO.propertiesKey(), new NoAction());
+
+		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
+				actionListenerMap);
+
+
+		frame.setJMenuBar(menuBar);
+		frame.addWindowListener(new CloseWindow());
+
+		frame.setSize(400, 200);
+		frame.setVisible(true);
+	}
+
 	@BeforeEach
-	public void beforeEach()
-	{
+	public void beforeEach() {
 		String filename;
 		filename = "app-menubar.xml";
 		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
@@ -154,28 +183,30 @@ public class JMenuBarFactoryTest
 
 		exitMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('E'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F4")))
-			.text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
-		exitTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F4")))
+				.text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
+		exitTreeNode = BaseTreeNode.<MenuInfo, Long>builder().id(idGenerator.getNextId())
+				.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
 
 		helpMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
-			.text("Help").name(BaseMenuId.HELP.propertiesKey()).build();
-		helpTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(helpMenuInfo).build();
-		helpContentMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('C'))
-			.keyStrokeInfo(
-				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
-			.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
-		helpContentTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(helpContentMenuInfo).build();
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
+				.text("Help").name(BaseMenuId.HELP.propertiesKey()).build();
+		helpTreeNode = BaseTreeNode.<MenuInfo, Long>builder().id(idGenerator.getNextId())
+				.value(helpMenuInfo).build();
+		helpContentMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+				.mnemonic(MenuExtensions.toMnemonic('C'))
+				.keyStrokeInfo(
+						KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
+				.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
+		helpContentTreeNode = BaseTreeNode.<MenuInfo, Long>builder().id(idGenerator.getNextId())
+				.value(helpContentMenuInfo).build();
 
-		infoMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('I'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed I")))
-			.text("Info").name(BaseMenuId.HELP_INFO.propertiesKey()).build();
-		infoTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(infoMenuInfo).build();
+		infoMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+				.mnemonic(MenuExtensions.toMnemonic('I'))
+				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed I")))
+				.text("Info").name(BaseMenuId.HELP_INFO.propertiesKey()).build();
+		infoTreeNode = BaseTreeNode.<MenuInfo, Long>builder().id(idGenerator.getNextId())
+				.value(infoMenuInfo).build();
 
 		menuBarTreeNode.addChild(fileTreeNode);
 		menuBarTreeNode.addChild(helpTreeNode);

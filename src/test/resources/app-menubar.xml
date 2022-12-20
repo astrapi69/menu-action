@@ -85,7 +85,7 @@
                     <onKeyRelease>false</onKeyRelease>
                     <keystrokeAsString>ctrl alt pressed H</keystrokeAsString>
                 </keyStrokeInfo>
-                <type>MENU</type>
+                <type>MENU_ITEM</type>
             </value>
             <leaf>false</leaf>
         </io.github.astrapi69.tree.TreeIdNode>
@@ -107,7 +107,7 @@
                     <onKeyRelease>false</onKeyRelease>
                     <keystrokeAsString>ctrl pressed I</keystrokeAsString>
                 </keyStrokeInfo>
-                <type>MENU</type>
+                <type>MENU_ITEM</type>
             </value>
             <leaf>false</leaf>
         </io.github.astrapi69.tree.TreeIdNode>
