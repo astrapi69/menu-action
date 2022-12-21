@@ -30,12 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JToolBar;
-import javax.swing.MenuElement;
+import javax.swing.*;
 
 import lombok.NonNull;
 
@@ -69,6 +64,14 @@ public final class ParentMenuResolver
 		else if (component instanceof JMenuItem)
 		{
 			return Optional.of(JMenuItem.class);
+		}
+		else if (component instanceof JCheckBoxMenuItem)
+		{
+			return Optional.of(JCheckBoxMenuItem.class);
+		}
+		else if (component instanceof JRadioButtonMenuItem)
+		{
+			return Optional.of(JRadioButtonMenuItem.class);
 		}
 		return Optional.of(JPopupMenu.class);
 	}

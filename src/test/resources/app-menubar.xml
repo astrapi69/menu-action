@@ -97,6 +97,50 @@
             <parentId class="long">4</parentId>
             <childrenIds/>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.help.donate</name>
+                <text>Donate</text>
+                <mnemonic>76</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>76</keyCode>
+                    <modifiers>130</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>ctrl pressed L</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU_ITEM</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>7</long>
+        <io.github.astrapi69.tree.TreeIdNode>
+            <id class="long">7</id>
+            <parentId class="long">4</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.help.license</name>
+                <text>Licence</text>
+                <mnemonic>76</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>76</keyCode>
+                    <modifiers>130</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>ctrl pressed L</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU_ITEM</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>8</long>
+        <io.github.astrapi69.tree.TreeIdNode>
+            <id class="long">8</id>
+            <parentId class="long">4</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.help.info</name>
                 <text>Info</text>
                 <mnemonic>73</mnemonic>
@@ -120,6 +164,8 @@
             <childrenIds>
                 <long>5</long>
                 <long>6</long>
+                <long>7</long>
+                <long>8</long>
             </childrenIds>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.help</name>
