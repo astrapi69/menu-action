@@ -50,6 +50,28 @@ public class MenuItemInfo
 	ActionListener actionListener;
 	String name;
 
+	public JCheckBoxMenuItem toJCheckBoxMenuItem()
+	{
+		JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem();
+		setFields(jMenuItem);
+		if (keyStroke != null)
+		{
+			jMenuItem.setAccelerator(keyStroke);
+		}
+		return jMenuItem;
+	}
+
+	public JRadioButtonMenuItem toJRadioButtonMenuItem()
+	{
+		JRadioButtonMenuItem jMenuItem = new JRadioButtonMenuItem();
+		setFields(jMenuItem);
+		if (keyStroke != null)
+		{
+			jMenuItem.setAccelerator(keyStroke);
+		}
+		return jMenuItem;
+	}
+
 	public JMenuItem toJMenuItem()
 	{
 		JMenuItem jMenuItem = new JMenuItem();
