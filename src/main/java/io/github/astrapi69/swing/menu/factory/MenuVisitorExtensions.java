@@ -56,6 +56,16 @@ public class MenuVisitorExtensions
 				final JMenuItem menuItem = menuItemMap.get(actionId);
 				addToMenu(menuInfoLongBaseTreeNode, menuMap, parent, menuItem);
 				break;
+			case CHECK_BOX_MENU_ITEM :
+				final JCheckBoxMenuItem checkBoxMenuItem = (JCheckBoxMenuItem)menuItemMap
+					.get(actionId);
+				addToMenu(menuInfoLongBaseTreeNode, menuMap, parent, checkBoxMenuItem);
+				break;
+			case RADIO_BUTTON_MENU_ITEM :
+				final JRadioButtonMenuItem radioButtonMenuItem = (JRadioButtonMenuItem)menuItemMap
+					.get(actionId);
+				addToMenu(menuInfoLongBaseTreeNode, menuMap, parent, radioButtonMenuItem);
+				break;
 			case MENU :
 				final JMenu menu = menuMap.get(actionId);
 				if (parent != null && menuBarMap.containsKey(parent.getValue().getName()))
@@ -88,13 +98,22 @@ public class MenuVisitorExtensions
 			if (0 < length)
 			{
 				int indexOf = getSortedList(parent).indexOf(menuInfoLongBaseTreeNode);
+				int diff = length - indexOf;
 				if (length < indexOf)
 				{
 					parentMenu.add(menuItem);
 				}
 				else
 				{
-					parentMenu.add(menuItem, indexOf);
+					if(0 < diff) {
+						parentMenu.add(menuItem, indexOf);
+					} else {
+						if(indexOf < diff) {
+							parentMenu.add(menuItem, indexOf);
+						} else {
+							parentMenu.add(menuItem, indexOf-1);
+						}
+					}
 				}
 			}
 			else
@@ -136,6 +155,15 @@ public class MenuVisitorExtensions
 				case MENU_ITEM :
 					final JMenuItem menuItem = menuItemInfo.toJMenuItem();
 					menuItemMap.put(menuInfo.getName(), menuItem);
+					break;
+				case RADIO_BUTTON_MENU_ITEM :
+					final JRadioButtonMenuItem radioButtonMenuItem = menuItemInfo
+						.toJRadioButtonMenuItem();
+					menuItemMap.put(menuInfo.getName(), radioButtonMenuItem);
+					break;
+				case CHECK_BOX_MENU_ITEM :
+					final JCheckBoxMenuItem checkBoxMenuItem = menuItemInfo.toJCheckBoxMenuItem();
+					menuItemMap.put(menuInfo.getName(), checkBoxMenuItem);
 					break;
 				case MENU :
 					final JMenu menu = menuItemInfo.toJMenu();
