@@ -29,7 +29,6 @@ import java.util.*;
 
 import javax.swing.*;
 
-import com.sun.source.tree.ParenthesizedTree;
 import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
@@ -84,7 +83,7 @@ public class MenuVisitorExtensions
 		if (parent != null && menuMap.containsKey(parent.getValue().getName()))
 		{
 			final JMenu parentMenu = menuMap.get(parent.getValue().getName());
-			List<MenuElement> subElements = ParentMenuResolver.getAllMenuElements(parentMenu);
+			List<MenuElement> subElements = ParentMenuResolver.getAllMenuElements(parentMenu, true);
 			int length = subElements.size();
 			if (0 < length)
 			{
