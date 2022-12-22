@@ -105,13 +105,19 @@ public class MenuVisitorExtensions
 				}
 				else
 				{
-					if(0 < diff) {
+					if (0 < diff)
+					{
 						parentMenu.add(menuItem, indexOf);
-					} else {
-						if(indexOf < diff) {
+					}
+					else
+					{
+						if (indexOf < diff)
+						{
 							parentMenu.add(menuItem, indexOf);
-						} else {
-							parentMenu.add(menuItem, indexOf-1);
+						}
+						else
+						{
+							parentMenu.add(menuItem, indexOf - 1);
 						}
 					}
 				}

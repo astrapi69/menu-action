@@ -24,6 +24,19 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.swing.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
@@ -40,17 +53,6 @@ import io.github.astrapi69.swing.menu.model.transform.MenuInfoTreeNodeConverter;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.tree.BaseTreeNode;
 import io.github.astrapi69.window.adapter.CloseWindow;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * The unit test class for the class {@link JMenuBarFactory}
@@ -84,10 +86,10 @@ public class JMenuBarFactoryTest2
 		actionListenerMap.put(BaseMenuId.HELP.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.HELP_CONTENT.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.HELP_DONATE.propertiesKey(), new NoAction());
-		actionListenerMap.put("global.menu.help.diagnostic", new NoAction());
-		actionListenerMap.put("global.menu.help.diagnostic.activity", new NoAction());
-		actionListenerMap.put("global.menu.help.diagnostic.profile", new NoAction());
-		actionListenerMap.put("global.menu.help.diagnostic.usage", new NoAction());
+		actionListenerMap.put(TestMenuId.HELP_DIAGNOSTIC.propertiesKey(), new NoAction());
+		actionListenerMap.put(TestMenuId.HELP_DIAGNOSTIC_ACTIVITY.propertiesKey(), new NoAction());
+		actionListenerMap.put(TestMenuId.HELP_DIAGNOSTIC_PROFILE.propertiesKey(), new NoAction());
+		actionListenerMap.put(TestMenuId.HELP_DIAGNOSTIC_USAGE.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.HELP_LICENSE.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.HELP_INFO.propertiesKey(), new NoAction());
 
@@ -194,28 +196,28 @@ public class JMenuBarFactoryTest2
 			.leaf(true).value(donateMenuInfo).build();
 
 		diagnosticMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('G'))
-			.text("Diagnostic >").name("global.menu.help.diagnostic").build();
+			.text("Diagnostic >").name(TestMenuId.HELP_DIAGNOSTIC.propertiesKey()).build();
 		diagnosticTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(diagnosticMenuInfo).build();
 
 		diagnosticActivityMenuInfo = MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('A'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed A")))
-			.text("Activity").name("global.menu.help.diagnostic.activity").build();
+			.text("Activity").name(TestMenuId.HELP_DIAGNOSTIC_ACTIVITY.propertiesKey()).build();
 		diagnosticActivityTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
 			.id(idGenerator.getNextId()).leaf(true).value(diagnosticActivityMenuInfo).build();
 
 		diagnosticProfileMenuInfo = MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('P'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed P")))
-			.text("Profile").name("global.menu.help.diagnostic.profile").build();
+			.text("Profile").name(TestMenuId.HELP_DIAGNOSTIC_PROFILE.propertiesKey()).build();
 		diagnosticProfileTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
 			.id(idGenerator.getNextId()).leaf(true).value(diagnosticProfileMenuInfo).build();
 
 		diagnosticUsageMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('U'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed U")))
-			.text("Usage").name("global.menu.help.diagnostic.usage").build();
+			.text("Usage").name(TestMenuId.HELP_DIAGNOSTIC_USAGE.propertiesKey()).build();
 		diagnosticUsageTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
 			.id(idGenerator.getNextId()).leaf(true).value(diagnosticUsageMenuInfo).build();
 
