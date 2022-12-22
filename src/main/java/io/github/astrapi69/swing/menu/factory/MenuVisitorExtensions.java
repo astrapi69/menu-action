@@ -93,33 +93,19 @@ public class MenuVisitorExtensions
 		if (parent != null && menuMap.containsKey(parent.getValue().getName()))
 		{
 			final JMenu parentMenu = menuMap.get(parent.getValue().getName());
-			List<MenuElement> subElements = ParentMenuResolver.getAllMenuElements(parentMenu, true);
-			int length = subElements.size();
+			List<MenuElement> childMenuElements = ParentMenuResolver.getAllMenuElements(parentMenu, true);
+			int length = childMenuElements.size();
 			if (0 < length)
 			{
 				int indexOf = getSortedList(parent).indexOf(menuInfoLongBaseTreeNode);
 				int diff = length - indexOf;
-				if (length < indexOf)
+				if (0 < length)
 				{
-					parentMenu.add(menuItem);
+					parentMenu.add(menuItem, indexOf);
 				}
 				else
 				{
-					if (0 < diff)
-					{
-						parentMenu.add(menuItem, indexOf);
-					}
-					else
-					{
-						if (indexOf < diff)
-						{
-							parentMenu.add(menuItem, indexOf);
-						}
-						else
-						{
-							parentMenu.add(menuItem, indexOf - 1);
-						}
-					}
+					parentMenu.add(menuItem);
 				}
 			}
 			else
