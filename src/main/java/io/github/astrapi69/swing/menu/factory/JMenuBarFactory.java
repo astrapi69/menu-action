@@ -30,9 +30,9 @@ import java.util.Map;
 
 import javax.swing.*;
 
+import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
-import io.github.astrapi69.tree.BaseTreeNode;
 import lombok.NonNull;
 
 /**

@@ -1,7 +1,7 @@
 <linked-hash-map>
     <entry>
         <long>2</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">2</id>
             <parentId class="long">1</parentId>
             <childrenIds/>
@@ -19,11 +19,11 @@
                 <type>MENU_ITEM</type>
             </value>
             <leaf>true</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>3</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">3</id>
             <parentId class="long">1</parentId>
             <childrenIds/>
@@ -41,11 +41,11 @@
                 <type>MENU_ITEM</type>
             </value>
             <leaf>true</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>1</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">1</id>
             <parentId class="long">0</parentId>
             <childrenIds>
@@ -66,11 +66,11 @@
                 <type>MENU</type>
             </value>
             <leaf>false</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>5</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">5</id>
             <parentId class="long">4</parentId>
             <childrenIds/>
@@ -88,11 +88,11 @@
                 <type>MENU_ITEM</type>
             </value>
             <leaf>false</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>6</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">6</id>
             <parentId class="long">4</parentId>
             <childrenIds/>
@@ -110,11 +110,11 @@
                 <type>MENU_ITEM</type>
             </value>
             <leaf>false</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>7</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">7</id>
             <parentId class="long">4</parentId>
             <childrenIds/>
@@ -132,11 +132,11 @@
                 <type>MENU_ITEM</type>
             </value>
             <leaf>false</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>8</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">8</id>
             <parentId class="long">4</parentId>
             <childrenIds/>
@@ -154,11 +154,11 @@
                 <type>MENU_ITEM</type>
             </value>
             <leaf>false</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>4</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">4</id>
             <parentId class="long">0</parentId>
             <childrenIds>
@@ -181,11 +181,11 @@
                 <type>MENU</type>
             </value>
             <leaf>false</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>0</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">0</id>
             <childrenIds>
                 <long>1</long>
@@ -196,6 +196,6 @@
                 <type>MENU_BAR</type>
             </value>
             <leaf>false</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
 </linked-hash-map>

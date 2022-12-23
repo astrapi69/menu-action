@@ -29,11 +29,11 @@ import java.util.*;
 
 import javax.swing.*;
 
+import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
-import io.github.astrapi69.tree.BaseTreeNode;
 import lombok.NonNull;
 
 public class MenuVisitorExtensions
@@ -93,19 +93,34 @@ public class MenuVisitorExtensions
 		if (parent != null && menuMap.containsKey(parent.getValue().getName()))
 		{
 			final JMenu parentMenu = menuMap.get(parent.getValue().getName());
-			List<MenuElement> childMenuElements = ParentMenuResolver.getAllMenuElements(parentMenu, true);
+			List<MenuElement> childMenuElements = ParentMenuResolver.getAllMenuElements(parentMenu,
+				true);
 			int length = childMenuElements.size();
 			if (0 < length)
 			{
 				int indexOf = getSortedList(parent).indexOf(menuInfoLongBaseTreeNode);
 				int diff = length - indexOf;
-				if (0 < length)
+				if (length < indexOf)
 				{
-					parentMenu.add(menuItem, indexOf);
+					parentMenu.add(menuItem);
 				}
 				else
 				{
-					parentMenu.add(menuItem);
+					if (0 < diff)
+					{
+						parentMenu.add(menuItem, indexOf);
+					}
+					else
+					{
+						if (indexOf < diff)
+						{
+							parentMenu.add(menuItem, indexOf);
+						}
+						else
+						{
+							parentMenu.add(menuItem, indexOf - 1);
+						}
+					}
 				}
 			}
 			else
