@@ -24,8 +24,10 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -93,32 +95,57 @@ public class MenuVisitorExtensions
 		if (parent != null && menuMap.containsKey(parent.getValue().getName()))
 		{
 			final JMenu parentMenu = menuMap.get(parent.getValue().getName());
-			List<MenuElement> childMenuElements = ParentMenuResolver.getAllMenuElements(parentMenu,
-				true);
-			int length = childMenuElements.size();
-			if (0 < length)
+			List<MenuElement> childMenuElements = ParentMenuResolver
+				.getChildMenuElements(parentMenu);
+			int menuChildrenlength = childMenuElements.size();
+			if (0 < menuChildrenlength)
 			{
-				int indexOf = getSortedList(parent).indexOf(menuInfoLongBaseTreeNode);
-				int diff = length - indexOf;
-				if (length < indexOf)
+				List<BaseTreeNode<MenuInfo, Long>> sortedList = getSortedList(parent);
+				int indexOfCurrentMenuItem = -1;
+				for (BaseTreeNode<MenuInfo, Long> btn : sortedList)
+				{
+					String name = btn.getValue().getName();
+					if (name.equals(menuItem.getName()))
+					{
+						indexOfCurrentMenuItem = sortedList.indexOf(btn);
+					}
+				}
+				int indexOfChild = sortedList.indexOf(menuInfoLongBaseTreeNode);
+				if (menuChildrenlength <= indexOfChild)
 				{
 					parentMenu.add(menuItem);
 				}
 				else
 				{
+					for (MenuElement me : childMenuElements)
+					{
+						String currentName = me.getComponent().getName();
+						System.out.println(currentName + ";i:" + childMenuElements.indexOf(me));
+						System.out.println(menuItem.getName() + ";c:" + indexOfCurrentMenuItem);
+
+					}
+					int diff = menuChildrenlength - indexOfChild;
 					if (0 < diff)
 					{
-						parentMenu.add(menuItem, indexOf);
+						parentMenu.add(menuItem, indexOfChild);
 					}
 					else
 					{
-						if (indexOf < diff)
+						if (indexOfChild < diff)
 						{
-							parentMenu.add(menuItem, indexOf);
+							parentMenu.add(menuItem, indexOfChild);
 						}
 						else
 						{
-							parentMenu.add(menuItem, indexOf - 1);
+							if (indexOfChild == menuChildrenlength)
+							{
+								parentMenu.add(menuItem);
+							}
+							else
+							{
+
+								parentMenu.add(menuItem, indexOfChild - 1);
+							}
 						}
 					}
 				}

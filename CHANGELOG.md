@@ -7,6 +7,9 @@ Version 2.6-SNAPSHOT
 ADDED:
 
 - new dependency tree-api in new minor version 1.1
+- new factory class JCheckBoxMenuItemFactory for create JCheckBoxMenuItem objects
+- new factory class JRadioButtonMenuItemFactory for create JRadioButtonMenuItem objects
+- new factory methods in MenuItemInfo for create JRadioButtonMenuItem and JCheckBoxMenuItem objects
 
 CHANGED:
 
