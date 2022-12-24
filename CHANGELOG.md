@@ -6,7 +6,7 @@ Version 2.6-SNAPSHOT
 
 ADDED:
 
-- new dependency tree-api in new minor version 1.1
+- new dependency tree-api in new minor version 1.2
 - new factory class JCheckBoxMenuItemFactory for create JCheckBoxMenuItem objects
 - new factory class JRadioButtonMenuItemFactory for create JRadioButtonMenuItem objects
 - new factory methods in MenuItemInfo for create JRadioButtonMenuItem and JCheckBoxMenuItem objects
@@ -15,7 +15,7 @@ CHANGED:
 
 - update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 6.6.1
 - moved enum types from package 'enumtype' to new 'enumeration' package
-- update of dependency gen-tree to new version 7.3
+- update of dependency gen-tree to new version 7.4
 
 Version 2.5
 -------------

@@ -101,39 +101,65 @@ public class MenuVisitorExtensions
 			if (0 < menuChildrenlength)
 			{
 				List<BaseTreeNode<MenuInfo, Long>> sortedList = getSortedList(parent);
-				int indexOfCurrentMenuItem = -1;
+				Map<String, BaseTreeNode<MenuInfo, Long>> childNameMap = new LinkedHashMap<>();
+
 				for (BaseTreeNode<MenuInfo, Long> btn : sortedList)
 				{
 					String name = btn.getValue().getName();
-					if (name.equals(menuItem.getName()))
-					{
-						indexOfCurrentMenuItem = sortedList.indexOf(btn);
-					}
+					childNameMap.put(name, btn);
 				}
+
 				int indexOfChild = sortedList.indexOf(menuInfoLongBaseTreeNode);
+
+				Map<String, MenuElement> nameMap = new LinkedHashMap<>(childMenuElements.size());
+				for (MenuElement me : childMenuElements)
+				{
+					String currentName = me.getComponent().getName();
+					nameMap.put(currentName, me);
+				}
+
 				if (menuChildrenlength <= indexOfChild)
 				{
-					parentMenu.add(menuItem);
+					if (menuChildrenlength == indexOfChild)
+					{
+						List<MenuElement> values = new ArrayList<>(nameMap.values());
+						MenuElement lastMenuElement = values.get(menuChildrenlength - 1);
+						String name = lastMenuElement.getComponent().getName();
+						if (menuInfoLongBaseTreeNode.hasPreviousSibling())
+						{
+							String previousName = menuInfoLongBaseTreeNode.getPreviousSibling()
+								.getValue().getName();
+							if (name.equals(previousName) && 1 < menuChildrenlength)
+							{
+								parentMenu.insert(menuItem, menuChildrenlength - 1);
+							}
+							else
+							{
+								parentMenu.add(menuItem);
+							}
+						}
+						else
+						{
+							parentMenu.add(menuItem);
+						}
+					}
+					else
+					{
+						parentMenu.add(menuItem);
+					}
 				}
 				else
 				{
-					for (MenuElement me : childMenuElements)
-					{
-						String currentName = me.getComponent().getName();
-						System.out.println(currentName + ";i:" + childMenuElements.indexOf(me));
-						System.out.println(menuItem.getName() + ";c:" + indexOfCurrentMenuItem);
-
-					}
 					int diff = menuChildrenlength - indexOfChild;
 					if (0 < diff)
 					{
-						parentMenu.add(menuItem, indexOfChild);
+						parentMenu.insert(menuItem, indexOfChild);
 					}
 					else
 					{
 						if (indexOfChild < diff)
 						{
-							parentMenu.add(menuItem, indexOfChild);
+							parentMenu.insert(menuItem, indexOfChild);
 						}
 						else
 						{
@@ -143,8 +169,7 @@ public class MenuVisitorExtensions
 							}
 							else
 							{
-
-								parentMenu.add(menuItem, indexOfChild - 1);
+								parentMenu.insert(menuItem, indexOfChild - 1);
 							}
 						}
 					}

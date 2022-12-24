@@ -27,6 +27,7 @@ package io.github.astrapi69.swing.menu;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,41 +87,49 @@ public final class ParentMenuResolver
 	public static List<MenuElement> getChildMenuElements(final @NonNull MenuElement parent)
 	{
 		Component parentMenu = parent.getComponent();
+		if (parentMenu instanceof JMenuBar)
+		{
+			JMenuBar jMenuBar = (JMenuBar)parentMenu;
+			MenuElement[] subElements = jMenuBar.getSubElements();
+			return Arrays.asList(subElements);
+		}
 		List<MenuElement> allMenuElements = ParentMenuResolver.getAllMenuElements(parent);
 		List<MenuElement> childMenuElements = new ArrayList<>();
 		for (MenuElement menuElement : allMenuElements)
 		{
 			Component component = menuElement.getComponent();
+			if (component instanceof JMenu)
+			{
+				JMenu jMenu = (JMenu)component;
+				addChildMenuElement(parentMenu, childMenuElements, menuElement, jMenu.getParent());
+				continue;
+			}
 			if (component instanceof JMenuItem)
 			{
 				JMenuItem jMenuItem = (JMenuItem)component;
-				Container parent1 = jMenuItem.getParent();
-				if (parent1 instanceof JPopupMenu)
-				{
-					JPopupMenu jPopupMenu = (JPopupMenu)parent1;
-					Component invoker = jPopupMenu.getInvoker();
-					if (invoker.equals(parentMenu))
-					{
-						childMenuElements.add(menuElement);
-					}
-				}
-			}
-			if (component instanceof JMenu)
-			{
-				JMenu jMenuItem = (JMenu)component;
-				Container parent1 = jMenuItem.getParent();
-				if (parent1 instanceof JPopupMenu)
-				{
-					JPopupMenu jPopupMenu = (JPopupMenu)parent1;
-					Component invoker = jPopupMenu.getInvoker();
-					if (invoker.equals(parentMenu))
-					{
-						childMenuElements.add(menuElement);
-					}
-				}
+				addChildMenuElement(parentMenu, childMenuElements, menuElement,
+					jMenuItem.getParent());
+				continue;
 			}
 		}
 		return childMenuElements;
+	}
+
+	private static void addChildMenuElement(Component parentMenu,
+		List<MenuElement> childMenuElements, MenuElement menuElement, Container menuParent)
+	{
+		if (menuParent instanceof JPopupMenu)
+		{
+			JPopupMenu jPopupMenu = (JPopupMenu)menuParent;
+			Component invoker = jPopupMenu.getInvoker();
+			if (invoker.equals(parentMenu))
+			{
+				if (!childMenuElements.contains(menuElement))
+				{
+					childMenuElements.add(menuElement);
+				}
+			}
+		}
 	}
 
 	/**
