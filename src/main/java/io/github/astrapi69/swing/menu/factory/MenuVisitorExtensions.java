@@ -24,13 +24,14 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
 import javax.swing.*;
 
+import io.github.astrapi69.collection.list.ListExtensions;
+import io.github.astrapi69.collection.list.ListFactory;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
@@ -56,17 +57,17 @@ public class MenuVisitorExtensions
 		{
 			case MENU_ITEM :
 				final JMenuItem menuItem = menuItemMap.get(actionId);
-				addToMenu(menuInfoLongBaseTreeNode, menuMap, parent, menuItem);
+				addToMenu(menuMap, parent, menuItem);
 				break;
 			case CHECK_BOX_MENU_ITEM :
 				final JCheckBoxMenuItem checkBoxMenuItem = (JCheckBoxMenuItem)menuItemMap
 					.get(actionId);
-				addToMenu(menuInfoLongBaseTreeNode, menuMap, parent, checkBoxMenuItem);
+				addToMenu(menuMap, parent, checkBoxMenuItem);
 				break;
 			case RADIO_BUTTON_MENU_ITEM :
 				final JRadioButtonMenuItem radioButtonMenuItem = (JRadioButtonMenuItem)menuItemMap
 					.get(actionId);
-				addToMenu(menuInfoLongBaseTreeNode, menuMap, parent, radioButtonMenuItem);
+				addToMenu(menuMap, parent, radioButtonMenuItem);
 				break;
 			case MENU :
 				final JMenu menu = menuMap.get(actionId);
@@ -84,101 +85,35 @@ public class MenuVisitorExtensions
 						menuBar.add(menu);
 					}
 				}
-				addToMenu(menuInfoLongBaseTreeNode, menuMap, parent, menu);
+				addToMenu(menuMap, parent, menu);
 				break;
 		}
 	}
 
-	private static void addToMenu(BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode,
-		Map<String, JMenu> menuMap, BaseTreeNode<MenuInfo, Long> parent, JMenuItem menuItem)
+	private static void addToMenu(Map<String, JMenu> menuMap, BaseTreeNode<MenuInfo, Long> parent, JMenuItem menuItem)
 	{
 		if (parent != null && menuMap.containsKey(parent.getValue().getName()))
 		{
 			final JMenu parentMenu = menuMap.get(parent.getValue().getName());
 			List<MenuElement> childMenuElements = ParentMenuResolver
 				.getChildMenuElements(parentMenu);
-			int menuChildrenlength = childMenuElements.size();
-			if (0 < menuChildrenlength)
+			List<BaseTreeNode<MenuInfo, Long>> sortedList = getSortedList(parent);
+			List<String> sortedMenuNames = ListFactory.newArrayList();
+			List<String> newSortedMenuNames = ListFactory.newArrayList();
+
+			for (BaseTreeNode<MenuInfo, Long> btn : sortedList)
 			{
-				List<BaseTreeNode<MenuInfo, Long>> sortedList = getSortedList(parent);
-				Map<String, BaseTreeNode<MenuInfo, Long>> childNameMap = new LinkedHashMap<>();
-
-				for (BaseTreeNode<MenuInfo, Long> btn : sortedList)
-				{
-					String name = btn.getValue().getName();
-					childNameMap.put(name, btn);
-				}
-
-				int indexOfChild = sortedList.indexOf(menuInfoLongBaseTreeNode);
-
-				Map<String, MenuElement> nameMap = new LinkedHashMap<>(childMenuElements.size());
-				for (MenuElement me : childMenuElements)
-				{
-					String currentName = me.getComponent().getName();
-					nameMap.put(currentName, me);
-				}
-
-				if (menuChildrenlength <= indexOfChild)
-				{
-					if (menuChildrenlength == indexOfChild)
-					{
-						List<MenuElement> values = new ArrayList<>(nameMap.values());
-						MenuElement lastMenuElement = values.get(menuChildrenlength - 1);
-						String name = lastMenuElement.getComponent().getName();
-						if (menuInfoLongBaseTreeNode.hasPreviousSibling())
-						{
-							String previousName = menuInfoLongBaseTreeNode.getPreviousSibling()
-								.getValue().getName();
-							if (name.equals(previousName) && 1 < menuChildrenlength)
-							{
-								parentMenu.insert(menuItem, menuChildrenlength - 1);
-							}
-							else
-							{
-								parentMenu.add(menuItem);
-							}
-						}
-						else
-						{
-							parentMenu.add(menuItem);
-						}
-					}
-					else
-					{
-						parentMenu.add(menuItem);
-					}
-				}
-				else
-				{
-					int diff = menuChildrenlength - indexOfChild;
-					if (0 < diff)
-					{
-						parentMenu.insert(menuItem, indexOfChild);
-					}
-					else
-					{
-						if (indexOfChild < diff)
-						{
-							parentMenu.insert(menuItem, indexOfChild);
-						}
-						else
-						{
-							if (indexOfChild == menuChildrenlength)
-							{
-								parentMenu.add(menuItem);
-							}
-							else
-							{
-								parentMenu.insert(menuItem, indexOfChild - 1);
-							}
-						}
-					}
-				}
+				sortedMenuNames.add(btn.getValue().getName());
 			}
-			else
+
+			for (MenuElement me : childMenuElements)
 			{
-				parentMenu.add(menuItem);
+				newSortedMenuNames.add(me.getComponent().getName());
 			}
+			int indexToInsert = ListExtensions.getIndexToInsert(sortedMenuNames, newSortedMenuNames,
+				menuItem.getName());
+
+			parentMenu.insert(menuItem, indexToInsert);
 		}
 	}
 
@@ -187,7 +122,7 @@ public class MenuVisitorExtensions
 	{
 		Collection<BaseTreeNode<MenuInfo, Long>> children = parent.getChildren();
 		List<BaseTreeNode<MenuInfo, Long>> list = new ArrayList<>(children);
-		Collections.sort(list, (o1, o2) -> o1.getId().compareTo(o2.getId()));
+		Collections.sort(list, Comparator.comparing(BaseTreeNode::getId));
 		return list;
 	}
 

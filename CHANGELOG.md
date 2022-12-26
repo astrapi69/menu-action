@@ -7,6 +7,7 @@ Version 2.6-SNAPSHOT
 ADDED:
 
 - new dependency tree-api in new minor version 1.2
+- new dependency silly-collection in new minor version 20.2
 - new factory class JCheckBoxMenuItemFactory for create JCheckBoxMenuItem objects
 - new factory class JRadioButtonMenuItemFactory for create JRadioButtonMenuItem objects
 - new factory methods in MenuItemInfo for create JRadioButtonMenuItem and JCheckBoxMenuItem objects
@@ -23,7 +24,7 @@ Version 2.5
 ADDED:
 
 - new extension class for visit menus
-- new factory method for create a menu from a BaseTreeNode and a action map
+- new factory method for create a menu from a BaseTreeNode and an action map
 
 CHANGED:
 

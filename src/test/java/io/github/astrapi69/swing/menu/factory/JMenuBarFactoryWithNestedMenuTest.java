@@ -57,7 +57,7 @@ import io.github.astrapi69.window.adapter.CloseWindow;
 /**
  * The unit test class for the class {@link JMenuBarFactory}
  */
-public class JMenuBarFactoryTest2
+public class JMenuBarFactoryWithNestedMenuTest
 {
 
 	File xmlFile;
@@ -130,8 +130,8 @@ public class JMenuBarFactoryTest2
 		BaseTreeNode<MenuInfo, Long> diagnosticUsageTreeNode;
 		BaseTreeNode<MenuInfo, Long> licenseTreeNode;
 		BaseTreeNode<MenuInfo, Long> infoTreeNode;
-		MenuInfo helpContentMenuInfo;
 		MenuInfo helpMenuInfo;
+		MenuInfo helpContentMenuInfo;
 		MenuInfo donateMenuInfo;
 		MenuInfo diagnosticMenuInfo;
 		MenuInfo diagnosticActivityMenuInfo;
@@ -247,8 +247,6 @@ public class JMenuBarFactoryTest2
 		diagnosticTreeNode.addChild(diagnosticActivityTreeNode);
 		diagnosticTreeNode.addChild(diagnosticProfileTreeNode);
 		diagnosticTreeNode.addChild(diagnosticUsageTreeNode);
-
-		String toXml = MenuInfoTreeNodeConverter.toXml(menuBarTreeNode);
 
 		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(xml);
 		assertNotNull(menuInfoLongBaseTreeNode);

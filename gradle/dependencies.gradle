@@ -10,6 +10,7 @@ dependencies {
     implementation("io.github.astrapi69:visitor:$designPatternsVersion")
     implementation("io.github.astrapi69:id-generate:$idGenerateVersion")
     implementation("io.github.astrapi69:xstream-extensions:$xstreamExtensionsVersion")
+    implementation("io.github.astrapi69:silly-collection:$sillyCollectionVersion")
     testCompileOnly("org.projectlombok:lombok:$lombokVersion")
     testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
     testImplementation("org.assertj:assertj-swing:$assertjSwingVersion")

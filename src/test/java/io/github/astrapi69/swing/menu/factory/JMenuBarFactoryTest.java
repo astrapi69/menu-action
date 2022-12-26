@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -98,7 +97,6 @@ public class JMenuBarFactoryTest
 		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
 			actionListenerMap);
 
-
 		frame.setJMenuBar(menuBar);
 		frame.addWindowListener(new CloseWindow());
 
@@ -117,7 +115,7 @@ public class JMenuBarFactoryTest
 
 	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
 	@Test
-	public void testBuildMenubarFromXml() throws IOException
+	public void testBuildMenubarFromXml()
 	{
 		Map<String, ActionListener> actionListenerMap;
 		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
@@ -149,7 +147,7 @@ public class JMenuBarFactoryTest
 	}
 
 	@Test
-	public void testBuildRootTreeNodeFromXml() throws IOException
+	public void testBuildRootTreeNodeFromXml()
 	{
 		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
 		BaseTreeNode<MenuInfo, Long> fileTreeNode;
