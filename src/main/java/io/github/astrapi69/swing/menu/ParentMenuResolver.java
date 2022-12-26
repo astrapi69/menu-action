@@ -27,15 +27,11 @@ package io.github.astrapi69.swing.menu;
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JToolBar;
-import javax.swing.MenuElement;
+import javax.swing.*;
 
 import lombok.NonNull;
 
@@ -70,7 +66,70 @@ public final class ParentMenuResolver
 		{
 			return Optional.of(JMenuItem.class);
 		}
+		else if (component instanceof JCheckBoxMenuItem)
+		{
+			return Optional.of(JCheckBoxMenuItem.class);
+		}
+		else if (component instanceof JRadioButtonMenuItem)
+		{
+			return Optional.of(JRadioButtonMenuItem.class);
+		}
 		return Optional.of(JPopupMenu.class);
+	}
+
+	/**
+	 * Gets recursive all menu elements from the given parent {@link MenuElement} object
+	 *
+	 * @param parent
+	 *            The parent {@link MenuElement} object
+	 * @return a list with all menu elements from the given parent {@link MenuElement} object
+	 */
+	public static List<MenuElement> getChildMenuElements(final @NonNull MenuElement parent)
+	{
+		Component parentMenu = parent.getComponent();
+		if (parentMenu instanceof JMenuBar)
+		{
+			JMenuBar jMenuBar = (JMenuBar)parentMenu;
+			MenuElement[] subElements = jMenuBar.getSubElements();
+			return Arrays.asList(subElements);
+		}
+		List<MenuElement> allMenuElements = ParentMenuResolver.getAllMenuElements(parent);
+		List<MenuElement> childMenuElements = new ArrayList<>();
+		for (MenuElement menuElement : allMenuElements)
+		{
+			Component component = menuElement.getComponent();
+			if (component instanceof JMenu)
+			{
+				JMenu jMenu = (JMenu)component;
+				addChildMenuElement(parentMenu, childMenuElements, menuElement, jMenu.getParent());
+				continue;
+			}
+			if (component instanceof JMenuItem)
+			{
+				JMenuItem jMenuItem = (JMenuItem)component;
+				addChildMenuElement(parentMenu, childMenuElements, menuElement,
+					jMenuItem.getParent());
+				continue;
+			}
+		}
+		return childMenuElements;
+	}
+
+	private static void addChildMenuElement(Component parentMenu,
+		List<MenuElement> childMenuElements, MenuElement menuElement, Container menuParent)
+	{
+		if (menuParent instanceof JPopupMenu)
+		{
+			JPopupMenu jPopupMenu = (JPopupMenu)menuParent;
+			Component invoker = jPopupMenu.getInvoker();
+			if (invoker.equals(parentMenu))
+			{
+				if (!childMenuElements.contains(menuElement))
+				{
+					childMenuElements.add(menuElement);
+				}
+			}
+		}
 	}
 
 	/**
@@ -97,6 +156,23 @@ public final class ParentMenuResolver
 	public static List<MenuElement> getAllMenuElements(final @NonNull MenuElement parent,
 		boolean withoutPopupMenu)
 	{
+		return getAllMenuElements(parent, withoutPopupMenu, true);
+	}
+
+	/**
+	 * Gets recursive all menu elements from the given parent {@link MenuElement} object
+	 *
+	 * @param parent
+	 *            The parent {@link MenuElement} object
+	 * @param withoutPopupMenu
+	 *            The flag if {@link JPopupMenu} objects shall be accepted
+	 * @param recursive
+	 *            The flag if only the child {@link MenuElement} object will be found
+	 * @return a list with all menu elements from the given parent {@link MenuElement} object
+	 */
+	public static List<MenuElement> getAllMenuElements(final @NonNull MenuElement parent,
+		boolean withoutPopupMenu, boolean recursive)
+	{
 		List<MenuElement> menuElements = new ArrayList<>();
 		for (MenuElement menuElement : parent.getSubElements())
 		{
@@ -104,7 +180,10 @@ public final class ParentMenuResolver
 			{
 				menuElements.add(menuElement);
 			}
-			menuElements.addAll(getAllMenuElements(menuElement, withoutPopupMenu));
+			if (recursive)
+			{
+				menuElements.addAll(getAllMenuElements(menuElement, withoutPopupMenu, true));
+			}
 		}
 		return menuElements;
 	}

@@ -1,13 +1,30 @@
 ## Change log
 ----------------------
 
+Version 2.6
+-------------
+
+ADDED:
+
+- new dependency tree-api in new minor version 1.2
+- new dependency silly-collection in new minor version 20.2
+- new factory class JCheckBoxMenuItemFactory for create JCheckBoxMenuItem objects
+- new factory class JRadioButtonMenuItemFactory for create JRadioButtonMenuItem objects
+- new factory methods in MenuItemInfo for create JRadioButtonMenuItem and JCheckBoxMenuItem objects
+
+CHANGED:
+
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 6.6.1
+- moved enum types from package 'enumtype' to new 'enumeration' package
+- update of dependency gen-tree to new version 7.4
+
 Version 2.5
 -------------
 
 ADDED:
 
 - new extension class for visit menus
-- new factory method for create a menu from a BaseTreeNode and a action map
+- new factory method for create a menu from a BaseTreeNode and an action map
 
 CHANGED:
 

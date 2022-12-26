@@ -26,7 +26,7 @@ package io.github.astrapi69.swing.menu.model;
 
 import java.awt.event.ActionListener;
 
-import io.github.astrapi69.swing.menu.enumtype.MenuType;
+import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

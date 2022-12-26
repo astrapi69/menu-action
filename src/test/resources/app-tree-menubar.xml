@@ -87,7 +87,7 @@
                 </keyStrokeInfo>
                 <type>MENU_ITEM</type>
             </value>
-            <leaf>false</leaf>
+            <leaf>true</leaf>
         </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
@@ -109,13 +109,98 @@
                 </keyStrokeInfo>
                 <type>MENU_ITEM</type>
             </value>
-            <leaf>false</leaf>
+            <leaf>true</leaf>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>8</long>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
+            <id class="long">8</id>
+            <parentId class="long">7</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.help.diagnostic.activity</name>
+                <text>Activity</text>
+                <mnemonic>65</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>65</keyCode>
+                    <modifiers>130</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>ctrl pressed A</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>CHECK_BOX_MENU_ITEM</type>
+            </value>
+            <leaf>true</leaf>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>9</long>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
+            <id class="long">9</id>
+            <parentId class="long">7</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.help.diagnostic.profile</name>
+                <text>Profile</text>
+                <mnemonic>80</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>80</keyCode>
+                    <modifiers>130</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>ctrl pressed P</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>RADIO_BUTTON_MENU_ITEM</type>
+            </value>
+            <leaf>true</leaf>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>10</long>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
+            <id class="long">10</id>
+            <parentId class="long">7</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.help.diagnostic.usage</name>
+                <text>Usage</text>
+                <mnemonic>85</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>85</keyCode>
+                    <modifiers>130</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>ctrl pressed U</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU_ITEM</type>
+            </value>
+            <leaf>true</leaf>
         </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>7</long>
         <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">7</id>
+            <parentId class="long">4</parentId>
+            <childrenIds>
+                <long>8</long>
+                <long>9</long>
+                <long>10</long>
+            </childrenIds>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.help.diagnostic</name>
+                <text>Diagnostic &gt;</text>
+                <mnemonic>71</mnemonic>
+                <type>MENU</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>11</long>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
+            <id class="long">11</id>
             <parentId class="long">4</parentId>
             <childrenIds/>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
@@ -135,9 +220,9 @@
         </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
-        <long>8</long>
+        <long>12</long>
         <io.github.astrapi69.gen.tree.TreeIdNode>
-            <id class="long">8</id>
+            <id class="long">12</id>
             <parentId class="long">4</parentId>
             <childrenIds/>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
@@ -165,7 +250,8 @@
                 <long>5</long>
                 <long>6</long>
                 <long>7</long>
-                <long>8</long>
+                <long>11</long>
+                <long>12</long>
             </childrenIds>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.help</name>

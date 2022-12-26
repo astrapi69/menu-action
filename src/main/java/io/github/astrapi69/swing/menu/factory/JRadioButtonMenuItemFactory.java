@@ -22,41 +22,31 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu.enumtype;
+package io.github.astrapi69.swing.menu.factory;
+
+import javax.swing.*;
+
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
+import lombok.NonNull;
 
 /**
- * The enum class {@link MenuType} provides all the possible types that a menu can have
+ * A factory {@link JRadioButtonMenuItemFactory} provides factory methods for create
+ * JRadioButtonMenuItem objects
  */
-public enum MenuType
+public class JRadioButtonMenuItemFactory
 {
 
 	/**
-	 * Represents the system tray type
+	 * Factory method for create a <code>JRadioButtonMenuItem</code>.
+	 *
+	 * @param menuItemInfo
+	 *            the information for build a <code>JRadioButtonMenuItem</code>.
+	 * @return the new {@link JRadioButtonMenuItem}
 	 */
-	SYSTEM_TRAY,
+	public static JRadioButtonMenuItem newJRadioButtonMenuItem(
+		final @NonNull MenuItemInfo menuItemInfo)
+	{
+		return menuItemInfo.toJRadioButtonMenuItem();
+	}
 
-	/**
-	 * Represents the menu bar type
-	 */
-	MENU_BAR,
-
-	/**
-	 * Represents the toolbar type
-	 */
-	TOOL_BAR,
-
-	/**
-	 * Represents the default menu type
-	 */
-	MENU,
-
-	/**
-	 * Represents the menu item type
-	 */
-	MENU_ITEM,
-
-	/**
-	 * Represents the popup menu type
-	 */
-	POPUP
 }

@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="menu-actions [code coverage]" type="TestNG">
+  <configuration default="false" name="menu-action [code coverage]" type="TestNG">
+    <shortenClasspath name="NONE" />
     <useClassPathOnly />
     <option name="SUITE_NAME" value="" />
     <option name="PACKAGE_NAME" value="" />

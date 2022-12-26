@@ -28,14 +28,14 @@ import java.util.Map;
 
 import javax.swing.*;
 
-import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
-import io.github.astrapi69.swing.menu.enumtype.MenuType;
+import io.github.astrapi69.gen.tree.BaseTreeNode;
+import io.github.astrapi69.gen.tree.TreeIdNode;
+import io.github.astrapi69.gen.tree.convert.BaseTreeNodeTransformer;
+import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
+import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import io.github.astrapi69.tree.BaseTreeNode;
-import io.github.astrapi69.tree.TreeIdNode;
-import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
 import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
 import lombok.NonNull;
@@ -77,7 +77,7 @@ public class MenuInfoTreeNodeConverter
 
 	public static MenuInfo fromJMenuItem(final @NonNull JMenuItem menu)
 	{
-		return MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+		return MenuInfo.builder().type(MenuType.MENU_ITEM).name(menu.getName()).text(menu.getText())
 			.mnemonic(menu.getMnemonic())
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator())).build();
 	}

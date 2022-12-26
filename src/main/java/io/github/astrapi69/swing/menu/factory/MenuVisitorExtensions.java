@@ -25,16 +25,18 @@
 package io.github.astrapi69.swing.menu.factory;
 
 import java.awt.event.ActionListener;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
 
-import io.github.astrapi69.swing.menu.enumtype.MenuType;
+import io.github.astrapi69.collection.list.ListExtensions;
+import io.github.astrapi69.collection.list.ListFactory;
+import io.github.astrapi69.gen.tree.BaseTreeNode;
+import io.github.astrapi69.swing.menu.ParentMenuResolver;
+import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
-import io.github.astrapi69.tree.BaseTreeNode;
 import lombok.NonNull;
 
 public class MenuVisitorExtensions
@@ -55,21 +57,74 @@ public class MenuVisitorExtensions
 		{
 			case MENU_ITEM :
 				final JMenuItem menuItem = menuItemMap.get(actionId);
-				if (parent != null && menuMap.containsKey(parent.getValue().getName()))
-				{
-					final JMenu menu = menuMap.get(parent.getValue().getName());
-					menu.add(menuItem);
-				}
+				addToMenu(menuMap, parent, menuItem);
+				break;
+			case CHECK_BOX_MENU_ITEM :
+				final JCheckBoxMenuItem checkBoxMenuItem = (JCheckBoxMenuItem)menuItemMap
+					.get(actionId);
+				addToMenu(menuMap, parent, checkBoxMenuItem);
+				break;
+			case RADIO_BUTTON_MENU_ITEM :
+				final JRadioButtonMenuItem radioButtonMenuItem = (JRadioButtonMenuItem)menuItemMap
+					.get(actionId);
+				addToMenu(menuMap, parent, radioButtonMenuItem);
 				break;
 			case MENU :
 				final JMenu menu = menuMap.get(actionId);
 				if (parent != null && menuBarMap.containsKey(parent.getValue().getName()))
 				{
 					final JMenuBar menuBar = menuBarMap.get(parent.getValue().getName());
-					menuBar.add(menu);
+					int length = menuBar.getSubElements().length;
+					if (0 < length)
+					{
+						int indexOf = getSortedList(parent).indexOf(menuInfoLongBaseTreeNode);
+						menuBar.add(menu, indexOf);
+					}
+					else
+					{
+						menuBar.add(menu);
+					}
 				}
+				addToMenu(menuMap, parent, menu);
 				break;
 		}
+	}
+
+	private static void addToMenu(Map<String, JMenu> menuMap, BaseTreeNode<MenuInfo, Long> parent,
+		JMenuItem menuItem)
+	{
+		if (parent != null && menuMap.containsKey(parent.getValue().getName()))
+		{
+			final JMenu parentMenu = menuMap.get(parent.getValue().getName());
+			List<MenuElement> childMenuElements = ParentMenuResolver
+				.getChildMenuElements(parentMenu);
+			List<BaseTreeNode<MenuInfo, Long>> sortedList = getSortedList(parent);
+			List<String> sortedMenuNames = ListFactory.newArrayList();
+			List<String> newSortedMenuNames = ListFactory.newArrayList();
+
+			for (BaseTreeNode<MenuInfo, Long> btn : sortedList)
+			{
+				sortedMenuNames.add(btn.getValue().getName());
+			}
+
+			for (MenuElement me : childMenuElements)
+			{
+				newSortedMenuNames.add(me.getComponent().getName());
+			}
+			int indexToInsert = ListExtensions.getIndexToInsert(sortedMenuNames, newSortedMenuNames,
+				menuItem.getName());
+
+			parentMenu.insert(menuItem, indexToInsert);
+		}
+	}
+
+	private static List<BaseTreeNode<MenuInfo, Long>> getSortedList(
+		BaseTreeNode<MenuInfo, Long> parent)
+	{
+		Collection<BaseTreeNode<MenuInfo, Long>> children = parent.getChildren();
+		List<BaseTreeNode<MenuInfo, Long>> list = new ArrayList<>(children);
+		Collections.sort(list, Comparator.comparing(BaseTreeNode::getId));
+		return list;
 	}
 
 	public static void visitAndAddToMap(
@@ -95,6 +150,15 @@ public class MenuVisitorExtensions
 				case MENU_ITEM :
 					final JMenuItem menuItem = menuItemInfo.toJMenuItem();
 					menuItemMap.put(menuInfo.getName(), menuItem);
+					break;
+				case RADIO_BUTTON_MENU_ITEM :
+					final JRadioButtonMenuItem radioButtonMenuItem = menuItemInfo
+						.toJRadioButtonMenuItem();
+					menuItemMap.put(menuInfo.getName(), radioButtonMenuItem);
+					break;
+				case CHECK_BOX_MENU_ITEM :
+					final JCheckBoxMenuItem checkBoxMenuItem = menuItemInfo.toJCheckBoxMenuItem();
+					menuItemMap.put(menuInfo.getName(), checkBoxMenuItem);
 					break;
 				case MENU :
 					final JMenu menu = menuItemInfo.toJMenu();

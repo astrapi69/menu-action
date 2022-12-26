@@ -25,21 +25,14 @@
 package io.github.astrapi69.swing.menu.factory;
 
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.*;
 
-import io.github.astrapi69.swing.menu.enumtype.BaseMenuId;
-import io.github.astrapi69.swing.menu.enumtype.MenuType;
+import io.github.astrapi69.gen.tree.BaseTreeNode;
+import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
-import io.github.astrapi69.swing.menu.model.MenuItemInfo;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import io.github.astrapi69.tree.BaseTreeNode;
-import io.github.astrapi69.tree.TreeIdNode;
-import io.github.astrapi69.tree.convert.BaseTreeNodeTransformer;
-import io.github.astrapi69.xstream.ObjectToXmlExtensions;
-import io.github.astrapi69.xstream.XmlToObjectExtensions;
 import lombok.NonNull;
 
 /**
@@ -61,9 +54,9 @@ public class JMenuBarFactory
 	public static JMenuBar buildMenuBar(final @NonNull BaseTreeNode<MenuInfo, Long> root,
 		final @NonNull Map<String, ActionListener> actionListenerMap)
 	{
-		final Map<String, JMenu> menuMap = new HashMap<>();
-		final Map<String, JMenuItem> menuItemMap = new HashMap<>();
-		final Map<String, JMenuBar> menuBarMap = new HashMap<>();
+		final Map<String, JMenu> menuMap = new LinkedHashMap<>();
+		final Map<String, JMenuItem> menuItemMap = new LinkedHashMap<>();
+		final Map<String, JMenuBar> menuBarMap = new LinkedHashMap<>();
 		MenuVisitorExtensions.visitAndAddToMap(root, actionListenerMap, menuMap, menuItemMap,
 			menuBarMap);
 		root.accept(menuInfoLongBaseTreeNode -> MenuVisitorExtensions.visitAndAddToMap(

@@ -29,28 +29,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.id.generate.LongIdGenerator;
-import io.github.astrapi69.junit.jupiter.callback.before.test.IgnoreHeadlessExceptionExtension;
 import io.github.astrapi69.swing.action.ExitApplicationAction;
 import io.github.astrapi69.swing.action.NoAction;
 import io.github.astrapi69.swing.action.ToggleFullScreenAction;
 import io.github.astrapi69.swing.menu.MenuExtensions;
-import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
@@ -62,7 +57,7 @@ import io.github.astrapi69.window.adapter.CloseWindow;
 /**
  * The unit test class for the class {@link JMenuBarFactory}
  */
-public class JMenuBarFactoryTest
+public class JMenuBarFactoryWithNestedMenuTest
 {
 
 	File xmlFile;
@@ -72,7 +67,7 @@ public class JMenuBarFactoryTest
 	{
 		JFrame frame;
 		String filename;
-		filename = "app-menubar.xml";
+		filename = "app-tree-menubar.xml";
 		frame = new JFrame("Test Menu with xml");
 		File xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
 		String xml = RuntimeExceptionDecorator.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
@@ -91,11 +86,16 @@ public class JMenuBarFactoryTest
 		actionListenerMap.put(BaseMenuId.HELP.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.HELP_CONTENT.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.HELP_DONATE.propertiesKey(), new NoAction());
+		actionListenerMap.put(TestMenuId.HELP_DIAGNOSTIC.propertiesKey(), new NoAction());
+		actionListenerMap.put(TestMenuId.HELP_DIAGNOSTIC_ACTIVITY.propertiesKey(), new NoAction());
+		actionListenerMap.put(TestMenuId.HELP_DIAGNOSTIC_PROFILE.propertiesKey(), new NoAction());
+		actionListenerMap.put(TestMenuId.HELP_DIAGNOSTIC_USAGE.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.HELP_LICENSE.propertiesKey(), new NoAction());
 		actionListenerMap.put(BaseMenuId.HELP_INFO.propertiesKey(), new NoAction());
 
 		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
 			actionListenerMap);
+
 
 		frame.setJMenuBar(menuBar);
 		frame.addWindowListener(new CloseWindow());
@@ -108,43 +108,11 @@ public class JMenuBarFactoryTest
 	public void beforeEach()
 	{
 		String filename;
-		filename = "app-menubar.xml";
+		filename = "app-tree-menubar.xml";
 		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
 		xml = RuntimeExceptionDecorator.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
 	}
 
-	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
-	@Test
-	public void testBuildMenubarFromXml()
-	{
-		Map<String, ActionListener> actionListenerMap;
-		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
-
-		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(xml);
-		assertNotNull(menuInfoLongBaseTreeNode);
-		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
-
-		actionListenerMap = new HashMap<>();
-
-		actionListenerMap.put(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey(),
-			new ToggleFullScreenAction("Fullscreen", new JFrame()));
-		actionListenerMap.put(BaseMenuId.EXIT.propertiesKey(), new ExitApplicationAction("Exit"));
-		actionListenerMap.put(BaseMenuId.FILE.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.MENU_BAR.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.HELP.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.HELP_CONTENT.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.HELP_DONATE.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.HELP_LICENSE.propertiesKey(), new NoAction());
-		actionListenerMap.put(BaseMenuId.HELP_INFO.propertiesKey(), new NoAction());
-
-		final JMenuBar menuBar = JMenuBarFactory.buildMenuBar(menuInfoLongBaseTreeNode,
-			actionListenerMap);
-		assertNotNull(menuBar);
-
-		List<MenuElement> allMenuElements = ParentMenuResolver.getAllMenuElements(menuBar, true);
-		assertNotNull(allMenuElements);
-
-	}
 
 	@Test
 	public void testBuildRootTreeNodeFromXml()
@@ -156,11 +124,19 @@ public class JMenuBarFactoryTest
 		BaseTreeNode<MenuInfo, Long> helpTreeNode;
 		BaseTreeNode<MenuInfo, Long> helpContentTreeNode;
 		BaseTreeNode<MenuInfo, Long> donateTreeNode;
+		BaseTreeNode<MenuInfo, Long> diagnosticTreeNode;
+		BaseTreeNode<MenuInfo, Long> diagnosticActivityTreeNode;
+		BaseTreeNode<MenuInfo, Long> diagnosticProfileTreeNode;
+		BaseTreeNode<MenuInfo, Long> diagnosticUsageTreeNode;
 		BaseTreeNode<MenuInfo, Long> licenseTreeNode;
 		BaseTreeNode<MenuInfo, Long> infoTreeNode;
-		MenuInfo helpContentMenuInfo;
 		MenuInfo helpMenuInfo;
+		MenuInfo helpContentMenuInfo;
 		MenuInfo donateMenuInfo;
+		MenuInfo diagnosticMenuInfo;
+		MenuInfo diagnosticActivityMenuInfo;
+		MenuInfo diagnosticProfileMenuInfo;
+		MenuInfo diagnosticUsageMenuInfo;
 		MenuInfo licenseMenuInfo;
 		MenuInfo infoMenuInfo;
 		MenuInfo menuBarInfo;
@@ -210,14 +186,40 @@ public class JMenuBarFactoryTest
 				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
 			.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
 		helpContentTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(helpContentMenuInfo).build();
+			.leaf(true).value(helpContentMenuInfo).build();
 
 		donateMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('L'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed L")))
 			.text("Donate").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
 		donateTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(donateMenuInfo).build();
+			.leaf(true).value(donateMenuInfo).build();
+
+		diagnosticMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('G'))
+			.text("Diagnostic >").name(TestMenuId.HELP_DIAGNOSTIC.propertiesKey()).build();
+		diagnosticTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+			.value(diagnosticMenuInfo).build();
+
+		diagnosticActivityMenuInfo = MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
+			.mnemonic(MenuExtensions.toMnemonic('A'))
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed A")))
+			.text("Activity").name(TestMenuId.HELP_DIAGNOSTIC_ACTIVITY.propertiesKey()).build();
+		diagnosticActivityTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
+			.id(idGenerator.getNextId()).leaf(true).value(diagnosticActivityMenuInfo).build();
+
+		diagnosticProfileMenuInfo = MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
+			.mnemonic(MenuExtensions.toMnemonic('P'))
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed P")))
+			.text("Profile").name(TestMenuId.HELP_DIAGNOSTIC_PROFILE.propertiesKey()).build();
+		diagnosticProfileTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
+			.id(idGenerator.getNextId()).leaf(true).value(diagnosticProfileMenuInfo).build();
+
+		diagnosticUsageMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+			.mnemonic(MenuExtensions.toMnemonic('U'))
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed U")))
+			.text("Usage").name(TestMenuId.HELP_DIAGNOSTIC_USAGE.propertiesKey()).build();
+		diagnosticUsageTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
+			.id(idGenerator.getNextId()).leaf(true).value(diagnosticUsageMenuInfo).build();
 
 		licenseMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('L'))
@@ -239,8 +241,12 @@ public class JMenuBarFactoryTest
 		fileTreeNode.addChild(exitTreeNode);
 		helpTreeNode.addChild(helpContentTreeNode);
 		helpTreeNode.addChild(donateTreeNode);
+		helpTreeNode.addChild(diagnosticTreeNode);
 		helpTreeNode.addChild(licenseTreeNode);
 		helpTreeNode.addChild(infoTreeNode);
+		diagnosticTreeNode.addChild(diagnosticActivityTreeNode);
+		diagnosticTreeNode.addChild(diagnosticProfileTreeNode);
+		diagnosticTreeNode.addChild(diagnosticUsageTreeNode);
 
 		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(xml);
 		assertNotNull(menuInfoLongBaseTreeNode);

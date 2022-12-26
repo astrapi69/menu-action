@@ -1,7 +1,7 @@
 <linked-hash-map>
     <entry>
         <long>1</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">1</id>
             <parentId class="long">0</parentId>
             <childrenIds/>
@@ -19,11 +19,11 @@
                 <type>MENU_ITEM</type>
             </value>
             <leaf>true</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>2</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">2</id>
             <parentId class="long">0</parentId>
             <childrenIds/>
@@ -41,11 +41,11 @@
                 <type>MENU_ITEM</type>
             </value>
             <leaf>true</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
         <long>0</long>
-        <io.github.astrapi69.tree.TreeIdNode>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
             <id class="long">0</id>
             <childrenIds>
                 <long>1</long>
@@ -65,6 +65,6 @@
                 <type>MENU</type>
             </value>
             <leaf>false</leaf>
-        </io.github.astrapi69.tree.TreeIdNode>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
 </linked-hash-map>

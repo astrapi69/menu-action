@@ -22,12 +22,13 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu.enumtype;
+package io.github.astrapi69.swing.menu.enumeration;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
@@ -35,6 +36,7 @@ import lombok.experimental.FieldDefaults;
 /**
  * The enum class {@link BaseMenuId} provides menu ids for the base menu from an app
  */
+@AllArgsConstructor
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Accessors(fluent = true)
@@ -152,11 +154,6 @@ public enum BaseMenuId
 
 	/** the properties key from the current menu */
 	String propertiesKey;
-
-	BaseMenuId(final String propertiesKey)
-	{
-		this.propertiesKey = propertiesKey;
-	}
 
 	public static Map<String, Boolean> getBaseMenuIdsAsMap()
 	{
