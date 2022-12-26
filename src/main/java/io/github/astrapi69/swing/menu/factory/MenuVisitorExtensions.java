@@ -90,7 +90,8 @@ public class MenuVisitorExtensions
 		}
 	}
 
-	private static void addToMenu(Map<String, JMenu> menuMap, BaseTreeNode<MenuInfo, Long> parent, JMenuItem menuItem)
+	private static void addToMenu(Map<String, JMenu> menuMap, BaseTreeNode<MenuInfo, Long> parent,
+		JMenuItem menuItem)
 	{
 		if (parent != null && menuMap.containsKey(parent.getValue().getName()))
 		{
