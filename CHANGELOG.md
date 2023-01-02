@@ -4,7 +4,9 @@
 Version 2.7-SNAPSHOT
 -------------
 
+CHANGED:
 
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new version 6.12.1
 
 Version 2.6
 -------------
