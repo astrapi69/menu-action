@@ -22,36 +22,31 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu.model.transform;
+package io.github.astrapi69.swing.menu.factory;
 
-import java.util.Map;
+import java.awt.MenuItem;
+
+import javax.swing.JMenuItem;
 
 import lombok.NonNull;
-import io.github.astrapi69.gen.tree.BaseTreeNode;
-import io.github.astrapi69.gen.tree.TreeIdNode;
-import io.github.astrapi69.gen.tree.convert.BaseTreeNodeTransformer;
-import io.github.astrapi69.swing.menu.model.MenuInfo;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import io.github.astrapi69.xstream.ObjectToXmlExtensions;
-import io.github.astrapi69.xstream.XmlToObjectExtensions;
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 
-public class MenuInfoTreeNodeConverter
+/**
+ * A factory {@link MenuItemFactory} provides factory methods for create JMenuItem objects
+ */
+public class MenuItemFactory
 {
 
-	public static BaseTreeNode<MenuInfo, Long> toMenuInfoTreeNode(final @NonNull String xml)
+	/**
+	 * Factory method for create a <code>MenuItem</code>.
+	 *
+	 * @param menuItemInfo
+	 *            the information for build a <code>MenuItem</code>.
+	 * @return the new {@link JMenuItem}
+	 */
+	public static MenuItem newMenuItem(final @NonNull MenuItemInfo menuItemInfo)
 	{
-		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = RuntimeExceptionDecorator
-			.decorate(() -> XmlToObjectExtensions.toObject(xml));
-		return BaseTreeNodeTransformer.getRoot(treeIdNodeMap);
-	}
-
-	public static String toXml(final @NonNull BaseTreeNode<MenuInfo, Long> root)
-	{
-		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = BaseTreeNodeTransformer
-			.toKeyMap(root);
-		final String xml = RuntimeExceptionDecorator
-			.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
-		return xml;
+		return menuItemInfo.toMenuItem();
 	}
 
 }

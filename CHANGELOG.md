@@ -4,7 +4,16 @@
 Version 2.7-SNAPSHOT
 -------------
 
+ADDED:
 
+- new factory class MenuItemFactory for create MenuItem objects
+- new factory class PopupMenuFactory for create PopupMenu objects
+- new converter class MenuItemInfoConverter for convert MenuItemInfo to the corresponding menu class and back
+
+CHANGED:
+
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new version 6.12.1
+- update of silly-collection dependency to new version 20.3
 
 Version 2.6
 -------------
