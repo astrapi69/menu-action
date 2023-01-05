@@ -22,36 +22,33 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu.model.transform;
+package io.github.astrapi69.swing.menu.factory;
 
-import java.util.Map;
+import java.awt.PopupMenu;
+import java.util.List;
 
-import io.github.astrapi69.gen.tree.BaseTreeNode;
-import io.github.astrapi69.gen.tree.TreeIdNode;
-import io.github.astrapi69.gen.tree.convert.BaseTreeNodeTransformer;
-import io.github.astrapi69.swing.menu.model.MenuInfo;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import io.github.astrapi69.xstream.ObjectToXmlExtensions;
-import io.github.astrapi69.xstream.XmlToObjectExtensions;
-import lombok.NonNull;
+import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 
-public class MenuInfoTreeNodeConverter
+/**
+ * A factory {@link PopupMenuFactory} provides factory methods for create PopupMenu objects
+ */
+public class PopupMenuFactory
 {
 
-	public static BaseTreeNode<MenuInfo, Long> toMenuInfoTreeNode(final @NonNull String xml)
+	/**
+	 * Factory method for create a {@link PopupMenu} object.
+	 *
+	 * @param popupMenuInfos
+	 *            the list with the popup menu infos
+	 * @return the new {@link PopupMenu}
+	 */
+	public static PopupMenu newPopupMenu(final List<MenuItemInfo> popupMenuInfos)
 	{
-		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = RuntimeExceptionDecorator
-			.decorate(() -> XmlToObjectExtensions.toObject(xml));
-		return BaseTreeNodeTransformer.getRoot(treeIdNodeMap);
+		final PopupMenu popupMenu = new PopupMenu();
+		for (final MenuItemInfo menuItemBean : popupMenuInfos)
+		{
+			popupMenu.add(menuItemBean.toMenuItem());
+		}
+		return popupMenu;
 	}
-
-	public static String toXml(final @NonNull BaseTreeNode<MenuInfo, Long> root)
-	{
-		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = BaseTreeNodeTransformer
-			.toKeyMap(root);
-		final String xml = RuntimeExceptionDecorator
-			.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
-		return xml;
-	}
-
 }

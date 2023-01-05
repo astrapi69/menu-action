@@ -31,7 +31,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.*;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JToolBar;
+import javax.swing.MenuElement;
 
 import lombok.NonNull;
 
@@ -62,10 +69,6 @@ public final class ParentMenuResolver
 		{
 			return Optional.of(JMenuBar.class);
 		}
-		else if (component instanceof JMenuItem)
-		{
-			return Optional.of(JMenuItem.class);
-		}
 		else if (component instanceof JCheckBoxMenuItem)
 		{
 			return Optional.of(JCheckBoxMenuItem.class);
@@ -74,7 +77,15 @@ public final class ParentMenuResolver
 		{
 			return Optional.of(JRadioButtonMenuItem.class);
 		}
-		return Optional.of(JPopupMenu.class);
+		else if (component instanceof JMenuItem)
+		{
+			return Optional.of(JMenuItem.class);
+		}
+		else if (component instanceof JPopupMenu)
+		{
+			return Optional.of(JPopupMenu.class);
+		}
+		return Optional.empty();
 	}
 
 	/**
@@ -109,7 +120,6 @@ public final class ParentMenuResolver
 				JMenuItem jMenuItem = (JMenuItem)component;
 				addChildMenuElement(parentMenu, childMenuElements, menuElement,
 					jMenuItem.getParent());
-				continue;
 			}
 		}
 		return childMenuElements;
