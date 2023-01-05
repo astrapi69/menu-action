@@ -34,7 +34,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.KeyStroke;
+import javax.swing.MenuElement;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,6 +59,7 @@ import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.transform.MenuInfoTreeNodeConverter;
+import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.window.adapter.CloseWindow;
 
@@ -173,7 +177,7 @@ public class JMenuBarFactoryTest
 
 		idGenerator = LongIdGenerator.of(0L);
 
-		menuBarInfo = MenuInfoTreeNodeConverter.fromJMenuBar();
+		menuBarInfo = MenuItemInfoConverter.fromJMenuBar();
 
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(menuBarInfo).build();

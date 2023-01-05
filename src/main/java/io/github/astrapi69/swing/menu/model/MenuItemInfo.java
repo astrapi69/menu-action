@@ -24,18 +24,25 @@
  */
 package io.github.astrapi69.swing.menu.model;
 
-import java.awt.*;
+import java.awt.MenuItem;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 
+import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 /**
- * The class {@link MenuItemInfo} holds the fields for build {@link JMenuItem} and {@link JMenu}
+ * The class {@link MenuItemInfo} holds the fields for build {@link JMenu}, {@link JMenuBar},
+ * {@link JMenuItem}, {@link MenuItem}, {@link JCheckBoxMenuItem} and {@link JRadioButtonMenuItem}
  * objects
  */
 @Data
@@ -52,102 +59,32 @@ public class MenuItemInfo
 
 	public JCheckBoxMenuItem toJCheckBoxMenuItem()
 	{
-		JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem();
-		setFields(jMenuItem);
-		if (keyStroke != null)
-		{
-			jMenuItem.setAccelerator(keyStroke);
-		}
-		return jMenuItem;
+		return MenuItemInfoConverter.toJCheckBoxMenuItem(this);
 	}
 
 	public JRadioButtonMenuItem toJRadioButtonMenuItem()
 	{
-		JRadioButtonMenuItem jMenuItem = new JRadioButtonMenuItem();
-		setFields(jMenuItem);
-		if (keyStroke != null)
-		{
-			jMenuItem.setAccelerator(keyStroke);
-		}
-		return jMenuItem;
+		return MenuItemInfoConverter.toJRadioButtonMenuItem(this);
 	}
 
 	public JMenuItem toJMenuItem()
 	{
-		JMenuItem jMenuItem = new JMenuItem();
-		setFields(jMenuItem);
-		if (keyStroke != null)
-		{
-			jMenuItem.setAccelerator(keyStroke);
-		}
-		return jMenuItem;
+		return MenuItemInfoConverter.toJMenuItem(this);
 	}
 
 	public MenuItem toMenuItem()
 	{
-		MenuItem menuItem = new MenuItem();
-
-		if (text != null)
-		{
-			menuItem.setLabel(text);
-		}
-		if (mnemonic != null)
-		{
-			menuItem.setShortcut(new MenuShortcut(mnemonic));
-		}
-		if (actionListener != null)
-		{
-			menuItem.addActionListener(actionListener);
-		}
-		if (name != null)
-		{
-			menuItem.setName(name);
-		}
-		if (actionCommand != null)
-		{
-			menuItem.setActionCommand(actionCommand);
-		}
-		return menuItem;
+		return MenuItemInfoConverter.toMenuItem(this);
 	}
 
 	public JMenu toJMenu()
 	{
-		JMenu jMenu = new JMenu();
-		setFields(jMenu);
-		return jMenu;
+		return MenuItemInfoConverter.toJMenu(this);
 	}
 
 	public JMenuBar toJMenuBar()
 	{
-		JMenuBar menuBar = new JMenuBar();
-		if (name != null)
-		{
-			menuBar.setName(name);
-		}
-		return menuBar;
+		return MenuItemInfoConverter.toJMenuBar(this);
 	}
 
-	private void setFields(JMenuItem menuItem)
-	{
-		if (text != null)
-		{
-			menuItem.setText(text);
-		}
-		if (mnemonic != null)
-		{
-			menuItem.setMnemonic(mnemonic);
-		}
-		if (actionListener != null)
-		{
-			menuItem.addActionListener(actionListener);
-		}
-		if (name != null)
-		{
-			menuItem.setName(name);
-		}
-		if (actionCommand != null)
-		{
-			menuItem.setActionCommand(actionCommand);
-		}
-	}
 }

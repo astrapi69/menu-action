@@ -33,10 +33,12 @@ import java.awt.Container;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.MenuElement;
 
@@ -60,6 +62,18 @@ class ParentMenuResolverTest
 		JMenu menu;
 		JMenuItem menuItem;
 		JPopupMenu popupMenu;
+		JRadioButtonMenuItem radioButtonMenuItem;
+		JCheckBoxMenuItem checkBoxMenuItem;
+		// new scenario ...
+		checkBoxMenuItem = MenuItemInfo.builder().build().toJCheckBoxMenuItem();
+		actual = ParentMenuResolver.getMenuElementType(checkBoxMenuItem);
+		expected = Optional.of(JCheckBoxMenuItem.class);
+		assertEquals(expected, actual);
+		// new scenario ...
+		radioButtonMenuItem = MenuItemInfo.builder().build().toJRadioButtonMenuItem();
+		actual = ParentMenuResolver.getMenuElementType(radioButtonMenuItem);
+		expected = Optional.of(JRadioButtonMenuItem.class);
+		assertEquals(expected, actual);
 		// new scenario ...
 		menu = MenuItemInfo.builder().build().toJMenu();
 		actual = ParentMenuResolver.getMenuElementType(menu);
