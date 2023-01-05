@@ -28,8 +28,8 @@ import java.awt.MenuItem;
 
 import javax.swing.JMenuItem;
 
-import lombok.NonNull;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
+import lombok.NonNull;
 
 /**
  * A factory {@link MenuItemFactory} provides factory methods for create JMenuItem objects

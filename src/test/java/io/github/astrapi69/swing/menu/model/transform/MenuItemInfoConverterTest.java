@@ -26,8 +26,12 @@ package io.github.astrapi69.swing.menu.model.transform;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.awt.event.ActionListener;
+
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import org.junit.jupiter.api.Test;
@@ -87,4 +91,49 @@ class MenuItemInfoConverterTest
 		menuInfo = MenuItemInfoConverter.fromJMenuItem(menu);
 		assertEquals(menuInfo, helpContentMenuInfo);
 	}
+
+	@Test
+	void fromJCheckBoxMenuItem()
+	{
+		MenuInfo donateMenuInfo;
+		MenuInfo menuInfo;
+		MenuItemInfo menuItemInfo;
+		JCheckBoxMenuItem menu;
+
+		donateMenuInfo = MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
+			.mnemonic(MenuExtensions.toMnemonic('Y'))
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed Y")))
+			.text("Yes").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
+
+		menuItemInfo = donateMenuInfo.toMenuItemInfo(new NoAction());
+
+		menu = menuItemInfo.toJCheckBoxMenuItem();
+
+		menuInfo = MenuItemInfoConverter.fromJCheckBoxMenuItem(menu);
+		assertEquals(menuInfo, donateMenuInfo);
+	}
+
+	@Test
+	void fromJRadioButtonMenuItem()
+	{
+		MenuInfo donateMenuInfo;
+		MenuInfo menuInfo;
+		MenuItemInfo menuItemInfo;
+		JRadioButtonMenuItem menu;
+		ActionListener actionListener;
+
+		donateMenuInfo = MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
+			.mnemonic(MenuExtensions.toMnemonic('R'))
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed R")))
+			.text("Donate").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
+
+		actionListener = new NoAction();
+		menuItemInfo = donateMenuInfo.toMenuItemInfo(actionListener);
+
+		menu = menuItemInfo.toJRadioButtonMenuItem();
+
+		menuInfo = MenuItemInfoConverter.fromJRadioButtonMenuItem(menu);
+		assertEquals(menuInfo, donateMenuInfo);
+	}
+
 }

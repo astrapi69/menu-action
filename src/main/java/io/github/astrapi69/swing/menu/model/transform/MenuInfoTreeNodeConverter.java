@@ -26,7 +26,6 @@ package io.github.astrapi69.swing.menu.model.transform;
 
 import java.util.Map;
 
-import lombok.NonNull;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.gen.tree.TreeIdNode;
 import io.github.astrapi69.gen.tree.convert.BaseTreeNodeTransformer;
@@ -34,6 +33,7 @@ import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
+import lombok.NonNull;
 
 public class MenuInfoTreeNodeConverter
 {

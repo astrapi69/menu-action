@@ -39,13 +39,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
-import lombok.NonNull;
 import io.github.astrapi69.collection.list.ListExtensions;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
+import lombok.NonNull;
 
 public class MenuItemInfoConverter
 {
@@ -56,7 +56,7 @@ public class MenuItemInfoConverter
 			.build();
 	}
 
-
+	@SuppressWarnings(value = "raw")
 	public static List<KeyStrokeInfo> getKeyStrokeInfos(JComponent jComponent)
 	{
 		Object whenInFocusedWindow = jComponent.getClientProperty("_WhenInFocusedWindow");

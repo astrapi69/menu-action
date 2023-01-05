@@ -34,11 +34,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
+import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 
 /**
  * The class {@link MenuItemInfo} holds the fields for build {@link JMenu}, {@link JMenuBar},
