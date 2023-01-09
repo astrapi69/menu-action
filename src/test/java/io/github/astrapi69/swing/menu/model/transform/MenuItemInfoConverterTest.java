@@ -47,6 +47,14 @@ import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 class MenuItemInfoConverterTest
 {
 
+
+	@Test
+	void mergeMenuInfoTreeNode()
+	{
+		// TODO create test case...
+		// MenuInfoTreeNodeConverter.mergeMenuInfoTreeNode();
+	}
+
 	@Test
 	void fromJMenu()
 	{

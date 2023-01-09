@@ -24,11 +24,17 @@
  */
 package io.github.astrapi69.swing.menu.model.transform;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import io.github.astrapi69.collection.list.ListExtensions;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.gen.tree.TreeIdNode;
 import io.github.astrapi69.gen.tree.convert.BaseTreeNodeTransformer;
+import io.github.astrapi69.gen.tree.visitor.MergeTreeNodesVisitor;
+import io.github.astrapi69.id.generate.LongIdGenerator;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.xstream.ObjectToXmlExtensions;
@@ -54,4 +60,34 @@ public class MenuInfoTreeNodeConverter
 		return xml;
 	}
 
+	public static BaseTreeNode<MenuInfo, Long> mergeMenuInfoTreeNode(final @NonNull String... xmls)
+	{
+		List<BaseTreeNode<MenuInfo, Long>> treeNodes = new ArrayList<>();
+		for (String xml : xmls)
+		{
+			Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = RuntimeExceptionDecorator
+				.decorate(() -> XmlToObjectExtensions.toObject(xml));
+			BaseTreeNode<MenuInfo, Long> root = BaseTreeNodeTransformer.getRoot(treeIdNodeMap);
+			treeNodes.add(root);
+		}
+
+		BaseTreeNode<MenuInfo, Long> root = null;
+		final Optional<BaseTreeNode<MenuInfo, Long>> menuInfoLongBaseTreeNode = ListExtensions
+			.removeFirst(treeNodes);
+		if (menuInfoLongBaseTreeNode.isPresent())
+		{
+			root = menuInfoLongBaseTreeNode.get();
+			for (BaseTreeNode<MenuInfo, Long> treeNode : treeNodes)
+			{
+				MergeTreeNodesVisitor<MenuInfo, Long> visitor = new MergeTreeNodesVisitor<>(
+					treeNode);
+				root.accept(visitor);
+			}
+		}
+
+		ReindexTreeNodeVisitor<MenuInfo, Long, BaseTreeNode<MenuInfo, Long>> reindexTreeNodeVisitor = new ReindexTreeNodeVisitor<>(
+			LongIdGenerator.of(0L));
+		root.accept(reindexTreeNodeVisitor);
+		return root;
+	}
 }

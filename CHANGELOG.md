@@ -4,6 +4,15 @@
 Version 2.8-SNAPSHOT
 -------------
 
+ADDED:
+
+- new visitor class for reindex a BaseTreeNode
+- new merge method in class MenuInfoTreeNodeConverter for merge multiply menu xml strings
+
+CHANGED:
+
+- update of dependency data-api to new minor version 4.1
+- update of test dependency gen-tree to new minor version 7.5
 
 Version 2.7
 -------------
