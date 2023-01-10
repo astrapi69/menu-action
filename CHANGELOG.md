@@ -12,7 +12,7 @@ ADDED:
 CHANGED:
 
 - update of dependency data-api to new minor version 4.1
-- update of test dependency gen-tree to new minor version 7.5
+- update of test dependency gen-tree to new major version 8
 
 Version 2.7
 -------------

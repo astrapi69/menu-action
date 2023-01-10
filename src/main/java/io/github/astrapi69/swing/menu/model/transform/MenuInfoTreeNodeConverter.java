@@ -33,6 +33,7 @@ import io.github.astrapi69.collection.list.ListExtensions;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.gen.tree.TreeIdNode;
 import io.github.astrapi69.gen.tree.convert.BaseTreeNodeTransformer;
+import io.github.astrapi69.gen.tree.handler.BaseTreeNodeVisitorHandlerExtensions;
 import io.github.astrapi69.gen.tree.visitor.MergeTreeNodesVisitor;
 import io.github.astrapi69.id.generate.LongIdGenerator;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
@@ -79,9 +80,8 @@ public class MenuInfoTreeNodeConverter
 			root = menuInfoLongBaseTreeNode.get();
 			for (BaseTreeNode<MenuInfo, Long> treeNode : treeNodes)
 			{
-				MergeTreeNodesVisitor<MenuInfo, Long> visitor = new MergeTreeNodesVisitor<>(
-					treeNode);
-				root.accept(visitor);
+				MergeTreeNodesVisitor<MenuInfo, Long> visitor = new MergeTreeNodesVisitor<>(root);
+				treeNode.accept(visitor);
 			}
 		}
 

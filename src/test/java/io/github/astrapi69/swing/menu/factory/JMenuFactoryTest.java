@@ -60,7 +60,9 @@ public class JMenuFactoryTest
 {
 
 	File xmlFile;
-	String xml;
+	String fileMenuXml;
+	String editMenuXml;
+	String helpMenuXml;
 
 	@BeforeEach
 	public void beforeEach()
@@ -68,7 +70,18 @@ public class JMenuFactoryTest
 		String filename;
 		filename = "app-file-menu.xml";
 		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
-		xml = RuntimeExceptionDecorator.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
+		fileMenuXml = RuntimeExceptionDecorator
+			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
+
+		filename = "app-edit-menu.xml";
+		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
+		editMenuXml = RuntimeExceptionDecorator
+			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
+
+		filename = "app-help-menu.xml";
+		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
+		helpMenuXml = RuntimeExceptionDecorator
+			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
 	}
 
 	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
@@ -79,7 +92,7 @@ public class JMenuFactoryTest
 		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
 		JMenu menu;
 
-		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(xml);
+		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(fileMenuXml);
 		assertNotNull(menuInfoLongBaseTreeNode);
 		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
 
@@ -95,6 +108,51 @@ public class JMenuFactoryTest
 		assertNotNull(menu);
 	}
 
+	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
+	@Test
+	public void testBuildEditMenuFromXml()
+	{
+		Map<String, ActionListener> actionListenerMap;
+		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
+		JMenu menu;
+
+		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(editMenuXml);
+		assertNotNull(menuInfoLongBaseTreeNode);
+		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
+
+		actionListenerMap = new HashMap<>();
+
+		actionListenerMap.put(BaseMenuId.EDIT.propertiesKey(), new NoAction());
+
+		menu = JMenuFactory.buildMenu(BaseMenuId.EDIT.propertiesKey(), menuInfoLongBaseTreeNode,
+			actionListenerMap);
+		assertNotNull(menu);
+	}
+
+	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
+	@Test
+	public void testBuildHelpMenuFromXml()
+	{
+		Map<String, ActionListener> actionListenerMap;
+		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
+		JMenu menu;
+
+		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(helpMenuXml);
+		assertNotNull(menuInfoLongBaseTreeNode);
+		assertEquals(menuInfoLongBaseTreeNode.getId(), 0);
+
+		actionListenerMap = new HashMap<>();
+
+		actionListenerMap.put(BaseMenuId.HELP.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_CONTENT.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_DONATE.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_LICENSE.propertiesKey(), new NoAction());
+		actionListenerMap.put(BaseMenuId.HELP_INFO.propertiesKey(), new NoAction());
+
+		menu = JMenuFactory.buildMenu(BaseMenuId.HELP.propertiesKey(), menuInfoLongBaseTreeNode,
+			actionListenerMap);
+		assertNotNull(menu);
+	}
 
 	@Test
 	public void testBuildRootTreeNodeFromXmlForFileMenu()
