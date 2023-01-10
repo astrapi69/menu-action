@@ -53,6 +53,7 @@ import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.transform.MenuInfoTreeNodeConverter;
+import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 public class JMenuFactoryTest
@@ -65,14 +66,14 @@ public class JMenuFactoryTest
 	public void beforeEach()
 	{
 		String filename;
-		filename = "app-menu.xml";
+		filename = "app-file-menu.xml";
 		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
 		xml = RuntimeExceptionDecorator.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
 	}
 
 	@ExtendWith(IgnoreHeadlessExceptionExtension.class)
 	@Test
-	public void testBuildMenuFromXml()
+	public void testBuildFileMenuFromXml()
 	{
 		Map<String, ActionListener> actionListenerMap;
 		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
@@ -89,7 +90,8 @@ public class JMenuFactoryTest
 		actionListenerMap.put(BaseMenuId.EXIT.propertiesKey(), new ExitApplicationAction("Exit"));
 		actionListenerMap.put(BaseMenuId.FILE.propertiesKey(), new NoAction());
 
-		menu = JMenuFactory.buildMenu(menuInfoLongBaseTreeNode, actionListenerMap);
+		menu = JMenuFactory.buildMenu(BaseMenuId.FILE.propertiesKey(), menuInfoLongBaseTreeNode,
+			actionListenerMap);
 		assertNotNull(menu);
 	}
 
@@ -97,9 +99,11 @@ public class JMenuFactoryTest
 	@Test
 	public void testBuildRootTreeNodeFromXmlForFileMenu()
 	{
+		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
 		BaseTreeNode<MenuInfo, Long> fileTreeNode;
 		BaseTreeNode<MenuInfo, Long> toggleFullscreenTreeNode;
 		BaseTreeNode<MenuInfo, Long> exitTreeNode;
+		MenuInfo menuBarInfo;
 		MenuInfo fileMenuInfo;
 		MenuInfo toggleFullscreenMenuInfo;
 		MenuInfo exitMenuInfo;
@@ -109,6 +113,11 @@ public class JMenuFactoryTest
 		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
 
 		idGenerator = LongIdGenerator.of(0L);
+
+		menuBarInfo = MenuItemInfoConverter.fromJMenuBar();
+
+		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+			.value(menuBarInfo).build();
 
 		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
@@ -131,21 +140,24 @@ public class JMenuFactoryTest
 		exitTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
 
+		menuBarTreeNode.addChild(fileTreeNode);
 		fileTreeNode.addChild(toggleFullscreenTreeNode);
 		fileTreeNode.addChild(exitTreeNode);
 
-		treeNodeAsXml = MenuInfoTreeNodeConverter.toXml(fileTreeNode);
+		treeNodeAsXml = MenuInfoTreeNodeConverter.toXml(menuBarTreeNode);
 
 		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(treeNodeAsXml);
 		assertNotNull(menuInfoLongBaseTreeNode);
-		assertEquals(menuInfoLongBaseTreeNode, fileTreeNode);
+		assertEquals(menuInfoLongBaseTreeNode, menuBarTreeNode);
 	}
 
 
 	@Test
 	public void testBuildRootTreeNodeFromXmlForEditMenu()
 	{
+		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
 		BaseTreeNode<MenuInfo, Long> editTreeNode;
+		MenuInfo menuBarInfo;
 		MenuInfo editMenuInfo;
 		LongIdGenerator idGenerator;
 		String treeNodeAsXml;
@@ -153,6 +165,11 @@ public class JMenuFactoryTest
 		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
 
 		idGenerator = LongIdGenerator.of(0L);
+
+		menuBarInfo = MenuItemInfoConverter.fromJMenuBar();
+
+		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+			.value(menuBarInfo).build();
 
 		editMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed E")))
@@ -162,21 +179,25 @@ public class JMenuFactoryTest
 		editTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(editMenuInfo).build();
 
-		treeNodeAsXml = MenuInfoTreeNodeConverter.toXml(editTreeNode);
+		menuBarTreeNode.addChild(editTreeNode);
+
+		treeNodeAsXml = MenuInfoTreeNodeConverter.toXml(menuBarTreeNode);
 
 		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(treeNodeAsXml);
 		assertNotNull(menuInfoLongBaseTreeNode);
-		assertEquals(menuInfoLongBaseTreeNode, editTreeNode);
+		assertEquals(menuInfoLongBaseTreeNode, menuBarTreeNode);
 	}
 
 	@Test
 	public void testBuildRootTreeNodeFromXmlForHelpMenu()
 	{
+		BaseTreeNode<MenuInfo, Long> menuBarTreeNode;
 		BaseTreeNode<MenuInfo, Long> helpTreeNode;
 		BaseTreeNode<MenuInfo, Long> helpContentTreeNode;
 		BaseTreeNode<MenuInfo, Long> donateTreeNode;
 		BaseTreeNode<MenuInfo, Long> licenseTreeNode;
 		BaseTreeNode<MenuInfo, Long> infoTreeNode;
+		MenuInfo menuBarInfo;
 		MenuInfo helpMenuInfo;
 		MenuInfo helpContentMenuInfo;
 		MenuInfo donateMenuInfo;
@@ -188,6 +209,11 @@ public class JMenuFactoryTest
 		BaseTreeNode<MenuInfo, Long> menuInfoLongBaseTreeNode;
 
 		idGenerator = LongIdGenerator.of(0L);
+
+		menuBarInfo = MenuItemInfoConverter.fromJMenuBar();
+
+		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
+			.value(menuBarInfo).build();
 
 		helpMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H')).text("Help")
 			.name(BaseMenuId.HELP.propertiesKey()).build();
@@ -216,15 +242,16 @@ public class JMenuFactoryTest
 		infoTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).value(infoMenuInfo).build();
 
+		menuBarTreeNode.addChild(helpTreeNode);
 		helpTreeNode.addChild(helpContentTreeNode);
 		helpTreeNode.addChild(donateTreeNode);
 		helpTreeNode.addChild(licenseTreeNode);
 		helpTreeNode.addChild(infoTreeNode);
 
-		treeNodeAsXml = MenuInfoTreeNodeConverter.toXml(helpTreeNode);
+		treeNodeAsXml = MenuInfoTreeNodeConverter.toXml(menuBarTreeNode);
 
 		menuInfoLongBaseTreeNode = MenuInfoTreeNodeConverter.toMenuInfoTreeNode(treeNodeAsXml);
 		assertNotNull(menuInfoLongBaseTreeNode);
-		assertEquals(menuInfoLongBaseTreeNode, helpTreeNode);
+		assertEquals(menuInfoLongBaseTreeNode, menuBarTreeNode);
 	}
 }

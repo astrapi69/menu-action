@@ -1,0 +1,38 @@
+<linked-hash-map>
+    <entry>
+        <long>1</long>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
+            <id class="long">1</id>
+            <parentId class="long">0</parentId>
+            <childrenIds/>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.edit</name>
+                <text>Edit</text>
+                <mnemonic>69</mnemonic>
+                <keyStrokeInfo>
+                    <keyChar>&#xffff;</keyChar>
+                    <keyCode>69</keyCode>
+                    <modifiers>520</modifiers>
+                    <onKeyRelease>false</onKeyRelease>
+                    <keystrokeAsString>alt pressed E</keystrokeAsString>
+                </keyStrokeInfo>
+                <type>MENU</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>0</long>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
+            <id class="long">0</id>
+            <childrenIds>
+                <long>1</long>
+            </childrenIds>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.bar</name>
+                <type>MENU_BAR</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
+    </entry>
+</linked-hash-map>
