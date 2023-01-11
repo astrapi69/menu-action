@@ -33,8 +33,7 @@ import io.github.astrapi69.collection.list.ListExtensions;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.gen.tree.TreeIdNode;
 import io.github.astrapi69.gen.tree.convert.BaseTreeNodeTransformer;
-import io.github.astrapi69.gen.tree.handler.BaseTreeNodeVisitorHandlerExtensions;
-import io.github.astrapi69.gen.tree.visitor.MergeTreeNodesVisitor;
+import io.github.astrapi69.gen.tree.handler.IBaseTreeNodeHandlerExtensions;
 import io.github.astrapi69.id.generate.LongIdGenerator;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
@@ -63,6 +62,18 @@ public class MenuInfoTreeNodeConverter
 
 	public static BaseTreeNode<MenuInfo, Long> mergeMenuInfoTreeNode(final @NonNull String... xmls)
 	{
+		List<BaseTreeNode<MenuInfo, Long>> treeNodes = toBaseTreeNodes(xmls);
+
+		BaseTreeNode<MenuInfo, Long> root = mergeTreeNodes(treeNodes);
+
+		ReindexTreeNodeVisitor<MenuInfo, Long, BaseTreeNode<MenuInfo, Long>> reindexTreeNodeVisitor = new ReindexTreeNodeVisitor<>(
+			LongIdGenerator.of(0L));
+		root.accept(reindexTreeNodeVisitor);
+		return root;
+	}
+
+	private static List<BaseTreeNode<MenuInfo, Long>> toBaseTreeNodes(@NonNull String[] xmls)
+	{
 		List<BaseTreeNode<MenuInfo, Long>> treeNodes = new ArrayList<>();
 		for (String xml : xmls)
 		{
@@ -71,23 +82,24 @@ public class MenuInfoTreeNodeConverter
 			BaseTreeNode<MenuInfo, Long> root = BaseTreeNodeTransformer.getRoot(treeIdNodeMap);
 			treeNodes.add(root);
 		}
+		return treeNodes;
+	}
 
-		BaseTreeNode<MenuInfo, Long> root = null;
-		final Optional<BaseTreeNode<MenuInfo, Long>> menuInfoLongBaseTreeNode = ListExtensions
-			.removeFirst(treeNodes);
-		if (menuInfoLongBaseTreeNode.isPresent())
+	private static <T, K> BaseTreeNode<T, K> mergeTreeNodes(List<BaseTreeNode<T, K>> treeNodes)
+	{
+		return mergeTreeNodes(ListExtensions.removeFirst(treeNodes), treeNodes);
+	}
+
+	private static <T, K> BaseTreeNode<T, K> mergeTreeNodes(
+		Optional<BaseTreeNode<T, K>> firstTreeNode, List<BaseTreeNode<T, K>> treeNodes)
+	{
+
+		BaseTreeNode<T, K> root = null;
+		if (firstTreeNode.isPresent())
 		{
-			root = menuInfoLongBaseTreeNode.get();
-			for (BaseTreeNode<MenuInfo, Long> treeNode : treeNodes)
-			{
-				MergeTreeNodesVisitor<MenuInfo, Long> visitor = new MergeTreeNodesVisitor<>(root);
-				treeNode.accept(visitor);
-			}
+			root = IBaseTreeNodeHandlerExtensions.mergeTreeNodes(firstTreeNode.get(), treeNodes);
 		}
-
-		ReindexTreeNodeVisitor<MenuInfo, Long, BaseTreeNode<MenuInfo, Long>> reindexTreeNodeVisitor = new ReindexTreeNodeVisitor<>(
-			LongIdGenerator.of(0L));
-		root.accept(reindexTreeNodeVisitor);
 		return root;
 	}
+
 }

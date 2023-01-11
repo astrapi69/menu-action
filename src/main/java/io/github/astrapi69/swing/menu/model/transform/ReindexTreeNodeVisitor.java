@@ -7,6 +7,7 @@ import io.github.astrapi69.design.pattern.visitor.Visitor;
 import io.github.astrapi69.gen.tree.api.IBaseTreeNode;
 import io.github.astrapi69.gen.tree.api.ITreeNode;
 import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * This visitor visits all {@link ITreeNode} objects and adds them to a {@link Collection} object
@@ -23,7 +24,7 @@ public class ReindexTreeNodeVisitor<V, K, T extends IBaseTreeNode<V, K, T>> impl
 	@Getter
 	private final IdGenerator<K> idGenerator;
 
-	public ReindexTreeNodeVisitor(final IdGenerator<K> idGenerator)
+	public ReindexTreeNodeVisitor(final @NonNull IdGenerator<K> idGenerator)
 	{
 		this.idGenerator = idGenerator;
 	}
