@@ -24,10 +24,11 @@
  */
 package io.github.astrapi69.swing.menu.model.transform;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import io.github.astrapi69.collection.list.ListExtensions;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
@@ -72,26 +73,21 @@ public class MenuInfoTreeNodeConverter
 		return root;
 	}
 
-	private static List<BaseTreeNode<MenuInfo, Long>> toBaseTreeNodes(@NonNull String[] xmls)
+	private static List<BaseTreeNode<MenuInfo, Long>> toBaseTreeNodes(final @NonNull String[] xmls)
 	{
-		List<BaseTreeNode<MenuInfo, Long>> treeNodes = new ArrayList<>();
-		for (String xml : xmls)
-		{
-			Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = RuntimeExceptionDecorator
-				.decorate(() -> XmlToObjectExtensions.toObject(xml));
-			BaseTreeNode<MenuInfo, Long> root = BaseTreeNodeTransformer.getRoot(treeIdNodeMap);
-			treeNodes.add(root);
-		}
-		return treeNodes;
+		return Arrays.stream(xmls).map(MenuInfoTreeNodeConverter::toMenuInfoTreeNode)
+			.collect(Collectors.toList());
 	}
 
-	private static <T, K> BaseTreeNode<T, K> mergeTreeNodes(List<BaseTreeNode<T, K>> treeNodes)
+	private static <T, K> BaseTreeNode<T, K> mergeTreeNodes(
+		final @NonNull List<BaseTreeNode<T, K>> treeNodes)
 	{
 		return mergeTreeNodes(ListExtensions.removeFirst(treeNodes), treeNodes);
 	}
 
 	private static <T, K> BaseTreeNode<T, K> mergeTreeNodes(
-		Optional<BaseTreeNode<T, K>> firstTreeNode, List<BaseTreeNode<T, K>> treeNodes)
+		final @NonNull Optional<BaseTreeNode<T, K>> firstTreeNode,
+		final @NonNull List<BaseTreeNode<T, K>> treeNodes)
 	{
 
 		BaseTreeNode<T, K> root = null;
