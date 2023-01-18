@@ -63,6 +63,11 @@ public class MenuInfo
 	 */
 	String text;
 	Integer mnemonic;
+
+	/**
+	 * The ordinal of the menu component. The ordinal is used for ordering the menu component
+	 */
+	int ordinal;
 	KeyStrokeInfo keyStrokeInfo;
 	@Builder.Default
 	MenuType type = MenuType.MENU;
@@ -71,9 +76,9 @@ public class MenuInfo
 	{
 		return this.keyStrokeInfo != null
 			? MenuItemInfo.builder().actionListener(actionListener).text(this.text)
-				.mnemonic(this.mnemonic).keyStroke(this.keyStrokeInfo.toKeyStroke()).name(this.name)
-				.build()
+				.mnemonic(this.mnemonic).keyStrokeInfo(this.keyStrokeInfo)
+				.keyStroke(this.keyStrokeInfo.toKeyStroke()).name(this.name).build()
 			: MenuItemInfo.builder().actionListener(actionListener).text(this.text)
-				.mnemonic(this.mnemonic).name(this.name).build();
+				.keyStrokeInfo(this.keyStrokeInfo).mnemonic(this.mnemonic).name(this.name).build();
 	}
 }

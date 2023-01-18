@@ -37,6 +37,7 @@ import javax.swing.KeyStroke;
 import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
@@ -46,16 +47,22 @@ import lombok.experimental.SuperBuilder;
  * objects
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class MenuItemInfo
+public class MenuItemInfo extends MenuInfo
 {
-	String text;
-	String actionCommand;
-	Integer mnemonic;
+	/**
+	 * The keystroke
+	 * 
+	 * @deprecated use instead the derived field <code>keyStrokeInfo</code>. <br>
+	 *             <br>
+	 *             Note: Will be removed in the next minor release
+	 */
+	@Deprecated
 	KeyStroke keyStroke;
+	String actionCommand;
 	ActionListener actionListener;
-	String name;
 
 	public JCheckBoxMenuItem toJCheckBoxMenuItem()
 	{
