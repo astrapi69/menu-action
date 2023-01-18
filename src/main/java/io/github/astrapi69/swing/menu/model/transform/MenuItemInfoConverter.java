@@ -52,11 +52,8 @@ public class MenuItemInfoConverter
 
 	public static MenuInfo fromJMenuBar()
 	{
-		return MenuInfo.builder()
-				.ordinal(1)
-				.type(MenuType.MENU_BAR)
-				.name(BaseMenuId.MENU_BAR.propertiesKey())
-			.build();
+		return MenuInfo.builder().ordinal(1).type(MenuType.MENU_BAR)
+			.name(BaseMenuId.MENU_BAR.propertiesKey()).build();
 	}
 
 	@SuppressWarnings(value = "raw")
