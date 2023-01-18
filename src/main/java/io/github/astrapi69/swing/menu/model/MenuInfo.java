@@ -76,8 +76,7 @@ public class MenuInfo
 	{
 		return this.keyStrokeInfo != null
 			? MenuItemInfo.builder().actionListener(actionListener).text(this.text)
-				.mnemonic(this.mnemonic).keyStrokeInfo(this.keyStrokeInfo)
-				.keyStroke(this.keyStrokeInfo.toKeyStroke()).name(this.name).build()
+				.mnemonic(this.mnemonic).keyStrokeInfo(this.keyStrokeInfo).name(this.name).build()
 			: MenuItemInfo.builder().actionListener(actionListener).text(this.text)
 				.keyStrokeInfo(this.keyStrokeInfo).mnemonic(this.mnemonic).name(this.name).build();
 	}

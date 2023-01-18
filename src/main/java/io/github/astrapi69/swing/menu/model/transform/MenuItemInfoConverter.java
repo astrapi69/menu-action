@@ -129,9 +129,9 @@ public class MenuItemInfoConverter
 	{
 		JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem();
 		setFields(menuItemInfo, jMenuItem);
-		if (menuItemInfo.getKeyStroke() != null)
+		if (menuItemInfo.getKeyStrokeInfo() != null)
 		{
-			jMenuItem.setAccelerator(menuItemInfo.getKeyStroke());
+			jMenuItem.setAccelerator(menuItemInfo.getKeyStrokeInfo().toKeyStroke());
 		}
 		return jMenuItem;
 	}
@@ -140,9 +140,9 @@ public class MenuItemInfoConverter
 	{
 		JRadioButtonMenuItem jMenuItem = new JRadioButtonMenuItem();
 		setFields(menuItemInfo, jMenuItem);
-		if (menuItemInfo.getKeyStroke() != null)
+		if (menuItemInfo.getKeyStrokeInfo() != null)
 		{
-			jMenuItem.setAccelerator(menuItemInfo.getKeyStroke());
+			jMenuItem.setAccelerator(menuItemInfo.getKeyStrokeInfo().toKeyStroke());
 		}
 		return jMenuItem;
 	}
@@ -151,9 +151,9 @@ public class MenuItemInfoConverter
 	{
 		JMenuItem jMenuItem = new JMenuItem();
 		setFields(menuItemInfo, jMenuItem);
-		if (menuItemInfo.getKeyStroke() != null)
+		if (menuItemInfo.getKeyStrokeInfo() != null)
 		{
-			jMenuItem.setAccelerator(menuItemInfo.getKeyStroke());
+			jMenuItem.setAccelerator(menuItemInfo.getKeyStrokeInfo().toKeyStroke());
 		}
 		return jMenuItem;
 	}
