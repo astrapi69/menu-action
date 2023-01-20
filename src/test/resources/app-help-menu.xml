@@ -9,6 +9,7 @@
                 <name>global.menu.help.content</name>
                 <text>Content</text>
                 <mnemonic>67</mnemonic>
+                <ordinal>13100</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>72</keyCode>
@@ -30,6 +31,7 @@
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.help.donate</name>
                 <text>Donate</text>
+                <ordinal>13101</ordinal>
                 <type>MENU_ITEM</type>
             </value>
             <leaf>true</leaf>
@@ -44,6 +46,7 @@
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.help.license</name>
                 <text>Licence</text>
+                <ordinal>13102</ordinal>
                 <type>MENU_ITEM</type>
             </value>
             <leaf>true</leaf>
@@ -58,6 +61,7 @@
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.help.info</name>
                 <text>Info</text>
+                <ordinal>13103</ordinal>
                 <type>MENU_ITEM</type>
             </value>
             <leaf>true</leaf>
@@ -78,6 +82,7 @@
                 <name>global.menu.help</name>
                 <text>Help</text>
                 <mnemonic>72</mnemonic>
+                <ordinal>13000</ordinal>
                 <type>MENU</type>
             </value>
             <leaf>false</leaf>
@@ -92,6 +97,7 @@
             </childrenIds>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.bar</name>
+                <ordinal>10000</ordinal>
                 <type>MENU_BAR</type>
             </value>
             <leaf>false</leaf>

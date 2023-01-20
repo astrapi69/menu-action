@@ -9,6 +9,7 @@
                 <name>global.menu.file.toggle.fullscreen</name>
                 <text>Toggle Fullscreen</text>
                 <mnemonic>84</mnemonic>
+                <ordinal>11100</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>122</keyCode>
@@ -31,6 +32,7 @@
                 <name>global.menu.file.exit</name>
                 <text>Exit</text>
                 <mnemonic>69</mnemonic>
+                <ordinal>11101</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>115</keyCode>
@@ -56,6 +58,7 @@
                 <name>global.menu.file</name>
                 <text>File</text>
                 <mnemonic>70</mnemonic>
+                <ordinal>11000</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>70</keyCode>
@@ -77,6 +80,7 @@
             </childrenIds>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.bar</name>
+                <ordinal>10000</ordinal>
                 <type>MENU_BAR</type>
             </value>
             <leaf>false</leaf>

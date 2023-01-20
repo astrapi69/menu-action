@@ -177,13 +177,13 @@ public class JMenuFactoryTest
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(menuBarInfo).build();
 
-		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F')).ordinal(1000)
+		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F')).ordinal(11000)
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
 			.text("File").name(BaseMenuId.FILE.propertiesKey()).build();
 		fileTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(fileMenuInfo).build();
 
-		toggleFullscreenMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).ordinal(1100)
+		toggleFullscreenMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).ordinal(11100)
 			.mnemonic(MenuExtensions.toMnemonic('T'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F11")))
 			.text("Toggle Fullscreen").name(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey()).build();
@@ -191,7 +191,7 @@ public class JMenuFactoryTest
 			.id(idGenerator.getNextId()).parent(fileTreeNode).value(toggleFullscreenMenuInfo)
 			.leaf(true).build();
 
-		exitMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).ordinal(1101)
+		exitMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).ordinal(11200)
 			.mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F4")))
 			.text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
@@ -229,7 +229,7 @@ public class JMenuFactoryTest
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(menuBarInfo).build();
 
-		editMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E')).ordinal(2000)
+		editMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E')).ordinal(12000)
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed E")))
 			.text("Edit").name(BaseMenuId.EDIT.propertiesKey()).build();
 
@@ -274,28 +274,28 @@ public class JMenuFactoryTest
 			.value(menuBarInfo).build();
 
 		helpMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H')).text("Help")
-			.ordinal(3000).name(BaseMenuId.HELP.propertiesKey()).build();
+			.ordinal(13000).name(BaseMenuId.HELP.propertiesKey()).build();
 		helpTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(helpMenuInfo).build();
 
-		helpContentMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).ordinal(3100)
+		helpContentMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).ordinal(13100)
 			.mnemonic(MenuExtensions.toMnemonic('c'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
 			.text("Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
 		helpContentTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(helpContentMenuInfo).leaf(true).build();
 
-		donateMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Donate").ordinal(3101)
+		donateMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Donate").ordinal(13101)
 			.name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
 		donateTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).value(donateMenuInfo).build();
 
-		licenseMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Licence").ordinal(3102)
+		licenseMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Licence").ordinal(13102)
 			.name(BaseMenuId.HELP_LICENSE.propertiesKey()).build();
 		licenseTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).value(licenseMenuInfo).build();
 
-		infoMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Info").ordinal(3103)
+		infoMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Info").ordinal(13103)
 			.name(BaseMenuId.HELP_INFO.propertiesKey()).build();
 		infoTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).value(infoMenuInfo).build();
