@@ -97,7 +97,7 @@
             </childrenIds>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.bar</name>
-                <ordinal>10000</ordinal>
+                <ordinal>100</ordinal>
                 <type>MENU_BAR</type>
             </value>
             <leaf>false</leaf>

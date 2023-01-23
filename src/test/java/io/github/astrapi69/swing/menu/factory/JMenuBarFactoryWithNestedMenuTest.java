@@ -198,20 +198,21 @@ public class JMenuBarFactoryWithNestedMenuTest
 		donateTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).value(donateMenuInfo).build();
 
-		diagnosticMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('G')).ordinal(13102)
-			.text("Diagnostic >").name(TestMenuId.HELP_DIAGNOSTIC.propertiesKey()).build();
+		diagnosticMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('G'))
+			.ordinal(13102).text("Diagnostic >").name(TestMenuId.HELP_DIAGNOSTIC.propertiesKey())
+			.build();
 		diagnosticTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(diagnosticMenuInfo).build();
 
-		diagnosticActivityMenuInfo = MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).ordinal(131020)
-			.mnemonic(MenuExtensions.toMnemonic('A'))
+		diagnosticActivityMenuInfo = MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
+			.ordinal(131020).mnemonic(MenuExtensions.toMnemonic('A'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed A")))
 			.text("Activity").name(TestMenuId.HELP_DIAGNOSTIC_ACTIVITY.propertiesKey()).build();
 		diagnosticActivityTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
 			.id(idGenerator.getNextId()).leaf(true).value(diagnosticActivityMenuInfo).build();
 
-		diagnosticProfileMenuInfo = MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM).ordinal(131021)
-			.mnemonic(MenuExtensions.toMnemonic('P'))
+		diagnosticProfileMenuInfo = MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
+			.ordinal(131021).mnemonic(MenuExtensions.toMnemonic('P'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed P")))
 			.text("Profile").name(TestMenuId.HELP_DIAGNOSTIC_PROFILE.propertiesKey()).build();
 		diagnosticProfileTreeNode = BaseTreeNode.<MenuInfo, Long> builder()
