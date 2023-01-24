@@ -9,7 +9,7 @@
                 <name>global.menu.edit</name>
                 <text>Edit</text>
                 <mnemonic>69</mnemonic>
-                <ordinal>12000</ordinal>
+                <ordinal>1200</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>69</keyCode>

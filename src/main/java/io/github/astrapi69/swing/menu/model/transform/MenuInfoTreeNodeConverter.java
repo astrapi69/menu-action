@@ -76,13 +76,14 @@ public class MenuInfoTreeNodeConverter
 	private static List<BaseTreeNode<MenuInfo, Long>> toBaseTreeNodes(final @NonNull String[] xmls)
 	{
 		return Arrays.stream(xmls).map(MenuInfoTreeNodeConverter::toMenuInfoTreeNode)
+				.sorted(new BaseTreeNodeByValueComparator())
 			.collect(Collectors.toList());
 	}
 
 	private static <T, K> BaseTreeNode<T, K> mergeTreeNodes(
 		final @NonNull List<BaseTreeNode<T, K>> treeNodes)
 	{
-		return mergeTreeNodes(ListExtensions.removeFirst(treeNodes), treeNodes);
+		return mergeTreeNodes(ListExtensions.removeFirstElement(treeNodes), treeNodes);
 	}
 
 	private static <T, K> BaseTreeNode<T, K> mergeTreeNodes(

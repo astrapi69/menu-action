@@ -177,7 +177,7 @@ public class JMenuFactoryTest
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(menuBarInfo).build();
 
-		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F')).ordinal(11000)
+		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F')).ordinal(1100)
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
 			.text("File").name(BaseMenuId.FILE.propertiesKey()).build();
 		fileTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
@@ -229,7 +229,7 @@ public class JMenuFactoryTest
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(menuBarInfo).build();
 
-		editMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E')).ordinal(12000)
+		editMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E')).ordinal(1200)
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed E")))
 			.text("Edit").name(BaseMenuId.EDIT.propertiesKey()).build();
 
@@ -274,7 +274,7 @@ public class JMenuFactoryTest
 			.value(menuBarInfo).build();
 
 		helpMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H')).text("Help")
-			.ordinal(13000).name(BaseMenuId.HELP.propertiesKey()).build();
+			.ordinal(1300).name(BaseMenuId.HELP.propertiesKey()).build();
 		helpTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(helpMenuInfo).build();
 
@@ -285,17 +285,17 @@ public class JMenuFactoryTest
 		helpContentTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(helpContentMenuInfo).leaf(true).build();
 
-		donateMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Donate").ordinal(13101)
+		donateMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Donate").ordinal(13200)
 			.name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
 		donateTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).value(donateMenuInfo).build();
 
-		licenseMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Licence").ordinal(13102)
+		licenseMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Licence").ordinal(13300)
 			.name(BaseMenuId.HELP_LICENSE.propertiesKey()).build();
 		licenseTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).value(licenseMenuInfo).build();
 
-		infoMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Info").ordinal(13103)
+		infoMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Info").ordinal(13400)
 			.name(BaseMenuId.HELP_INFO.propertiesKey()).build();
 		infoTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).value(infoMenuInfo).build();

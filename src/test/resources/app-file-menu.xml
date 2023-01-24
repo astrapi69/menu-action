@@ -32,7 +32,7 @@
                 <name>global.menu.file.exit</name>
                 <text>Exit</text>
                 <mnemonic>69</mnemonic>
-                <ordinal>11101</ordinal>
+                <ordinal>11200</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>115</keyCode>
@@ -58,7 +58,7 @@
                 <name>global.menu.file</name>
                 <text>File</text>
                 <mnemonic>70</mnemonic>
-                <ordinal>11000</ordinal>
+                <ordinal>1100</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>70</keyCode>
