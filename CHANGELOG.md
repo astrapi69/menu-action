@@ -11,6 +11,8 @@ ADDED:
 
 CHANGED:
 
+- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.45.0
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new version 6.14.0
 - update of dependency data-api to new minor version 4.1
 - update of test dependency gen-tree to new major version 8.1
 

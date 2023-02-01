@@ -24,12 +24,14 @@
  */
 package io.github.astrapi69.swing.menu.model.transform;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.NonNull;
 import io.github.astrapi69.collection.list.ListExtensions;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.gen.tree.TreeIdNode;
@@ -40,7 +42,6 @@ import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
-import lombok.NonNull;
 
 public class MenuInfoTreeNodeConverter
 {
@@ -56,9 +57,8 @@ public class MenuInfoTreeNodeConverter
 	{
 		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = BaseTreeNodeTransformer
 			.toKeyMap(root);
-		final String xml = RuntimeExceptionDecorator
+		return RuntimeExceptionDecorator
 			.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
-		return xml;
 	}
 
 	public static BaseTreeNode<MenuInfo, Long> mergeMenuInfoTreeNode(final @NonNull String... xmls)
@@ -67,17 +67,20 @@ public class MenuInfoTreeNodeConverter
 
 		BaseTreeNode<MenuInfo, Long> root = mergeTreeNodes(treeNodes);
 
-		ReindexTreeNodeVisitor<MenuInfo, Long, BaseTreeNode<MenuInfo, Long>> reindexTreeNodeVisitor = new ReindexTreeNodeVisitor<>(
-			LongIdGenerator.of(0L));
-		root.accept(reindexTreeNodeVisitor);
+		List<BaseTreeNode<MenuInfo, Long>> orderedList = new ArrayList<>(root.traverse());
+		orderedList.sort(new BaseTreeNodeByMenuInfoOrdinalComparator());
+		LongIdGenerator idGenerator = LongIdGenerator.of(0L);
+		for (BaseTreeNode<MenuInfo, Long> treeNode : orderedList)
+		{
+			treeNode.setId(idGenerator.getNextId());
+		}
 		return root;
 	}
 
 	private static List<BaseTreeNode<MenuInfo, Long>> toBaseTreeNodes(final @NonNull String[] xmls)
 	{
 		return Arrays.stream(xmls).map(MenuInfoTreeNodeConverter::toMenuInfoTreeNode)
-				.sorted(new BaseTreeNodeByValueComparator())
-			.collect(Collectors.toList());
+			.sorted(new BaseTreeNodeByMenuInfoOrdinalComparator()).collect(Collectors.toList());
 	}
 
 	private static <T, K> BaseTreeNode<T, K> mergeTreeNodes(

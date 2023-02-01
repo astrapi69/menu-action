@@ -1,7 +1,6 @@
 import java.text.SimpleDateFormat
 
 jar {
-    dependsOn(test)
     manifest {
         attributes(
                 "Name"                  : project.name,

@@ -101,7 +101,6 @@ class MenuItemInfoConverterTest
 		final BaseTreeNode<MenuInfo, Long> mergedTreeNode = MenuInfoTreeNodeConverter
 			.mergeMenuInfoTreeNode(fileMenuXml, editMenuXml, helpMenuXml);
 		assertNotNull(mergedTreeNode);
-		mergedTreeNode.sortChildren();
 		final String xml = MenuInfoTreeNodeConverter.toXml(mergedTreeNode);
 		assertNotNull(xml);
 	}
