@@ -111,7 +111,7 @@ public class MenuVisitorExtensions
 			{
 				newSortedMenuNames.add(me.getComponent().getName());
 			}
-			int indexToInsert = ListExtensions.getIndexToInsert(sortedMenuNames, newSortedMenuNames,
+			int indexToInsert = ListExtensions.getIndexToInsert(newSortedMenuNames, sortedMenuNames,
 				menuItem.getName());
 
 			parentMenu.insert(menuItem, indexToInsert);

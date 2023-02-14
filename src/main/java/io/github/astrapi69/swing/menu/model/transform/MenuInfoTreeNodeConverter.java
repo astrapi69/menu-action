@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import lombok.NonNull;
 import io.github.astrapi69.collection.list.ListExtensions;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.gen.tree.TreeIdNode;
@@ -42,6 +41,7 @@ import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
+import lombok.NonNull;
 
 public class MenuInfoTreeNodeConverter
 {
@@ -57,8 +57,7 @@ public class MenuInfoTreeNodeConverter
 	{
 		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = BaseTreeNodeTransformer
 			.toKeyMap(root);
-		return RuntimeExceptionDecorator
-			.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
+		return RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
 	}
 
 	public static BaseTreeNode<MenuInfo, Long> mergeMenuInfoTreeNode(final @NonNull String... xmls)
