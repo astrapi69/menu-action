@@ -47,15 +47,32 @@ import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import lombok.NonNull;
 
+/**
+ * The class {@link MenuItemInfoConverter} converts several menu components to {@link MenuInfo}
+ * objects and to {@link MenuItemInfo} object and back
+ */
 public class MenuItemInfoConverter
 {
 
+	/**
+	 * Factory method that creates a {@link MenuInfo} object that represents an {@link JMenuBar}
+	 * object
+	 *
+	 * @return the new created {@link MenuInfo} object
+	 */
 	public static MenuInfo fromJMenuBar()
 	{
 		return MenuInfo.builder().ordinal(100).type(MenuType.MENU_BAR)
 			.name(BaseMenuId.MENU_BAR.propertiesKey()).build();
 	}
 
+	/**
+	 * Gets the list of {@link KeyStrokeInfo} objects from the given {@link JComponent} object
+	 *
+	 * @param jComponent
+	 *            the {@link JComponent} object
+	 * @return the list of {@link KeyStrokeInfo} objects
+	 */
 	@SuppressWarnings(value = "raw")
 	public static List<KeyStrokeInfo> getKeyStrokeInfos(JComponent jComponent)
 	{
@@ -78,11 +95,25 @@ public class MenuItemInfoConverter
 		return keyStrokeInfos;
 	}
 
+	/**
+	 * Gets the {@link KeyStrokeInfo} object from the given {@link JComponent} object
+	 * 
+	 * @param jComponent
+	 *            the {@link JComponent} object
+	 * @return the {@link KeyStrokeInfo} object
+	 */
 	public static KeyStrokeInfo getKeyStrokeInfo(JComponent jComponent)
 	{
 		return ListExtensions.getFirst(getKeyStrokeInfos(jComponent));
 	}
 
+	/**
+	 * Factory method that creates a {@link MenuInfo} object from the given {@link JMenu} object
+	 *
+	 * @param menu
+	 *            the {@link JMenu} object
+	 * @return the new created {@link MenuInfo} object
+	 */
 	public static MenuInfo fromJMenu(final @NonNull JMenu menu)
 	{
 		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
@@ -93,6 +124,13 @@ public class MenuItemInfoConverter
 				.mnemonic(menu.getMnemonic()).build();
 	}
 
+	/**
+	 * Factory method that creates a {@link MenuInfo} object from the given {@link JMenuItem} object
+	 *
+	 * @param menu
+	 *            the {@link JMenuItem} object
+	 * @return the new created {@link MenuInfo} object
+	 */
 	public static MenuInfo fromJMenuItem(final @NonNull JMenuItem menu)
 	{
 		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
@@ -103,6 +141,14 @@ public class MenuItemInfoConverter
 				.mnemonic(menu.getMnemonic()).build();
 	}
 
+	/**
+	 * Factory method that creates a {@link MenuInfo} object from the given
+	 * {@link JCheckBoxMenuItem} object
+	 *
+	 * @param menu
+	 *            the {@link JCheckBoxMenuItem} object
+	 * @return the new created {@link MenuInfo} object
+	 */
 	public static MenuInfo fromJCheckBoxMenuItem(final @NonNull JCheckBoxMenuItem menu)
 	{
 		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
@@ -114,6 +160,14 @@ public class MenuItemInfoConverter
 				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
 	}
 
+	/**
+	 * Factory method that creates a {@link MenuInfo} object from the given
+	 * {@link JRadioButtonMenuItem} object
+	 *
+	 * @param menu
+	 *            the {@link JRadioButtonMenuItem} object
+	 * @return the new created {@link MenuInfo} object
+	 */
 	public static MenuInfo fromJRadioButtonMenuItem(final @NonNull JRadioButtonMenuItem menu)
 	{
 		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
@@ -125,6 +179,14 @@ public class MenuItemInfoConverter
 				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
 	}
 
+	/**
+	 * Factory method that creates a {@link JCheckBoxMenuItem} object from the given
+	 * {@link MenuItemInfo} object
+	 *
+	 * @param menuItemInfo
+	 *            the {@link MenuItemInfo} object
+	 * @return the new created {@link JCheckBoxMenuItem} object
+	 */
 	public static JCheckBoxMenuItem toJCheckBoxMenuItem(MenuItemInfo menuItemInfo)
 	{
 		JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem();
@@ -136,6 +198,14 @@ public class MenuItemInfoConverter
 		return jMenuItem;
 	}
 
+	/**
+	 * Factory method that creates a {@link JRadioButtonMenuItem} object from the given
+	 * {@link MenuItemInfo} object
+	 *
+	 * @param menuItemInfo
+	 *            the {@link MenuItemInfo} object
+	 * @return the new created {@link JRadioButtonMenuItem} object
+	 */
 	public static JRadioButtonMenuItem toJRadioButtonMenuItem(MenuItemInfo menuItemInfo)
 	{
 		JRadioButtonMenuItem jMenuItem = new JRadioButtonMenuItem();
@@ -147,6 +217,14 @@ public class MenuItemInfoConverter
 		return jMenuItem;
 	}
 
+	/**
+	 * Factory method that creates a {@link JMenuItem} object from the given {@link MenuItemInfo}
+	 * object
+	 *
+	 * @param menuItemInfo
+	 *            the {@link MenuItemInfo} object
+	 * @return the new created {@link JMenuItem} object
+	 */
 	public static JMenuItem toJMenuItem(MenuItemInfo menuItemInfo)
 	{
 		JMenuItem jMenuItem = new JMenuItem();
@@ -158,6 +236,14 @@ public class MenuItemInfoConverter
 		return jMenuItem;
 	}
 
+	/**
+	 * Factory method that creates a {@link MenuItem} object from the given {@link MenuItemInfo}
+	 * object
+	 *
+	 * @param menuItemInfo
+	 *            the {@link MenuItemInfo} object
+	 * @return the new created {@link MenuItem} object
+	 */
 	public static MenuItem toMenuItem(MenuItemInfo menuItemInfo)
 	{
 		MenuItem menuItem = new MenuItem();
@@ -170,21 +256,17 @@ public class MenuItemInfoConverter
 		{
 			menuItem.setShortcut(new MenuShortcut(menuItemInfo.getMnemonic()));
 		}
-		if (menuItemInfo.getActionListener() != null)
-		{
-			menuItem.addActionListener(menuItemInfo.getActionListener());
-		}
-		if (menuItemInfo.getName() != null)
-		{
-			menuItem.setName(menuItemInfo.getName());
-		}
-		if (menuItemInfo.getActionCommand() != null)
-		{
-			menuItem.setActionCommand(menuItemInfo.getActionCommand());
-		}
+		setFields(menuItemInfo, menuItem);
 		return menuItem;
 	}
 
+	/**
+	 * Factory method that creates a {@link JMenu} object from the given {@link MenuItemInfo} object
+	 *
+	 * @param menuItemInfo
+	 *            the {@link MenuItemInfo} object
+	 * @return the new created {@link JMenu} object
+	 */
 	public static JMenu toJMenu(MenuItemInfo menuItemInfo)
 	{
 		JMenu jMenu = new JMenu();
@@ -192,6 +274,14 @@ public class MenuItemInfoConverter
 		return jMenu;
 	}
 
+	/**
+	 * Factory method that creates a {@link JMenuBar} object from the given {@link MenuItemInfo}
+	 * object
+	 *
+	 * @param menuItemInfo
+	 *            the {@link MenuItemInfo} object
+	 * @return the new created {@link JMenuBar} object
+	 */
 	public static JMenuBar toJMenuBar(MenuItemInfo menuItemInfo)
 	{
 		JMenuBar menuBar = new JMenuBar();
@@ -202,16 +292,32 @@ public class MenuItemInfoConverter
 		return menuBar;
 	}
 
-	private static void setFields(MenuItemInfo menuItemInfo, JMenuItem menuItem)
+	private static void setFields(MenuItemInfo menuItemInfo, JMenuItem jMenuItem)
 	{
 		if (menuItemInfo.getText() != null)
 		{
-			menuItem.setText(menuItemInfo.getText());
+			jMenuItem.setText(menuItemInfo.getText());
 		}
 		if (menuItemInfo.getMnemonic() != null)
 		{
-			menuItem.setMnemonic(menuItemInfo.getMnemonic());
+			jMenuItem.setMnemonic(menuItemInfo.getMnemonic());
 		}
+		if (menuItemInfo.getActionListener() != null)
+		{
+			jMenuItem.addActionListener(menuItemInfo.getActionListener());
+		}
+		if (menuItemInfo.getName() != null)
+		{
+			jMenuItem.setName(menuItemInfo.getName());
+		}
+		if (menuItemInfo.getActionCommand() != null)
+		{
+			jMenuItem.setActionCommand(menuItemInfo.getActionCommand());
+		}
+	}
+
+	private static void setFields(MenuItemInfo menuItemInfo, MenuItem menuItem)
+	{
 		if (menuItemInfo.getActionListener() != null)
 		{
 			menuItem.addActionListener(menuItemInfo.getActionListener());

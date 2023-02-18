@@ -26,6 +26,7 @@ package io.github.astrapi69.swing.menu.model;
 
 import java.awt.event.ActionListener;
 
+import io.github.astrapi69.swing.menu.enumeration.Anchor;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -53,31 +54,64 @@ import lombok.experimental.SuperBuilder;
 public class MenuInfo
 {
 	/**
-	 * The name of the menu component. The name is used as the id and the action command of the menu
-	 * component
+	 * The name of this menu component. The name is used as the menu id and as the action command of
+	 * this menu component
 	 */
 	String name;
 
 	/**
-	 * The text of the menu component. The text is used as the label of the menu component
+	 * The text of this menu component. The text is used as the label of this menu component
 	 */
 	String text;
+
+	/**
+	 * The keyboard mnemonic of this menu component
+	 */
 	Integer mnemonic;
 
 	/**
-	 * The ordinal of the menu component. The ordinal is used for ordering the menu component
+	 * The ordinal of this menu component. The ordinal is used for ordering this menu component
 	 */
 	int ordinal;
+
+	/**
+	 * The {@link KeyStrokeInfo} of this menu component
+	 */
 	KeyStrokeInfo keyStrokeInfo;
+
+	/**
+	 * The {@link MenuType} describes the type of this menu component
+	 */
 	@Builder.Default
 	MenuType type = MenuType.MENU;
 
+	/**
+	 * The anchor describes where to position this menu component
+	 */
+	Anchor anchor;
+
+	/**
+	 * If the anchor value is set to {@link Anchor#BEFORE} or {@link Anchor#AFTER} than this value
+	 * is the menu id that it will be relative placed to
+	 */
+	String relativeToMenuId;
+
+	/**
+	 * Factory method that creates a {@link MenuItemInfo} object from this {@link MenuInfo} object
+	 * and the given {@link ActionListener} object
+	 * 
+	 * @param actionListener
+	 *            the {@link ActionListener} object to set
+	 * @return the new created {@link MenuItemInfo} object
+	 */
 	public MenuItemInfo toMenuItemInfo(ActionListener actionListener)
 	{
 		return this.keyStrokeInfo != null
 			? MenuItemInfo.builder().actionListener(actionListener).text(this.text)
-				.mnemonic(this.mnemonic).keyStrokeInfo(this.keyStrokeInfo).name(this.name).build()
+				.mnemonic(this.mnemonic).keyStrokeInfo(this.keyStrokeInfo).name(this.name)
+				.anchor(this.anchor).relativeToMenuId(this.relativeToMenuId).build()
 			: MenuItemInfo.builder().actionListener(actionListener).text(this.text)
-				.keyStrokeInfo(this.keyStrokeInfo).mnemonic(this.mnemonic).name(this.name).build();
+				.keyStrokeInfo(this.keyStrokeInfo).mnemonic(this.mnemonic).name(this.name)
+				.anchor(this.anchor).relativeToMenuId(this.relativeToMenuId).build();
 	}
 }

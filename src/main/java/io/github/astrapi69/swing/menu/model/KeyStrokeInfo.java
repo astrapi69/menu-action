@@ -38,7 +38,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 /**
- * The class {@link KeyStrokeInfo}
+ * The class {@link KeyStrokeInfo} is intended for store the information of a keystroke and restore
+ * it back to a {@link KeyStroke} object
  */
 @Getter
 @Setter
@@ -50,12 +51,42 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class KeyStrokeInfo
 {
+	/**
+	 * the {@link Character} object with the value for a keyboard key
+	 */
 	Character keyChar;
+
+	/**
+	 * the {@link Integer} object that specifies the numeric code for a keyboard key
+	 */
 	Integer keyCode;
+
+	/**
+	 * the {@link Integer} object that specifies the bitwise-ored combination of any modifiers
+	 */
 	Integer modifiers;
+
+	/**
+	 * the {@link Boolean} object that specifies if the KeyStroke should represent a key release in
+	 * case of true.
+	 */
 	Boolean onKeyRelease;
+
+	/**
+	 * the {@link String} object that specifies the keystroke.
+	 *
+	 * For more information @see KeyStroke#getKeyStroke(String)
+	 */
 	String keystrokeAsString;
 
+	/**
+	 * Factory method that creates a {@link KeyStrokeInfo} object from the given {@link KeyStroke}
+	 * object
+	 *
+	 * @param keyStroke
+	 *            the {@link KeyStroke} object
+	 * @return the new created {@link KeyStrokeInfo} object
+	 */
 	public static KeyStrokeInfo toKeyStrokeInfo(final @NonNull KeyStroke keyStroke)
 	{
 		return KeyStrokeInfo.builder().keyCode(keyStroke.getKeyCode())
@@ -64,15 +95,27 @@ public class KeyStrokeInfo
 			.build();
 	}
 
-	public void set(final @NonNull KeyStroke keyStroke)
+	/**
+	 * Sets all values of this {@link KeyStrokeInfo} object from the given {@link KeyStroke} object
+	 * 
+	 * @param keyStroke
+	 *            the {@link KeyStroke} object
+	 */
+	public KeyStrokeInfo set(final @NonNull KeyStroke keyStroke)
 	{
 		this.keyCode = keyStroke.getKeyCode();
 		this.keyChar = keyStroke.getKeyChar();
 		this.modifiers = keyStroke.getModifiers();
 		this.onKeyRelease = keyStroke.isOnKeyRelease();
 		this.keystrokeAsString = keyStroke.toString();
+		return this;
 	}
 
+	/**
+	 * Factory method that creates a {@link KeyStroke} object from this {@link KeyStrokeInfo} object
+	 *
+	 * @return the new created {@link KeyStroke} object
+	 */
 	public KeyStroke toKeyStroke()
 	{
 		KeyStroke keyStroke = null;
@@ -89,8 +132,7 @@ public class KeyStrokeInfo
 
 			if (onKeyRelease != null && modifiers != null)
 			{
-				keyStroke = KeyStroke.getKeyStroke(keyCode.intValue(), modifiers.intValue(),
-					onKeyRelease);
+				keyStroke = KeyStroke.getKeyStroke(keyCode, modifiers, onKeyRelease);
 				if (keyStroke != null)
 				{
 					return keyStroke;
@@ -99,7 +141,7 @@ public class KeyStrokeInfo
 
 			if (modifiers != null)
 			{
-				keyStroke = KeyStroke.getKeyStroke(keyCode.intValue(), modifiers.intValue());
+				keyStroke = KeyStroke.getKeyStroke(keyCode, modifiers);
 				if (keyStroke != null)
 				{
 					return keyStroke;

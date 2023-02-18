@@ -61,34 +61,74 @@ public class MenuItemInfo extends MenuInfo
 	 */
 	@Deprecated
 	KeyStroke keyStroke;
+
+	/**
+	 * The action command of this menu component
+	 */
 	String actionCommand;
+
+	/**
+	 * The {@link ActionListener} object of this menu component
+	 */
 	ActionListener actionListener;
 
+	/**
+	 * Factory method that creates a {@link JCheckBoxMenuItem} object from this {@link MenuItemInfo}
+	 * object
+	 *
+	 * @return the new created {@link JCheckBoxMenuItem} object
+	 */
 	public JCheckBoxMenuItem toJCheckBoxMenuItem()
 	{
 		return MenuItemInfoConverter.toJCheckBoxMenuItem(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link JRadioButtonMenuItem} object from this
+	 * {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link JRadioButtonMenuItem} object
+	 */
 	public JRadioButtonMenuItem toJRadioButtonMenuItem()
 	{
 		return MenuItemInfoConverter.toJRadioButtonMenuItem(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link JMenuItem} object from this {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link JMenuItem} object
+	 */
 	public JMenuItem toJMenuItem()
 	{
 		return MenuItemInfoConverter.toJMenuItem(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link MenuItem} object from this {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link MenuItem} object
+	 */
 	public MenuItem toMenuItem()
 	{
 		return MenuItemInfoConverter.toMenuItem(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link JMenu} object from this {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link JMenu} object
+	 */
 	public JMenu toJMenu()
 	{
 		return MenuItemInfoConverter.toJMenu(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link JMenuBar} object from this {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link JMenuBar} object
+	 */
 	public JMenuBar toJMenuBar()
 	{
 		return MenuItemInfoConverter.toJMenuBar(this);

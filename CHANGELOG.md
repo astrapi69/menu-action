@@ -1,17 +1,19 @@
 ## Change log
 ----------------------
 
-Version 2.8-SNAPSHOT
+Version 3-SNAPSHOT
 -------------
 
 ADDED:
 
+- new enum class Anchor created for specify the order of a menu component and posible relative position to another target menu component
+- new field anchor and relativeToMenuId in class MenuInfo for specify the order of a menu component
 - new visitor class for reindex a BaseTreeNode
 - new merge method in class MenuInfoTreeNodeConverter for merge multiply menu xml strings
 
 CHANGED:
 
-- update of gradle to new version 8.0
+- update of gradle to new version 8.0.1
 - update of lombok to new version 1.18.26
 - update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 6.6.2
 - update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.45.0
