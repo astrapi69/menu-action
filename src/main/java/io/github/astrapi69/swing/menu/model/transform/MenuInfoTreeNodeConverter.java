@@ -43,9 +43,21 @@ import io.github.astrapi69.xstream.ObjectToXmlExtensions;
 import io.github.astrapi69.xstream.XmlToObjectExtensions;
 import lombok.NonNull;
 
+/**
+ * The class {@link MenuInfoTreeNodeConverter} converts xml representations of {@link MenuInfo}
+ * objects to a single root {@link BaseTreeNode} object and back
+ */
 public class MenuInfoTreeNodeConverter
 {
 
+	/**
+	 * Factory method that creates a {@link BaseTreeNode} object from the given xml {@link String}
+	 * object that represents a {@link BaseTreeNode} object of {@link MenuInfo} objects
+	 *
+	 * @param xml
+	 *            the xml representations of {@link MenuInfo} objects
+	 * @return the new created {@link BaseTreeNode} object
+	 */
 	public static BaseTreeNode<MenuInfo, Long> toMenuInfoTreeNode(final @NonNull String xml)
 	{
 		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = RuntimeExceptionDecorator
@@ -53,6 +65,14 @@ public class MenuInfoTreeNodeConverter
 		return BaseTreeNodeTransformer.getRoot(treeIdNodeMap);
 	}
 
+	/**
+	 * Converts the given {@link BaseTreeNode} object to a xml {@link String} object that represents
+	 * a {@link BaseTreeNode} object of {@link MenuInfo} objects
+	 * 
+	 * @param root
+	 *            the {@link BaseTreeNode} object
+	 * @return the xml {@link String} object
+	 */
 	public static String toXml(final @NonNull BaseTreeNode<MenuInfo, Long> root)
 	{
 		Map<Long, TreeIdNode<MenuInfo, Long>> treeIdNodeMap = BaseTreeNodeTransformer
@@ -60,6 +80,14 @@ public class MenuInfoTreeNodeConverter
 		return RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(treeIdNodeMap));
 	}
 
+	/**
+	 * Merges several xml {@link String} objects that represents individual menu items to a single
+	 * {@link BaseTreeNode} object of {@link MenuInfo} objects
+	 * 
+	 * @param xmls
+	 *            the xml {@link String} objects
+	 * @return the new created {@link BaseTreeNode} object
+	 */
 	public static BaseTreeNode<MenuInfo, Long> mergeMenuInfoTreeNode(final @NonNull String... xmls)
 	{
 		List<BaseTreeNode<MenuInfo, Long>> treeNodes = toBaseTreeNodes(xmls);

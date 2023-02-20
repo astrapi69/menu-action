@@ -29,10 +29,18 @@ import java.util.Comparator;
 import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 
+/**
+ * The class {@link BaseTreeNodeByMenuInfoOrdinalComparator} compares tree nodes over its ordinal
+ * value
+ */
 public class BaseTreeNodeByMenuInfoOrdinalComparator
 	implements
 		Comparator<BaseTreeNode<MenuInfo, Long>>
 {
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int compare(BaseTreeNode<MenuInfo, Long> o1, BaseTreeNode<MenuInfo, Long> o2)
 	{
