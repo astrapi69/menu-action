@@ -6,6 +6,8 @@ Version 3-SNAPSHOT
 
 ADDED:
 
+- new enum class for the mouse button type
+- new enum class for the mouse clicked count
 - new enum class Anchor created for specify the order of a menu component and posible relative position to another target menu component
 - new field anchor and relativeToMenuId in class MenuInfo for specify the order of a menu component
 - new visitor class for reindex a BaseTreeNode
