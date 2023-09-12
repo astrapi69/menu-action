@@ -15,15 +15,20 @@ ADDED:
 
 CHANGED:
 
-- update of gradle to new version 8.0.1
-- update of lombok to new version 1.18.26
-- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 6.6.2
-- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.45.0
-- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new version 6.15.0
+- update of JDK to newer version 17
+- update of gradle to new version 8.3
+- update of lombok to new version 1.18.28
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 8.3
+- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.48.0
+- update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' to new version 5.2.0
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new version 6.21.0
 - update of dependency data-api to new minor version 4.1
-- update of test dependency gen-tree to new minor version 8.1
-- update of silly-collection dependency to new major version 21
+- update of test dependency tree-api to new minor version 1.5
+- update of test dependency gen-tree to new minor version 8.4
+- update of silly-collection dependency to new major version 27
 - update of silly-io dependency to new minor version 2.2
+- update of test dependency file-worker to new version 17
+- update of test dependency junit-jupiter to new release candidate version 5.10.0
 
 Version 2.7
 -------------
