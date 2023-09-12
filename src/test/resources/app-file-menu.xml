@@ -1,14 +1,15 @@
 <linked-hash-map>
     <entry>
-        <long>1</long>
+        <long>2</long>
         <io.github.astrapi69.gen.tree.TreeIdNode>
-            <id class="long">1</id>
-            <parentId class="long">0</parentId>
+            <id class="long">2</id>
+            <parentId class="long">1</parentId>
             <childrenIds/>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.file.toggle.fullscreen</name>
                 <text>Toggle Fullscreen</text>
                 <mnemonic>84</mnemonic>
+                <ordinal>11100</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>122</keyCode>
@@ -22,15 +23,16 @@
         </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
-        <long>2</long>
+        <long>3</long>
         <io.github.astrapi69.gen.tree.TreeIdNode>
-            <id class="long">2</id>
-            <parentId class="long">0</parentId>
+            <id class="long">3</id>
+            <parentId class="long">1</parentId>
             <childrenIds/>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.file.exit</name>
                 <text>Exit</text>
                 <mnemonic>69</mnemonic>
+                <ordinal>11200</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>115</keyCode>
@@ -44,17 +46,19 @@
         </io.github.astrapi69.gen.tree.TreeIdNode>
     </entry>
     <entry>
-        <long>0</long>
+        <long>1</long>
         <io.github.astrapi69.gen.tree.TreeIdNode>
-            <id class="long">0</id>
+            <id class="long">1</id>
+            <parentId class="long">0</parentId>
             <childrenIds>
-                <long>1</long>
                 <long>2</long>
+                <long>3</long>
             </childrenIds>
             <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
                 <name>global.menu.file</name>
                 <text>File</text>
                 <mnemonic>70</mnemonic>
+                <ordinal>1100</ordinal>
                 <keyStrokeInfo>
                     <keyChar>&#xffff;</keyChar>
                     <keyCode>70</keyCode>
@@ -63,6 +67,21 @@
                     <keystrokeAsString>alt pressed F</keystrokeAsString>
                 </keyStrokeInfo>
                 <type>MENU</type>
+            </value>
+            <leaf>false</leaf>
+        </io.github.astrapi69.gen.tree.TreeIdNode>
+    </entry>
+    <entry>
+        <long>0</long>
+        <io.github.astrapi69.gen.tree.TreeIdNode>
+            <id class="long">0</id>
+            <childrenIds>
+                <long>1</long>
+            </childrenIds>
+            <value class="io.github.astrapi69.swing.menu.model.MenuInfo">
+                <name>global.menu.bar</name>
+                <ordinal>100</ordinal>
+                <type>MENU_BAR</type>
             </value>
             <leaf>false</leaf>
         </io.github.astrapi69.gen.tree.TreeIdNode>

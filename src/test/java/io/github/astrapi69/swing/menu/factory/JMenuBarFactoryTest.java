@@ -182,13 +182,13 @@ public class JMenuBarFactoryTest
 		menuBarTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(menuBarInfo).build();
 
-		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F'))
+		fileMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('F')).ordinal(1100)
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F")))
 			.text("File").name(BaseMenuId.FILE.propertiesKey()).build();
 		fileTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(fileMenuInfo).build();
 
-		toggleFullscreenMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+		toggleFullscreenMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).ordinal(11100)
 			.mnemonic(MenuExtensions.toMnemonic('T'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F11")))
 			.text("Toggle Fullscreen").name(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey()).build();
@@ -196,46 +196,39 @@ public class JMenuBarFactoryTest
 			.id(idGenerator.getNextId()).parent(fileTreeNode).value(toggleFullscreenMenuInfo)
 			.leaf(true).build();
 
-		exitMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+		exitMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).ordinal(11200)
 			.mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed F4")))
 			.text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
 		exitTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.leaf(true).parent(fileTreeNode).value(exitMenuInfo).build();
 
-		helpMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
-			.text("Help").name(BaseMenuId.HELP.propertiesKey()).build();
+		helpMenuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('H')).text("Help")
+			.ordinal(1300).name(BaseMenuId.HELP.propertiesKey()).build();
 		helpTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
 			.value(helpMenuInfo).build();
-		helpContentMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
-			.mnemonic(MenuExtensions.toMnemonic('C'))
-			.keyStrokeInfo(
-				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
-			.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
+
+		helpContentMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).ordinal(13100)
+			.mnemonic(MenuExtensions.toMnemonic('c'))
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed H")))
+			.text("Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
 		helpContentTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(helpContentMenuInfo).build();
+			.value(helpContentMenuInfo).leaf(true).build();
 
-		donateMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
-			.mnemonic(MenuExtensions.toMnemonic('L'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed L")))
-			.text("Donate").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
+		donateMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Donate").ordinal(13200)
+			.name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
 		donateTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(donateMenuInfo).build();
+			.leaf(true).value(donateMenuInfo).build();
 
-		licenseMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
-			.mnemonic(MenuExtensions.toMnemonic('L'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed L")))
-			.text("Licence").name(BaseMenuId.HELP_LICENSE.propertiesKey()).build();
+		licenseMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Licence").ordinal(13300)
+			.name(BaseMenuId.HELP_LICENSE.propertiesKey()).build();
 		licenseTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(licenseMenuInfo).build();
+			.leaf(true).value(licenseMenuInfo).build();
 
-		infoMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
-			.mnemonic(MenuExtensions.toMnemonic('I'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed I")))
-			.text("Info").name(BaseMenuId.HELP_INFO.propertiesKey()).build();
+		infoMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).text("Info").ordinal(13400)
+			.name(BaseMenuId.HELP_INFO.propertiesKey()).build();
 		infoTreeNode = BaseTreeNode.<MenuInfo, Long> builder().id(idGenerator.getNextId())
-			.value(infoMenuInfo).build();
+			.leaf(true).value(infoMenuInfo).build();
 
 		menuBarTreeNode.addChild(fileTreeNode);
 		menuBarTreeNode.addChild(helpTreeNode);

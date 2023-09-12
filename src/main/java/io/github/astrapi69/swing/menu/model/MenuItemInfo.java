@@ -37,6 +37,7 @@ import javax.swing.KeyStroke;
 import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
@@ -46,42 +47,88 @@ import lombok.experimental.SuperBuilder;
  * objects
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class MenuItemInfo
+public class MenuItemInfo extends MenuInfo
 {
-	String text;
-	String actionCommand;
-	Integer mnemonic;
+	/**
+	 * The keystroke
+	 * 
+	 * @deprecated use instead the derived field <code>keyStrokeInfo</code>. <br>
+	 *             <br>
+	 *             Note: Will be removed in the next minor release
+	 */
+	@Deprecated
 	KeyStroke keyStroke;
-	ActionListener actionListener;
-	String name;
 
+	/**
+	 * The action command of this menu component
+	 */
+	String actionCommand;
+
+	/**
+	 * The {@link ActionListener} object of this menu component
+	 */
+	ActionListener actionListener;
+
+	/**
+	 * Factory method that creates a {@link JCheckBoxMenuItem} object from this {@link MenuItemInfo}
+	 * object
+	 *
+	 * @return the new created {@link JCheckBoxMenuItem} object
+	 */
 	public JCheckBoxMenuItem toJCheckBoxMenuItem()
 	{
 		return MenuItemInfoConverter.toJCheckBoxMenuItem(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link JRadioButtonMenuItem} object from this
+	 * {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link JRadioButtonMenuItem} object
+	 */
 	public JRadioButtonMenuItem toJRadioButtonMenuItem()
 	{
 		return MenuItemInfoConverter.toJRadioButtonMenuItem(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link JMenuItem} object from this {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link JMenuItem} object
+	 */
 	public JMenuItem toJMenuItem()
 	{
 		return MenuItemInfoConverter.toJMenuItem(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link MenuItem} object from this {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link MenuItem} object
+	 */
 	public MenuItem toMenuItem()
 	{
 		return MenuItemInfoConverter.toMenuItem(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link JMenu} object from this {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link JMenu} object
+	 */
 	public JMenu toJMenu()
 	{
 		return MenuItemInfoConverter.toJMenu(this);
 	}
 
+	/**
+	 * Factory method that creates a {@link JMenuBar} object from this {@link MenuItemInfo} object
+	 *
+	 * @return the new created {@link JMenuBar} object
+	 */
 	public JMenuBar toJMenuBar()
 	{
 		return MenuItemInfoConverter.toJMenuBar(this);

@@ -1,6 +1,35 @@
 ## Change log
 ----------------------
 
+Version 3
+-------------
+
+ADDED:
+
+- new enum class for the mouse button type
+- new enum class for the mouse clicked count
+- new enum class Anchor created for specify the order of a menu component and posible relative position to another target menu component
+- new field anchor and relativeToMenuId in class MenuInfo for specify the order of a menu component
+- new visitor class for reindex a BaseTreeNode
+- new merge method in class MenuInfoTreeNodeConverter for merge multiply menu xml strings
+
+CHANGED:
+
+- update of JDK to newer version 17
+- update of gradle to new version 8.3
+- update of lombok to new version 1.18.28
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 8.3
+- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.48.0
+- update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' to new version 5.2.0
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new version 6.21.0
+- update of dependency data-api to new minor version 4.1
+- update of test dependency tree-api to new minor version 1.5
+- update of test dependency gen-tree to new minor version 8.4
+- update of silly-collection dependency to new major version 27
+- update of silly-io dependency to new minor version 2.2
+- update of test dependency file-worker to new version 17
+- update of test dependency junit-jupiter to new release candidate version 5.10.0
+
 Version 2.7
 -------------
 

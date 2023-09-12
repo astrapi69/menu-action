@@ -47,6 +47,13 @@ public class JMenuFactory
 	public static JMenu buildMenu(final @NonNull BaseTreeNode<MenuInfo, Long> root,
 		final @NonNull Map<String, ActionListener> actionListenerMap)
 	{
+		return buildMenu(root.getValue().getName(), root, actionListenerMap);
+	}
+
+	public static JMenu buildMenu(final @NonNull String menuId,
+		final @NonNull BaseTreeNode<MenuInfo, Long> root,
+		final @NonNull Map<String, ActionListener> actionListenerMap)
+	{
 		final Map<String, JMenu> menuMap = new HashMap<>();
 		final Map<String, JMenuItem> menuItemMap = new HashMap<>();
 		final Map<String, JMenuBar> menuBarMap = new HashMap<>();
@@ -56,7 +63,7 @@ public class JMenuFactory
 			menuInfoLongBaseTreeNode, actionListenerMap, menuMap, menuItemMap, menuBarMap));
 		root.accept(menuInfoLongBaseTreeNode -> MenuVisitorExtensions
 			.visitAndAddToMenu(menuInfoLongBaseTreeNode, menuMap, menuItemMap, menuBarMap));
-		return menuMap.get(root.getValue().getName());
+		return menuMap.get(menuId);
 	}
 
 	/**

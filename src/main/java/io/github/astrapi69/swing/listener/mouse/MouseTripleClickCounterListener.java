@@ -38,18 +38,18 @@ import javax.swing.Timer;
 public class MouseTripleClickCounterListener extends MouseAdapter implements ActionListener
 {
 
+	public static final String DESKTOP_PROPERTY_AWT_MULTI_CLICK_INTERVAL_KEY = "awt.multiClickInterval";
 	MouseEvent lastEvent;
 	Timer timer;
 	int delay;
-	private boolean leftClick;
-	private boolean middleClick;
-	private boolean rightClick;
-	private boolean doubleClick;
-	private boolean tripleClick;
+
+	protected MouseClickedType mouseClickedType = MouseClickedType.SINGLE;
+	protected MouseButton mouseButton;
 
 	public MouseTripleClickCounterListener()
 	{
-		this((Integer)Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval"));
+		this((Integer)Toolkit.getDefaultToolkit()
+			.getDesktopProperty(DESKTOP_PROPERTY_AWT_MULTI_CLICK_INTERVAL_KEY));
 	}
 
 	public MouseTripleClickCounterListener(int delay)
@@ -65,6 +65,7 @@ public class MouseTripleClickCounterListener extends MouseAdapter implements Act
 		if (mouseEvent.getClickCount() > 3)
 		{
 			timer.stop();
+			mouseClickedType = MouseClickedType.TRIPLE;
 			tripleClick(lastEvent);
 		}
 		lastEvent = mouseEvent;
@@ -74,10 +75,12 @@ public class MouseTripleClickCounterListener extends MouseAdapter implements Act
 		if (timer.isRunning())
 		{
 			timer.stop();
+			mouseClickedType = MouseClickedType.DOUBLE;
 			doubleClick(lastEvent);
 		}
 		else
 		{
+			mouseClickedType = MouseClickedType.SINGLE;
 			timer.restart();
 		}
 	}
@@ -86,21 +89,15 @@ public class MouseTripleClickCounterListener extends MouseAdapter implements Act
 	{
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
 		{
-			leftClick = true;
-			middleClick = false;
-			rightClick = false;
+			mouseButton = MouseButton.LEFT;
 		}
 		if (mouseEvent.getButton() == MouseEvent.BUTTON2)
 		{
-			leftClick = false;
-			middleClick = true;
-			rightClick = false;
+			mouseButton = MouseButton.MIDDLE;
 		}
 		if (mouseEvent.getButton() == MouseEvent.BUTTON3)
 		{
-			leftClick = false;
-			middleClick = false;
-			rightClick = true;
+			mouseButton = MouseButton.LEFT;
 		}
 	}
 
