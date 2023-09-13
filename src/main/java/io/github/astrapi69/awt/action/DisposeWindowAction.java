@@ -32,6 +32,8 @@ import javax.swing.AbstractAction;
 
 /**
  * The class {@link DisposeWindowAction}.
+ *
+ * @deprecated use instead the same name class in module awt-extensions
  */
 public class DisposeWindowAction extends AbstractAction
 {

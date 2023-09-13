@@ -33,6 +33,7 @@ import java.awt.event.WindowEvent;
  *
  * @version 1.0
  * @author Asterios Raptis
+ * @deprecated use instead the same name class in module awt-extensions
  */
 public class DisposeWindow extends WindowAdapter
 {
