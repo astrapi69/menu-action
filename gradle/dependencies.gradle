@@ -14,6 +14,7 @@ dependencies {
     implementation("io.github.astrapi69:data-api:$dataApiVersion")
     testCompileOnly("org.projectlombok:lombok:$lombokVersion")
     testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    testImplementation("io.github.astrapi69:awt-extensions:$awtExtensionsVersion")
     testImplementation("org.assertj:assertj-swing:$assertjSwingVersion")
     testImplementation("io.github.astrapi69:silly-io:$sillyIoVersion")
     testImplementation("io.github.astrapi69:file-worker:$fileWorkerVersion")

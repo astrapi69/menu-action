@@ -4,6 +4,14 @@
 Version 3.2-SNAPSHOT
 -------------
 
+ADDED:
+
+- new test dependency awt-extensions for unit tests
+
+CHANGED:
+
+- removed classes that were tagged as deprecated
+
 Version 3.1
 -------------
 
