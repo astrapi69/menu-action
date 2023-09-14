@@ -1,6 +1,13 @@
 ## Change log
 ----------------------
 
+Version 3.1
+-------------
+
+ADDED:
+
+- new class file module-info.java that modularize this library
+
 Version 3
 -------------
 

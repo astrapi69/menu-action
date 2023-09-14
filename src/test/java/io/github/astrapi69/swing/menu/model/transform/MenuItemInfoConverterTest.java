@@ -25,7 +25,6 @@
 package io.github.astrapi69.swing.menu.model.transform;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -42,7 +41,6 @@ import org.junit.jupiter.api.Test;
 import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.read.ReadFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
-import io.github.astrapi69.gen.tree.BaseTreeNode;
 import io.github.astrapi69.swing.action.NoAction;
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
@@ -78,31 +76,6 @@ class MenuItemInfoConverterTest
 		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
 		helpMenuXml = RuntimeExceptionDecorator
 			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
-	}
-
-	@Test
-	void mergeMenuInfoTreeNode()
-	{
-		String filename;
-		filename = "app-file-menu.xml";
-		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
-		fileMenuXml = RuntimeExceptionDecorator
-			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
-
-		filename = "app-edit-menu.xml";
-		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
-		editMenuXml = RuntimeExceptionDecorator
-			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
-
-		filename = "app-help-menu.xml";
-		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
-		helpMenuXml = RuntimeExceptionDecorator
-			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
-		final BaseTreeNode<MenuInfo, Long> mergedTreeNode = MenuInfoTreeNodeConverter
-			.mergeMenuInfoTreeNode(fileMenuXml, editMenuXml, helpMenuXml);
-		assertNotNull(mergedTreeNode);
-		final String xml = MenuInfoTreeNodeConverter.toXml(mergedTreeNode);
-		assertNotNull(xml);
 	}
 
 	@Test

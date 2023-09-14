@@ -24,16 +24,7 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import java.awt.event.ActionListener;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.swing.*;
-
-import io.github.astrapi69.gen.tree.BaseTreeNode;
-import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
-import io.github.astrapi69.swing.menu.model.MenuInfo;
-import lombok.NonNull;
 
 /**
  * A factory {@link JMenuBarFactory} provides factory methods for create JMenuBar objects
@@ -49,21 +40,6 @@ public class JMenuBarFactory
 	public static JMenuBar newJMenuBar()
 	{
 		return new JMenuBar();
-	}
-
-	public static JMenuBar buildMenuBar(final @NonNull BaseTreeNode<MenuInfo, Long> root,
-		final @NonNull Map<String, ActionListener> actionListenerMap)
-	{
-		final Map<String, JMenu> menuMap = new LinkedHashMap<>();
-		final Map<String, JMenuItem> menuItemMap = new LinkedHashMap<>();
-		final Map<String, JMenuBar> menuBarMap = new LinkedHashMap<>();
-		MenuVisitorExtensions.visitAndAddToMap(root, actionListenerMap, menuMap, menuItemMap,
-			menuBarMap);
-		root.accept(menuInfoLongBaseTreeNode -> MenuVisitorExtensions.visitAndAddToMap(
-			menuInfoLongBaseTreeNode, actionListenerMap, menuMap, menuItemMap, menuBarMap));
-		root.accept(menuInfoLongBaseTreeNode -> MenuVisitorExtensions
-			.visitAndAddToMenu(menuInfoLongBaseTreeNode, menuMap, menuItemMap, menuBarMap));
-		return menuBarMap.get(BaseMenuId.MENU_BAR.propertiesKey());
 	}
 
 }
