@@ -22,28 +22,28 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.swing.menu.model.transform;
-
-import java.util.Comparator;
-
-import io.github.astrapi69.gen.tree.BaseTreeNode;
-import io.github.astrapi69.swing.menu.model.MenuInfo;
-
-/**
- * The class {@link BaseTreeNodeByMenuInfoOrdinalComparator} compares tree nodes over its ordinal
- * value
- */
-public class BaseTreeNodeByMenuInfoOrdinalComparator
-	implements
-		Comparator<BaseTreeNode<MenuInfo, Long>>
+module menu.actions.main
 {
+	requires lombok;
+	requires java.desktop;
+	requires throwable;
+	requires java.logging;
+	requires gen.tree;
+	requires silly.collection;
+	requires id.generate;
+	requires model.data;
+	requires jobj.core.main;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int compare(BaseTreeNode<MenuInfo, Long> o1, BaseTreeNode<MenuInfo, Long> o2)
-	{
-		return Integer.compare(o1.getValue().getOrdinal(), o2.getValue().getOrdinal());
-	}
+	exports io.github.astrapi69.awt.action;
+	exports io.github.astrapi69.awt.system;
+	exports io.github.astrapi69.browser;
+	exports io.github.astrapi69.swing.action;
+	exports io.github.astrapi69.swing.listener;
+	exports io.github.astrapi69.swing.menu;
+	exports io.github.astrapi69.swing.menu.enumeration;
+	exports io.github.astrapi69.swing.menu.factory;
+	exports io.github.astrapi69.swing.menu.model;
+	exports io.github.astrapi69.swing.menu.model.transform;
+	exports io.github.astrapi69.swing.menu.popup.listener;
+
 }

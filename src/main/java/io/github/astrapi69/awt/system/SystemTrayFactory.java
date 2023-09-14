@@ -37,6 +37,7 @@ import lombok.NonNull;
 
 /**
  * The class {@link SystemTrayFactory} provides factory methods for create system tray Menu
+ * 
  * @deprecated use instead the same name class in module awt-extensions
  */
 public class SystemTrayFactory

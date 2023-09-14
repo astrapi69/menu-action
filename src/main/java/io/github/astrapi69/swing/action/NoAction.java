@@ -30,6 +30,7 @@ import javax.swing.AbstractAction;
 
 /**
  * The class {@link NoAction} as the name say there is no action
+ * 
  * @deprecated use instead the same name class in module awt-extensions
  */
 public class NoAction extends AbstractAction
