@@ -33,11 +33,16 @@ module menu.actions.main
 	exports io.github.astrapi69.browser;
 	exports io.github.astrapi69.swing.action;
 	exports io.github.astrapi69.swing.listener;
+	exports io.github.astrapi69.swing.listener.document;
+	exports io.github.astrapi69.swing.listener.item;
+	exports io.github.astrapi69.swing.listener.mouse;
 	exports io.github.astrapi69.swing.menu;
 	exports io.github.astrapi69.swing.menu.enumeration;
 	exports io.github.astrapi69.swing.menu.factory;
 	exports io.github.astrapi69.swing.menu.model;
 	exports io.github.astrapi69.swing.menu.model.transform;
 	exports io.github.astrapi69.swing.menu.popup.listener;
+	exports io.github.astrapi69.swing.plaf;
+	exports io.github.astrapi69.swing.plaf.action;
 
 }

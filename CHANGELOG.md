@@ -7,6 +7,7 @@ Version 3.2-SNAPSHOT
 ADDED:
 
 - new test dependency awt-extensions for unit tests
+- missing packages for export
 
 CHANGED:
 
