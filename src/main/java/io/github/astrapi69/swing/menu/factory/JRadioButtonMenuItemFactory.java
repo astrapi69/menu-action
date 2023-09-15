@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import javax.swing.*;
+import javax.swing.JRadioButtonMenuItem;
 
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import lombok.NonNull;

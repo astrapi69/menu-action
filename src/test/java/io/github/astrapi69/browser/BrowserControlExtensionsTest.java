@@ -29,8 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
-
 /**
  * The unit test class for the class {@link BrowserControlExtensions}
  */

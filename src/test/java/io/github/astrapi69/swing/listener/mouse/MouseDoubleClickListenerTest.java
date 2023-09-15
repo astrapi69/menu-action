@@ -28,8 +28,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
-import io.github.astrapi69.browser.BrowserControlExtensions;
-import io.github.astrapi69.window.adapter.CloseWindow;
+import io.github.astrapi69.awt.window.adapter.CloseWindow;
 
 
 /**

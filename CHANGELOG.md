@@ -1,6 +1,18 @@
 ## Change log
 ----------------------
 
+Version 3.2
+-------------
+
+ADDED:
+
+- new test dependency awt-extensions for unit tests
+- missing packages for export
+
+CHANGED:
+
+- removed classes that were tagged as deprecated
+
 Version 3.1
 -------------
 
