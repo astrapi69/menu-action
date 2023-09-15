@@ -24,7 +24,7 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import javax.swing.*;
+import javax.swing.JMenuBar;
 
 /**
  * A factory {@link JMenuBarFactory} provides factory methods for create JMenuBar objects

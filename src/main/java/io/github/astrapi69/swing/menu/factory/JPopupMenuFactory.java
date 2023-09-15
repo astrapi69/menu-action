@@ -24,11 +24,13 @@
  */
 package io.github.astrapi69.swing.menu.factory;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.PopupMenu;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import io.github.astrapi69.swing.menu.popup.listener.PopupListener;

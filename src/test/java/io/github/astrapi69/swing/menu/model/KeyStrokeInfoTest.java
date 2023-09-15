@@ -30,8 +30,6 @@ import javax.swing.KeyStroke;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
-
 public class KeyStrokeInfoTest
 {
 	@Test
