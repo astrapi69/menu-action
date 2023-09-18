@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 
 import io.github.astrapi69.swing.menu.enumeration.Anchor;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
+import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,7 +50,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder(toBuilder = true)
+@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MenuInfo
 {
@@ -106,12 +107,6 @@ public class MenuInfo
 	 */
 	public MenuItemInfo toMenuItemInfo(ActionListener actionListener)
 	{
-		return this.keyStrokeInfo != null
-			? MenuItemInfo.builder().actionListener(actionListener).text(this.text)
-				.mnemonic(this.mnemonic).keyStrokeInfo(this.keyStrokeInfo).name(this.name)
-				.anchor(this.anchor).relativeToMenuId(this.relativeToMenuId).build()
-			: MenuItemInfo.builder().actionListener(actionListener).text(this.text)
-				.keyStrokeInfo(this.keyStrokeInfo).mnemonic(this.mnemonic).name(this.name)
-				.anchor(this.anchor).relativeToMenuId(this.relativeToMenuId).build();
+		return MenuItemInfoConverter.toMenuItemInfo(this, actionListener);
 	}
 }

@@ -26,6 +26,7 @@ package io.github.astrapi69.swing.menu.model.transform;
 
 import java.awt.MenuItem;
 import java.awt.MenuShortcut;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -330,5 +331,29 @@ public class MenuItemInfoConverter
 		{
 			menuItem.setActionCommand(menuItemInfo.getActionCommand());
 		}
+	}
+
+
+	/**
+	 * Factory method that creates a {@link MenuItemInfo} object from this {@link MenuInfo} object
+	 * and the given {@link ActionListener} object
+	 *
+	 * @param menuInfo
+	 *            the {@link MenuInfo} object to use
+	 * @param actionListener
+	 *            the {@link ActionListener} object to set
+	 * @return the new created {@link MenuItemInfo} object
+	 */
+	public static MenuItemInfo toMenuItemInfo(MenuInfo menuInfo, ActionListener actionListener)
+	{
+		return menuInfo.getKeyStrokeInfo() != null
+			? MenuItemInfo.builder().actionListener(actionListener).text(menuInfo.getText())
+				.mnemonic(menuInfo.getMnemonic()).keyStrokeInfo(menuInfo.getKeyStrokeInfo())
+				.name(menuInfo.getName()).anchor(menuInfo.getAnchor())
+				.relativeToMenuId(menuInfo.getRelativeToMenuId()).build()
+			: MenuItemInfo.builder().actionListener(actionListener).text(menuInfo.getText())
+				.keyStrokeInfo(menuInfo.getKeyStrokeInfo()).mnemonic(menuInfo.getMnemonic())
+				.name(menuInfo.getName()).anchor(menuInfo.getAnchor())
+				.relativeToMenuId(menuInfo.getRelativeToMenuId()).build();
 	}
 }

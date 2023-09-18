@@ -34,8 +34,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
+import io.github.astrapi69.swing.menu.enumeration.Anchor;
+import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
@@ -47,20 +50,53 @@ import lombok.experimental.SuperBuilder;
  * objects
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@SuperBuilder
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class MenuItemInfo extends MenuInfo
+public class MenuItemInfo
 {
+
 	/**
-	 * The keystroke
-	 * 
-	 * @deprecated use instead the derived field <code>keyStrokeInfo</code>. <br>
-	 *             <br>
-	 *             Note: Will be removed in the next minor release
+	 * The name of this menu component. The name is used as the menu id and as the action command of
+	 * this menu component
 	 */
-	@Deprecated
-	KeyStroke keyStroke;
+	String name;
+
+	/**
+	 * The text of this menu component. The text is used as the label of this menu component
+	 */
+	String text;
+
+	/**
+	 * The keyboard mnemonic of this menu component
+	 */
+	Integer mnemonic;
+
+	/**
+	 * The ordinal of this menu component. The ordinal is used for ordering this menu component
+	 */
+	int ordinal;
+
+	/**
+	 * The {@link KeyStrokeInfo} of this menu component
+	 */
+	KeyStrokeInfo keyStrokeInfo;
+
+	/**
+	 * The {@link MenuType} describes the type of this menu component
+	 */
+	@Builder.Default
+	MenuType type = MenuType.MENU;
+
+	/**
+	 * The anchor describes where to position this menu component
+	 */
+	Anchor anchor;
+
+	/**
+	 * If the anchor value is set to {@link Anchor#BEFORE} or {@link Anchor#AFTER} than this value
+	 * is the menu id that it will be relative placed to
+	 */
+	String relativeToMenuId;
 
 	/**
 	 * The action command of this menu component
