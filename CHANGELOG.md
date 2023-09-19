@@ -1,8 +1,14 @@
 ## Change log
 ----------------------
 
-Version 3.3-SNAPSHOT
+Version 3.3
 -------------
+
+CHANGED:
+
+- removed lombok experimental annotation class SuperBuilder from MenuInfo and MenuItemInfo
+- MenuItemInfo does not extend from MenuInfo instead it has a field from it
+- MenuInfo has no default type anymore it has to be set explicitly
 
 Version 3.2
 -------------
