@@ -38,7 +38,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 /**
  * The class {@link MenuInfo} is intended for store the information of a menu and on need to restore
@@ -83,8 +82,7 @@ public class MenuInfo
 	/**
 	 * The {@link MenuType} describes the type of this menu component
 	 */
-	@Builder.Default
-	MenuType type = MenuType.MENU;
+	MenuType type;
 
 	/**
 	 * The anchor describes where to position this menu component
@@ -93,7 +91,7 @@ public class MenuInfo
 
 	/**
 	 * If the anchor value is set to {@link Anchor#BEFORE} or {@link Anchor#AFTER} than this value
-	 * is the menu id that it will be relative placed to
+	 * is the menu id that it will be relatively placed to
 	 */
 	String relativeToMenuId;
 

@@ -192,9 +192,9 @@ public class MenuItemInfoConverter
 	{
 		JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem();
 		setFields(menuItemInfo, jMenuItem);
-		if (menuItemInfo.getKeyStrokeInfo() != null)
+		if (menuItemInfo.getMenuInfo().getKeyStrokeInfo() != null)
 		{
-			jMenuItem.setAccelerator(menuItemInfo.getKeyStrokeInfo().toKeyStroke());
+			jMenuItem.setAccelerator(menuItemInfo.getMenuInfo().getKeyStrokeInfo().toKeyStroke());
 		}
 		return jMenuItem;
 	}
@@ -211,9 +211,9 @@ public class MenuItemInfoConverter
 	{
 		JRadioButtonMenuItem jMenuItem = new JRadioButtonMenuItem();
 		setFields(menuItemInfo, jMenuItem);
-		if (menuItemInfo.getKeyStrokeInfo() != null)
+		if (menuItemInfo.getMenuInfo().getKeyStrokeInfo() != null)
 		{
-			jMenuItem.setAccelerator(menuItemInfo.getKeyStrokeInfo().toKeyStroke());
+			jMenuItem.setAccelerator(menuItemInfo.getMenuInfo().getKeyStrokeInfo().toKeyStroke());
 		}
 		return jMenuItem;
 	}
@@ -230,9 +230,9 @@ public class MenuItemInfoConverter
 	{
 		JMenuItem jMenuItem = new JMenuItem();
 		setFields(menuItemInfo, jMenuItem);
-		if (menuItemInfo.getKeyStrokeInfo() != null)
+		if (menuItemInfo.getMenuInfo().getKeyStrokeInfo() != null)
 		{
-			jMenuItem.setAccelerator(menuItemInfo.getKeyStrokeInfo().toKeyStroke());
+			jMenuItem.setAccelerator(menuItemInfo.getMenuInfo().getKeyStrokeInfo().toKeyStroke());
 		}
 		return jMenuItem;
 	}
@@ -249,13 +249,13 @@ public class MenuItemInfoConverter
 	{
 		MenuItem menuItem = new MenuItem();
 
-		if (menuItemInfo.getText() != null)
+		if (menuItemInfo.getMenuInfo().getText() != null)
 		{
-			menuItem.setLabel(menuItemInfo.getText());
+			menuItem.setLabel(menuItemInfo.getMenuInfo().getText());
 		}
-		if (menuItemInfo.getMnemonic() != null)
+		if (menuItemInfo.getMenuInfo().getMnemonic() != null)
 		{
-			menuItem.setShortcut(new MenuShortcut(menuItemInfo.getMnemonic()));
+			menuItem.setShortcut(new MenuShortcut(menuItemInfo.getMenuInfo().getMnemonic()));
 		}
 		setFields(menuItemInfo, menuItem);
 		return menuItem;
@@ -286,30 +286,30 @@ public class MenuItemInfoConverter
 	public static JMenuBar toJMenuBar(MenuItemInfo menuItemInfo)
 	{
 		JMenuBar menuBar = new JMenuBar();
-		if (menuItemInfo.getName() != null)
+		if (menuItemInfo.getMenuInfo().getName() != null)
 		{
-			menuBar.setName(menuItemInfo.getName());
+			menuBar.setName(menuItemInfo.getMenuInfo().getName());
 		}
 		return menuBar;
 	}
 
 	private static void setFields(MenuItemInfo menuItemInfo, JMenuItem jMenuItem)
 	{
-		if (menuItemInfo.getText() != null)
+		if (menuItemInfo.getMenuInfo().getText() != null)
 		{
-			jMenuItem.setText(menuItemInfo.getText());
+			jMenuItem.setText(menuItemInfo.getMenuInfo().getText());
 		}
-		if (menuItemInfo.getMnemonic() != null)
+		if (menuItemInfo.getMenuInfo().getMnemonic() != null)
 		{
-			jMenuItem.setMnemonic(menuItemInfo.getMnemonic());
+			jMenuItem.setMnemonic(menuItemInfo.getMenuInfo().getMnemonic());
 		}
 		if (menuItemInfo.getActionListener() != null)
 		{
 			jMenuItem.addActionListener(menuItemInfo.getActionListener());
 		}
-		if (menuItemInfo.getName() != null)
+		if (menuItemInfo.getMenuInfo().getName() != null)
 		{
-			jMenuItem.setName(menuItemInfo.getName());
+			jMenuItem.setName(menuItemInfo.getMenuInfo().getName());
 		}
 		if (menuItemInfo.getActionCommand() != null)
 		{
@@ -323,9 +323,9 @@ public class MenuItemInfoConverter
 		{
 			menuItem.addActionListener(menuItemInfo.getActionListener());
 		}
-		if (menuItemInfo.getName() != null)
+		if (menuItemInfo.getMenuInfo().getName() != null)
 		{
-			menuItem.setName(menuItemInfo.getName());
+			menuItem.setName(menuItemInfo.getMenuInfo().getName());
 		}
 		if (menuItemInfo.getActionCommand() != null)
 		{
@@ -346,14 +346,6 @@ public class MenuItemInfoConverter
 	 */
 	public static MenuItemInfo toMenuItemInfo(MenuInfo menuInfo, ActionListener actionListener)
 	{
-		return menuInfo.getKeyStrokeInfo() != null
-			? MenuItemInfo.builder().actionListener(actionListener).text(menuInfo.getText())
-				.mnemonic(menuInfo.getMnemonic()).keyStrokeInfo(menuInfo.getKeyStrokeInfo())
-				.name(menuInfo.getName()).anchor(menuInfo.getAnchor())
-				.relativeToMenuId(menuInfo.getRelativeToMenuId()).build()
-			: MenuItemInfo.builder().actionListener(actionListener).text(menuInfo.getText())
-				.keyStrokeInfo(menuInfo.getKeyStrokeInfo()).mnemonic(menuInfo.getMnemonic())
-				.name(menuInfo.getName()).anchor(menuInfo.getAnchor())
-				.relativeToMenuId(menuInfo.getRelativeToMenuId()).build();
+		return MenuItemInfo.builder().actionListener(actionListener).menuInfo(menuInfo).build();
 	}
 }

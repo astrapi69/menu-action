@@ -48,6 +48,7 @@ import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JToolBarFactory;
+import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 
 class ParentMenuResolverTest
@@ -65,17 +66,19 @@ class ParentMenuResolverTest
 		JRadioButtonMenuItem radioButtonMenuItem;
 		JCheckBoxMenuItem checkBoxMenuItem;
 		// new scenario ...
-		checkBoxMenuItem = MenuItemInfo.builder().build().toJCheckBoxMenuItem();
+		checkBoxMenuItem = MenuItemInfo.builder().menuInfo(MenuInfo.builder().build()).build()
+			.toJCheckBoxMenuItem();
 		actual = ParentMenuResolver.getMenuElementType(checkBoxMenuItem);
 		expected = Optional.of(JCheckBoxMenuItem.class);
 		assertEquals(expected, actual);
 		// new scenario ...
-		radioButtonMenuItem = MenuItemInfo.builder().build().toJRadioButtonMenuItem();
+		radioButtonMenuItem = MenuItemInfo.builder().menuInfo(MenuInfo.builder().build()).build()
+			.toJRadioButtonMenuItem();
 		actual = ParentMenuResolver.getMenuElementType(radioButtonMenuItem);
 		expected = Optional.of(JRadioButtonMenuItem.class);
 		assertEquals(expected, actual);
 		// new scenario ...
-		menu = MenuItemInfo.builder().build().toJMenu();
+		menu = MenuItemInfo.builder().menuInfo(MenuInfo.builder().build()).build().toJMenu();
 		actual = ParentMenuResolver.getMenuElementType(menu);
 		expected = Optional.of(JMenu.class);
 		assertEquals(expected, actual);
@@ -85,7 +88,8 @@ class ParentMenuResolverTest
 		expected = Optional.of(JMenuBar.class);
 		assertEquals(expected, actual);
 		// new scenario ...
-		menuItem = MenuItemInfo.builder().build().toJMenuItem();
+		menuItem = MenuItemInfo.builder().menuInfo(MenuInfo.builder().build()).build()
+			.toJMenuItem();
 		actual = ParentMenuResolver.getMenuElementType(menuItem);
 		expected = Optional.of(JMenuItem.class);
 		assertEquals(expected, actual);
