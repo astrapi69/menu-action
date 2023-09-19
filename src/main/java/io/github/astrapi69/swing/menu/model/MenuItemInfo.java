@@ -32,14 +32,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.KeyStroke;
 
 import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 /**
  * The class {@link MenuItemInfo} holds the fields for build {@link JMenu}, {@link JMenuBar},
@@ -47,20 +46,16 @@ import lombok.experimental.SuperBuilder;
  * objects
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@SuperBuilder
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class MenuItemInfo extends MenuInfo
+public class MenuItemInfo
 {
+
 	/**
-	 * The keystroke
-	 * 
-	 * @deprecated use instead the derived field <code>keyStrokeInfo</code>. <br>
-	 *             <br>
-	 *             Note: Will be removed in the next minor release
+	 * The menu info of this menu component
 	 */
-	@Deprecated
-	KeyStroke keyStroke;
+	@NonNull
+	MenuInfo menuInfo;
 
 	/**
 	 * The action command of this menu component

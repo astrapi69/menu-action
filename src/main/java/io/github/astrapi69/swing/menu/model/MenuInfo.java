@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 
 import io.github.astrapi69.swing.menu.enumeration.Anchor;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
+import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +38,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 /**
  * The class {@link MenuInfo} is intended for store the information of a menu and on need to restore
@@ -49,7 +49,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder(toBuilder = true)
+@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MenuInfo
 {
@@ -82,8 +82,7 @@ public class MenuInfo
 	/**
 	 * The {@link MenuType} describes the type of this menu component
 	 */
-	@Builder.Default
-	MenuType type = MenuType.MENU;
+	MenuType type;
 
 	/**
 	 * The anchor describes where to position this menu component
@@ -92,7 +91,7 @@ public class MenuInfo
 
 	/**
 	 * If the anchor value is set to {@link Anchor#BEFORE} or {@link Anchor#AFTER} than this value
-	 * is the menu id that it will be relative placed to
+	 * is the menu id that it will be relatively placed to
 	 */
 	String relativeToMenuId;
 
@@ -106,12 +105,6 @@ public class MenuInfo
 	 */
 	public MenuItemInfo toMenuItemInfo(ActionListener actionListener)
 	{
-		return this.keyStrokeInfo != null
-			? MenuItemInfo.builder().actionListener(actionListener).text(this.text)
-				.mnemonic(this.mnemonic).keyStrokeInfo(this.keyStrokeInfo).name(this.name)
-				.anchor(this.anchor).relativeToMenuId(this.relativeToMenuId).build()
-			: MenuItemInfo.builder().actionListener(actionListener).text(this.text)
-				.keyStrokeInfo(this.keyStrokeInfo).mnemonic(this.mnemonic).name(this.name)
-				.anchor(this.anchor).relativeToMenuId(this.relativeToMenuId).build();
+		return MenuItemInfoConverter.toMenuItemInfo(this, actionListener);
 	}
 }
