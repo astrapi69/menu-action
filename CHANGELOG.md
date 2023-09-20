@@ -4,6 +4,10 @@
 Version 3.4-SNAPSHOT
 -------------
 
+CHANGED:
+
+- removed dependency 'javax.help:javahelp'
+- moved dependency xstream-extensions to test dependency
 
 Version 3.3
 -------------
