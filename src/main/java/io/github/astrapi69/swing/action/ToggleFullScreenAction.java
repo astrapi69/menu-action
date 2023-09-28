@@ -32,6 +32,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 /**
@@ -77,6 +78,15 @@ public class ToggleFullScreenAction extends AbstractAction
 	 *            the action event
 	 */
 	protected void onToggleFullScreen(final ActionEvent actionEvent)
+	{
+		toggleFullScreen(frame);
+	}
+
+	/**
+	 * Toggle to full screen and back
+	 * @param frame the {@link JFrame} object
+	 */
+	public static void toggleFullScreen(final @NonNull JFrame frame)
 	{
 		GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
