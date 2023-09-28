@@ -79,7 +79,7 @@ public class ToggleFullScreenAction extends AbstractAction
 	 */
 	protected void onToggleFullScreen(final ActionEvent actionEvent)
 	{
-		toggleFullScreen(frame);
+		ToggleFullScreenAction.toggleFullScreen(frame);
 	}
 
 	/**
