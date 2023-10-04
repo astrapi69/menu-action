@@ -54,6 +54,7 @@ public class MenuInfoTest
 			.text("Exit").text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
 		String xml = RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(actual));
 		assertNotNull(xml);
+		System.out.println(xml);
 		expected = RuntimeExceptionDecorator.decorate(() -> XmlToObjectExtensions.toObject(xml));
 		assertEquals(actual, expected);
 	}

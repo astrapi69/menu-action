@@ -13,6 +13,7 @@ dependencies {
     testCompileOnly("org.projectlombok:lombok:$lombokVersion")
     testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
     testImplementation("io.github.astrapi69:xstream-extensions:$xstreamExtensionsVersion")
+    testImplementation("io.github.astrapi69:jaxb-extensions:$jaxbExtensionsVersion")
     testImplementation("io.github.astrapi69:awt-extensions:$awtExtensionsVersion")
     testImplementation("org.assertj:assertj-swing:$assertjSwingVersion")
     testImplementation("io.github.astrapi69:silly-io:$sillyIoVersion")
