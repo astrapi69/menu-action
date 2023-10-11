@@ -27,6 +27,7 @@ package io.github.astrapi69.swing.action;
 import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.event.ActionEvent;
+import java.io.Serial;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
@@ -43,6 +44,7 @@ public class ToggleFullScreenAction extends AbstractAction
 {
 
 	/** The Constant serialVersionUID. */
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	/** The frame. */
@@ -68,23 +70,22 @@ public class ToggleFullScreenAction extends AbstractAction
 	@Override
 	public void actionPerformed(final ActionEvent actionEvent)
 	{
-		onToggleFullScreen(actionEvent);
+		onToggleFullScreen();
 	}
 
 	/**
 	 * Callback method to interact on toggle to full screen
-	 *
-	 * @param actionEvent
-	 *            the action event
 	 */
-	protected void onToggleFullScreen(final ActionEvent actionEvent)
+	protected void onToggleFullScreen()
 	{
 		ToggleFullScreenAction.toggleFullScreen(frame);
 	}
 
 	/**
 	 * Toggle to full screen and back
-	 * @param frame the {@link JFrame} object
+	 * 
+	 * @param frame
+	 *            the {@link JFrame} object
 	 */
 	public static void toggleFullScreen(final @NonNull JFrame frame)
 	{
