@@ -33,6 +33,9 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.ActionMapUIResource;
 
+import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
+import lombok.NonNull;
+
 /**
  * The class {@link KeyStrokeExtensions}.
  */
@@ -100,6 +103,22 @@ public final class KeyStrokeExtensions
 	public static KeyStroke getKeyStroke(String keystrokeAsString)
 	{
 		return KeyStroke.getKeyStroke(keystrokeAsString);
+	}
+
+	/**
+	 * Factory method that creates a {@link KeyStrokeInfo} object from the given {@link KeyStroke}
+	 * object
+	 *
+	 * @param keyStroke
+	 *            the {@link KeyStroke} object
+	 * @return the new created {@link KeyStrokeInfo} object
+	 */
+	public static KeyStrokeInfo toKeyStrokeInfo(final @NonNull KeyStroke keyStroke)
+	{
+		return KeyStrokeInfo.builder().keyCode(keyStroke.getKeyCode())
+			.keyChar(keyStroke.getKeyChar()).modifiers(keyStroke.getModifiers())
+			.onKeyRelease(keyStroke.isOnKeyRelease()).keystrokeAsString(keyStroke.toString())
+			.build();
 	}
 
 }

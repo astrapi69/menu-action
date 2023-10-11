@@ -41,6 +41,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import io.github.astrapi69.collection.list.ListExtensions;
+import io.github.astrapi69.swing.menu.KeyStrokeExtensions;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
@@ -74,23 +75,18 @@ public class MenuItemInfoConverter
 	 *            the {@link JComponent} object
 	 * @return the list of {@link KeyStrokeInfo} objects
 	 */
-	@SuppressWarnings(value = "raw")
+	@SuppressWarnings(value = "unchecked")
 	public static List<KeyStrokeInfo> getKeyStrokeInfos(JComponent jComponent)
 	{
 		Object whenInFocusedWindow = jComponent.getClientProperty("_WhenInFocusedWindow");
-		KeyStroke keyStroke;
 		List<KeyStrokeInfo> keyStrokeInfos = new ArrayList<>();
 		if (whenInFocusedWindow instanceof Hashtable)
 		{
-			Hashtable hashtable = (Hashtable)whenInFocusedWindow;
-			Set keySet = hashtable.keySet();
-			for (Object key : keySet)
+			Hashtable<KeyStroke, KeyStroke> hashtable = (Hashtable<KeyStroke, KeyStroke>)whenInFocusedWindow;
+			Set<KeyStroke> keySet = hashtable.keySet();
+			for (KeyStroke key : keySet)
 			{
-				if (key instanceof KeyStroke)
-				{
-					keyStroke = (KeyStroke)key;
-					keyStrokeInfos.add(KeyStrokeInfo.toKeyStrokeInfo(keyStroke));
-				}
+				keyStrokeInfos.add(KeyStrokeExtensions.toKeyStrokeInfo(key));
 			}
 		}
 		return keyStrokeInfos;
@@ -156,7 +152,7 @@ public class MenuItemInfoConverter
 		return keyStrokeInfo != null
 			? MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name(menu.getName())
 				.text(menu.getText()).mnemonic(menu.getMnemonic())
-				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator())).build()
+				.keyStrokeInfo(KeyStrokeExtensions.toKeyStrokeInfo(menu.getAccelerator())).build()
 			: MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name(menu.getName())
 				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
 	}
@@ -175,7 +171,7 @@ public class MenuItemInfoConverter
 		return keyStrokeInfo != null
 			? MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM).name(menu.getName())
 				.text(menu.getText()).mnemonic(menu.getMnemonic())
-				.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(menu.getAccelerator())).build()
+				.keyStrokeInfo(KeyStrokeExtensions.toKeyStrokeInfo(menu.getAccelerator())).build()
 			: MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM).name(menu.getName())
 				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
 	}

@@ -26,6 +26,7 @@ package io.github.astrapi69.swing.menu.model;
 
 import javax.swing.KeyStroke;
 
+import io.github.astrapi69.swing.menu.KeyStrokeExtensions;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -73,8 +74,7 @@ public class KeyStrokeInfo
 	Boolean onKeyRelease;
 
 	/**
-	 * the {@link String} object that specifies the keystroke.
-	 *
+	 * the {@link String} object that specifies the keystroke. <br/>
 	 * For more information @see KeyStroke#getKeyStroke(String)
 	 */
 	String keystrokeAsString;
@@ -89,10 +89,7 @@ public class KeyStrokeInfo
 	 */
 	public static KeyStrokeInfo toKeyStrokeInfo(final @NonNull KeyStroke keyStroke)
 	{
-		return KeyStrokeInfo.builder().keyCode(keyStroke.getKeyCode())
-			.keyChar(keyStroke.getKeyChar()).modifiers(keyStroke.getModifiers())
-			.onKeyRelease(keyStroke.isOnKeyRelease()).keystrokeAsString(keyStroke.toString())
-			.build();
+		return KeyStrokeExtensions.toKeyStrokeInfo(keyStroke);
 	}
 
 	/**
