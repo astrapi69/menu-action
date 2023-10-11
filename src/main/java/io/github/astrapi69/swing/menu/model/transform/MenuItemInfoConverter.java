@@ -50,21 +50,21 @@ import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import lombok.NonNull;
 
 /**
- * The class {@link MenuItemInfoConverter} converts several menu components to {@link MenuInfo}
- * objects and to {@link MenuItemInfo} object and back
+ * The class {@link MenuItemInfoConverter} converts several menu components to {@link MenuItemInfo}
+ * object and back
  */
 public class MenuItemInfoConverter
 {
 
 	/**
-	 * Factory method that creates a {@link MenuInfo} object that represents an {@link JMenuBar}
+	 * Factory method that creates a {@link MenuItemInfo} object that represents an {@link JMenuBar}
 	 * object
 	 *
-	 * @return the new created {@link MenuInfo} object
+	 * @return the new created {@link MenuItemInfo} object
 	 */
-	public static MenuInfo fromJMenuBar()
+	public static MenuItemInfo fromJMenuBar()
 	{
-		return MenuInfo.builder().ordinal(100).type(MenuType.MENU_BAR)
+		return MenuItemInfo.builder().ordinal(100).type(MenuType.MENU_BAR)
 			.name(BaseMenuId.MENU_BAR.propertiesKey()).build();
 	}
 
@@ -105,74 +105,76 @@ public class MenuItemInfoConverter
 	}
 
 	/**
-	 * Factory method that creates a {@link MenuInfo} object from the given {@link JMenu} object
+	 * Factory method that creates a {@link MenuItemInfo} object from the given {@link JMenu} object
 	 *
 	 * @param menu
 	 *            the {@link JMenu} object
-	 * @return the new created {@link MenuInfo} object
+	 * @return the new created {@link MenuItemInfo} object
 	 */
-	public static MenuInfo fromJMenu(final @NonNull JMenu menu)
+	public static MenuItemInfo fromJMenu(final @NonNull JMenu menu)
 	{
 		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
 		return keyStrokeInfo != null
-			? MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+			? MenuItemInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
 				.mnemonic(menu.getMnemonic()).keyStrokeInfo(keyStrokeInfo).build()
-			: MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+			: MenuItemInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
 				.mnemonic(menu.getMnemonic()).build();
 	}
 
 	/**
-	 * Factory method that creates a {@link MenuInfo} object from the given {@link JMenuItem} object
+	 * Factory method that creates a {@link MenuItemInfo} object from the given {@link JMenuItem}
+	 * object
 	 *
 	 * @param menu
 	 *            the {@link JMenuItem} object
-	 * @return the new created {@link MenuInfo} object
+	 * @return the new created {@link MenuItemInfo} object
 	 */
-	public static MenuInfo fromJMenuItem(final @NonNull JMenuItem menu)
+	public static MenuItemInfo fromJMenuItem(final @NonNull JMenuItem menu)
 	{
 		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
 		return keyStrokeInfo != null
-			? MenuInfo.builder().type(MenuType.MENU_ITEM).name(menu.getName()).text(menu.getText())
-				.mnemonic(menu.getMnemonic()).keyStrokeInfo(keyStrokeInfo).build()
-			: MenuInfo.builder().type(MenuType.MENU_ITEM).name(menu.getName()).text(menu.getText())
-				.mnemonic(menu.getMnemonic()).build();
-	}
-
-	/**
-	 * Factory method that creates a {@link MenuInfo} object from the given
-	 * {@link JCheckBoxMenuItem} object
-	 *
-	 * @param menu
-	 *            the {@link JCheckBoxMenuItem} object
-	 * @return the new created {@link MenuInfo} object
-	 */
-	public static MenuInfo fromJCheckBoxMenuItem(final @NonNull JCheckBoxMenuItem menu)
-	{
-		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
-		return keyStrokeInfo != null
-			? MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name(menu.getName())
-				.text(menu.getText()).mnemonic(menu.getMnemonic())
-				.keyStrokeInfo(KeyStrokeExtensions.toKeyStrokeInfo(menu.getAccelerator())).build()
-			: MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name(menu.getName())
+			? MenuItemInfo.builder().type(MenuType.MENU_ITEM).name(menu.getName())
+				.text(menu.getText()).mnemonic(menu.getMnemonic()).keyStrokeInfo(keyStrokeInfo)
+				.build()
+			: MenuItemInfo.builder().type(MenuType.MENU_ITEM).name(menu.getName())
 				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
 	}
 
 	/**
-	 * Factory method that creates a {@link MenuInfo} object from the given
+	 * Factory method that creates a {@link MenuItemInfo} object from the given
+	 * {@link JCheckBoxMenuItem} object
+	 *
+	 * @param menu
+	 *            the {@link JCheckBoxMenuItem} object
+	 * @return the new created {@link MenuItemInfo} object
+	 */
+	public static MenuItemInfo fromJCheckBoxMenuItem(final @NonNull JCheckBoxMenuItem menu)
+	{
+		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
+		return keyStrokeInfo != null
+			? MenuItemInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name(menu.getName())
+				.text(menu.getText()).mnemonic(menu.getMnemonic())
+				.keyStrokeInfo(KeyStrokeExtensions.toKeyStrokeInfo(menu.getAccelerator())).build()
+			: MenuItemInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name(menu.getName())
+				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
+	}
+
+	/**
+	 * Factory method that creates a {@link MenuItemInfo} object from the given
 	 * {@link JRadioButtonMenuItem} object
 	 *
 	 * @param menu
 	 *            the {@link JRadioButtonMenuItem} object
-	 * @return the new created {@link MenuInfo} object
+	 * @return the new created {@link MenuItemInfo} object
 	 */
-	public static MenuInfo fromJRadioButtonMenuItem(final @NonNull JRadioButtonMenuItem menu)
+	public static MenuItemInfo fromJRadioButtonMenuItem(final @NonNull JRadioButtonMenuItem menu)
 	{
 		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
 		return keyStrokeInfo != null
-			? MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM).name(menu.getName())
+			? MenuItemInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM).name(menu.getName())
 				.text(menu.getText()).mnemonic(menu.getMnemonic())
 				.keyStrokeInfo(KeyStrokeExtensions.toKeyStrokeInfo(menu.getAccelerator())).build()
-			: MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM).name(menu.getName())
+			: MenuItemInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM).name(menu.getName())
 				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
 	}
 
@@ -331,16 +333,35 @@ public class MenuItemInfoConverter
 
 
 	/**
-	 * Factory method that creates a {@link MenuItemInfo} object from this {@link MenuInfo} object
-	 * and the given {@link ActionListener} object
+	 * Factory method that creates a {@link MenuItemInfo} object from this {@link MenuItemInfo}
+	 * object and the given {@link ActionListener} object
 	 *
 	 * @param menuInfo
-	 *            the {@link MenuInfo} object to use
+	 *            the {@link MenuItemInfo} object to use
 	 * @param actionListener
 	 *            the {@link ActionListener} object to set
 	 * @return the new created {@link MenuItemInfo} object
 	 */
 	public static MenuItemInfo toMenuItemInfo(MenuInfo menuInfo, ActionListener actionListener)
+	{
+		return MenuItemInfo.builder().actionListener(actionListener).name(menuInfo.getName())
+			.text(menuInfo.getText()).mnemonic(menuInfo.getMnemonic())
+			.ordinal(menuInfo.getOrdinal()).keyStrokeInfo(menuInfo.getKeyStrokeInfo())
+			.type(menuInfo.getType()).anchor(menuInfo.getAnchor())
+			.relativeToMenuId(menuInfo.getRelativeToMenuId()).build();
+	}
+
+	/**
+	 * Factory method that creates a {@link MenuItemInfo} object from this {@link MenuItemInfo}
+	 * object and the given {@link ActionListener} object
+	 *
+	 * @param menuInfo
+	 *            the {@link MenuItemInfo} object to use
+	 * @param actionListener
+	 *            the {@link ActionListener} object to set
+	 * @return the new created {@link MenuItemInfo} object
+	 */
+	public static MenuItemInfo toMenuItemInfo(MenuItemInfo menuInfo, ActionListener actionListener)
 	{
 		return MenuItemInfo.builder().actionListener(actionListener).name(menuInfo.getName())
 			.text(menuInfo.getText()).mnemonic(menuInfo.getMnemonic())

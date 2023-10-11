@@ -29,7 +29,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
-import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import lombok.NonNull;
 

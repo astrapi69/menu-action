@@ -21,15 +21,13 @@ class MenuItemInfoTest
 	{
 		MenuItemInfo actual;
 		MenuItemInfo expected;
-		MenuInfo menuInfo;
-		//
-		menuInfo = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E'))
+
+		actual = MenuItemInfo.builder().mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.builder().keyCode(KeyEvent.VK_F4).modifiers(InputEvent.ALT_DOWN_MASK)
 					.keystrokeAsString("alt pressed F4").onKeyRelease(false).build())
-			.text("Exit").text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
-		actual = MenuItemInfo.builder().menuInfo(menuInfo).actionCommand("foo-action-command")
-			.build();
+			.text("Exit").text("Exit").name(BaseMenuId.EXIT.propertiesKey())
+			.actionCommand("foo-action-command").build();
 		String xml = RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(actual));
 		assertNotNull(xml);
 		expected = RuntimeExceptionDecorator.decorate(() -> XmlToObjectExtensions.toObject(xml));

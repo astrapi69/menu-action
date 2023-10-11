@@ -46,7 +46,6 @@ import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
-import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
@@ -81,18 +80,18 @@ class MenuItemInfoConverterTest
 	@Test
 	void fromJMenu()
 	{
-		MenuInfo editMenuInfo;
-		MenuInfo menuInfo;
+		MenuItemInfo editMenuInfo;
+		MenuItemInfo menuInfo;
 		MenuItemInfo menuItemInfo;
 		JMenu menu;
 
 
-		editMenuInfo = MenuInfo.builder().type(MenuType.MENU)
+		editMenuInfo = MenuItemInfo.builder().type(MenuType.MENU)
 			.mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed E")))
 			.text("Edit").name(BaseMenuId.EDIT.propertiesKey()).build();
 
-		menuItemInfo = editMenuInfo.toMenuItemInfo(new NoAction());
+		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(editMenuInfo, new NoAction());
 
 		menu = menuItemInfo.toJMenu();
 
@@ -103,19 +102,19 @@ class MenuItemInfoConverterTest
 	@Test
 	void fromJMenuItem()
 	{
-		MenuInfo helpContentMenuInfo;
-		MenuInfo menuInfo;
+		MenuItemInfo helpContentMenuInfo;
+		MenuItemInfo menuInfo;
 		MenuItemInfo menuItemInfo;
 		JMenuItem menu;
 
 
-		helpContentMenuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM)
+		helpContentMenuInfo = MenuItemInfo.builder().type(MenuType.MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('C'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
 			.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
 
-		menuItemInfo = helpContentMenuInfo.toMenuItemInfo(new NoAction());
+		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(helpContentMenuInfo, new NoAction());
 
 		menu = menuItemInfo.toJMenuItem();
 
@@ -126,17 +125,17 @@ class MenuItemInfoConverterTest
 	@Test
 	void fromJCheckBoxMenuItem()
 	{
-		MenuInfo donateMenuInfo;
-		MenuInfo menuInfo;
+		MenuItemInfo donateMenuInfo;
+		MenuItemInfo menuInfo;
 		MenuItemInfo menuItemInfo;
 		JCheckBoxMenuItem menu;
 
-		donateMenuInfo = MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
+		donateMenuInfo = MenuItemInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('Y'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed Y")))
 			.text("Yes").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
 
-		menuItemInfo = donateMenuInfo.toMenuItemInfo(new NoAction());
+		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, new NoAction());
 
 		menu = menuItemInfo.toJCheckBoxMenuItem();
 
@@ -147,19 +146,19 @@ class MenuItemInfoConverterTest
 	@Test
 	void fromJRadioButtonMenuItem()
 	{
-		MenuInfo donateMenuInfo;
-		MenuInfo menuInfo;
+		MenuItemInfo donateMenuInfo;
+		MenuItemInfo menuInfo;
 		MenuItemInfo menuItemInfo;
 		JRadioButtonMenuItem menu;
 		ActionListener actionListener;
 
-		donateMenuInfo = MenuInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
+		donateMenuInfo = MenuItemInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('R'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed R")))
 			.text("Donate").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
 
 		actionListener = new NoAction();
-		menuItemInfo = donateMenuInfo.toMenuItemInfo(actionListener);
+		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, actionListener);
 
 		menu = menuItemInfo.toJRadioButtonMenuItem();
 
