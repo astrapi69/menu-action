@@ -48,8 +48,7 @@ public class JMenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text)
 	{
-		return MenuItemInfo.builder().menuInfo(MenuInfo.builder().text(text).build()).build()
-			.toJMenu();
+		return MenuItemInfo.builder().text(text).build().toJMenu();
 	}
 
 	/**
@@ -75,8 +74,7 @@ public class JMenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text, final int mnemonic)
 	{
-		return MenuItemInfo.builder()
-			.menuInfo(MenuInfo.builder().text(text).mnemonic(mnemonic).build()).build().toJMenu();
+		return MenuItemInfo.builder().text(text).mnemonic(mnemonic).build().toJMenu();
 	}
 
 	/**
@@ -93,9 +91,8 @@ public class JMenuFactory
 	public static JMenu newJMenu(final @NonNull String text, final int mnemonic,
 		final @NonNull ActionListener actionListener)
 	{
-		return MenuItemInfo.builder()
-			.menuInfo(MenuInfo.builder().text(text).mnemonic(mnemonic).build())
-			.actionListener(actionListener).build().toJMenu();
+		return MenuItemInfo.builder().text(text).mnemonic(mnemonic).actionListener(actionListener)
+			.build().toJMenu();
 	}
 
 	/**
@@ -109,9 +106,7 @@ public class JMenuFactory
 	 */
 	public static JMenu newJMenu(final @NonNull String text, final char mnemonic)
 	{
-		return MenuItemInfo.builder()
-			.menuInfo(
-				MenuInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic)).build())
+		return MenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
 			.build().toJMenu();
 	}
 
@@ -129,9 +124,7 @@ public class JMenuFactory
 	public static JMenu newJMenu(final @NonNull String text, final char mnemonic,
 		final @NonNull ActionListener actionListener)
 	{
-		return MenuItemInfo.builder()
-			.menuInfo(
-				MenuInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic)).build())
+		return MenuItemInfo.builder().text(text).mnemonic(MenuExtensions.toMnemonic(mnemonic))
 			.actionListener(actionListener).build().toJMenu();
 	}
 
