@@ -99,6 +99,11 @@ public class MenuInfo
 	String relativeToMenuId;
 
 	/**
+	 * The action command of this menu component
+	 */
+	String actionCommand;
+
+	/**
 	 * Factory method that creates a {@link MenuItemInfo} object from this {@link MenuInfo} object
 	 * and the given {@link ActionListener} object
 	 * 
