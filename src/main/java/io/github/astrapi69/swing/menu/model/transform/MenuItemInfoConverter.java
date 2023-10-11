@@ -348,6 +348,7 @@ public class MenuItemInfoConverter
 			.text(menuInfo.getText()).mnemonic(menuInfo.getMnemonic())
 			.ordinal(menuInfo.getOrdinal()).keyStrokeInfo(menuInfo.getKeyStrokeInfo())
 			.type(menuInfo.getType()).anchor(menuInfo.getAnchor())
+			.actionCommand(menuInfo.getActionCommand())
 			.relativeToMenuId(menuInfo.getRelativeToMenuId()).build();
 	}
 

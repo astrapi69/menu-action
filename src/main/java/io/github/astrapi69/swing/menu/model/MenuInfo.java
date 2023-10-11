@@ -42,10 +42,7 @@ import lombok.experimental.FieldDefaults;
 /**
  * The class {@link MenuInfo} is intended for store the information of a menu and on need to restore
  * the menu
- * 
- * @deprecated use instead the class {@link MenuItemInfo}. Note will be removed next major version
  */
-@Deprecated
 @Getter
 @Setter
 @EqualsAndHashCode
