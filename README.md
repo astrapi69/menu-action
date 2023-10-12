@@ -52,7 +52,6 @@ and then add the dependency to the dependencies area
     implementation("io.github.astrapi69:menu-action:$menuActionVersion")
 ```
 
-
 ## 📸 Snapshots
 
 [![Snapshot](https://img.shields.io/badge/dynamic/xml?url=https://oss.sonatype.org/service/local/repositories/snapshots/content/io/github/astrapi69/menu-action/maven-metadata.xml&label=snapshot&color=red&query=.//versioning/latest)](https://oss.sonatype.org/content/repositories/snapshots/io/github/astrapi69/menu-action/)
