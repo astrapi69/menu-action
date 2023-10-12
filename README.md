@@ -52,6 +52,28 @@ and then add the dependency to the dependencies area
     implementation("io.github.astrapi69:menu-action:$menuActionVersion")
 ```
 
+
+## 📸 Snapshots
+
+[![Snapshot](https://img.shields.io/badge/dynamic/xml?url=https://oss.sonatype.org/service/local/repositories/snapshots/content/io/github/astrapi69/menu-action/maven-metadata.xml&label=snapshot&color=red&query=.//versioning/latest)](https://oss.sonatype.org/content/repositories/snapshots/io/github/astrapi69/menu-action/)
+
+This section describes how to import snapshot versions into your project.
+Add the following code snippet to your gradle file in the repositories section:
+
+repositories {
+
+   //...
+```groovy
+    maven {
+        name "Sonatype Nexus Snapshots"
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+        mavenContent {
+            snapshotsOnly()
+        }
+    }    
+```
+}
+
 ## Maven dependency
 
 Maven dependency is now on sonatype.
@@ -64,19 +86,23 @@ Than you can add the dependency to your dependencies:
 
     <properties>
             ...
+```xml
         <!-- menu-action version -->
         <menu-action.version>3.3</menu-action.version>
+```
             ...
     </properties>
             ...
         <dependencies>
             ...
+```xml
             <!-- menu-action DEPENDENCY -->
             <dependency>
                 <groupId>io.github.astrapi69</groupId>
                 <artifactId>menu-action</artifactId>
                 <version>${menu-action.version}</version>
             </dependency>
+```
             ...
         </dependencies>
 

@@ -2,15 +2,18 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        name "Sonatype Nexus Releases"
-        url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+        name "$projectRepositoriesReleasesName"
+        url "$projectRepositoriesReleasesRepoUrl"
         mavenContent {
             releasesOnly()
         }
     }
+    /**
+     * With this repository you can provide snapshot versions that are previously deployed on the specified url
+     **/
     maven {
-        name "Sonatype Nexus Snapshots"
-        url "https://oss.sonatype.org/content/repositories/snapshots"
+        name "$projectRepositoriesSnapshotsName"
+        url "$projectRepositoriesSnapshotsRepoUrl"
         mavenContent {
             snapshotsOnly()
         }
