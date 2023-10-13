@@ -85,7 +85,6 @@ class MenuItemInfoConverterTest
 		MenuItemInfo menuItemInfo;
 		JMenu menu;
 
-
 		editMenuInfo = MenuItemInfo.builder().type(MenuType.MENU)
 			.mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed E")))
