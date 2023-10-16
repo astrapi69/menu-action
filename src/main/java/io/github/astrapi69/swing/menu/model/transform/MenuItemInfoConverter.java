@@ -62,9 +62,9 @@ public class MenuItemInfoConverter
 	 *
 	 * @return the new created {@link MenuItemInfo} object
 	 */
-	public static MenuItemInfo fromJMenuBar()
+	public static MenuInfo fromJMenuBar()
 	{
-		return MenuItemInfo.builder().ordinal(100).type(MenuType.MENU_BAR)
+		return MenuInfo.builder().ordinal(100).type(MenuType.MENU_BAR)
 			.name(BaseMenuId.MENU_BAR.propertiesKey()).build();
 	}
 
@@ -111,13 +111,13 @@ public class MenuItemInfoConverter
 	 *            the {@link JMenu} object
 	 * @return the new created {@link MenuItemInfo} object
 	 */
-	public static MenuItemInfo fromJMenu(final @NonNull JMenu menu)
+	public static MenuInfo fromJMenu(final @NonNull JMenu menu)
 	{
 		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
 		return keyStrokeInfo != null
-			? MenuItemInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+			? MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
 				.mnemonic(menu.getMnemonic()).keyStrokeInfo(keyStrokeInfo).build()
-			: MenuItemInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
+			: MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
 				.mnemonic(menu.getMnemonic()).build();
 	}
 

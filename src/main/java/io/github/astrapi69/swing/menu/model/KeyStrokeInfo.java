@@ -52,10 +52,6 @@ import lombok.experimental.SuperBuilder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class KeyStrokeInfo
 {
-	/**
-	 * the {@link Character} object with the value for a keyboard key
-	 */
-	Character keyChar;
 
 	/**
 	 * the {@link Integer} object that specifies the numeric code for a keyboard key
@@ -101,7 +97,6 @@ public class KeyStrokeInfo
 	public KeyStrokeInfo set(final @NonNull KeyStroke keyStroke)
 	{
 		this.keyCode = keyStroke.getKeyCode();
-		this.keyChar = keyStroke.getKeyChar();
 		this.modifiers = keyStroke.getModifiers();
 		this.onKeyRelease = keyStroke.isOnKeyRelease();
 		this.keystrokeAsString = keyStroke.toString();
@@ -143,25 +138,6 @@ public class KeyStrokeInfo
 				{
 					return keyStroke;
 				}
-			}
-		}
-
-		if (keyChar != null)
-		{
-
-			if (modifiers != null)
-			{
-				keyStroke = KeyStroke.getKeyStroke(keyChar, modifiers.intValue());
-				if (keyStroke != null)
-				{
-					return keyStroke;
-				}
-			}
-
-			keyStroke = KeyStroke.getKeyStroke(keyChar);
-			if (keyStroke != null)
-			{
-				return keyStroke;
 			}
 		}
 		return keyStroke;

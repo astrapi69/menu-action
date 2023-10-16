@@ -46,6 +46,7 @@ import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
+import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
 import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
@@ -80,12 +81,12 @@ class MenuItemInfoConverterTest
 	@Test
 	void fromJMenu()
 	{
-		MenuItemInfo editMenuInfo;
-		MenuItemInfo menuInfo;
+		MenuInfo editMenuInfo;
+		MenuInfo menuInfo;
 		MenuItemInfo menuItemInfo;
 		JMenu menu;
 
-		editMenuInfo = MenuItemInfo.builder().type(MenuType.MENU)
+		editMenuInfo = MenuInfo.builder().type(MenuType.MENU)
 			.mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed E")))
 			.text("Edit").name(BaseMenuId.EDIT.propertiesKey()).build();

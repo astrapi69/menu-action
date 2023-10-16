@@ -116,9 +116,8 @@ public final class KeyStrokeExtensions
 	public static KeyStrokeInfo toKeyStrokeInfo(final @NonNull KeyStroke keyStroke)
 	{
 		return KeyStrokeInfo.builder().keyCode(keyStroke.getKeyCode())
-			.keyChar(keyStroke.getKeyChar()).modifiers(keyStroke.getModifiers())
-			.onKeyRelease(keyStroke.isOnKeyRelease()).keystrokeAsString(keyStroke.toString())
-			.build();
+			.modifiers(keyStroke.getModifiers()).onKeyRelease(keyStroke.isOnKeyRelease())
+			.keystrokeAsString(keyStroke.toString()).build();
 	}
 
 }
