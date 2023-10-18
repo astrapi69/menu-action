@@ -32,18 +32,20 @@ The source code comes under the liberal MIT License, making menu-action great fo
 
 ## gradle dependency
 
+Replace the variable ${latestVersion} with the current latest version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-action/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-action)
+
 You can first define the version in the ext section and add than the following gradle dependency to
 your project `build.gradle` if you want to import the core functionality of menu-action:
 
 define version in file gradle.properties
 ```
-menuActionVersion=3.3
+menuActionVersion=${latestVersion}
 ```
 
 or in build.gradle ext area
 
 ```
-    menuActionVersion = "3.3"
+    menuActionVersion = "${latestVersion}"
 ```
 
 and then add the dependency to the dependencies area
