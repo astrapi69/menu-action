@@ -33,11 +33,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 
+import io.github.astrapi69.swing.menu.enumeration.Anchor;
+import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.transform.MenuItemInfoConverter;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
@@ -45,17 +51,58 @@ import lombok.experimental.FieldDefaults;
  * {@link JMenuItem}, {@link MenuItem}, {@link JCheckBoxMenuItem} and {@link JRadioButtonMenuItem}
  * objects
  */
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @Builder
+@NoArgsConstructor(force = true)
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MenuItemInfo
 {
 
 	/**
-	 * The menu info of this menu component
+	 * The name of this menu component. The name is used as the menu id and as the action command of
+	 * this menu component
 	 */
-	@NonNull
-	MenuInfo menuInfo;
+	String name;
+
+	/**
+	 * The text of this menu component. The text is used as the label of this menu component
+	 */
+	String text;
+
+	/**
+	 * The keyboard mnemonic of this menu component
+	 */
+	Integer mnemonic;
+
+	/**
+	 * The ordinal of this menu component. The ordinal is used for ordering this menu component
+	 */
+	int ordinal;
+
+	/**
+	 * The {@link KeyStrokeInfo} of this menu component
+	 */
+	KeyStrokeInfo keyStrokeInfo;
+
+	/**
+	 * The {@link MenuType} describes the type of this menu component
+	 */
+	MenuType type;
+
+	/**
+	 * The anchor describes where to position this menu component
+	 */
+	Anchor anchor;
+
+	/**
+	 * If the anchor value is set to {@link Anchor#BEFORE} or {@link Anchor#AFTER} than this value
+	 * is the menu id that it will be relatively placed to
+	 */
+	String relativeToMenuId;
 
 	/**
 	 * The action command of this menu component

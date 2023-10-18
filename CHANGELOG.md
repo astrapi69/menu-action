@@ -1,6 +1,24 @@
 ## Change log
 ----------------------
 
+Version 3.4
+-------------
+
+ADDED:
+
+- new field UNKNOWN in enum MenuType and Anchor for default return value in a search algorithm
+
+CHANGED:
+
+- update of gradle to new version 8.4
+- update of lombok to new version 1.18.30
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 8.4
+- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.49.0
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new version 6.22.0
+- update of dependency gen-tree to new major version 9
+- removed dependency 'javax.help:javahelp'
+- moved dependency xstream-extensions to test dependency
+
 Version 3.3
 -------------
 

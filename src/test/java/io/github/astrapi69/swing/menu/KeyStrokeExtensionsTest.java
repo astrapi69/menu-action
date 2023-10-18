@@ -84,6 +84,11 @@ class KeyStrokeExtensionsTest
 		actual = keyStroke.toString();
 		assertEquals(expected, actual);
 		// new scenario ...
+		expected = "ctrl pressed I";
+		keyStroke = KeyStrokeExtensions.getKeyStroke(expected);
+		actual = keyStroke.toString();
+		assertEquals(expected, actual);
+		// new scenario ...
 		expected = "alt pressed F11";
 		keyStroke = KeyStrokeExtensions.getKeyStroke(expected);
 		actual = keyStroke.toString();

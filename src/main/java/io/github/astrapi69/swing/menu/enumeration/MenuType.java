@@ -68,5 +68,10 @@ public enum MenuType
 	/**
 	 * Represents the popup menu type
 	 */
-	POPUP
+	POPUP,
+
+	/**
+	 * if the menu type is unknown
+	 */
+	UNKNOWN
 }
