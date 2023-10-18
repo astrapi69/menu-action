@@ -96,7 +96,8 @@ public class MenuInfo
 	String relativeToMenuId;
 
 	/**
-	 * The action command of this menu component
+	 * The action command or the fully qualified class name of the action listener for this menu
+	 * component
 	 */
 	String actionCommand;
 

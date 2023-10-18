@@ -52,5 +52,10 @@ public enum Anchor
 	 * If a source menu component have the position value <code>Anchor#LAST</code> it will be placed
 	 * as the last menu component
 	 */
-	LAST
+	LAST,
+
+	/**
+	 * if the anchor type is unknown
+	 */
+	UNKNOWN
 }
