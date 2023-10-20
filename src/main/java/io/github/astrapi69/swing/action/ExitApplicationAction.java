@@ -24,11 +24,11 @@
  */
 package io.github.astrapi69.swing.action;
 
-import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
-
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+
+import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 
 /**
  * The class {@link ExitApplicationAction} finish the application
