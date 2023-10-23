@@ -44,9 +44,6 @@ public abstract class OpenBrowserAction extends AbstractAction
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** The component. */
-	Component component;
-
 	/** The url */
 	String url;
 
@@ -60,10 +57,9 @@ public abstract class OpenBrowserAction extends AbstractAction
 	 * @param url
 	 *            the url
 	 */
-	public OpenBrowserAction(final String name, final Component component, final String url)
+	public OpenBrowserAction(final String name, final String url)
 	{
 		super(name);
-		this.component = component;
 		this.url = url;
 	}
 
@@ -73,18 +69,15 @@ public abstract class OpenBrowserAction extends AbstractAction
 	@Override
 	public void actionPerformed(final ActionEvent e)
 	{
-		onDisplayURLonStandardBrowser(component, url);
+		onDisplayURLonStandardBrowser(url);
 	}
 
 	/**
 	 * Abstract callback method to interact on file choose approve option.
 	 *
-	 * @param parentComponent
-	 *            The parent component. Can be null.
 	 * @param url
 	 *            An url like "http://www.yahoo.com/"
 	 */
-	protected abstract void onDisplayURLonStandardBrowser(final Component parentComponent,
-		final String url);
+	protected abstract void onDisplayURLonStandardBrowser(final String url);
 
 }

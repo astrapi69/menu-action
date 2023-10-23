@@ -4,7 +4,12 @@
 Version 3.5-SNAPSHOT
 -------------
 
+CHANGED:
 
+- update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' to new version 5.2.1
+- update of dependency jobj-core to new minor version 8.1
+- update of test dependency file-worker to new minor version 17.1
+- update of test dependency silly-io to new major version 3
 
 Version 3.4
 -------------

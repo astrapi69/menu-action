@@ -39,21 +39,20 @@ public class BaseOpenBrowserAction extends OpenBrowserAction
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	public BaseOpenBrowserAction(final String name, final Component component, final String url)
+	public BaseOpenBrowserAction(final String name, final String url)
 	{
-		super(name, component, url);
+		super(name, url);
 	}
 
-	public static BaseOpenBrowserAction of(final String name, final Component component,
-		final String url)
+	public static BaseOpenBrowserAction of(final String name, final String url)
 	{
-		return new BaseOpenBrowserAction(name, component, url);
+		return new BaseOpenBrowserAction(name, url);
 	}
 
 	@Override
-	protected void onDisplayURLonStandardBrowser(Component component, String url)
+	protected void onDisplayURLonStandardBrowser(String url)
 	{
-		BrowserControlExtensions.displayURLonStandardBrowser(component, url);
+		BrowserControlExtensions.displayURLonStandardBrowser(url);
 	}
 
 }
