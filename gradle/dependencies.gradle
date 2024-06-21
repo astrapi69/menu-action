@@ -1,25 +1,27 @@
 dependencies {
-    compileOnly("org.projectlombok:lombok:$lombokVersion")
-    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
-    implementation("io.github.astrapi69:model-data:$modelDataVersion")
-    implementation("io.github.astrapi69:jobj-core:$jobjCoreVersion")
-    implementation("io.github.astrapi69:throwable:$throwableVersion")
-    implementation("io.github.astrapi69:tree-api:$treeApiVersion")
-    implementation("io.github.astrapi69:gen-tree:$genTreeVersion")
-    implementation("io.github.astrapi69:visitor:$designPatternsVersion")
-    implementation("io.github.astrapi69:id-generate:$idGenerateVersion")
-    implementation("io.github.astrapi69:silly-collection:$sillyCollectionVersion")
-    implementation("io.github.astrapi69:data-api:$dataApiVersion")
-    testCompileOnly("org.projectlombok:lombok:$lombokVersion")
-    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
-    testImplementation("io.github.astrapi69:xstream-extensions:$xstreamExtensionsVersion")
-    testImplementation("io.github.astrapi69:jaxb-extensions:$jaxbExtensionsVersion")
-    testImplementation("io.github.astrapi69:awt-extensions:$awtExtensionsVersion")
-    testImplementation("org.assertj:assertj-swing:$assertjSwingVersion")
-    testImplementation("io.github.astrapi69:silly-io:$sillyIoVersion")
-    testImplementation("io.github.astrapi69:file-worker:$fileWorkerVersion")
-    testImplementation("com.github.meanbeanlib:meanbean:$meanbeanVersion")
-    testImplementation("io.github.astrapi69:junit-jupiter-extensions:$junitJupiterExtensionsVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+
+    implementation libs.model.data
+    implementation libs.jobj.core
+    implementation libs.throwable
+    implementation libs.tree.api
+    implementation libs.gen.tree
+    implementation libs.visitor
+    implementation libs.id.generate
+    implementation libs.silly.collection
+    implementation libs.data.api
+    testImplementation libs.xstream.extensions
+    testImplementation libs.jaxb.extensions
+    testImplementation libs.awt.extensions
+    testImplementation libs.assertj.swing
+    testImplementation libs.silly.io
+    testImplementation libs.file.worker
+    testImplementation libs.junit.jupiter.extensions
+    // Note: use of bundles...
+    testImplementation libs.bundles.unit.testing
+    testRuntimeOnly libs.junit.platform.launcher
 }
