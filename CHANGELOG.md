@@ -10,10 +10,18 @@ ADDED:
 
 CHANGED:
 
-- update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' to new version 5.2.1
-- update of dependency jobj-core to new minor version 8.1
-- update of test dependency file-worker to new minor version 17.1
+- update of gradle to new version 8.8
+- update of lombok to new version 1.18.32
+- update of gradle-plugin dependency 'io.freefair.gradle:lombok-plugin' to new version 8.6
+- update of gradle-plugin dependency 'com.github.ben-manes.versions.gradle.plugin' to new version 0.51.0
+- update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' to new version 5.2.2
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 7.0.0.BETA1
+- update of dependency awt-extensions to new minor version 1.2
+- update of dependency jobj-core to new minor version 8.2
+- update of silly-collection dependency to new major version 27.1
+- update of test dependency file-worker to new minor version 17.2
 - update of test dependency silly-io to new major version 3
+- update of test dependency junit-jupiter to new release candidate version 5.11.0-M2
 
 Version 3.4
 -------------
