@@ -22,6 +22,7 @@ CHANGED:
 - update of test dependency file-worker to new minor version 17.2
 - update of test dependency silly-io to new major version 3
 - update of test dependency junit-jupiter to new release candidate version 5.11.0-M2
+- replaced obsolete package.html with package-info.java files
 
 Version 3.4
 -------------
