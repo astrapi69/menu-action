@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -41,6 +42,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import io.github.astrapi69.collection.list.ListExtensions;
+import io.github.astrapi69.reflection.InstanceFactory;
 import io.github.astrapi69.swing.menu.KeyStrokeExtensions;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
@@ -366,6 +368,31 @@ public class MenuItemInfoConverter
 	{
 		return MenuItemInfo.builder().actionListener(actionListener).name(menuInfo.getName())
 			.text(menuInfo.getText()).mnemonic(menuInfo.getMnemonic())
+			.ordinal(menuInfo.getOrdinal()).keyStrokeInfo(menuInfo.getKeyStrokeInfo())
+			.type(menuInfo.getType()).anchor(menuInfo.getAnchor())
+			.relativeToMenuId(menuInfo.getRelativeToMenuId()).build();
+	}
+
+	/**
+	 * Factory method that creates a {@link MenuItemInfo} object from this {@link MenuItemInfo}
+	 * object and the given {@link ActionListener} object
+	 *
+	 * @param menuInfo
+	 *            the {@link MenuItemInfo} object to use
+	 * @param actionListenerClass
+	 *            the fully qualified class name of the action listener
+	 * @return the new created {@link MenuItemInfo} object
+	 */
+	public static MenuItemInfo toMenuItemInfo(MenuItemInfo menuInfo, String actionListenerClass)
+	{
+		Optional<ActionListener> actionListenerOptional = InstanceFactory
+			.newOptionalInstance(actionListenerClass);
+		if (actionListenerOptional.isEmpty())
+		{
+			throw new IllegalArgumentException("actionListenerClass cannot be instantiated");
+		}
+		return MenuItemInfo.builder().actionListener(actionListenerOptional.get())
+			.name(menuInfo.getName()).text(menuInfo.getText()).mnemonic(menuInfo.getMnemonic())
 			.ordinal(menuInfo.getOrdinal()).keyStrokeInfo(menuInfo.getKeyStrokeInfo())
 			.type(menuInfo.getType()).anchor(menuInfo.getAnchor())
 			.relativeToMenuId(menuInfo.getRelativeToMenuId()).build();

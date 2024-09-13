@@ -7,15 +7,16 @@ dependencies {
 
     implementation libs.model.data
     implementation libs.jobj.core
+    implementation libs.jobj.reflect
     implementation libs.throwable
     implementation libs.tree.api
     implementation libs.gen.tree
-    implementation libs.visitor
+    implementation libs.visitor.pattern
     implementation libs.id.generate
     implementation libs.silly.collection
     implementation libs.data.api
+
     testImplementation libs.xstream.extensions
-    testImplementation libs.jaxb.extensions
     testImplementation libs.awt.extensions
     testImplementation libs.assertj.swing
     testImplementation libs.silly.io

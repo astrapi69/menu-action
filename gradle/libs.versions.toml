@@ -1,38 +1,38 @@
 [versions]
 assertj-swing-version = "3.17.1"
 awt-extensions-version = "1.2"
-data-api-version = "4.1"
-file-worker-version = "17.2"
-gen-tree-version = "9"
+data-api-version = "5"
+file-worker-version = "17.4"
+gen-tree-version = "10"
 gradle-plugin-grgit-version = "5.2.2"
 gradle-plugin-license-version = "0.16.1"
-gradle-plugin-lombok-version = "8.6"
-gradle-plugin-spotless-version = "7.0.0.BETA1"
+gradle-plugin-lombok-version = "8.10"
+gradle-plugin-spotless-version = "7.0.0.BETA2"
 gradle-plugin-version-catalog-update-version = "0.8.4"
 gradle-plugin-versions-version = "0.51.0"
 id-generate-version = "1.1"
-jaxb-extensions-version = "2.1"
-jobj-core-version = "8.2"
+jobj-core-version = "9"
+jobj-reflect-version = "2.4"
 junit-jupiter-extensions-version = "2"
-junit-jupiter-version = "5.11.0-M2"
-lombok-version = "1.18.32"
+junit-jupiter-version = "5.11.0"
+lombok-version = "1.18.34"
 meanbean-version = "3.0.0-M9"
 model-data-version = "3.1"
-silly-collection-version = "27.1"
-silly-io-version = "3"
-throwable-version = "2.3"
-tree-api-version = "1.5"
-visitor-version = "6"
+silly-collection-version = "28"
+silly-io-version = "3.1"
+throwable-version = "3"
+tree-api-version = "2"
+visitor-pattern-version = "7"
 xstream-extensions-version = "1.1"
 
 [libraries]
+jobj-reflect = { module = "io.github.astrapi69:jobj-reflect", version.ref = "jobj-reflect-version" }
 assertj-swing = { module = "org.assertj:assertj-swing", version.ref = "assertj-swing-version" }
 awt-extensions = { module = "io.github.astrapi69:awt-extensions", version.ref = "awt-extensions-version" }
 data-api = { module = "io.github.astrapi69:data-api", version.ref = "data-api-version" }
 file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker-version" }
 gen-tree = { module = "io.github.astrapi69:gen-tree", version.ref = "gen-tree-version" }
 id-generate = { module = "io.github.astrapi69:id-generate", version.ref = "id-generate-version" }
-jaxb-extensions = { module = "io.github.astrapi69:jaxb-extensions", version.ref = "jaxb-extensions-version" }
 jobj-core = { module = "io.github.astrapi69:jobj-core", version.ref = "jobj-core-version" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
 junit-jupiter-extensions = { module = "io.github.astrapi69:junit-jupiter-extensions", version.ref = "junit-jupiter-extensions-version" }
@@ -44,7 +44,7 @@ silly-collection = { module = "io.github.astrapi69:silly-collection", version.re
 silly-io = { module = "io.github.astrapi69:silly-io", version.ref = "silly-io-version" }
 throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
 tree-api = { module = "io.github.astrapi69:tree-api", version.ref = "tree-api-version" }
-visitor = { module = "io.github.astrapi69:visitor", version.ref = "visitor-version" }
+visitor-pattern = { module = "io.github.astrapi69:visitor-pattern", version.ref = "visitor-pattern-version" }
 xstream-extensions = { module = "io.github.astrapi69:xstream-extensions", version.ref = "xstream-extensions-version" }
 
 [bundles]
