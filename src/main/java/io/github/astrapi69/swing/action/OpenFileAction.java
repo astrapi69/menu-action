@@ -34,13 +34,15 @@ import javax.swing.JFileChooser;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link OpenFileAction} can open a file with a file chooser
  */
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class OpenFileAction extends AbstractAction
 {
 
@@ -52,6 +54,15 @@ public abstract class OpenFileAction extends AbstractAction
 
 	/** The file chooser. */
 	JFileChooser fileChooser;
+
+	/**
+	 * Instantiates a new {@link OpenFileAction} object.
+	 */
+	public OpenFileAction()
+	{
+		super("");
+	}
+
 
 	/**
 	 * Instantiates a new {@link OpenFileAction} object.

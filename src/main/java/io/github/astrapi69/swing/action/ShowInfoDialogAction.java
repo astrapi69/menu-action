@@ -26,6 +26,7 @@ package io.github.astrapi69.swing.action;
 
 import java.awt.Frame;
 
+import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import lombok.NonNull;
 
 /**
@@ -35,6 +36,14 @@ public abstract class ShowInfoDialogAction extends ShowDialogAction
 {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Instantiates a new {@link ShowInfoDialogAction}
+	 */
+	public ShowInfoDialogAction()
+	{
+		super(BaseMenuId.HELP_INFO.propertiesKey());
+	}
 
 	/**
 	 * Instantiates a new {@link ShowInfoDialogAction}.

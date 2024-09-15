@@ -38,6 +38,14 @@ public class LookAndFeelSystemAction extends LookAndFeelAction
 
 	/**
 	 * Instantiates a new {@link LookAndFeelSystemAction} object
+	 */
+	public LookAndFeelSystemAction()
+	{
+		super();
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelSystemAction} object
 	 *
 	 * @param name
 	 *            the name

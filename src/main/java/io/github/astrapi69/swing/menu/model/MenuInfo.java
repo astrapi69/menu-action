@@ -96,10 +96,15 @@ public class MenuInfo
 	String relativeToMenuId;
 
 	/**
-	 * The action command or the fully qualified class name of the action listener for this menu
-	 * component
+	 * The action command of this menu component
 	 */
 	String actionCommand;
+
+	/**
+	 * The action class is the fully qualified class name of the action listener for this menu
+	 * component
+	 */
+	String actionClass;
 
 	/**
 	 * Factory method that creates a {@link MenuItemInfo} object from this {@link MenuInfo} object
@@ -113,4 +118,5 @@ public class MenuInfo
 	{
 		return MenuItemInfoConverter.toMenuItemInfo(this, actionListener);
 	}
+
 }

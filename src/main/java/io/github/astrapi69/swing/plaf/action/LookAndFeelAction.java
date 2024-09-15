@@ -34,6 +34,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import io.github.astrapi69.swing.plaf.LookAndFeels;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.java.Log;
 
@@ -41,8 +42,9 @@ import lombok.extern.java.Log;
  * The base class {@link LookAndFeelAction} for change a look and feel from the application
  */
 @Log
-@Getter(AccessLevel.PROTECTED)
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class LookAndFeelAction extends AbstractAction
 {
 
@@ -51,6 +53,37 @@ public class LookAndFeelAction extends AbstractAction
 	Component component;
 	/** The look and feels enum value */
 	LookAndFeels lookAndFeel;
+
+	/**
+	 * Instantiates a new {@link LookAndFeelAction} object
+	 */
+	public LookAndFeelAction()
+	{
+		this(LookAndFeels.SYSTEM);
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelAction} object
+	 * 
+	 * @param lookAndFeel
+	 *            the look and feels enum value
+	 */
+	public LookAndFeelAction(final LookAndFeels lookAndFeel)
+	{
+		super(lookAndFeel.name());
+		this.lookAndFeel = lookAndFeel;
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelAction} object
+	 *
+	 * @param name
+	 *            the name
+	 */
+	public LookAndFeelAction(final String name)
+	{
+		super(name);
+	}
 
 	/**
 	 * Instantiates a new {@link LookAndFeelAction} object

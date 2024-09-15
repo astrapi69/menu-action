@@ -18,17 +18,18 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-module menu.actions.main
+module io.github.astrapisixtynine.menu.action
 {
-	requires lombok;
+	requires static lombok;
 	requires java.desktop;
-	requires throwable;
 	requires java.logging;
-	requires gen.tree;
-	requires silly.collection;
+	requires io.github.astrapisixtynine.throwable;
+	requires io.github.astrapisixtynine.gen.tree;
+	requires io.github.astrapisixtynine.silly.collection;
+	requires io.github.astrapisixtynine.jobj.core;
 	requires id.generate;
 	requires model.data;
-	requires jobj.core.main;
+	requires jobj.reflect.main;
 
 	exports io.github.astrapi69.browser;
 	exports io.github.astrapi69.swing.action;

@@ -38,6 +38,14 @@ public class LookAndFeelMultiAction extends LookAndFeelAction
 
 	/**
 	 * Instantiates a new {@link LookAndFeelMultiAction} object
+	 */
+	public LookAndFeelMultiAction()
+	{
+		super(LookAndFeels.MULTI);
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelMultiAction} object
 	 *
 	 * @param name
 	 *            the name

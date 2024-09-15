@@ -38,6 +38,14 @@ public class LookAndFeelWindowsAction extends LookAndFeelAction
 
 	/**
 	 * Instantiates a new {@link LookAndFeelWindowsAction} object
+	 */
+	public LookAndFeelWindowsAction()
+	{
+		super(LookAndFeels.WINDOWS);
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelWindowsAction} object
 	 *
 	 * @param name
 	 *            the name

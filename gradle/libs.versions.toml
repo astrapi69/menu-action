@@ -1,0 +1,62 @@
+[versions]
+assertj-swing-version = "3.17.1"
+awt-extensions-version = "1.2"
+data-api-version = "5"
+file-worker-version = "17.4"
+gen-tree-version = "10"
+gradle-plugin-grgit-version = "5.2.2"
+gradle-plugin-license-version = "0.16.1"
+gradle-plugin-lombok-version = "8.10"
+gradle-plugin-spotless-version = "7.0.0.BETA2"
+gradle-plugin-version-catalog-update-version = "0.8.4"
+gradle-plugin-versions-version = "0.51.0"
+id-generate-version = "1.1"
+jobj-core-version = "9"
+jobj-reflect-version = "2.4"
+junit-jupiter-extensions-version = "2"
+junit-jupiter-version = "5.11.0"
+lombok-version = "1.18.34"
+meanbean-version = "3.0.0-M9"
+model-data-version = "3.1"
+silly-collection-version = "28"
+silly-io-version = "3.1"
+throwable-version = "3"
+tree-api-version = "2"
+visitor-pattern-version = "7"
+xstream-extensions-version = "1.1"
+
+[libraries]
+assertj-swing = { module = "org.assertj:assertj-swing", version.ref = "assertj-swing-version" }
+awt-extensions = { module = "io.github.astrapi69:awt-extensions", version.ref = "awt-extensions-version" }
+data-api = { module = "io.github.astrapi69:data-api", version.ref = "data-api-version" }
+file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker-version" }
+gen-tree = { module = "io.github.astrapi69:gen-tree", version.ref = "gen-tree-version" }
+id-generate = { module = "io.github.astrapi69:id-generate", version.ref = "id-generate-version" }
+jobj-core = { module = "io.github.astrapi69:jobj-core", version.ref = "jobj-core-version" }
+jobj-reflect = { module = "io.github.astrapi69:jobj-reflect", version.ref = "jobj-reflect-version" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
+junit-jupiter-extensions = { module = "io.github.astrapi69:junit-jupiter-extensions", version.ref = "junit-jupiter-extensions-version" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok-version" }
+meanbean = { module = "com.github.meanbeanlib:meanbean", version.ref = "meanbean-version" }
+model-data = { module = "io.github.astrapi69:model-data", version.ref = "model-data-version" }
+silly-collection = { module = "io.github.astrapi69:silly-collection", version.ref = "silly-collection-version" }
+silly-io = { module = "io.github.astrapi69:silly-io", version.ref = "silly-io-version" }
+throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
+tree-api = { module = "io.github.astrapi69:tree-api", version.ref = "tree-api-version" }
+visitor-pattern = { module = "io.github.astrapi69:visitor-pattern", version.ref = "visitor-pattern-version" }
+xstream-extensions = { module = "io.github.astrapi69:xstream-extensions", version.ref = "xstream-extensions-version" }
+
+[bundles]
+unit-testing = [
+    "junit-jupiter",
+    "meanbean",
+]
+
+[plugins]
+gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
+grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "gradle-plugin-grgit-version" }
+license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "gradle-plugin-license-version" }
+lombok-plugin = { id = "io.freefair.lombok", version.ref = "gradle-plugin-lombok-version" }
+spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
+version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }

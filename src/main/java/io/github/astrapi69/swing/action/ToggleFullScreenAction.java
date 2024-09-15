@@ -32,14 +32,17 @@ import java.io.Serial;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 
+import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link ToggleFullScreenAction}
  */
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ToggleFullScreenAction extends AbstractAction
 {
 
@@ -48,7 +51,17 @@ public class ToggleFullScreenAction extends AbstractAction
 	private static final long serialVersionUID = 1L;
 
 	/** The frame. */
-	JFrame frame;
+	@Getter
+	@Setter
+	Frame frame;
+
+	/**
+	 * Instantiates a new {@link ToggleFullScreenAction} object
+	 */
+	public ToggleFullScreenAction()
+	{
+		super(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey());
+	}
 
 	/**
 	 * Instantiates a new {@link ToggleFullScreenAction} object.
@@ -58,7 +71,7 @@ public class ToggleFullScreenAction extends AbstractAction
 	 * @param frame
 	 *            the frame
 	 */
-	public ToggleFullScreenAction(final String name, JFrame frame)
+	public ToggleFullScreenAction(final String name, Frame frame)
 	{
 		super(name);
 		this.frame = frame;
@@ -85,9 +98,9 @@ public class ToggleFullScreenAction extends AbstractAction
 	 * Toggle to full screen and back
 	 * 
 	 * @param frame
-	 *            the {@link JFrame} object
+	 *            the {@link Frame} object
 	 */
-	public static void toggleFullScreen(final @NonNull JFrame frame)
+	public static void toggleFullScreen(final @NonNull Frame frame)
 	{
 		GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);

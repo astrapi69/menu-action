@@ -47,6 +47,14 @@ public class LookAndFeelMetalAction extends LookAndFeelAction
 
 	/**
 	 * Instantiates a new {@link LookAndFeelMetalAction} object
+	 */
+	public LookAndFeelMetalAction()
+	{
+		super(LookAndFeels.METAL);
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelMetalAction} object
 	 *
 	 * @param name
 	 *            the name

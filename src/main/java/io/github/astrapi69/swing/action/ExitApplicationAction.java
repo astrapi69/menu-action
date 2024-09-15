@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
+
 /**
  * The class {@link ExitApplicationAction} finish the application
  */
@@ -36,6 +38,14 @@ public class ExitApplicationAction extends AbstractAction
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Instantiates a new {@link ExitApplicationAction} object
+	 */
+	public ExitApplicationAction()
+	{
+		this(BaseMenuId.EXIT.propertiesKey());
+	}
 
 	/**
 	 * Instantiates a new {@link ExitApplicationAction} object

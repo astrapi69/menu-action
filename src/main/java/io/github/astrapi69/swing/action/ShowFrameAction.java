@@ -37,7 +37,7 @@ import lombok.experimental.FieldDefaults;
  * The abstract class {@link ShowFrameAction}
  */
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class ShowFrameAction extends AbstractAction
 {
 
@@ -45,6 +45,14 @@ public abstract class ShowFrameAction extends AbstractAction
 
 	/** The title of the frame */
 	String title;
+
+	/**
+	 * Instantiates a new {@link ShowFrameAction} object
+	 */
+	public ShowFrameAction()
+	{
+		this("");
+	}
 
 	/**
 	 * Instantiates a new {@link ShowFrameAction} object

@@ -38,6 +38,14 @@ public class LookAndFeelMotifAction extends LookAndFeelAction
 
 	/**
 	 * Instantiates a new {@link LookAndFeelMotifAction} object
+	 */
+	public LookAndFeelMotifAction()
+	{
+		super(LookAndFeels.MOTIF);
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelMotifAction} object
 	 *
 	 * @param name
 	 *            the name
