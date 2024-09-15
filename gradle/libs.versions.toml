@@ -26,7 +26,6 @@ visitor-pattern-version = "7"
 xstream-extensions-version = "1.1"
 
 [libraries]
-jobj-reflect = { module = "io.github.astrapi69:jobj-reflect", version.ref = "jobj-reflect-version" }
 assertj-swing = { module = "org.assertj:assertj-swing", version.ref = "assertj-swing-version" }
 awt-extensions = { module = "io.github.astrapi69:awt-extensions", version.ref = "awt-extensions-version" }
 data-api = { module = "io.github.astrapi69:data-api", version.ref = "data-api-version" }
@@ -34,6 +33,7 @@ file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-
 gen-tree = { module = "io.github.astrapi69:gen-tree", version.ref = "gen-tree-version" }
 id-generate = { module = "io.github.astrapi69:id-generate", version.ref = "id-generate-version" }
 jobj-core = { module = "io.github.astrapi69:jobj-core", version.ref = "jobj-core-version" }
+jobj-reflect = { module = "io.github.astrapi69:jobj-reflect", version.ref = "jobj-reflect-version" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
 junit-jupiter-extensions = { module = "io.github.astrapi69:junit-jupiter-extensions", version.ref = "junit-jupiter-extensions-version" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }

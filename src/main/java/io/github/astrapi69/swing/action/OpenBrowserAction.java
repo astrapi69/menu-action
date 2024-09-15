@@ -31,13 +31,15 @@ import javax.swing.AbstractAction;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 /**
  * The abstract class {@link OpenBrowserAction} for open a browser
  */
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class OpenBrowserAction extends AbstractAction
 {
 
@@ -49,11 +51,17 @@ public abstract class OpenBrowserAction extends AbstractAction
 
 	/**
 	 * Instantiates a new {@link OpenBrowserAction} object.
+	 */
+	public OpenBrowserAction()
+	{
+		super("");
+	}
+
+	/**
+	 * Instantiates a new {@link OpenBrowserAction} object.
 	 *
 	 * @param name
 	 *            the name
-	 * @param component
-	 *            the component
 	 * @param url
 	 *            the url
 	 */

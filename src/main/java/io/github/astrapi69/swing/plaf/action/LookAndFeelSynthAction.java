@@ -39,6 +39,15 @@ public class LookAndFeelSynthAction extends LookAndFeelAction
 	/**
 	 * Instantiates a new {@link LookAndFeelSynthAction} object
 	 *
+	 */
+	public LookAndFeelSynthAction()
+	{
+		super(LookAndFeels.SYNTH);
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelSynthAction} object
+	 *
 	 * @param name
 	 *            the name
 	 * @param component

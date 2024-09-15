@@ -39,6 +39,15 @@ public class LookAndFeelGTKAction extends LookAndFeelAction
 	/**
 	 * Instantiates a new {@link LookAndFeelGTKAction} object
 	 *
+	 */
+	public LookAndFeelGTKAction()
+	{
+		super(LookAndFeels.GTK);
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelGTKAction} object
+	 *
 	 * @param name
 	 *            the name
 	 * @param component

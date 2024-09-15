@@ -32,6 +32,7 @@ import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -43,7 +44,7 @@ import lombok.extern.java.Log;
  */
 @Log
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ShowHelpDialogAction extends AbstractAction
 {
 
@@ -54,6 +55,15 @@ public class ShowHelpDialogAction extends AbstractAction
 	Window helpWindow;
 	/** The look and feels class name */
 	String lookAndFeelsClassName;
+
+	/**
+	 * Instantiates a new {@link ShowHelpDialogAction}
+	 *
+	 */
+	public ShowHelpDialogAction()
+	{
+		super(BaseMenuId.HELP_CONTENT.propertiesKey());
+	}
 
 	/**
 	 * Instantiates a new {@link ShowHelpDialogAction}

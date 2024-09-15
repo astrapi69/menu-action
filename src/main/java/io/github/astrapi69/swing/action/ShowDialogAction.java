@@ -31,13 +31,17 @@ import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 /**
  * The abstract class {@link ShowDialogAction} can show a dialog
  */
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Setter
+@Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class ShowDialogAction extends AbstractAction
 {
 
@@ -47,6 +51,17 @@ public abstract class ShowDialogAction extends AbstractAction
 	Frame owner;
 	/** The title of the dialog */
 	String title;
+
+	/**
+	 * Instantiates a new {@link ShowDialogAction} object
+	 *
+	 * @param name
+	 *            the name
+	 */
+	public ShowDialogAction(final String name)
+	{
+		super(name);
+	}
 
 	/**
 	 * Instantiates a new {@link ShowDialogAction} object

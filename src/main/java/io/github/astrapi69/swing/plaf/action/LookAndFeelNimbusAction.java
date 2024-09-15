@@ -38,6 +38,14 @@ public class LookAndFeelNimbusAction extends LookAndFeelAction
 
 	/**
 	 * Instantiates a new {@link LookAndFeelNimbusAction} object
+	 */
+	public LookAndFeelNimbusAction()
+	{
+		super(LookAndFeels.NIMBUS);
+	}
+
+	/**
+	 * Instantiates a new {@link LookAndFeelNimbusAction} object
 	 *
 	 * @param name
 	 *            the name

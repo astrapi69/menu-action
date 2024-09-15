@@ -25,6 +25,7 @@
 package io.github.astrapi69.swing.menu.model.transform;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -100,6 +101,27 @@ class MenuItemInfoConverterTest
 	}
 
 	@Test
+	void testTtoMenuItemInfoWithActionClass()
+	{
+		MenuItemInfo helpContentMenuInfo;
+		MenuItemInfo menuInfo;
+		MenuItemInfo menuItemInfo;
+		JMenuItem menu;
+
+
+		helpContentMenuInfo = MenuItemInfo.builder().type(MenuType.MENU_ITEM)
+			.actionCommand("io.github.astrapi69.awt.action.NoAction")
+			.mnemonic(MenuExtensions.toMnemonic('C'))
+			.keyStrokeInfo(
+				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
+			.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
+
+		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(helpContentMenuInfo,
+			"io.github.astrapi69.awt.action.NoAction");
+		assertNotNull(menuItemInfo);
+	}
+
+	@Test
 	void fromJMenuItem()
 	{
 		MenuItemInfo helpContentMenuInfo;
@@ -109,6 +131,7 @@ class MenuItemInfoConverterTest
 
 
 		helpContentMenuInfo = MenuItemInfo.builder().type(MenuType.MENU_ITEM)
+			.actionCommand("io.github.astrapi69.awt.action.NoAction")
 			.mnemonic(MenuExtensions.toMnemonic('C'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))

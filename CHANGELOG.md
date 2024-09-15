@@ -7,6 +7,8 @@ Version 4-SNAPSHOT
 ADDED:
 
 - new libs.versions.toml file for new automatic catalog versions update
+- new dependency jobj-reflect in version 2.4
+- new default constructors on all action classes
 
 CHANGED:
 

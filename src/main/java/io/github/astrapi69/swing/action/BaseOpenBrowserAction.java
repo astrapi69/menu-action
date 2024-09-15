@@ -39,6 +39,11 @@ public class BaseOpenBrowserAction extends OpenBrowserAction
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	public BaseOpenBrowserAction()
+	{
+		super();
+	}
+
 	public BaseOpenBrowserAction(final String name, final String url)
 	{
 		super(name, url);

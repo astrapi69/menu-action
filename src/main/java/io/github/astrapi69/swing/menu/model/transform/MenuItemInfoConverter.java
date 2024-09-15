@@ -346,7 +346,8 @@ public class MenuItemInfoConverter
 	 */
 	public static MenuItemInfo toMenuItemInfo(MenuInfo menuInfo, ActionListener actionListener)
 	{
-		return MenuItemInfo.builder().actionListener(actionListener).name(menuInfo.getName())
+		return MenuItemInfo.builder().actionListener(actionListener)
+			.actionCommand(menuInfo.getActionCommand()).name(menuInfo.getName())
 			.text(menuInfo.getText()).mnemonic(menuInfo.getMnemonic())
 			.ordinal(menuInfo.getOrdinal()).keyStrokeInfo(menuInfo.getKeyStrokeInfo())
 			.type(menuInfo.getType()).anchor(menuInfo.getAnchor())
@@ -366,7 +367,8 @@ public class MenuItemInfoConverter
 	 */
 	public static MenuItemInfo toMenuItemInfo(MenuItemInfo menuInfo, ActionListener actionListener)
 	{
-		return MenuItemInfo.builder().actionListener(actionListener).name(menuInfo.getName())
+		return MenuItemInfo.builder().actionListener(actionListener)
+			.actionCommand(menuInfo.getActionCommand()).name(menuInfo.getName())
 			.text(menuInfo.getText()).mnemonic(menuInfo.getMnemonic())
 			.ordinal(menuInfo.getOrdinal()).keyStrokeInfo(menuInfo.getKeyStrokeInfo())
 			.type(menuInfo.getType()).anchor(menuInfo.getAnchor())
@@ -391,10 +393,7 @@ public class MenuItemInfoConverter
 		{
 			throw new IllegalArgumentException("actionListenerClass cannot be instantiated");
 		}
-		return MenuItemInfo.builder().actionListener(actionListenerOptional.get())
-			.name(menuInfo.getName()).text(menuInfo.getText()).mnemonic(menuInfo.getMnemonic())
-			.ordinal(menuInfo.getOrdinal()).keyStrokeInfo(menuInfo.getKeyStrokeInfo())
-			.type(menuInfo.getType()).anchor(menuInfo.getAnchor())
-			.relativeToMenuId(menuInfo.getRelativeToMenuId()).build();
+		ActionListener actionListener = actionListenerOptional.get();
+		return toMenuItemInfo(menuInfo, actionListener);
 	}
 }
