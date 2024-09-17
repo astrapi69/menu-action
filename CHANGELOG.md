@@ -4,6 +4,9 @@
 Version 4.1-SNAPSHOT
 -------------
 
+ADDED:
+
+- new extension class KeyStrokeInfoExtensions for handling KeyStrokeInfo and KeyStroke objects
 
 Version 4.0
 -------------

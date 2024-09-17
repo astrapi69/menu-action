@@ -90,7 +90,7 @@ class MenuItemInfoConverterTest
 		editMenuInfo = MenuInfo.builder().type(MenuType.MENU)
 			.mnemonic(MenuExtensions.toMnemonic('E'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed E")))
-			.text("Edit").name(BaseMenuId.EDIT.propertiesKey()).build();
+			.actionCommand("Edit").text("Edit").name(BaseMenuId.EDIT.propertiesKey()).build();
 
 		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(editMenuInfo, new NoAction());
 
@@ -131,11 +131,11 @@ class MenuItemInfoConverterTest
 
 
 		helpContentMenuInfo = MenuItemInfo.builder().type(MenuType.MENU_ITEM)
-			.actionCommand("io.github.astrapi69.awt.action.NoAction")
 			.mnemonic(MenuExtensions.toMnemonic('C'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
-			.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
+			.actionCommand("Help Content").text("Help Content")
+			.name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
 
 		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(helpContentMenuInfo, new NoAction());
 
@@ -156,7 +156,7 @@ class MenuItemInfoConverterTest
 		donateMenuInfo = MenuItemInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('Y'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed Y")))
-			.text("Yes").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
+			.actionCommand("Yes").text("Yes").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
 
 		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, new NoAction());
 
@@ -178,7 +178,8 @@ class MenuItemInfoConverterTest
 		donateMenuInfo = MenuItemInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('R'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed R")))
-			.text("Donate").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
+			.actionCommand("Donate").text("Donate").name(BaseMenuId.HELP_DONATE.propertiesKey())
+			.build();
 
 		actionListener = new NoAction();
 		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, actionListener);

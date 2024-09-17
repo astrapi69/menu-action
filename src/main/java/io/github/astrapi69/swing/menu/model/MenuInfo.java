@@ -54,8 +54,7 @@ import lombok.experimental.FieldDefaults;
 public class MenuInfo
 {
 	/**
-	 * The name of this menu component. The name is used as the menu id and as the action command of
-	 * this menu component
+	 * The name of this menu component. The name is used as the menu id of this menu component
 	 */
 	String name;
 

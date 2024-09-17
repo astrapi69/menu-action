@@ -43,7 +43,7 @@ public final class KeyStrokeExtensions
 {
 
 	/**
-	 * Instantiates a new key stroke utils.
+	 * Private constructor to prevent instantiation
 	 */
 	private KeyStrokeExtensions()
 	{
