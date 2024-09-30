@@ -8,6 +8,13 @@ ADDED:
 
 - new extension class KeyStrokeInfoExtensions for handling KeyStrokeInfo and KeyStroke objects
 
+CHANGED:
+
+- update of gradle to new version 8.10.2
+- update of dependency gen-tree to new minor version 10.1
+- update of dependency tree-api to new minor version 2.1
+- update of test dependency junit-jupiter to new patch version 5.11.1
+
 Version 4.0
 -------------
 
