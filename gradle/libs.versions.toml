@@ -83,6 +83,7 @@ test-runtime-only = [
 ]
 # Dependencies required for unit testing, including assertions, mocking, and parameterized tests
 unit-testing = [
+    "assertj-swing",
     "awt-extensions",
     "file-worker",
     "junit-jupiter",
