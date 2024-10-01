@@ -1,28 +1,13 @@
 dependencies {
-
-    compileOnly libs.lombok
-    annotationProcessor libs.lombok
-    testCompileOnly libs.lombok
-    testAnnotationProcessor libs.lombok
-
-    implementation libs.model.data
-    implementation libs.jobj.core
-    implementation libs.jobj.reflect
-    implementation libs.throwable
-    implementation libs.tree.api
-    implementation libs.gen.tree
-    implementation libs.visitor.pattern
-    implementation libs.id.generate
-    implementation libs.silly.collection
-    implementation libs.data.api
-
-    testImplementation libs.xstream.extensions
-    testImplementation libs.awt.extensions
-    testImplementation libs.assertj.swing
-    testImplementation libs.silly.io
-    testImplementation libs.file.worker
-    testImplementation libs.junit.jupiter.extensions
     // Note: use of bundles...
+    compileOnly libs.bundles.compile.only
+    annotationProcessor libs.bundles.annotation.processor
+
+    testCompileOnly libs.bundles.test.compile.only
+    testAnnotationProcessor libs.bundles.test.annotation.processor
+
+    implementation libs.bundles.core.dependencies
+
     testImplementation libs.bundles.unit.testing
-    testRuntimeOnly libs.junit.platform.launcher
+    testRuntimeOnly libs.bundles.test.runtime.only
 }
