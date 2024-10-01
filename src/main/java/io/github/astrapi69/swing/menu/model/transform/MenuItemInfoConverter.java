@@ -67,43 +67,8 @@ public class MenuItemInfoConverter
 	public static MenuInfo fromJMenuBar()
 	{
 		return MenuInfo.builder().ordinal(100).type(MenuType.MENU_BAR)
-			.name(BaseMenuId.MENU_BAR.propertiesKey()).build();
-	}
-
-	/**
-	 * Gets the list of {@link KeyStrokeInfo} objects from the given {@link JComponent} object
-	 *
-	 * @param jComponent
-	 *            the {@link JComponent} object
-	 * @return the list of {@link KeyStrokeInfo} objects
-	 */
-	@SuppressWarnings(value = "unchecked")
-	public static List<KeyStrokeInfo> getKeyStrokeInfos(JComponent jComponent)
-	{
-		Object whenInFocusedWindow = jComponent.getClientProperty("_WhenInFocusedWindow");
-		List<KeyStrokeInfo> keyStrokeInfos = new ArrayList<>();
-		if (whenInFocusedWindow instanceof Hashtable)
-		{
-			Hashtable<KeyStroke, KeyStroke> hashtable = (Hashtable<KeyStroke, KeyStroke>)whenInFocusedWindow;
-			Set<KeyStroke> keySet = hashtable.keySet();
-			for (KeyStroke key : keySet)
-			{
-				keyStrokeInfos.add(KeyStrokeExtensions.toKeyStrokeInfo(key));
-			}
-		}
-		return keyStrokeInfos;
-	}
-
-	/**
-	 * Gets the {@link KeyStrokeInfo} object from the given {@link JComponent} object
-	 * 
-	 * @param jComponent
-	 *            the {@link JComponent} object
-	 * @return the {@link KeyStrokeInfo} object
-	 */
-	public static KeyStrokeInfo getKeyStrokeInfo(JComponent jComponent)
-	{
-		return ListExtensions.getFirst(getKeyStrokeInfos(jComponent));
+			.name(BaseMenuId.MENU_BAR.propertiesKey())
+			.actionClass("io.github.astrapi69.awt.action.NoAction").build();
 	}
 
 	/**
@@ -115,12 +80,13 @@ public class MenuItemInfoConverter
 	 */
 	public static MenuInfo fromJMenu(final @NonNull JMenu menu)
 	{
-		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
+		KeyStrokeInfo keyStrokeInfo = KeyStrokeInfoExtensions.getKeyStrokeInfo(menu);
 		return keyStrokeInfo != null
 			? MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
-				.mnemonic(menu.getMnemonic()).keyStrokeInfo(keyStrokeInfo).build()
+				.actionCommand(menu.getActionCommand()).mnemonic(menu.getMnemonic())
+				.keyStrokeInfo(keyStrokeInfo).build()
 			: MenuInfo.builder().type(MenuType.MENU).name(menu.getName()).text(menu.getText())
-				.mnemonic(menu.getMnemonic()).build();
+				.actionCommand(menu.getActionCommand()).mnemonic(menu.getMnemonic()).build();
 	}
 
 	/**
@@ -133,13 +99,14 @@ public class MenuItemInfoConverter
 	 */
 	public static MenuItemInfo fromJMenuItem(final @NonNull JMenuItem menu)
 	{
-		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
+		KeyStrokeInfo keyStrokeInfo = KeyStrokeInfoExtensions.getKeyStrokeInfo(menu);
 		return keyStrokeInfo != null
 			? MenuItemInfo.builder().type(MenuType.MENU_ITEM).name(menu.getName())
-				.text(menu.getText()).mnemonic(menu.getMnemonic()).keyStrokeInfo(keyStrokeInfo)
-				.build()
+				.actionCommand(menu.getActionCommand()).text(menu.getText()).text(menu.getText())
+				.mnemonic(menu.getMnemonic()).keyStrokeInfo(keyStrokeInfo).build()
 			: MenuItemInfo.builder().type(MenuType.MENU_ITEM).name(menu.getName())
-				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
+				.actionCommand(menu.getActionCommand()).text(menu.getText())
+				.mnemonic(menu.getMnemonic()).build();
 	}
 
 	/**
@@ -152,13 +119,15 @@ public class MenuItemInfoConverter
 	 */
 	public static MenuItemInfo fromJCheckBoxMenuItem(final @NonNull JCheckBoxMenuItem menu)
 	{
-		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
+		KeyStrokeInfo keyStrokeInfo = KeyStrokeInfoExtensions.getKeyStrokeInfo(menu);
 		return keyStrokeInfo != null
 			? MenuItemInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name(menu.getName())
-				.text(menu.getText()).mnemonic(menu.getMnemonic())
+				.actionCommand(menu.getActionCommand()).text(menu.getText())
+				.mnemonic(menu.getMnemonic())
 				.keyStrokeInfo(KeyStrokeExtensions.toKeyStrokeInfo(menu.getAccelerator())).build()
 			: MenuItemInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name(menu.getName())
-				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
+				.actionCommand(menu.getActionCommand()).text(menu.getText())
+				.mnemonic(menu.getMnemonic()).build();
 	}
 
 	/**
@@ -171,13 +140,15 @@ public class MenuItemInfoConverter
 	 */
 	public static MenuItemInfo fromJRadioButtonMenuItem(final @NonNull JRadioButtonMenuItem menu)
 	{
-		KeyStrokeInfo keyStrokeInfo = getKeyStrokeInfo(menu);
+		KeyStrokeInfo keyStrokeInfo = KeyStrokeInfoExtensions.getKeyStrokeInfo(menu);
 		return keyStrokeInfo != null
 			? MenuItemInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM).name(menu.getName())
-				.text(menu.getText()).mnemonic(menu.getMnemonic())
+				.actionCommand(menu.getActionCommand()).text(menu.getText())
+				.mnemonic(menu.getMnemonic())
 				.keyStrokeInfo(KeyStrokeExtensions.toKeyStrokeInfo(menu.getAccelerator())).build()
 			: MenuItemInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM).name(menu.getName())
-				.text(menu.getText()).mnemonic(menu.getMnemonic()).build();
+				.actionCommand(menu.getActionCommand()).text(menu.getText())
+				.mnemonic(menu.getMnemonic()).build();
 	}
 
 	/**

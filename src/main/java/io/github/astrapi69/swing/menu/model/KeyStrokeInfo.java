@@ -27,6 +27,7 @@ package io.github.astrapi69.swing.menu.model;
 import javax.swing.KeyStroke;
 
 import io.github.astrapi69.swing.menu.KeyStrokeExtensions;
+import io.github.astrapi69.swing.menu.model.transform.KeyStrokeInfoExtensions;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -110,36 +111,6 @@ public class KeyStrokeInfo
 	 */
 	public KeyStroke toKeyStroke()
 	{
-		KeyStroke keyStroke = null;
-		if (keystrokeAsString != null && !keystrokeAsString.isEmpty())
-		{
-			keyStroke = KeyStroke.getKeyStroke(keystrokeAsString);
-			if (keyStroke != null)
-			{
-				return keyStroke;
-			}
-		}
-		if (keyCode != null)
-		{
-
-			if (onKeyRelease != null && modifiers != null)
-			{
-				keyStroke = KeyStroke.getKeyStroke(keyCode, modifiers, onKeyRelease);
-				if (keyStroke != null)
-				{
-					return keyStroke;
-				}
-			}
-
-			if (modifiers != null)
-			{
-				keyStroke = KeyStroke.getKeyStroke(keyCode, modifiers);
-				if (keyStroke != null)
-				{
-					return keyStroke;
-				}
-			}
-		}
-		return keyStroke;
+		return KeyStrokeInfoExtensions.toKeyStroke(this);
 	}
 }

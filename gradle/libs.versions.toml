@@ -3,7 +3,7 @@ assertj-swing-version = "3.17.1"
 awt-extensions-version = "1.2"
 data-api-version = "5"
 file-worker-version = "17.4"
-gen-tree-version = "10"
+gen-tree-version = "10.1"
 gradle-plugin-grgit-version = "5.2.2"
 gradle-plugin-license-version = "0.16.1"
 gradle-plugin-lombok-version = "8.10"
@@ -14,14 +14,14 @@ id-generate-version = "1.1"
 jobj-core-version = "9"
 jobj-reflect-version = "2.4"
 junit-jupiter-extensions-version = "2"
-junit-jupiter-version = "5.11.0"
+junit-jupiter-version = "5.11.1"
 lombok-version = "1.18.34"
 meanbean-version = "3.0.0-M9"
 model-data-version = "3.1"
 silly-collection-version = "28"
 silly-io-version = "3.1"
 throwable-version = "3"
-tree-api-version = "2"
+tree-api-version = "2.1"
 visitor-pattern-version = "7"
 xstream-extensions-version = "1.1"
 
@@ -48,9 +48,49 @@ visitor-pattern = { module = "io.github.astrapi69:visitor-pattern", version.ref 
 xstream-extensions = { module = "io.github.astrapi69:xstream-extensions", version.ref = "xstream-extensions-version" }
 
 [bundles]
+# Dependencies for the annotation processor used during the compilation process
+annotation-processor = [
+    "lombok",
+]
+# Dependencies required only at compile-time and not included in the final artifact
+compile-only = [
+    "lombok",
+]
+# Bundle of the core dependencies used across the project
+core-dependencies = [
+    "data-api",
+    "gen-tree",
+    "id-generate",
+    "jobj-core",
+    "jobj-reflect",
+    "model-data",
+    "silly-collection",
+    "throwable",
+    "tree-api",
+    "visitor-pattern",
+]
+# Annotation processor dependencies used specifically for test classes
+test-annotation-processor = [
+    "lombok",
+]
+# Dependencies required only at test compile-time and not included in test runtime
+test-compile-only = [
+    "lombok",
+]
+# Dependencies required only at test runtime, such as test execution platforms
+test-runtime-only = [
+    "junit-platform-launcher",
+]
+# Dependencies required for unit testing, including assertions, mocking, and parameterized tests
 unit-testing = [
+    "assertj-swing",
+    "awt-extensions",
+    "file-worker",
     "junit-jupiter",
+    "junit-jupiter-extensions",
     "meanbean",
+    "silly-io",
+    "xstream-extensions",
 ]
 
 [plugins]
