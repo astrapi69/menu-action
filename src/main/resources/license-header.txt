@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) $YEAR Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,62 +22,3 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.browser;
-
-/**
- * The Enum Browsers.
- */
-public enum Browsers
-{
-
-	/** The EPIPHANY. */
-	EPIPHANY("epiphany"),
-
-	/** The FIREFOX. */
-	FIREFOX("firefox"),
-
-	/** The GALEON. */
-	GALEON("galeon"),
-
-	/** The KAZEHAKASE. */
-	KAZEHAKASE("kazehakase"),
-
-	/** The KONQUEROR. */
-	KONQUEROR("konqueror"),
-
-	/** The MOZILLA. */
-	MOZILLA("mozilla"),
-
-	/** The NETSCAPE. */
-	NETSCAPE("netscape"),
-
-	/** The OPERA. */
-	OPERA("opera"),
-
-	/** The SEAMONKEY. */
-	SEAMONKEY("seamonkey");
-
-	/** The name from the browser. */
-	private final String browserName;
-
-	/**
-	 * Instantiates a new browsers.
-	 *
-	 * @param browserName
-	 *            the browser name
-	 */
-	Browsers(final String browserName)
-	{
-		this.browserName = browserName;
-	}
-
-	/**
-	 * Gets the browser name.
-	 *
-	 * @return the browser name
-	 */
-	public String getBrowserName()
-	{
-		return browserName;
-	}
-}

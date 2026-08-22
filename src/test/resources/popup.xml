@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<popup id="tree.popup" text="Tree">
+    <item id="tree.popup.add" text="Add node" action="addNode"/>
+    <item id="tree.popup.delete" text="Delete node" action="deleteNode"/>
+    <separator/>
+    <menu id="tree.popup.more" text="More">
+        <item id="tree.popup.more.rename" text="Rename" action="renameNode"/>
+    </menu>
+</popup>

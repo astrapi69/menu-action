@@ -2,9 +2,9 @@
 
 <div style="text-align: center">
 
-[![Build Status](https://travis-ci.com/astrapi69/menu-action.svg?branch=master)](https://travis-ci.com/github/astrapi69/menu-action)
+[![Java CI with Gradle](https://github.com/astrapi69/menu-action/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/menu-action/actions/workflows/gradle.yml)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/menu-action.svg?style=flat)](https://github.com/astrapi69/menu-action/issues)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-action/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-action)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/menu-action)](https://central.sonatype.com/artifact/io.github.astrapi69/menu-action)
 [![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/menu-action.svg)](http://www.javadoc.io/doc/io.github.astrapi69/menu-action)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Donate](https://img.shields.io/badge/donate-❤-ff2244.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8)
@@ -13,7 +13,10 @@
 
 </div>
 
-Tiny library for hold utility classes for swing menu and actions.
+Tiny library for hold utility classes for swing menu and actions. Menus can be built with a
+fluent java api or loaded from a declarative xml file.
+
+Requires Java 25 or later.
 
 > Please support this project by simply putting a Github <!-- Place this tag where you want the button to render. -->
 <a class="github-button" href="https://github.com/astrapi69/menu-action" data-icon="octicon-star" aria-label="Star astrapi69/menu-action on GitHub">Star ⭐</a>
@@ -30,9 +33,83 @@ No animals were harmed in the making of this library.
 
 The source code comes under the liberal MIT License, making menu-action great for all types of swing applications.
 
+## Define menus in xml
+
+A menu bar, popup menu or tool bar can be described in a plain xml file:
+
+```xml
+<menubar id="global.menu.bar">
+    <menu id="global.menu.file" text="File" mnemonic="F">
+        <item id="global.menu.file.open" text="Open..." mnemonic="O" accelerator="ctrl O" action="openFile"/>
+        <separator/>
+        <item id="global.menu.file.exit" text="Exit" mnemonic="E" accelerator="alt F4" action="exit"/>
+    </menu>
+    <menu id="global.menu.view" text="View">
+        <checkbox id="global.menu.view.statusbar" text="Statusbar" action="toggleStatusbar" selected="true"/>
+        <radio id="global.menu.view.mode.desktop" text="Desktop mode" action="desktopMode" group="view.mode" selected="true"/>
+        <radio id="global.menu.view.mode.panel" text="Panel mode" action="panelMode" group="view.mode"/>
+    </menu>
+</menubar>
+```
+
+Elements: `menubar`, `menu`, `item`, `checkbox`, `radio`, `separator`, `popup`, `toolbar` and the
+container `menus`. Attributes: `id`, `text`, `textKey` (resource bundle key), `toolTip`, `mnemonic`
+(a character or a key code), `accelerator` (a `KeyStroke` string like `ctrl S`), `action` (the id
+in the `ActionRegistry`, defaults to the `id`), `actionCommand`, `enabled`, `selected`, `group`
+(button group of radio items), `icon` (classpath resource or file), `anchor` (`FIRST`, `LAST`,
+`BEFORE`, `AFTER`) and `relativeTo`. The schema is shipped as `menu.xsd` in the jar.
+
+Load the file and build the swing components with a `MenuBuilder`. Actions are resolved by id from
+an `ActionRegistry`, so the xml never references class names:
+
+```java
+ActionRegistry actions = ActionRegistry.empty()
+    .register("openFile", e -> openFile())
+    .register("exit", new ExitApplicationAction())
+    .register("toggleStatusbar", e -> toggleStatusbar());
+
+MenuBuilder menuBuilder = new MenuBuilder(actions)
+    .withMissingActionPolicy(MissingActionPolicy.DISABLE) // FAIL (default), DISABLE or IGNORE
+    .withResourceBundle(ResourceBundle.getBundle("menus")); // resolves textKey attributes
+
+MenuInfo menuBarInfo = MenuXmlReader.readResource("menubar.xml");
+JMenuBar menuBar = menuBuilder.buildMenuBar(menuBarInfo);
+frame.setJMenuBar(menuBar);
+
+// built components are available by id
+menuBuilder.getComponent("global.menu.file.exit", JMenuItem.class).ifPresent(item -> item.setEnabled(false));
+```
+
+Plugins can contribute menu items to an existing menu with a contribution file that mirrors the
+path to the target and is merged with `MenuInfoExtensions.merge`:
+
+```xml
+<menubar id="global.menu.bar">
+    <menu id="global.menu.file">
+        <item id="plugin.file.export" text="Export..." action="export" anchor="BEFORE" relativeTo="global.menu.file.exit"/>
+    </menu>
+</menubar>
+```
+
+```java
+MenuInfo merged = MenuInfoExtensions.merge(menuBarInfo, MenuXmlReader.readResource("plugin-contribution.xml"));
+```
+
+A `MenuInfo` tree can be written back with `MenuXmlWriter.toXml(menuInfo)`.
+
+## Build menus in java
+
+```java
+JMenu fileMenu = MenuItemInfo.builder().text("File").mnemonic(MenuExtensions.toMnemonic('F')).build().toJMenu();
+JMenuItem exitMenuItem = MenuItemInfo.builder().text("Exit").mnemonic(MenuExtensions.toMnemonic('E'))
+    .keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt F4")))
+    .actionListener(new ExitApplicationAction()).build().toJMenuItem();
+fileMenu.add(exitMenuItem);
+```
+
 ## gradle dependency
 
-Replace the variable ${latestVersion} with the current latest version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-action/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/menu-action)
+Replace the variable ${latestVersion} with the current latest version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/menu-action)](https://central.sonatype.com/artifact/io.github.astrapi69/menu-action)
 
 You can first define the version in the ext section and add than the following gradle dependency to
 your project `build.gradle` if you want to import the core functionality of menu-action:
@@ -56,7 +133,7 @@ and then add the dependency to the dependencies area
 
 ## 📸 Snapshots
 
-[![Snapshot](https://img.shields.io/badge/dynamic/xml?url=https://oss.sonatype.org/service/local/repositories/snapshots/content/io/github/astrapi69/menu-action/maven-metadata.xml&label=snapshot&color=red&query=.//versioning/latest)](https://oss.sonatype.org/content/repositories/snapshots/io/github/astrapi69/menu-action/)
+[![Snapshot](https://img.shields.io/badge/dynamic/xml?url=https://central.sonatype.com/repository/maven-snapshots/io/github/astrapi69/menu-action/maven-metadata.xml&label=snapshot&color=red&query=.//versioning/latest)](https://central.sonatype.com/repository/maven-snapshots/io/github/astrapi69/menu-action/)
 
 This section describes how to import snapshot versions into your project.
 Add the following code snippet to your gradle file in the repositories section:
@@ -66,8 +143,8 @@ repositories {
    //...
 ```groovy
     maven {
-        name "Sonatype Nexus Snapshots"
-        url "https://oss.sonatype.org/content/repositories/snapshots"
+        name = "Sonatype Nexus Snapshots"
+        url = "https://central.sonatype.com/repository/maven-snapshots/"
         mavenContent {
             snapshotsOnly()
         }
@@ -77,8 +154,8 @@ repositories {
 
 ## Maven dependency
 
-Maven dependency is now on sonatype.
-Check out [sonatype repository](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~menu-action~~~) for latest snapshots and releases.
+Maven dependency is now on Maven Central.
+Check out the [Central Portal](https://central.sonatype.com/artifact/io.github.astrapi69/menu-action) for the latest releases.
 
 Add the following maven dependency to your project `pom.xml` if you want to import the core
 functionality of menu-action:
@@ -89,7 +166,7 @@ Than you can add the dependency to your dependencies:
             ...
 ```xml
         <!-- menu-action version -->
-        <menu-action.version>3.3</menu-action.version>
+        <menu-action.version>${latestVersion}</menu-action.version>
 ```
             ...
     </properties>
@@ -188,16 +265,16 @@ Do not hesitate to contact the menu-action developers with your questions, conce
 
 ## Credits
 
-|**Travis CI**|
+|**GitHub Actions**|
 |     :---:      |
-|[![Travis CI](https://travis-ci.com/images/logos/TravisCI-Full-Color.png)](https://travis-ci.com)|
-|Special thanks to [Travis CI](https://travis-ci.com) for providing a free continuous integration service for open source projects|
+|[![Java CI with Gradle](https://github.com/astrapi69/menu-action/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/menu-action/actions/workflows/gradle.yml)|
+|Special thanks to [GitHub Actions](https://github.com/features/actions) for providing a free continuous integration service for open source projects|
 |     <img width=1000/>     |
 
-|**Nexus Sonatype repositories**|
+|**Maven Central Portal**|
 |     :---:      |
-|[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/io.github.astrapi69/menu-action.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~menu-action~~~)|
-|Special thanks to [sonatype repository](https://www.sonatype.com) for providing a free maven repository service for open source projects|
+|[![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/menu-action?style=for-the-badge)](https://central.sonatype.com/artifact/io.github.astrapi69/menu-action)|
+|Special thanks to the [Central Portal](https://central.sonatype.com) of sonatype for providing a free maven repository service for open source projects|
 |     <img width=1000/>     |
 
 |**javadoc.io**|

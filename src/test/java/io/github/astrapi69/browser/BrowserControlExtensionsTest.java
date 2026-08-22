@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2026 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,7 +24,9 @@
  */
 package io.github.astrapi69.browser;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -35,19 +37,19 @@ import org.junit.jupiter.api.Test;
 class BrowserControlExtensionsTest
 {
 
-	/**
-	 * Test display ur lon standard browser.
-	 */
 	@Test
-	@Disabled
-	public void testDisplayURLonStandardBrowser()
+	void invalidUrl()
 	{
+		assertFalse(BrowserControlExtensions.displayURLonStandardBrowser("http://exa mple.com"));
+		assertThrows(NullPointerException.class,
+			() -> BrowserControlExtensions.displayURLonStandardBrowser((String)null));
+	}
 
-		final String url = "http://jaulp.sourceforge.net";
-
-		final Object obj = BrowserControlExtensions.displayURLonStandardBrowser(null, url);
-
-		assertNotNull(obj);
-
+	@Test
+	@Disabled("opens the real browser")
+	void displayURLonStandardBrowser()
+	{
+		assertTrue(BrowserControlExtensions.displayURLonStandardBrowser(null,
+			"https://github.com/astrapi69/menu-action"));
 	}
 }

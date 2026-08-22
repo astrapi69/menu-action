@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2026 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -25,28 +25,22 @@
 package io.github.astrapi69.swing.plaf.action;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.plaf.metal.DefaultMetalTheme;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.metal.OceanTheme;
 
 import io.github.astrapi69.swing.plaf.LookAndFeels;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
 /**
- * The class {@link LookAndFeelMetalAction} can change the look and feel to Metal
+ * The class {@link LookAndFeelMetalAction} sets the metal look and feel. If the name of the action
+ * contains 'ocean' the ocean theme is used, otherwise the default metal theme
  */
 public class LookAndFeelMetalAction extends LookAndFeelAction
 {
 
-	private static final String OCEAN_THEME_NAME = "Ocean";
+	private static final String OCEAN_THEME_NAME = "ocean";
+
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Instantiates a new {@link LookAndFeelMetalAction} object
+	 * Instantiates a new {@link LookAndFeelMetalAction} object with the default metal theme
 	 */
 	public LookAndFeelMetalAction()
 	{
@@ -57,36 +51,35 @@ public class LookAndFeelMetalAction extends LookAndFeelAction
 	 * Instantiates a new {@link LookAndFeelMetalAction} object
 	 *
 	 * @param name
-	 *            the name
+	 *            the name of the action. If the name contains 'ocean' the ocean theme is used
 	 * @param component
-	 *            the component
+	 *            the component to update
 	 */
 	public LookAndFeelMetalAction(final String name, final Component component)
 	{
-		super(name, component, LookAndFeels.METAL);
+		super(name, component, toMetalLookAndFeel(name));
 	}
 
 	/**
-	 * Callback method to interact on change of look and feel
+	 * Instantiates a new {@link LookAndFeelMetalAction} object with the given metal look and feel
 	 *
-	 * @param event
-	 *            the action event
+	 * @param name
+	 *            the name of the action
+	 * @param component
+	 *            the component to update
+	 * @param lookAndFeel
+	 *            the metal look and feel, {@link LookAndFeels#METAL} or {@link LookAndFeels#OCEAN}
 	 */
-	protected void onChangeOfLookAndFeel(final ActionEvent event)
+	public LookAndFeelMetalAction(final String name, final Component component,
+		final LookAndFeels lookAndFeel)
 	{
-		RuntimeExceptionDecorator.decorate(() -> {
-			UIManager.setLookAndFeel(LookAndFeels.METAL.getLookAndFeelName());
-			SwingUtilities.updateComponentTreeUI(getComponent());
+		super(name, component, lookAndFeel);
+	}
 
-			if (NAME.equals(OCEAN_THEME_NAME))
-			{
-				MetalLookAndFeel.setCurrentTheme(new OceanTheme());
-			}
-			else
-			{
-				MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
-			}
-			UIManager.setLookAndFeel(new MetalLookAndFeel());
-		});
+	private static LookAndFeels toMetalLookAndFeel(final String name)
+	{
+		return name != null && name.toLowerCase().contains(OCEAN_THEME_NAME)
+			? LookAndFeels.OCEAN
+			: LookAndFeels.METAL;
 	}
 }

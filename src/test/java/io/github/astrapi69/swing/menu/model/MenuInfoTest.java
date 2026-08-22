@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2026 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -25,38 +25,57 @@
 package io.github.astrapi69.swing.menu.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
-import io.github.astrapi69.xstream.ObjectToXmlExtensions;
-import io.github.astrapi69.xstream.XmlToObjectExtensions;
+import io.github.astrapi69.swing.menu.enumeration.MenuType;
+import io.github.astrapi69.swing.menu.xml.MenuXmlReader;
+import io.github.astrapi69.swing.menu.xml.MenuXmlWriter;
 
-public class MenuInfoTest
+/**
+ * The unit test class for the class {@link MenuInfo}
+ */
+class MenuInfoTest
 {
 
 	@Test
-	public void test()
+	void xmlRoundTrip()
 	{
-		MenuInfo actual;
-		MenuInfo expected;
-		//
-		actual = MenuInfo.builder().mnemonic(MenuExtensions.toMnemonic('E'))
-			.keyStrokeInfo(
-				KeyStrokeInfo.builder().keyCode(KeyEvent.VK_F4).modifiers(InputEvent.ALT_DOWN_MASK)
-					.keystrokeAsString("alt pressed F4").onKeyRelease(false).build())
-			.text("Exit").text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
-		String xml = RuntimeExceptionDecorator.decorate(() -> ObjectToXmlExtensions.toXml(actual));
+		MenuInfo expected = MenuInfo.builder().type(MenuType.MENU_ITEM)
+			.mnemonic(MenuExtensions.toMnemonic('E'))
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt F4")))
+			.text("Exit").name(BaseMenuId.EXIT.propertiesKey()).build();
+		String xml = MenuXmlWriter.toXml(expected);
 		assertNotNull(xml);
-		System.out.println(xml);
-		expected = RuntimeExceptionDecorator.decorate(() -> XmlToObjectExtensions.toObject(xml));
-		assertEquals(actual, expected);
+		assertEquals(expected, MenuXmlReader.fromXml(xml));
 	}
 
+	@Test
+	void childrenAndConversion()
+	{
+		MenuInfo menu = MenuInfo.builder().type(MenuType.MENU).name("m").build();
+		assertFalse(menu.hasChildren());
+		menu.setChildren(null);
+		assertFalse(menu.hasChildren());
+		menu.addChild(MenuInfo.builder().type(MenuType.MENU_ITEM).name("i").text("I").build());
+		assertTrue(menu.hasChildren());
+
+		boolean[] clicked = { false };
+		MenuItemInfo itemInfo = menu.getChildren().get(0).toMenuItemInfo(e -> clicked[0] = true);
+		JMenuItem item = itemInfo.toJMenuItem();
+		assertEquals("i", item.getName());
+		item.doClick();
+		assertTrue(clicked[0]);
+
+		MenuInfo copy = menu.toBuilder().build();
+		assertEquals(menu, copy);
+	}
 }

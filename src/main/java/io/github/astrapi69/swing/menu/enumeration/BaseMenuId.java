@@ -25,7 +25,9 @@
 package io.github.astrapi69.swing.menu.enumeration;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -155,28 +157,33 @@ public enum BaseMenuId
 	/** the properties key from the current menu */
 	String propertiesKey;
 
+	/**
+	 * Gets all properties keys of the base menu ids as map with the value true
+	 *
+	 * @return a new {@link Map} with all properties keys of the base menu ids
+	 */
 	public static Map<String, Boolean> getBaseMenuIdsAsMap()
 	{
 		Map<String, Boolean> menuIds = new LinkedHashMap<>();
-		menuIds.put(BaseMenuId.TOOL_BAR.propertiesKey(), true);
-		menuIds.put(BaseMenuId.MENU_BAR.propertiesKey(), true);
-		menuIds.put(BaseMenuId.FILE.propertiesKey(), true);
-		menuIds.put(BaseMenuId.TOGGLE_FULLSCREEN.propertiesKey(), true);
-		menuIds.put(BaseMenuId.EXIT.propertiesKey(), true);
-		menuIds.put(BaseMenuId.EDIT.propertiesKey(), true);
-		menuIds.put(BaseMenuId.HELP.propertiesKey(), true);
-		menuIds.put(BaseMenuId.HELP_CONTENT.propertiesKey(), true);
-		menuIds.put(BaseMenuId.HELP_DONATE.propertiesKey(), true);
-		menuIds.put(BaseMenuId.HELP_LICENSE.propertiesKey(), true);
-		menuIds.put(BaseMenuId.HELP_INFO.propertiesKey(), true);
-		menuIds.put(BaseMenuId.LOOK_AND_FEEL.propertiesKey(), true);
-		menuIds.put(BaseMenuId.LOOK_AND_FEEL_GTK.propertiesKey(), true);
-		menuIds.put(BaseMenuId.LOOK_AND_FEEL_METAL.propertiesKey(), true);
-		menuIds.put(BaseMenuId.LOOK_AND_FEEL_OCEAN.propertiesKey(), true);
-		menuIds.put(BaseMenuId.LOOK_AND_FEEL_MOTIF.propertiesKey(), true);
-		menuIds.put(BaseMenuId.LOOK_AND_FEEL_NIMBUS.propertiesKey(), true);
-		menuIds.put(BaseMenuId.LOOK_AND_FEEL_SYSTEM.propertiesKey(), true);
-		menuIds.put(BaseMenuId.LOOK_AND_FEEL_SYSTEM.propertiesKey(), true);
+		for (BaseMenuId baseMenuId : values())
+		{
+			menuIds.put(baseMenuId.propertiesKey(), true);
+		}
+		return menuIds;
+	}
+
+	/**
+	 * Gets all properties keys of the base menu ids
+	 *
+	 * @return a new {@link Set} with all properties keys of the base menu ids
+	 */
+	public static Set<String> getBaseMenuIdKeys()
+	{
+		Set<String> menuIds = new LinkedHashSet<>();
+		for (BaseMenuId baseMenuId : values())
+		{
+			menuIds.add(baseMenuId.propertiesKey());
+		}
 		return menuIds;
 	}
 }

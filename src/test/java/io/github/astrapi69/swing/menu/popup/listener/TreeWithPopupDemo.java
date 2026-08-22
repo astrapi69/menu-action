@@ -39,12 +39,12 @@ import javax.swing.tree.TreePath;
 
 import io.github.astrapi69.swing.menu.factory.JPopupMenuFactory;
 
-public class SampleJTableWithPopup extends JFrame
+public class TreeWithPopupDemo extends JFrame
 {
 
 	private static final long serialVersionUID = 1L;
 
-	public SampleJTableWithPopup() throws HeadlessException
+	public TreeWithPopupDemo() throws HeadlessException
 	{
 		super("Tree");
 		final JTree tree = new JTree();
@@ -58,6 +58,7 @@ public class SampleJTableWithPopup extends JFrame
 				.getLastSelectedPathComponent();
 			System.out.println("DefaultMutableTreeNode:" + node);
 		});
+
 		JPopupMenu menu = JPopupMenuFactory.newJPopupMenu(tree, menuItem,
 			new JMenuItem("A second popup menu item"));
 
@@ -92,7 +93,7 @@ public class SampleJTableWithPopup extends JFrame
 	public static void main(String[] args)
 	{
 		SwingUtilities.invokeLater(() -> {
-			SampleJTableWithPopup st = new SampleJTableWithPopup();
+			TreeWithPopupDemo st = new TreeWithPopupDemo();
 			st.setSize(200, 200);
 			st.setLocationRelativeTo(null);
 			st.setVisible(true);

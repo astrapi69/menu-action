@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2026 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -27,6 +27,7 @@ package io.github.astrapi69.swing.menu.model;
 import java.awt.MenuItem;
 import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -42,17 +43,16 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link MenuItemInfo} holds the fields for build {@link JMenu}, {@link JMenuBar},
  * {@link JMenuItem}, {@link MenuItem}, {@link JCheckBoxMenuItem} and {@link JRadioButtonMenuItem}
- * objects
+ * objects. In contrast to {@link MenuInfo} this class holds the runtime objects like the
+ * {@link ActionListener} and the {@link Icon}
  */
 @Getter
-@Setter
 @EqualsAndHashCode
 @ToString
 @Builder
@@ -61,10 +61,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MenuItemInfo
 {
-
 	/**
-	 * The name of this menu component. The name is used as the menu id and as the action command of
-	 * this menu component
+	 * The name of this menu component. The name is used as the menu id of this menu component
 	 */
 	String name;
 
@@ -74,14 +72,14 @@ public class MenuItemInfo
 	String text;
 
 	/**
+	 * The optional tool tip text of this menu component
+	 */
+	String toolTip;
+
+	/**
 	 * The keyboard mnemonic of this menu component
 	 */
 	Integer mnemonic;
-
-	/**
-	 * The ordinal of this menu component. The ordinal is used for ordering this menu component
-	 */
-	int ordinal;
 
 	/**
 	 * The {@link KeyStrokeInfo} of this menu component
@@ -113,6 +111,22 @@ public class MenuItemInfo
 	 * The {@link ActionListener} object of this menu component
 	 */
 	ActionListener actionListener;
+
+	/**
+	 * The optional enabled state of this menu component. A null value means enabled
+	 */
+	Boolean enabled;
+
+	/**
+	 * The optional selected state of this menu component. Only relevant for check box and radio
+	 * button menu items
+	 */
+	Boolean selected;
+
+	/**
+	 * The optional {@link Icon} of this menu component
+	 */
+	Icon icon;
 
 	/**
 	 * Factory method that creates a {@link JCheckBoxMenuItem} object from this {@link MenuItemInfo}
@@ -175,5 +189,4 @@ public class MenuItemInfo
 	{
 		return MenuItemInfoConverter.toJMenuBar(this);
 	}
-
 }

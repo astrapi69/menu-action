@@ -28,19 +28,17 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
-import io.github.astrapi69.awt.window.adapter.CloseWindow;
-
 
 /**
  * The unit test class for the class {@link MouseDoubleClickListener}
  */
-class MouseDoubleClickListenerTest
+class MouseDoubleClickListenerDemo
 {
 
 	public static void main(String[] args)
 	{
 		JFrame frame = new JFrame("Test Double Click");
-		frame.addWindowListener(new CloseWindow());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addMouseListener(new MouseDoubleClickListener()
 		{
 			public void onSingleClick(MouseEvent e)

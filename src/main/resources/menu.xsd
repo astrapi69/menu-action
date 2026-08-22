@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Schema of the menu-action xml format. Documents are plain, without namespace.
+  Root element is one of menubar, menu, popup, toolbar or menus (a container for several roots).
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xs:simpleType name="anchorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="BEFORE"/>
+            <xs:enumeration value="AFTER"/>
+            <xs:enumeration value="FIRST"/>
+            <xs:enumeration value="LAST"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:attributeGroup name="componentAttributes">
+        <xs:attribute name="id" type="xs:string" use="required"/>
+        <xs:attribute name="text" type="xs:string"/>
+        <xs:attribute name="textKey" type="xs:string"/>
+        <xs:attribute name="toolTip" type="xs:string"/>
+        <xs:attribute name="mnemonic" type="xs:string"/>
+        <xs:attribute name="icon" type="xs:string"/>
+        <xs:attribute name="enabled" type="xs:boolean"/>
+        <xs:attribute name="anchor" type="anchorType"/>
+        <xs:attribute name="relativeTo" type="xs:string"/>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="itemAttributes">
+        <xs:attributeGroup ref="componentAttributes"/>
+        <xs:attribute name="accelerator" type="xs:string"/>
+        <xs:attribute name="action" type="xs:string"/>
+        <xs:attribute name="actionCommand" type="xs:string"/>
+    </xs:attributeGroup>
+
+    <xs:complexType name="separatorType">
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="itemType">
+        <xs:attributeGroup ref="itemAttributes"/>
+    </xs:complexType>
+
+    <xs:complexType name="toggleItemType">
+        <xs:attributeGroup ref="itemAttributes"/>
+        <xs:attribute name="selected" type="xs:boolean"/>
+        <xs:attribute name="group" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:group name="menuChildren">
+        <xs:choice>
+            <xs:element name="menu" type="menuType"/>
+            <xs:element name="item" type="itemType"/>
+            <xs:element name="checkbox" type="toggleItemType"/>
+            <xs:element name="radio" type="toggleItemType"/>
+            <xs:element name="separator" type="separatorType"/>
+        </xs:choice>
+    </xs:group>
+
+    <xs:complexType name="menuType">
+        <xs:sequence>
+            <xs:group ref="menuChildren" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="itemAttributes"/>
+    </xs:complexType>
+
+    <xs:complexType name="menuBarType">
+        <xs:sequence>
+            <xs:group ref="menuChildren" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
+        <xs:attribute name="toolTip" type="xs:string"/>
+        <xs:attribute name="enabled" type="xs:boolean"/>
+    </xs:complexType>
+
+    <xs:complexType name="toolBarType">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="item" type="itemType"/>
+                <xs:element name="checkbox" type="toggleItemType"/>
+                <xs:element name="separator" type="separatorType"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required"/>
+        <xs:attribute name="text" type="xs:string"/>
+        <xs:attribute name="toolTip" type="xs:string"/>
+        <xs:attribute name="enabled" type="xs:boolean"/>
+    </xs:complexType>
+
+    <xs:element name="menubar" type="menuBarType"/>
+    <xs:element name="menu" type="menuType"/>
+    <xs:element name="popup" type="menuType"/>
+    <xs:element name="toolbar" type="toolBarType"/>
+
+    <xs:element name="menus">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="menubar"/>
+                <xs:element ref="menu"/>
+                <xs:element ref="popup"/>
+                <xs:element ref="toolbar"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

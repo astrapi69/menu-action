@@ -23,13 +23,8 @@ module io.github.astrapisixtynine.menu.action
 	requires static lombok;
 	requires java.desktop;
 	requires java.logging;
-	requires io.github.astrapisixtynine.throwable;
-	requires io.github.astrapisixtynine.gen.tree;
-	requires io.github.astrapisixtynine.silly.collection;
-	requires io.github.astrapisixtynine.jobj.core;
-	requires id.generate;
+	requires java.xml;
 	requires model.data;
-	requires jobj.reflect.main;
 
 	exports io.github.astrapi69.browser;
 	exports io.github.astrapi69.swing.action;
@@ -38,12 +33,13 @@ module io.github.astrapisixtynine.menu.action
 	exports io.github.astrapi69.swing.listener.item;
 	exports io.github.astrapi69.swing.listener.mouse;
 	exports io.github.astrapi69.swing.menu;
+	exports io.github.astrapi69.swing.menu.build;
 	exports io.github.astrapi69.swing.menu.enumeration;
 	exports io.github.astrapi69.swing.menu.factory;
 	exports io.github.astrapi69.swing.menu.model;
 	exports io.github.astrapi69.swing.menu.model.transform;
 	exports io.github.astrapi69.swing.menu.popup.listener;
+	exports io.github.astrapi69.swing.menu.xml;
 	exports io.github.astrapi69.swing.plaf;
 	exports io.github.astrapi69.swing.plaf.action;
-
 }

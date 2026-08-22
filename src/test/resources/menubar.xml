@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menubar id="global.menu.bar">
+    <menu id="global.menu.file" text="File" mnemonic="F">
+        <item id="global.menu.file.new" text="New" mnemonic="N" accelerator="ctrl N" action="newFile" icon="icons/new.png"/>
+        <item id="global.menu.file.open" text="Open..." mnemonic="O" accelerator="ctrl O" action="openFile"/>
+        <separator/>
+        <item id="global.menu.file.toggle.fullscreen" text="Toggle Fullscreen" mnemonic="T" accelerator="alt F11" action="toggleFullscreen"/>
+        <item id="global.menu.file.exit" text="Exit" mnemonic="E" accelerator="alt F4" action="exit" toolTip="Exit the application"/>
+    </menu>
+    <menu id="global.menu.edit" text="Edit" mnemonic="E" enabled="false">
+        <item id="global.menu.edit.copy" textKey="menu.edit.copy" accelerator="ctrl C"/>
+    </menu>
+    <menu id="global.menu.view" text="View" mnemonic="V">
+        <checkbox id="global.menu.view.statusbar" text="Statusbar" action="toggleStatusbar" selected="true"/>
+        <separator/>
+        <radio id="global.menu.view.mode.desktop" text="Desktop mode" action="desktopMode" group="view.mode" selected="true"/>
+        <radio id="global.menu.view.mode.panel" text="Panel mode" action="panelMode" group="view.mode"/>
+    </menu>
+    <menu id="global.menu.help" text="Help" mnemonic="H" anchor="LAST">
+        <item id="global.menu.help.info" text="Info" action="info"/>
+    </menu>
+</menubar>

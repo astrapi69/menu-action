@@ -81,7 +81,6 @@ public class PopupListener extends MouseAdapter
 	{
 		if (e.isPopupTrigger())
 		{
-			System.out.println(e.getSource());
 			popupMenu.show(e.getComponent(), e.getX(), e.getY());
 		}
 	}

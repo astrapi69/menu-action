@@ -24,7 +24,6 @@
  */
 package io.github.astrapi69.swing.action;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;

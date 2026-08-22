@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2026 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -26,93 +26,117 @@ package io.github.astrapi69.swing.plaf;
 
 import java.awt.Component;
 import java.awt.Window;
+import java.util.function.Supplier;
 
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.MetalTheme;
+import javax.swing.plaf.metal.OceanTheme;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The enum class {@link LookAndFeels} provides constants with the fully qualified Names of look and
- * feel classes.
+ * The enum {@link LookAndFeels} holds the class names of the look and feels and provides methods
+ * for set them. The metal themes {@link #METAL} and {@link #OCEAN} set the metal theme before the
+ * metal look and feel is installed
  */
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@AllArgsConstructor
 public enum LookAndFeels
 {
-
-	/** The GTK look and feel class */
+	/** The gtk look and feel */
 	GTK(LookAndFeels.LOOK_AND_FEEL_GTK),
-
-	/** The METAL look and feel class */
-	METAL(LookAndFeels.LOOK_AND_FEEL_METAL),
-
-	/** The OCEAN look and feel class */
-	OCEAN(LookAndFeels.LOOK_AND_FEEL_METAL_OCEAN),
-
-	/** The MOTIF look and feel class */
+	/** The metal look and feel with the default metal theme */
+	METAL(LookAndFeels.LOOK_AND_FEEL_METAL, DefaultMetalTheme::new),
+	/** The metal look and feel with the ocean theme */
+	OCEAN(LookAndFeels.LOOK_AND_FEEL_METAL, OceanTheme::new),
+	/** The motif look and feel */
 	MOTIF(LookAndFeels.LOOK_AND_FEEL_MOTIF),
-
-	/** The MULTI look and feel class */
+	/** The multi look and feel */
 	MULTI(LookAndFeels.LOOK_AND_FEEL_MULTI),
-
-	/** The NIMBUS look and feel class */
+	/** The nimbus look and feel */
 	NIMBUS(LookAndFeels.LOOK_AND_FEEL_NIMBUS),
-
-	/** The SYNTH look and feel class */
+	/** The synth look and feel */
 	SYNTH(LookAndFeels.LOOK_AND_FEEL_SYNTH),
-
-	/** The SYSTEM look and feel class */
+	/** The system look and feel of the current platform */
 	SYSTEM(UIManager.getSystemLookAndFeelClassName()),
-
-	/** The CROSSPLATFORM look and feel class */
+	/** The cross platform look and feel */
 	CROSSPLATFORM(UIManager.getCrossPlatformLookAndFeelClassName()),
-
-	/** The WINDOWS_CLASSIC look and feel class */
+	/** The windows classic look and feel */
 	WINDOWS_CLASSIC(LookAndFeels.LOOK_AND_FEEL_WINDOWS_CLASSIC),
-
-	/** The WINDOWS look and feel class */
+	/** The windows look and feel */
 	WINDOWS(LookAndFeels.LOOK_AND_FEEL_WINDOWS);
 
 	private static final String LOOK_AND_FEEL_GTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
 	private static final String LOOK_AND_FEEL_METAL = "javax.swing.plaf.metal.MetalLookAndFeel";
-	private static final String LOOK_AND_FEEL_METAL_OCEAN = "javax.swing.plaf.metal.OceanTheme";
 	private static final String LOOK_AND_FEEL_MOTIF = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 	private static final String LOOK_AND_FEEL_MULTI = "javax.swing.plaf.multi.MultiLookAndFeel";
-
 	private static final String LOOK_AND_FEEL_NIMBUS = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
 	private static final String LOOK_AND_FEEL_SYNTH = "javax.swing.plaf.synth.SynthLookAndFeel";
 	private static final String LOOK_AND_FEEL_WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
 	private static final String LOOK_AND_FEEL_WINDOWS_CLASSIC = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
-	/** The look and feel name. */
+
+	/** The class name of the look and feel */
 	@Getter
 	String lookAndFeelName;
 
+	/** The optional supplier of the metal theme, only set for the metal look and feels */
+	Supplier<MetalTheme> metalTheme;
+
+	LookAndFeels(final String lookAndFeelName)
+	{
+		this(lookAndFeelName, null);
+	}
+
+	LookAndFeels(final String lookAndFeelName, final Supplier<MetalTheme> metalTheme)
+	{
+		this.lookAndFeelName = lookAndFeelName;
+		this.metalTheme = metalTheme;
+	}
+
 	/**
-	 * Sets the given {@link LookAndFeels} to the given {@link Component} and returns given
-	 * {@link LookAndFeels}
+	 * Checks if this look and feel is a metal look and feel with a theme
+	 *
+	 * @return true if this look and feel is a metal look and feel with a theme otherwise false
+	 */
+	public boolean isMetalTheme()
+	{
+		return metalTheme != null;
+	}
+
+	/**
+	 * Creates a new instance of the metal theme of this look and feel
+	 *
+	 * @return the new {@link MetalTheme} object or null if this look and feel is not a metal look
+	 *         and feel
+	 */
+	public MetalTheme newMetalTheme()
+	{
+		return metalTheme != null ? metalTheme.get() : null;
+	}
+
+	/**
+	 * Sets the given look and feel and updates the ui of the given component
 	 *
 	 * @param lookAndFeels
-	 *            the look and feels
+	 *            the look and feel to set
 	 * @param component
-	 *            the component
-	 * @return the look and feels
-	 * @exception ClassNotFoundException
-	 *                if the <code>LookAndFeel</code> class could not be found
-	 * @exception InstantiationException
-	 *                if a new instance of the class couldn't be created
-	 * @exception IllegalAccessException
-	 *                if the class or initializer isn't accessible
-	 * @exception UnsupportedLookAndFeelException
-	 *                if <code>lnf.isSupportedLookAndFeel()</code> is false
-	 * @throws ClassCastException
-	 *             if {@code className} does not identify a class that extends {@code LookAndFeel}
+	 *            the component to update
+	 * @return the given look and feel
+	 * @throws ClassNotFoundException
+	 *             if the look and feel class could not be found
+	 * @throws InstantiationException
+	 *             if a new instance of the class couldn't be created
+	 * @throws IllegalAccessException
+	 *             if the class or initializer isn't accessible
+	 * @throws UnsupportedLookAndFeelException
+	 *             if the look and feel is not supported on the current platform
 	 */
 	public static LookAndFeels setLookAndFeel(final @NonNull LookAndFeels lookAndFeels,
 		final @NonNull Component component) throws ClassNotFoundException, InstantiationException,
@@ -123,68 +147,67 @@ public enum LookAndFeels
 		return lookAndFeels;
 	}
 
-
 	/**
-	 * Sets the given {@link LookAndFeels} to the given {@link Window} and returns given
-	 * {@link LookAndFeels}
+	 * Sets the given look and feel, updates the ui of the given window and packs it
 	 *
 	 * @param lookAndFeels
-	 *            the look and feels
+	 *            the look and feel to set
 	 * @param window
-	 *            the window
-	 * @return the look and feels
-	 * @exception ClassNotFoundException
-	 *                if the <code>LookAndFeel</code> class could not be found
-	 * @exception InstantiationException
-	 *                if a new instance of the class couldn't be created
-	 * @exception IllegalAccessException
-	 *                if the class or initializer isn't accessible
-	 * @exception UnsupportedLookAndFeelException
-	 *                if <code>lnf.isSupportedLookAndFeel()</code> is false
-	 * @throws ClassCastException
-	 *             if {@code className} does not identify a class that extends {@code LookAndFeel}
+	 *            the window to update
+	 * @return the given look and feel
+	 * @throws ClassNotFoundException
+	 *             if the look and feel class could not be found
+	 * @throws InstantiationException
+	 *             if a new instance of the class couldn't be created
+	 * @throws IllegalAccessException
+	 *             if the class or initializer isn't accessible
+	 * @throws UnsupportedLookAndFeelException
+	 *             if the look and feel is not supported on the current platform
 	 */
 	public static LookAndFeels setLookAndFeel(final @NonNull LookAndFeels lookAndFeels,
 		final @NonNull Window window) throws ClassNotFoundException, InstantiationException,
 		IllegalAccessException, UnsupportedLookAndFeelException
 	{
-		UIManager.setLookAndFeel(lookAndFeels.getLookAndFeelName());
+		setLookAndFeel(lookAndFeels);
 		SwingUtilities.updateComponentTreeUI(window);
 		window.pack();
 		return lookAndFeels;
 	}
 
 	/**
-	 * Sets the given {@link LookAndFeels} to the {@link UIManager}
+	 * Sets the given look and feel. For the metal look and feels the metal theme is set first
 	 *
 	 * @param lookAndFeels
-	 *            the look and feels
-	 * @exception ClassNotFoundException
-	 *                if the <code>LookAndFeel</code> class could not be found
-	 * @exception InstantiationException
-	 *                if a new instance of the class couldn't be created
-	 * @exception IllegalAccessException
-	 *                if the class or initializer isn't accessible
-	 * @exception UnsupportedLookAndFeelException
-	 *                if <code>lnf.isSupportedLookAndFeel()</code> is false
-	 * @throws ClassCastException
-	 *             if {@code className} does not identify a class that extends {@code LookAndFeel}
+	 *            the look and feel to set
+	 * @throws ClassNotFoundException
+	 *             if the look and feel class could not be found
+	 * @throws InstantiationException
+	 *             if a new instance of the class couldn't be created
+	 * @throws IllegalAccessException
+	 *             if the class or initializer isn't accessible
+	 * @throws UnsupportedLookAndFeelException
+	 *             if the look and feel is not supported on the current platform
 	 */
 	public static void setLookAndFeel(final @NonNull LookAndFeels lookAndFeels)
 		throws ClassNotFoundException, InstantiationException, IllegalAccessException,
 		UnsupportedLookAndFeelException
 	{
+		if (lookAndFeels.isMetalTheme())
+		{
+			MetalLookAndFeel.setCurrentTheme(lookAndFeels.newMetalTheme());
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			return;
+		}
 		UIManager.setLookAndFeel(lookAndFeels.getLookAndFeelName());
 	}
 
 	/**
-	 * Returns the current look and feel or <code>null</code> if not set
+	 * Gets the current look and feel
 	 *
-	 * @return the current look and feel, or <code>null</code> if not set
+	 * @return the current {@link LookAndFeel} object
 	 */
 	public static LookAndFeel getCurrentLookAndFeel()
 	{
 		return UIManager.getLookAndFeel();
 	}
-
 }

@@ -28,19 +28,18 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
-import io.github.astrapi69.awt.window.adapter.CloseWindow;
 
 /**
  * The unit test class for the class {@link MouseTripleClickCounterListener}
  */
-public class MouseTripleClickCounterListenerTest
+public class MouseTripleClickCounterListenerDemo
 {
 
 
 	public static void main(String[] args)
 	{
 		JFrame frame = new JFrame("Test Double and Triple Click");
-		frame.addWindowListener(new CloseWindow());
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addMouseListener(new MouseTripleClickCounterListener()
 		{
 			public void singleClick(MouseEvent e)

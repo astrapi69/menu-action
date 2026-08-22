@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolbar id="global.tool.bar" text="Main">
+    <item id="global.tool.bar.new" text="New" action="newFile" toolTip="Create a new file"/>
+    <item id="global.tool.bar.open" text="Open" action="openFile"/>
+    <separator/>
+    <checkbox id="global.tool.bar.statusbar" text="Statusbar" action="toggleStatusbar" selected="true"/>
+</toolbar>

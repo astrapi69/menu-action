@@ -312,4 +312,42 @@ class ParentMenuResolverTest
 		assertTrue(parentType.get().equals(JMenu.class));
 	}
 
+
+	@Test
+	void popupWithoutMenuInvoker()
+	{
+		JPopupMenu popupMenu = JPopupMenuFactory.newJPopupMenu();
+		JMenuItem item = MenuItemInfo.builder().text("item").build().toJMenuItem();
+		popupMenu.add(item);
+		assertFalse(ParentMenuResolver.getRoot(item).isPresent());
+		assertFalse(ParentMenuResolver.getRootJMenu(item).isPresent());
+		assertFalse(ParentMenuResolver.getRootType(item).isPresent());
+		assertFalse(ParentMenuResolver.getParentMenu(item).isPresent());
+		assertTrue(ParentMenuResolver.getMenuAncestors(item).isEmpty());
+		// the popup has no invoker, so no child is resolved
+		assertTrue(ParentMenuResolver.getChildMenuElements(popupMenu).isEmpty());
+	}
+
+	@Test
+	void getRootType()
+	{
+		JMenuBar menuBar = JMenuBarFactory.newJMenuBar();
+		JMenu menu = JMenuFactory.newJMenu("File", 'f');
+		JMenu sub = JMenuFactory.newJMenu("Sub");
+		JMenuItem item = MenuItemInfo.builder().text("item").build().toJMenuItem();
+		assertEquals(Optional.of(JMenuItem.class), ParentMenuResolver.getRootType(item));
+		assertEquals(Optional.of(JMenu.class), ParentMenuResolver.getRootType(menu));
+		menu.add(sub);
+		sub.add(item);
+		assertEquals(Optional.of(JMenu.class), ParentMenuResolver.getRootType(item));
+		assertEquals(Optional.of(menu), ParentMenuResolver.getRootJMenu(item));
+		assertEquals(List.of(sub, menu), ParentMenuResolver.getMenuAncestors(item));
+		menuBar.add(menu);
+		assertEquals(Optional.of(JMenuBar.class), ParentMenuResolver.getRootType(item));
+		assertEquals(Optional.of(JMenuBar.class), ParentMenuResolver.getRootType(sub));
+		assertEquals(Optional.of(menu), ParentMenuResolver.getRootJMenu(item));
+		assertEquals(List.of(sub, menu, menuBar), ParentMenuResolver.getMenuAncestors(item));
+		assertEquals(2, ParentMenuResolver.getChildMenuElements(menu).size() + 1);
+		assertEquals(1, ParentMenuResolver.getChildMenuElements(sub).size());
+	}
 }

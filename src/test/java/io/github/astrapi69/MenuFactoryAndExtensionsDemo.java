@@ -40,9 +40,9 @@ import io.github.astrapi69.swing.menu.factory.JMenuBarFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuFactory;
 import io.github.astrapi69.swing.menu.factory.JMenuItemFactory;
 
-public class MenuFactoryAndExtensionsTest extends JFrame
+public class MenuFactoryAndExtensionsDemo extends JFrame
 {
-	public MenuFactoryAndExtensionsTest()
+	public MenuFactoryAndExtensionsDemo()
 	{
 		JMenuBar bar;
 		JMenu menu;
@@ -78,6 +78,6 @@ public class MenuFactoryAndExtensionsTest extends JFrame
 
 	public static void main(String[] arg)
 	{
-		new MenuFactoryAndExtensionsTest();
+		new MenuFactoryAndExtensionsDemo();
 	}
 }

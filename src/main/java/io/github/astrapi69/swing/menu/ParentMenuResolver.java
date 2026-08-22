@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2026 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -43,10 +43,13 @@ import javax.swing.MenuElement;
 import lombok.NonNull;
 
 /**
- * The class {@link ParentMenuResolver} provides methods for resolve parent and root menus
+ * The class {@link ParentMenuResolver} provides methods for resolve parent and root menus. A
+ * {@link JMenuItem} inside a {@link JMenu} is technically a child of the {@link JPopupMenu} of the
+ * menu, so the methods follow the invoker of the popup menu to the logical parent menu
  */
 public final class ParentMenuResolver
 {
+
 	private ParentMenuResolver()
 	{
 	}
@@ -61,85 +64,45 @@ public final class ParentMenuResolver
 	public static Optional<Class<?>> getMenuElementType(final @NonNull MenuElement menuElement)
 	{
 		Component component = menuElement.getComponent();
-		if (component instanceof JMenu)
+		return switch (component)
 		{
-			return Optional.of(JMenu.class);
-		}
-		else if (component instanceof JMenuBar)
-		{
-			return Optional.of(JMenuBar.class);
-		}
-		else if (component instanceof JCheckBoxMenuItem)
-		{
-			return Optional.of(JCheckBoxMenuItem.class);
-		}
-		else if (component instanceof JRadioButtonMenuItem)
-		{
-			return Optional.of(JRadioButtonMenuItem.class);
-		}
-		else if (component instanceof JMenuItem)
-		{
-			return Optional.of(JMenuItem.class);
-		}
-		else if (component instanceof JPopupMenu)
-		{
-			return Optional.of(JPopupMenu.class);
-		}
-		return Optional.empty();
+			case JMenu ignored -> Optional.of(JMenu.class);
+			case JMenuBar ignored -> Optional.of(JMenuBar.class);
+			case JCheckBoxMenuItem ignored -> Optional.of(JCheckBoxMenuItem.class);
+			case JRadioButtonMenuItem ignored -> Optional.of(JRadioButtonMenuItem.class);
+			case JMenuItem ignored -> Optional.of(JMenuItem.class);
+			case JPopupMenu ignored -> Optional.of(JPopupMenu.class);
+			case null, default -> Optional.empty();
+		};
 	}
 
 	/**
-	 * Gets recursive all menu elements from the given parent {@link MenuElement} object
+	 * Gets the direct child menu elements from the given parent {@link MenuElement} object
 	 *
 	 * @param parent
 	 *            The parent {@link MenuElement} object
-	 * @return a list with all menu elements from the given parent {@link MenuElement} object
+	 * @return a list with the direct child menu elements from the given parent {@link MenuElement}
+	 *         object
 	 */
 	public static List<MenuElement> getChildMenuElements(final @NonNull MenuElement parent)
 	{
 		Component parentMenu = parent.getComponent();
-		if (parentMenu instanceof JMenuBar)
+		if (parentMenu instanceof JMenuBar jMenuBar)
 		{
-			JMenuBar jMenuBar = (JMenuBar)parentMenu;
-			MenuElement[] subElements = jMenuBar.getSubElements();
-			return Arrays.asList(subElements);
+			return Arrays.asList(jMenuBar.getSubElements());
 		}
-		List<MenuElement> allMenuElements = ParentMenuResolver.getAllMenuElements(parent);
 		List<MenuElement> childMenuElements = new ArrayList<>();
-		for (MenuElement menuElement : allMenuElements)
+		for (MenuElement menuElement : getAllMenuElements(parent))
 		{
-			Component component = menuElement.getComponent();
-			if (component instanceof JMenu)
+			if (menuElement.getComponent()instanceof JMenuItem jMenuItem
+				&& jMenuItem.getParent()instanceof JPopupMenu jPopupMenu
+				&& parentMenu.equals(jPopupMenu.getInvoker())
+				&& !childMenuElements.contains(menuElement))
 			{
-				JMenu jMenu = (JMenu)component;
-				addChildMenuElement(parentMenu, childMenuElements, menuElement, jMenu.getParent());
-				continue;
-			}
-			if (component instanceof JMenuItem)
-			{
-				JMenuItem jMenuItem = (JMenuItem)component;
-				addChildMenuElement(parentMenu, childMenuElements, menuElement,
-					jMenuItem.getParent());
+				childMenuElements.add(menuElement);
 			}
 		}
 		return childMenuElements;
-	}
-
-	private static void addChildMenuElement(Component parentMenu,
-		List<MenuElement> childMenuElements, MenuElement menuElement, Container menuParent)
-	{
-		if (menuParent instanceof JPopupMenu)
-		{
-			JPopupMenu jPopupMenu = (JPopupMenu)menuParent;
-			Component invoker = jPopupMenu.getInvoker();
-			if (invoker.equals(parentMenu))
-			{
-				if (!childMenuElements.contains(menuElement))
-				{
-					childMenuElements.add(menuElement);
-				}
-			}
-		}
 	}
 
 	/**
@@ -160,7 +123,7 @@ public final class ParentMenuResolver
 	 * @param parent
 	 *            The parent {@link MenuElement} object
 	 * @param withoutPopupMenu
-	 *            The flag if {@link JPopupMenu} objects shall be accepted
+	 *            The flag if {@link JPopupMenu} objects shall be excluded
 	 * @return a list with all menu elements from the given parent {@link MenuElement} object
 	 */
 	public static List<MenuElement> getAllMenuElements(final @NonNull MenuElement parent,
@@ -170,14 +133,14 @@ public final class ParentMenuResolver
 	}
 
 	/**
-	 * Gets recursive all menu elements from the given parent {@link MenuElement} object
+	 * Gets all menu elements from the given parent {@link MenuElement} object
 	 *
 	 * @param parent
 	 *            The parent {@link MenuElement} object
 	 * @param withoutPopupMenu
-	 *            The flag if {@link JPopupMenu} objects shall be accepted
+	 *            The flag if {@link JPopupMenu} objects shall be excluded
 	 * @param recursive
-	 *            The flag if only the child {@link MenuElement} object will be found
+	 *            The flag if the menu elements shall be resolved recursive
 	 * @return a list with all menu elements from the given parent {@link MenuElement} object
 	 */
 	public static List<MenuElement> getAllMenuElements(final @NonNull MenuElement parent,
@@ -199,62 +162,71 @@ public final class ParentMenuResolver
 	}
 
 	/**
-	 * Gets an optional of the root container from the given {@link JMenuItem} object
+	 * Gets the chain of the logical menu ancestors of the given {@link JMenuItem} object. The chain
+	 * contains the parent menus from the nearest to the farthest and ends with the {@link JMenuBar}
+	 * or {@link JToolBar} object if the menu is attached to one
 	 *
 	 * @param menu
 	 *            The {@link JMenuItem} object
-	 * @return an optional with the root container or empty if not found
+	 * @return the list with the logical menu ancestors, empty if the menu has no menu ancestor
 	 */
-	public static Optional<Container> getRootJMenu(final @NonNull JMenuItem menu)
+	public static List<Container> getMenuAncestors(final @NonNull JMenuItem menu)
 	{
-		Optional<Container> current = Optional.empty();
-		Container previous = menu;
-		Container containerParent = previous.getParent();
-		boolean iterate = containerParent != null;
-		if (!iterate)
+		List<Container> ancestors = new ArrayList<>();
+		Container container = menu.getParent();
+		while (container != null)
 		{
-			current = Optional.of(menu);
-		}
-		while (iterate)
-		{
-			if (containerParent instanceof JPopupMenu)
+			if (container instanceof JPopupMenu popupMenu
+				&& popupMenu.getInvoker()instanceof JMenu invoker)
 			{
-				JPopupMenu popupMenu = (JPopupMenu)containerParent;
-				Component invoker = popupMenu.getInvoker();
-				if (invoker instanceof JMenu)
-				{
-					containerParent = (JMenu)invoker;
-				}
+				container = invoker;
+				ancestors.add(container);
 			}
-			else if (containerParent instanceof JMenuBar)
+			else if (container instanceof JMenuBar || container instanceof JToolBar)
 			{
-				current = Optional.of(previous);
+				ancestors.add(container);
 				break;
 			}
-			else if (containerParent instanceof JToolBar)
-			{
-				current = Optional.of(previous);
-				break;
-			}
-			if (containerParent.getParent() != null)
-			{
-				previous = containerParent;
-				containerParent = containerParent.getParent();
-			}
-			else
-			{
-				if (containerParent instanceof JMenu)
-				{
-					current = Optional.of(containerParent);
-				}
-				iterate = false;
-			}
+			container = container.getParent();
 		}
-		return current;
+		return ancestors;
 	}
 
 	/**
-	 * Gets an optional of the root container from the given {@link JMenuItem} object
+	 * Gets an optional of the root {@link JMenu} object from the given {@link JMenuItem} object.
+	 * The root menu is the top level menu that is attached to the {@link JMenuBar} or
+	 * {@link JToolBar} object
+	 *
+	 * @param menu
+	 *            The {@link JMenuItem} object
+	 * @return an optional with the root menu or empty if not found
+	 */
+	public static Optional<Container> getRootJMenu(final @NonNull JMenuItem menu)
+	{
+		if (menu.getParent() == null)
+		{
+			return Optional.of(menu);
+		}
+		List<Container> ancestors = getMenuAncestors(menu);
+		Container rootMenu = null;
+		for (Container ancestor : ancestors)
+		{
+			if (ancestor instanceof JMenu)
+			{
+				rootMenu = ancestor;
+			}
+		}
+		if (rootMenu != null)
+		{
+			return Optional.of(rootMenu);
+		}
+		return ancestors.isEmpty() ? Optional.empty() : Optional.of(menu);
+	}
+
+	/**
+	 * Gets an optional of the root container from the given {@link JMenuItem} object. The root
+	 * container is the {@link JMenuBar} or {@link JToolBar} object if attached, otherwise the top
+	 * level {@link JMenu} object
 	 *
 	 * @param menu
 	 *            The {@link JMenuItem} object
@@ -262,45 +234,14 @@ public final class ParentMenuResolver
 	 */
 	public static Optional<Container> getRoot(final @NonNull JMenuItem menu)
 	{
-		Optional<Container> current = Optional.empty();
-		Container containerParent = menu.getParent();
-		boolean iterate = containerParent != null;
-		if (!iterate)
+		if (menu.getParent() == null)
 		{
-			current = Optional.of(menu);
+			return Optional.of(menu);
 		}
-		while (iterate)
-		{
-			if (containerParent instanceof JPopupMenu)
-			{
-				JPopupMenu popupMenu = (JPopupMenu)containerParent;
-				Component invoker = popupMenu.getInvoker();
-				if (invoker instanceof JMenu)
-				{
-					containerParent = (JMenu)invoker;
-					current = Optional.of(containerParent);
-				}
-			}
-			else if (containerParent instanceof JMenuBar)
-			{
-				current = Optional.of(containerParent);
-				break;
-			}
-			else if (containerParent instanceof JToolBar)
-			{
-				current = Optional.of(containerParent);
-				break;
-			}
-			if (containerParent.getParent() != null)
-			{
-				containerParent = containerParent.getParent();
-			}
-			else
-			{
-				iterate = false;
-			}
-		}
-		return current;
+		List<Container> ancestors = getMenuAncestors(menu);
+		return ancestors.isEmpty()
+			? Optional.empty()
+			: Optional.of(ancestors.get(ancestors.size() - 1));
 	}
 
 	/**
@@ -312,51 +253,11 @@ public final class ParentMenuResolver
 	 */
 	public static Optional<Class<?>> getRootType(final @NonNull JMenuItem menu)
 	{
-		Container containerParent = menu.getParent();
-		boolean iterate = containerParent != null;
-		if (!iterate)
+		if (menu.getParent() == null)
 		{
-			return Optional.of(JMenuItem.class);
+			return Optional.of(menu instanceof JMenu ? JMenu.class : JMenuItem.class);
 		}
-		return getCurrentRootType(containerParent);
-	}
-
-	private static Optional<Class<?>> getCurrentRootType(Container containerParent)
-	{
-		Optional<Class<?>> current = Optional.empty();
-		boolean iterate = true;
-		while (iterate)
-		{
-			if (containerParent instanceof JPopupMenu)
-			{
-				JPopupMenu popupMenu = (JPopupMenu)containerParent;
-				Component invoker = popupMenu.getInvoker();
-				if (invoker instanceof JMenu)
-				{
-					containerParent = (JMenu)invoker;
-					current = Optional.of(JMenu.class);
-				}
-			}
-			else if (containerParent instanceof JMenuBar)
-			{
-				current = Optional.of(JMenuBar.class);
-				break;
-			}
-			else if (containerParent instanceof JToolBar)
-			{
-				current = Optional.of(JToolBar.class);
-				break;
-			}
-			if (containerParent.getParent() != null)
-			{
-				containerParent = containerParent.getParent();
-			}
-			else
-			{
-				iterate = false;
-			}
-		}
-		return current;
+		return getRoot(menu).map(ParentMenuResolver::toMenuClass);
 	}
 
 	/**
@@ -368,13 +269,7 @@ public final class ParentMenuResolver
 	 */
 	public static Optional<Class<?>> getRootType(final @NonNull JMenu menu)
 	{
-		Container containerParent = menu.getParent();
-		boolean hasNoParent = containerParent == null;
-		if (hasNoParent)
-		{
-			return Optional.of(JMenu.class);
-		}
-		return getCurrentRootType(containerParent);
+		return getRootType((JMenuItem)menu);
 	}
 
 	/**
@@ -387,14 +282,10 @@ public final class ParentMenuResolver
 	public static Optional<Class<?>> getParentType(final @NonNull JMenu menu)
 	{
 		Container containerParent = menu.getParent();
-		if (containerParent instanceof JPopupMenu)
+		if (containerParent instanceof JPopupMenu popupMenu
+			&& popupMenu.getInvoker() instanceof JMenu)
 		{
-			JPopupMenu popupMenu = (JPopupMenu)containerParent;
-			Component invoker = popupMenu.getInvoker();
-			if (invoker instanceof JMenu)
-			{
-				return Optional.of(JMenu.class);
-			}
+			return Optional.of(JMenu.class);
 		}
 		if (containerParent instanceof JMenuBar)
 		{
@@ -408,26 +299,36 @@ public final class ParentMenuResolver
 	}
 
 	/**
-	 * Gets an optional of the parent object from the given {@link JMenu} object
+	 * Gets an optional of the parent menu from the given {@link JMenuItem} object
 	 *
 	 * @param menu
-	 *            The {@link JMenu} object
-	 * @return an optional with the parent object or empty if the parent is not a {@link JMenu}
-	 *         object
+	 *            The {@link JMenuItem} object
+	 * @return an optional with the parent menu or empty if the parent is not a {@link JMenu} object
 	 */
 	public static Optional<JMenu> getParentMenu(final @NonNull JMenuItem menu)
 	{
-		Container containerParent = menu.getParent();
-		if (containerParent instanceof JPopupMenu)
+		if (menu.getParent()instanceof JPopupMenu popupMenu
+			&& popupMenu.getInvoker()instanceof JMenu invoker)
 		{
-			JPopupMenu popupMenu = (JPopupMenu)containerParent;
-			Component invoker = popupMenu.getInvoker();
-			if (invoker instanceof JMenu)
-			{
-				return Optional.of((JMenu)invoker);
-			}
+			return Optional.of(invoker);
 		}
 		return Optional.empty();
 	}
 
+	private static Class<?> toMenuClass(final Container container)
+	{
+		if (container instanceof JMenuBar)
+		{
+			return JMenuBar.class;
+		}
+		if (container instanceof JToolBar)
+		{
+			return JToolBar.class;
+		}
+		if (container instanceof JMenu)
+		{
+			return JMenu.class;
+		}
+		return container.getClass();
+	}
 }

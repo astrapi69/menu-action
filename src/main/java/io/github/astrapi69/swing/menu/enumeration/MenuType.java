@@ -69,6 +69,10 @@ public enum MenuType
 	 * Represents the popup menu type
 	 */
 	POPUP,
+	/**
+	 * Represents a separator between menu items
+	 */
+	SEPARATOR,
 
 	/**
 	 * if the menu type is unknown

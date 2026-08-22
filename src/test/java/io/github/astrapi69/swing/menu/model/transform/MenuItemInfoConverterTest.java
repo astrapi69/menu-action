@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright (C) 2021 Asterios Raptis
+ * Copyright (C) 2026 Asterios Raptis
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -26,168 +26,137 @@ package io.github.astrapi69.swing.menu.model.transform;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.awt.event.ActionListener;
-import java.io.File;
 
+import javax.swing.Icon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import io.github.astrapi69.awt.action.NoAction;
-import io.github.astrapi69.file.create.FileFactory;
-import io.github.astrapi69.file.read.ReadFileExtensions;
-import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.KeyStrokeInfo;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
-import io.github.astrapi69.throwable.RuntimeExceptionDecorator;
 
+/**
+ * The unit test class for the class {@link MenuItemInfoConverter}
+ */
 class MenuItemInfoConverterTest
 {
 
-	File xmlFile;
-	String fileMenuXml;
-	String editMenuXml;
-	String helpMenuXml;
-
-	@BeforeEach
-	public void beforeEach()
-	{
-		String filename;
-		filename = "app-file-menu.xml";
-		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
-		fileMenuXml = RuntimeExceptionDecorator
-			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
-
-		filename = "app-edit-menu.xml";
-		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
-		editMenuXml = RuntimeExceptionDecorator
-			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
-
-		filename = "app-help-menu.xml";
-		xmlFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), filename);
-		helpMenuXml = RuntimeExceptionDecorator
-			.decorate(() -> ReadFileExtensions.fromFile(xmlFile));
-	}
+	private static final ActionListener NO_ACTION = e -> {
+	};
 
 	@Test
 	void fromJMenu()
 	{
-		MenuInfo editMenuInfo;
-		MenuInfo menuInfo;
-		MenuItemInfo menuItemInfo;
-		JMenu menu;
-
-		editMenuInfo = MenuInfo.builder().type(MenuType.MENU)
-			.mnemonic(MenuExtensions.toMnemonic('E'))
-			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("alt pressed E")))
-			.actionCommand("Edit").text("Edit").name(BaseMenuId.EDIT.propertiesKey()).build();
-
-		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(editMenuInfo, new NoAction());
-
-		menu = menuItemInfo.toJMenu();
-
-		menuInfo = MenuItemInfoConverter.fromJMenu(menu);
-		assertEquals(menuInfo, editMenuInfo);
+		MenuInfo editMenuInfo = MenuInfo.builder().type(MenuType.MENU)
+			.mnemonic(MenuExtensions.toMnemonic('E')).actionCommand("Edit").text("Edit")
+			.name(BaseMenuId.EDIT.propertiesKey()).build();
+		JMenu menu = MenuItemInfoConverter.toMenuItemInfo(editMenuInfo, NO_ACTION).toJMenu();
+		MenuInfo menuInfo = MenuItemInfoConverter.fromJMenu(menu);
+		assertEquals(editMenuInfo, menuInfo);
 	}
 
 	@Test
-	void testTtoMenuItemInfoWithActionClass()
+	void fromJMenuBar()
 	{
-		MenuItemInfo helpContentMenuInfo;
-		MenuItemInfo menuInfo;
-		MenuItemInfo menuItemInfo;
-		JMenuItem menu;
+		MenuInfo menuInfo = MenuItemInfoConverter.fromJMenuBar();
+		assertEquals(MenuType.MENU_BAR, menuInfo.getType());
+		assertEquals(BaseMenuId.MENU_BAR.propertiesKey(), menuInfo.getName());
+		assertNull(menuInfo.getActionId());
 
-
-		helpContentMenuInfo = MenuItemInfo.builder().type(MenuType.MENU_ITEM)
-			.actionCommand("io.github.astrapi69.awt.action.NoAction")
-			.mnemonic(MenuExtensions.toMnemonic('C'))
-			.keyStrokeInfo(
-				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
-			.text("Help Content").name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
-
-		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(helpContentMenuInfo,
-			"io.github.astrapi69.awt.action.NoAction");
-		assertNotNull(menuItemInfo);
+		JMenuBar menuBar = new JMenuBar();
+		assertEquals(BaseMenuId.MENU_BAR.propertiesKey(),
+			MenuItemInfoConverter.fromJMenuBar(menuBar).getName());
+		menuBar.setName("custom.bar");
+		assertEquals("custom.bar", MenuItemInfoConverter.fromJMenuBar(menuBar).getName());
 	}
 
 	@Test
 	void fromJMenuItem()
 	{
-		MenuItemInfo helpContentMenuInfo;
-		MenuItemInfo menuInfo;
-		MenuItemInfo menuItemInfo;
-		JMenuItem menu;
-
-
-		helpContentMenuInfo = MenuItemInfo.builder().type(MenuType.MENU_ITEM)
+		MenuItemInfo helpContentMenuInfo = MenuItemInfo.builder().type(MenuType.MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('C'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
 			.actionCommand("Help Content").text("Help Content")
 			.name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
-
-		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(helpContentMenuInfo, new NoAction());
-
-		menu = menuItemInfo.toJMenuItem();
-
-		menuInfo = MenuItemInfoConverter.fromJMenuItem(menu);
-		assertEquals(menuInfo, helpContentMenuInfo);
+		JMenuItem menu = MenuItemInfoConverter.toMenuItemInfo(helpContentMenuInfo, NO_ACTION)
+			.toJMenuItem();
+		assertEquals(1, menu.getActionListeners().length);
+		MenuItemInfo menuInfo = MenuItemInfoConverter.fromJMenuItem(menu);
+		assertEquals(helpContentMenuInfo, menuInfo);
 	}
 
 	@Test
 	void fromJCheckBoxMenuItem()
 	{
-		MenuItemInfo donateMenuInfo;
-		MenuItemInfo menuInfo;
-		MenuItemInfo menuItemInfo;
-		JCheckBoxMenuItem menu;
-
-		donateMenuInfo = MenuItemInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
+		MenuItemInfo donateMenuInfo = MenuItemInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('Y'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed Y")))
 			.actionCommand("Yes").text("Yes").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
-
-		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, new NoAction());
-
-		menu = menuItemInfo.toJCheckBoxMenuItem();
-
-		menuInfo = MenuItemInfoConverter.fromJCheckBoxMenuItem(menu);
-		assertEquals(menuInfo, donateMenuInfo);
+		JCheckBoxMenuItem menu = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, NO_ACTION)
+			.toJCheckBoxMenuItem();
+		assertEquals(KeyStroke.getKeyStroke("ctrl pressed Y"), menu.getAccelerator());
+		MenuItemInfo menuInfo = MenuItemInfoConverter.fromJCheckBoxMenuItem(menu);
+		assertEquals(donateMenuInfo, menuInfo);
 	}
 
 	@Test
 	void fromJRadioButtonMenuItem()
 	{
-		MenuItemInfo donateMenuInfo;
-		MenuItemInfo menuInfo;
-		MenuItemInfo menuItemInfo;
-		JRadioButtonMenuItem menu;
-		ActionListener actionListener;
-
-		donateMenuInfo = MenuItemInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
+		MenuItemInfo donateMenuInfo = MenuItemInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('R'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed R")))
 			.actionCommand("Donate").text("Donate").name(BaseMenuId.HELP_DONATE.propertiesKey())
 			.build();
-
-		actionListener = new NoAction();
-		menuItemInfo = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, actionListener);
-
-		menu = menuItemInfo.toJRadioButtonMenuItem();
-
-		menuInfo = MenuItemInfoConverter.fromJRadioButtonMenuItem(menu);
-		assertEquals(menuInfo, donateMenuInfo);
+		JRadioButtonMenuItem menu = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, NO_ACTION)
+			.toJRadioButtonMenuItem();
+		MenuItemInfo menuInfo = MenuItemInfoConverter.fromJRadioButtonMenuItem(menu);
+		assertEquals(donateMenuInfo, menuInfo);
 	}
 
+	@Test
+	void toMenuItemInfoCopiesAllFields()
+	{
+		MenuInfo menuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).name("n").text("t")
+			.toolTip("tt").mnemonic((int)'N').actionCommand("ac").enabled(false).selected(true)
+			.icon("icons/missing.png").build();
+		MenuItemInfo itemInfo = menuInfo.toMenuItemInfo(NO_ACTION);
+		assertEquals("n", itemInfo.getName());
+		assertEquals("t", itemInfo.getText());
+		assertEquals("tt", itemInfo.getToolTip());
+		assertEquals((int)'N', itemInfo.getMnemonic());
+		assertEquals("ac", itemInfo.getActionCommand());
+		assertEquals(Boolean.FALSE, itemInfo.getEnabled());
+		assertEquals(Boolean.TRUE, itemInfo.getSelected());
+		assertNull(itemInfo.getIcon());
+		assertEquals(NO_ACTION, itemInfo.getActionListener());
+
+		MenuItemInfo withOtherListener = MenuItemInfoConverter.toMenuItemInfo(itemInfo, e -> {
+		});
+		assertNotNull(withOtherListener.getActionListener());
+		assertEquals("n", withOtherListener.getName());
+	}
+
+	@Test
+	void resolveIcon()
+	{
+		assertNull(MenuItemInfoConverter.resolveIcon(null));
+		assertNull(MenuItemInfoConverter.resolveIcon(" "));
+		assertNull(MenuItemInfoConverter.resolveIcon("icons/missing.png"));
+		Icon icon = MenuItemInfoConverter.resolveIcon("/icons/dot.png");
+		assertNotNull(icon);
+		assertEquals(2, icon.getIconWidth());
+	}
 }

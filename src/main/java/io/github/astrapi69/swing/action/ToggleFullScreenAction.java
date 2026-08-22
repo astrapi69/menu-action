@@ -30,7 +30,6 @@ import java.awt.event.ActionEvent;
 import java.io.Serial;
 
 import javax.swing.AbstractAction;
-import javax.swing.JFrame;
 
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
 import lombok.AccessLevel;

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menus>
+    <menubar id="global.menu.bar">
+        <menu id="global.menu.file" text="File"/>
+    </menubar>
+    <popup id="tree.popup">
+        <item id="tree.popup.add" text="Add node"/>
+    </popup>
+</menus>

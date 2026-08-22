@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menubar id="global.menu.bar">
+    <menu id="global.menu.file">
+        <item id="plugin.file.export" text="Export..." action="export" anchor="BEFORE" relativeTo="global.menu.file.exit"/>
+    </menu>
+    <menu id="plugin.menu" text="Plugin" anchor="BEFORE" relativeTo="global.menu.help">
+        <item id="plugin.menu.settings" text="Plugin settings" action="pluginSettings"/>
+    </menu>
+</menubar>

@@ -1,9 +1,77 @@
 ## Change log
 ----------------------
 
-Version 4.2-SNAPSHOT
+Version 5.0-SNAPSHOT
 -------------
 
+ADDED:
+
+- new declarative xml menu format with the elements menubar, menu, item, checkbox, radio, separator, popup and toolbar and the attributes id, text, textKey, toolTip, mnemonic, accelerator, action, actionCommand, enabled, selected, group, icon, anchor and relativeTo
+- new class MenuXmlReader that reads menu definitions from xml (string, file, classpath resource, stream) into a MenuInfo tree; the parser is hardened against xml external entity attacks
+- new class MenuXmlWriter that writes a MenuInfo tree back to xml
+- new xml schema src/main/resources/menu.xsd for validation and IDE completion of menu xml files
+- new class MenuBuilder that builds JMenuBar, JMenu, JPopupMenu, JToolBar and menu items from a MenuInfo tree with action resolution from an ActionRegistry, resource bundle texts, icon resolution, button groups for radio items, anchor placement and a lookup of all built components by id
+- new class ActionRegistry that maps action ids to ActionListener objects
+- new enum MissingActionPolicy (FAIL, DISABLE, IGNORE) for menu items without a registered action
+- new class MenuInfoExtensions with find, flatten, orderByAnchor and merge for plugin menu contributions
+- new fields textKey, toolTip, actionId, enabled, selected, group, icon and children in MenuInfo; new fields toolTip, enabled, selected and icon in MenuItemInfo
+- new enum value MenuType.SEPARATOR
+- new method MenuItemInfoConverter.fromJMenuBar(JMenuBar), MenuItemInfoConverter.setFields(MenuItemInfo, AbstractButton) and MenuItemInfoConverter.resolveIcon(String)
+- new method ParentMenuResolver.getMenuAncestors(JMenuItem)
+- new methods LookAndFeels.isMetalTheme() and LookAndFeels.newMetalTheme()
+- new method BrowserControlExtensions.browse(URI)
+- new method BaseMenuId.getBaseMenuIdKeys()
+- new demo class MenuXmlDemo that loads the menu bar from menubar.xml
+- new unit tests for MenuXmlReader, MenuXmlWriter, MenuBuilder, ActionRegistry, MenuInfoExtensions, LookAndFeels and the converter classes
+- new Makefile with build, test, release and publish targets
+- new license header file src/main/resources/license-header.txt for the spotless licenseHeaderFile step
+- new gradle file tagging.gradle with the tagRelease task based on a plain git Exec task
+- new publishing repository configuration for the Central Portal (releases over the OSSRH staging API, snapshots to central.sonatype.com) with credentials from CENTRAL_USERNAME/CENTRAL_PASSWORD or the gradle properties centralUsername/centralPassword
+- new github-actions workflow publish.yml that publishes to Maven Central on RELEASE-* tags with in-memory GPG signing
+- new gradle plugin org.gradle.toolchains.foojay-resolver-convention in version 1.0.0 for automatic JDK provisioning
+
+FIXED:
+
+- LookAndFeels.OCEAN pointed to javax.swing.plaf.metal.OceanTheme which is a MetalTheme and not a LookAndFeel, so UIManager.setLookAndFeel threw a ClassCastException; the metal look and feels now install their theme before the MetalLookAndFeel
+- LookAndFeelMetalAction compared the constant NAME with "Ocean" and never selected the ocean theme; the ocean theme is now selected if the action name contains 'ocean'
+- MenuItemInfoConverter.fromJMenuBar hardcoded the action class io.github.astrapi69.awt.action.NoAction from the test dependency awt-extensions
+- the accelerator of a menu item was read from the undocumented swing client property '_WhenInFocusedWindow'; it is now read from JMenuItem.getAccelerator and the input map of the component
+- BrowserControlExtensions used reflection on com.apple.eio.FileManager which is not accessible under the module system and a dated browser list (netscape, galeon, kazehakase); it now uses java.awt.Desktop with xdg-open, open and rundll32 as fallback
+- ParentMenuResolver.getChildMenuElements threw a NullPointerException for popup menus without invoker
+- PopupListener printed the event source to System.out
+- BaseMenuId.getBaseMenuIdsAsMap contained the key LOOK_AND_FEEL_SYSTEM twice and missed TOOL_BAR
+- the javadoc task excluded all classes and produced an empty javadoc jar
+- the /gradle rule in .gitignore swallowed new gradle build script files
+
+CHANGED:
+
+- update of the minimum java version to 25 (source and target compatibility, gradle toolchain, github-actions workflows)
+- removed the xstream based menu serialization of TreeIdNode maps together with the class MenuVisitorExtensions; menus are now defined in the new xml format and built with MenuBuilder
+- removed the fields ordinal and actionClass from MenuInfo and the field ordinal from MenuItemInfo; the order of menu items is the document order with optional anchors, actions are resolved by id from the ActionRegistry
+- removed the reflection based method MenuItemInfoConverter.toMenuItemInfo(MenuItemInfo, String)
+- removed the enum Browsers
+- BrowserControlExtensions.displayURLonStandardBrowser returns now a boolean instead of Object
+- ParentMenuResolver consolidated to a single ancestor walk, the public methods keep their behavior
+- MenuItemInfo: removed the misleading @Setter annotation on the final fields
+- removed the unused core dependencies data-api, gen-tree, id-generate, jobj-core, jobj-reflect, silly-collection, throwable, tree-api and visitor-pattern; model-data is the only remaining core dependency
+- removed the unused test dependencies assertj-swing, awt-extensions, file-worker, junit-jupiter-extensions, meanbean, silly-io and xstream-extensions
+- module-info: new requires java.xml, new exports io.github.astrapi69.swing.menu.build and io.github.astrapi69.swing.menu.xml, removed requires of jobj.core, id.generate, gen.tree, jobj.reflect.main, silly.collection and throwable
+- interactive demo classes renamed from *Test to *Demo so that only real unit tests are discovered by the test engine; removed the duplicate demo SampleJTableWithPopup
+- migrate publishing to Central Portal (snapshots to central.sonatype.com, signing with in-memory GPG keys from environment variables with fallback to the local gpg command)
+- removed the grgit gradle plugin; the tagRelease task now uses a plain git Exec task, so the gradle configuration cache works without workarounds
+- removed the license-gradle-plugin, license headers are now managed by the spotless licenseHeaderFile step
+- enabled the gradle configuration cache
+- github-actions workflow: removed obsolete ossrh secrets, updated setup-gradle to v4 and codecov-action to v5
+- README: replaced the dead travis-ci and maven-badges.herokuapp.com badges with the github-actions badge and the shields.io maven-central badge, updated the sonatype links to the Central Portal, documented the xml menu format
+- update gradle to new version 9.7.0
+- update of gradle-plugin dependency 'io.freefair.lombok' to new version 9.5.0
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new version 8.10.0
+- update of gradle-plugin dependency ben-manes versions to new version 0.61.0 with new plugin id io.github.ben-manes.versions
+- update of gradle-plugin dependency 'nl.littlerobots.version-catalog-update' to new version 1.1.1
+- update of jacoco tool version to 0.8.15
+- update of dependency lombok to new version 1.18.46
+- update of dependency model-data to new patch version 3.2.1
+- update of test dependency junit-jupiter to new major version 6.1.3
 
 Version 4.1
 -------------
