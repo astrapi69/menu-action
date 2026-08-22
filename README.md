@@ -107,6 +107,25 @@ JMenuItem exitMenuItem = MenuItemInfo.builder().text("Exit").mnemonic(MenuExtens
 fileMenu.add(exitMenuItem);
 ```
 
+## Build
+
+The project is built with gradle 9 and requires Java 25. The `Makefile` wraps the most used tasks:
+
+```
+make build                  # full build with tests, spotless check and jacoco report
+make test
+make spotless-apply         # formats the sources and adds missing license headers
+make dependency-updates     # shows newer versions of dependencies and plugins
+make publish-local          # installs the artifact into the local maven repository
+```
+
+## Release and publishing
+
+Releases are published to Maven Central over the Sonatype Central Portal. The short version: set
+the version in `gradle.properties`, commit, push the tag `RELEASE-<version>` and publish the
+deployment in the Portal. The complete process, the required secrets, the Central Portal staging
+api and the troubleshooting are described in [docs/publishing.md](docs/publishing.md).
+
 ## gradle dependency
 
 Replace the variable ${latestVersion} with the current latest version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/menu-action)](https://central.sonatype.com/artifact/io.github.astrapi69/menu-action)
