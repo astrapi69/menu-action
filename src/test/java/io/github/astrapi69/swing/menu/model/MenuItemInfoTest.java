@@ -29,7 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.MenuItem;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -95,11 +97,17 @@ class MenuItemInfoTest
 			.toJRadioButtonMenuItem();
 		assertTrue(radio.isSelected());
 
-		MenuItem awtItem = info.toMenuItem();
-		assertEquals("Exit", awtItem.getLabel());
-		assertFalse(awtItem.isEnabled());
-
 		JMenuBar menuBar = info.toJMenuBar();
 		assertEquals(BaseMenuId.EXIT.propertiesKey(), menuBar.getName());
+	}
+
+	@Test
+	void toAwtMenuItem()
+	{
+		// the awt MenuItem is a heavyweight component and needs a display
+		assumeFalse(GraphicsEnvironment.isHeadless());
+		MenuItem awtItem = newExitInfo().toMenuItem();
+		assertEquals("Exit", awtItem.getLabel());
+		assertFalse(awtItem.isEnabled());
 	}
 }
