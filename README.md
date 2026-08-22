@@ -33,6 +33,40 @@ No animals were harmed in the making of this library.
 
 The source code comes under the liberal MIT License, making menu-action great for all types of swing applications.
 
+## Features
+
+**Declarative menus (xml)**
+- `MenuXmlReader` / `MenuXmlWriter`: load and save menu bars, menus, popup menus and tool bars from a plain xml format (`menubar`, `menu`, `item`, `checkbox`, `radio`, `separator`, `popup`, `toolbar`, container `menus`), xml schema `menu.xsd` shipped in the jar, parser hardened against xml external entities
+- `MenuBuilder`: builds `JMenuBar`, `JMenu`, `JPopupMenu`, `JToolBar` and all item types from the `MenuInfo` tree; actions resolved by id from an `ActionRegistry`; `MissingActionPolicy` (`FAIL`, `DISABLE`, `IGNORE`); texts from a `ResourceBundle` via `textKey`; icons from classpath or file with a pluggable resolver; button groups for radio items; placement with `anchor`/`relativeTo`; lookup of every built component by id
+- `MenuInfoExtensions`: `find`, `flatten`, `orderByAnchor` and `merge` of plugin menu contributions into an existing menu tree
+
+**Menu model and conversion**
+- `MenuInfo` (serializable tree definition), `MenuItemInfo` (runtime definition with `ActionListener` and `Icon`), `KeyStrokeInfo` (serializable `KeyStroke`)
+- `MenuItemInfoConverter`: `MenuItemInfo` to `JMenu`, `JMenuItem`, `JCheckBoxMenuItem`, `JRadioButtonMenuItem`, `JMenuBar`, awt `MenuItem` and back
+- `MenuType`, `Anchor` and `BaseMenuId` (standard ids like `global.menu.file.exit` for application menus)
+
+**Fluent factories and helpers**
+- `JMenuFactory`, `JMenuItemFactory`, `JMenuBarFactory`, `JCheckBoxMenuItemFactory`, `JRadioButtonMenuItemFactory`, `JToolBarFactory`, `JPopupMenuFactory` (attaches a `PopupListener` to the component), awt `MenuItemFactory` and `PopupMenuFactory`
+- `MenuExtensions`: mnemonics, accelerators (`ctrl`/`alt` shortcuts, parsable keystroke strings), add menu items with action listener and accelerator
+- `KeyStrokeExtensions`: register keyboard shortcuts on any `JComponent`, parse keystroke strings, convert to `KeyStrokeInfo`
+- `ParentMenuResolver`: navigate the menu hierarchy (`getParentMenu`, `getRootJMenu`, `getRoot`, `getMenuAncestors`, `getChildMenuElements`, `getAllMenuElements`, element type detection)
+
+**Actions**
+- `ExitApplicationAction`, `ToggleFullScreenAction`, `OpenFileAction` (template around `JFileChooser`), `OpenBrowserAction` / `BaseOpenBrowserAction`, `ShowDialogAction` / `ShowInfoDialogAction` / `ShowFrameAction` (templates for dialogs and frames), `ShowHelpDialogAction`
+- look and feel actions for GTK, Metal (default and Ocean theme), Motif, Multi, Nimbus, Synth, System and Windows
+- `LookAndFeels` enum: switch the look and feel at runtime and update the component tree or window
+
+**Listeners and bindings**
+- `DocumentListenerAdapter`, `EnableButtonBehavior` (enables a button while a document has text), `StringBindingListener` (binds a document to a model-data `IModel`)
+- `ItemBindListener`, `ItemModelListener`, `SingleItemModelListener` (bind combo box selections to models)
+- `RequestFocusListener`, `MouseDoubleClickListener`, `MouseTripleClickCounterListener`, `MouseButton`, `MouseClickedType`
+
+**Browser**
+- `BrowserControlExtensions`: open urls in the default browser over `java.awt.Desktop` with `xdg-open`, `open` and `rundll32` fallback, `OS` detection
+
+**Packaging**
+- Java module `io.github.astrapisixtynine.menu.action`, Java 25, single runtime dependency `model-data`
+
 ## Define menus in xml
 
 A menu bar, popup menu or tool bar can be described in a plain xml file:
