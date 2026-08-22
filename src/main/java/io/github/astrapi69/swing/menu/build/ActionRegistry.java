@@ -44,6 +44,13 @@ public final class ActionRegistry
 	private final Map<String, ActionListener> actions = new LinkedHashMap<>();
 
 	/**
+	 * Private constructor, use the factory methods {@link #empty()} and {@link #of(Map)}
+	 */
+	private ActionRegistry()
+	{
+	}
+
+	/**
 	 * Factory method that creates a new empty {@link ActionRegistry} object
 	 *
 	 * @return the new {@link ActionRegistry} object

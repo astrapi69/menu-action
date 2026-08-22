@@ -17,6 +17,9 @@ javadoc {
     if(JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption("html5", true)
     }
+    // lombok generated getters, setters and builders have no javadoc tags, so the doclint
+    // group 'missing' is disabled; syntax, reference and html problems are still reported
+    options.addStringOption("Xdoclint:all,-missing", "-quiet")
     failOnError = false
 }
 
