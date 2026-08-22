@@ -5,11 +5,11 @@
 [![Java CI with Gradle](https://github.com/astrapi69/menu-action/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/menu-action/actions/workflows/gradle.yml)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/menu-action.svg?style=flat)](https://github.com/astrapi69/menu-action/issues)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.astrapi69/menu-action)](https://central.sonatype.com/artifact/io.github.astrapi69/menu-action)
-[![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/menu-action.svg)](http://www.javadoc.io/doc/io.github.astrapi69/menu-action)
+[![Javadocs](https://javadoc.io/badge2/io.github.astrapi69/menu-action/javadoc.svg)](https://javadoc.io/doc/io.github.astrapi69/menu-action)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
 [![Donate](https://img.shields.io/badge/donate-❤-ff2244.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8)
 [![Hits Of Code](https://hitsofcode.com/github/astrapi69/menu-action?branch=main)](https://hitsofcode.com/github/astrapi69/menu-action/view?branch=main)
-[![Lines Of Code](https://tokei.rs/b1/github/astrapi69/menu-action)](https://github.com/astrapi69/menu-action)
+[![Lines Of Code](https://sloc.xyz/github/astrapi69/menu-action)](https://github.com/astrapi69/menu-action)
 
 </div>
 
@@ -332,6 +332,6 @@ Do not hesitate to contact the menu-action developers with your questions, conce
 
 |**javadoc.io**|
 |     :---:      |
-|[![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/menu-action.svg)](http://www.javadoc.io/doc/io.github.astrapi69/menu-action)|
-|Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
+|[![Javadocs](https://javadoc.io/badge2/io.github.astrapi69/menu-action/javadoc.svg)](https://javadoc.io/doc/io.github.astrapi69/menu-action)|
+|Special thanks to [javadoc.io](https://javadoc.io) for providing a free javadoc documentation for open source projects|
 |     <img width=1000/>     |
