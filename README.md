@@ -39,6 +39,7 @@ The source code comes under the liberal MIT License, making menu-action great fo
 - `MenuXmlReader` / `MenuXmlWriter`: load and save menu bars, menus, popup menus and tool bars from a plain xml format (`menubar`, `menu`, `item`, `checkbox`, `radio`, `separator`, `popup`, `toolbar`, container `menus`), xml schema `menu.xsd` shipped in the jar, parser hardened against xml external entities
 - `MenuBuilder`: builds `JMenuBar`, `JMenu`, `JPopupMenu`, `JToolBar` and all item types from the `MenuInfo` tree; actions resolved by id from an `ActionRegistry`; `MissingActionPolicy` (`FAIL`, `DISABLE`, `IGNORE`); texts from a `ResourceBundle` via `textKey`; icons from classpath or file with a pluggable resolver; button groups for radio items; placement with `anchor`/`relativeTo`; lookup of every built component by id
 - `MenuInfoExtensions`: `find`, `flatten`, `orderByAnchor` and `merge` of plugin menu contributions into an existing menu tree
+- declarative actions: `@MenuAction` annotated controller methods and fields (`ActionRegistry.ofHandlers`), `ActionProvider` services for plugins with an `ActionContext`, `ActionResolver` chain for custom lookups
 
 **Menu model and conversion**
 - `MenuInfo` (serializable tree definition), `MenuItemInfo` (runtime definition with `ActionListener` and `Icon`), `KeyStrokeInfo` (serializable `KeyStroke`)
@@ -130,6 +131,25 @@ MenuInfo merged = MenuInfoExtensions.merge(menuBarInfo, MenuXmlReader.readResour
 ```
 
 A `MenuInfo` tree can be written back with `MenuXmlWriter.toXml(menuInfo)`.
+
+Actions can also be declared on a controller object instead of registering them one by one:
+
+```java
+public class MainController
+{
+    @MenuAction("exit")
+    void exit() { frame.dispose(); }
+
+    @MenuAction("openFile")
+    void openFile(ActionEvent event) { ... }
+}
+
+ActionRegistry actions = ActionRegistry.ofHandlers(new MainController(frame));
+```
+
+Plugins contribute their actions as `ActionProvider` services (`java.util.ServiceLoader`) that are
+collected with `actions.loadProviders(context)`. All ways to bind actions are described in
+[docs/actions.md](docs/actions.md).
 
 ## Build menus in java
 

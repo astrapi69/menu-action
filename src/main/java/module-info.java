@@ -26,6 +26,8 @@ module io.github.astrapisixtynine.menu.action
 	requires java.xml;
 	requires model.data;
 
+	uses io.github.astrapi69.swing.menu.build.ActionProvider;
+
 	exports io.github.astrapi69.browser;
 	exports io.github.astrapi69.swing.action;
 	exports io.github.astrapi69.swing.listener;

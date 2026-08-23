@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Component;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -204,6 +205,31 @@ class MenuBuilderTest
 			.type(MenuType.MENU_ITEM).name("foo").actionCommand("custom").build());
 		item.doClick();
 		assertEquals(List.of("custom"), fired);
+	}
+
+	@Test
+	void actionResolverChain()
+	{
+		List<String> fired = new ArrayList<>();
+		ActionRegistry actions = ActionRegistry.empty().register("fromRegistry",
+			e -> fired.add("registry"));
+		ActionResolver first = id -> "fromFirst".equals(id)
+			? java.util.Optional.of((ActionListener)e -> fired.add("first"))
+			: java.util.Optional.empty();
+		ActionResolver second = ActionResolver.of(id -> java.util.Optional.empty(),
+			id -> "fromSecond".equals(id)
+				? java.util.Optional.of((ActionListener)e -> fired.add("second"))
+				: java.util.Optional.empty());
+		MenuBuilder builder = new MenuBuilder(actions).withActionResolver(first)
+			.withActionResolver(second);
+		for (String id : List.of("fromRegistry", "fromFirst", "fromSecond"))
+		{
+			builder.buildMenuComponent(MenuInfo.builder().type(MenuType.MENU_ITEM).name(id).build())
+				.doClick();
+		}
+		assertEquals(List.of("registry", "first", "second"), fired);
+		assertThrows(IllegalStateException.class, () -> builder.buildMenuComponent(
+			MenuInfo.builder().type(MenuType.MENU_ITEM).name("unknown").build()));
 	}
 
 	@Test

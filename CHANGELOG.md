@@ -4,6 +4,21 @@
 Version 5.1-SNAPSHOT
 -------------
 
+ADDED:
+
+- new annotation MenuAction for declare actions on controller methods and fields, registered with ActionRegistry.ofHandlers and ActionRegistry.registerHandlers
+- new service provider interface ActionProvider with ActionContext for plugins that contribute actions, loaded with ActionRegistry.loadProviders over the ServiceLoader
+- new functional interface ActionResolver; ActionRegistry implements it and MenuBuilder.withActionResolver adds further resolvers that are asked after the registry
+- new documentation docs/actions.md for the declarative actions and docs/publishing.md for the release process
+- new Makefile targets central-list, central-upload, central-upload-repository and central-drop for the staging repositories of the Central Portal
+
+CHANGED:
+
+- the publish workflow and the Makefile release target upload the staging repository to the Central Portal after publishing, so the deployment is visible there
+- module-info: new uses io.github.astrapi69.swing.menu.build.ActionProvider
+- the javadoc task disables the doclint group 'missing' for the lombok generated members
+- README: fixed the javadoc.io and lines of code badges, added the feature overview, the build and the release sections
+
 
 Version 5.0
 -------------

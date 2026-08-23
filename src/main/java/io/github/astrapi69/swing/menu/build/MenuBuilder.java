@@ -25,8 +25,10 @@
 package io.github.astrapi69.swing.menu.build;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -55,9 +57,10 @@ import lombok.NonNull;
 
 /**
  * The class {@link MenuBuilder} builds swing menu components from a {@link MenuInfo} tree. The
- * actions of the menu items are resolved from an {@link ActionRegistry}, texts can be resolved from
- * a resource bundle and icons from a custom icon resolver. All built components are registered by
- * the name of their {@link MenuInfo} and can be retrieved with {@link #getComponent(String)}
+ * actions of the menu items are resolved from an {@link ActionRegistry} and optional further
+ * {@link ActionResolver} objects, texts can be resolved from a resource bundle and icons from a
+ * custom icon resolver. All built components are registered by the name of their {@link MenuInfo}
+ * and can be retrieved with {@link #getComponent(String)}
  *
  * <pre>
  * MenuInfo menuBarInfo = MenuXmlReader.readResource("menubar.xml");
@@ -72,6 +75,8 @@ public class MenuBuilder
 	/** The {@link ActionRegistry} object */
 	@Getter
 	private final ActionRegistry actions;
+	/** The additional {@link ActionResolver} objects that are asked after the registry */
+	private final List<ActionResolver> actionResolvers = new ArrayList<>();
 	/** The policy for menu items with an unresolved action */
 	@Getter
 	private MissingActionPolicy missingActionPolicy = MissingActionPolicy.FAIL;
@@ -114,6 +119,20 @@ public class MenuBuilder
 		final @NonNull MissingActionPolicy missingActionPolicy)
 	{
 		this.missingActionPolicy = missingActionPolicy;
+		return this;
+	}
+
+	/**
+	 * Adds an {@link ActionResolver} that is asked if the {@link ActionRegistry} can not resolve an
+	 * action id. Resolvers are asked in the order they were added
+	 *
+	 * @param actionResolver
+	 *            the {@link ActionResolver} object
+	 * @return this {@link MenuBuilder} object for method chaining
+	 */
+	public MenuBuilder withActionResolver(final @NonNull ActionResolver actionResolver)
+	{
+		actionResolvers.add(actionResolver);
 		return this;
 	}
 
@@ -447,6 +466,10 @@ public class MenuBuilder
 			? menuInfo.getActionId()
 			: menuInfo.getName();
 		Optional<ActionListener> actionListener = actions.find(actionId);
+		for (int i = 0; actionListener.isEmpty() && i < actionResolvers.size(); i++)
+		{
+			actionListener = actionResolvers.get(i).resolve(actionId);
+		}
 		if (actionListener.isEmpty() && required && missingActionPolicy == MissingActionPolicy.FAIL)
 		{
 			throw new IllegalStateException("No action registered for the id '" + actionId

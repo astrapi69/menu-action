@@ -24,6 +24,8 @@
  */
 package io.github.astrapi69.swing.menu;
 
+import java.awt.event.ActionEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -31,6 +33,7 @@ import javax.swing.SwingUtilities;
 
 import io.github.astrapi69.swing.action.ToggleFullScreenAction;
 import io.github.astrapi69.swing.menu.build.ActionRegistry;
+import io.github.astrapi69.swing.menu.build.MenuAction;
 import io.github.astrapi69.swing.menu.build.MenuBuilder;
 import io.github.astrapi69.swing.menu.build.MissingActionPolicy;
 import io.github.astrapi69.swing.menu.xml.MenuXmlReader;
@@ -47,10 +50,7 @@ public class MenuXmlDemo extends JFrame
 	{
 		super("menu-action xml demo");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ActionRegistry actions = ActionRegistry.empty().register("exit", e -> System.exit(0))
-			.register("toggleFullscreen", new ToggleFullScreenAction("Toggle Fullscreen", this))
-			.register("newFile", e -> System.out.println("new file"))
-			.register("openFile", e -> System.out.println("open file"));
+		ActionRegistry actions = ActionRegistry.ofHandlers(new DemoController(this));
 		MenuBuilder menuBuilder = new MenuBuilder(actions)
 			.withMissingActionPolicy(MissingActionPolicy.DISABLE);
 		JMenuBar menuBar = menuBuilder.buildMenuBar(MenuXmlReader.readResource("menubar.xml"));
@@ -58,6 +58,42 @@ public class MenuXmlDemo extends JFrame
 		getContentPane().add(new JLabel("Menu loaded from menubar.xml", JLabel.CENTER));
 		setSize(500, 300);
 		setLocationRelativeTo(null);
+	}
+
+	/**
+	 * The controller with the actions of the demo, the ids are referenced in menubar.xml
+	 */
+	static class DemoController
+	{
+		private final JFrame frame;
+
+		@MenuAction("toggleFullscreen")
+		final ToggleFullScreenAction toggleFullscreen;
+
+		DemoController(final JFrame frame)
+		{
+			this.frame = frame;
+			this.toggleFullscreen = new ToggleFullScreenAction("Toggle Fullscreen", frame);
+		}
+
+		@MenuAction("exit")
+		void exit()
+		{
+			frame.dispose();
+			System.exit(0);
+		}
+
+		@MenuAction("newFile")
+		void newFile()
+		{
+			System.out.println("new file");
+		}
+
+		@MenuAction("openFile")
+		void openFile(final ActionEvent event)
+		{
+			System.out.println("open file " + event.getActionCommand());
+		}
 	}
 
 	public static void main(String[] args)
