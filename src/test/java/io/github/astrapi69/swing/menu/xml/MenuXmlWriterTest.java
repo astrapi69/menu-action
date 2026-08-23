@@ -87,6 +87,8 @@ class MenuXmlWriterTest
 		MenuXmlWriter.write(expected, file);
 		assertTrue(Files.size(file) > 0);
 		assertEquals(expected, MenuXmlReader.read(file));
+		assertTrue(MenuXmlReader.validate(file).isEmpty());
+		assertEquals(expected, MenuXmlReader.readValidated(file));
 	}
 
 	@Test
@@ -102,7 +104,7 @@ class MenuXmlWriterTest
 	@Test
 	void unsupportedTypeIsRejected()
 	{
-		MenuInfo systemTray = MenuInfo.builder().type(MenuType.SYSTEM_TRAY).name("tray").build();
-		assertThrows(IllegalArgumentException.class, () -> MenuXmlWriter.toXml(systemTray));
+		MenuInfo unknown = MenuInfo.builder().type(MenuType.UNKNOWN).name("unknown").build();
+		assertThrows(IllegalArgumentException.class, () -> MenuXmlWriter.toXml(unknown));
 	}
 }

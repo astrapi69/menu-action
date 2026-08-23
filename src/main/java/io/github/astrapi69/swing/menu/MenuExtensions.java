@@ -57,6 +57,58 @@ public final class MenuExtensions
 	}
 
 	/**
+	 * The record {@link TextWithMnemonic} holds a text without the mnemonic marker and the mnemonic
+	 * that was marked with an ampersand
+	 *
+	 * @param text
+	 *            the text without the ampersand marker
+	 * @param mnemonic
+	 *            the mnemonic key code or null if the text has no marker
+	 */
+	public record TextWithMnemonic(String text, Integer mnemonic) {
+	}
+
+	/**
+	 * Parses the mnemonic marker from the given text. The character after the first single
+	 * ampersand is the mnemonic, for instance {@code "&File"} gives the text {@code "File"} and the
+	 * mnemonic {@code F}. A double ampersand is a literal ampersand
+	 *
+	 * @param text
+	 *            the text with an optional ampersand marker, can be null
+	 * @return the {@link TextWithMnemonic} object, the text is null if the given text is null
+	 */
+	public static TextWithMnemonic parseMnemonic(final String text)
+	{
+		if (text == null || text.indexOf('&') < 0)
+		{
+			return new TextWithMnemonic(text, null);
+		}
+		StringBuilder result = new StringBuilder(text.length());
+		Integer mnemonic = null;
+		for (int i = 0; i < text.length(); i++)
+		{
+			char current = text.charAt(i);
+			if (current == '&' && i + 1 < text.length())
+			{
+				char next = text.charAt(i + 1);
+				if (next == '&')
+				{
+					result.append('&');
+					i++;
+					continue;
+				}
+				if (mnemonic == null && !Character.isWhitespace(next))
+				{
+					mnemonic = toMnemonic(next);
+					continue;
+				}
+			}
+			result.append(current);
+		}
+		return new TextWithMnemonic(result.toString(), mnemonic);
+	}
+
+	/**
 	 * Sets the accelerator for the given menuitem and the given key char.
 	 *
 	 * @param jmi

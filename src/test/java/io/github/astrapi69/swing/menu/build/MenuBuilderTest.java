@@ -343,6 +343,95 @@ class MenuBuilderTest
 	}
 
 	@Test
+	void swingActionsAreBoundWithSetAction()
+	{
+		javax.swing.AbstractAction save = new javax.swing.AbstractAction("Save from action")
+		{
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent e)
+			{
+			}
+		};
+		ActionRegistry actions = ActionRegistry.empty().register("save", save);
+		MenuBuilder builder = new MenuBuilder(actions);
+		JMenuItem withText = builder.buildMenuComponent(
+			MenuInfo.builder().type(MenuType.MENU_ITEM).name("save").text("Save").build());
+		JMenuItem withoutText = builder.buildMenuComponent(
+			MenuInfo.builder().type(MenuType.MENU_ITEM).name("save.2").actionId("save").build());
+		JToolBar toolBar = builder.buildToolBar(MenuInfo.builder().type(MenuType.TOOL_BAR)
+			.name("tb").build().addChild(MenuInfo.builder().type(MenuType.MENU_ITEM).name("tb.save")
+				.actionId("save").text("Save").build()));
+		JButton button = (JButton)toolBar.getComponent(0);
+
+		// the explicit text wins, the action text is the fallback
+		assertEquals("Save", withText.getText());
+		assertEquals("Save from action", withoutText.getText());
+		assertEquals(save, withText.getAction());
+		assertEquals(1, withText.getActionListeners().length);
+
+		// the enabled state of the action is propagated to all bound components
+		save.setEnabled(false);
+		assertFalse(withText.isEnabled());
+		assertFalse(withoutText.isEnabled());
+		assertFalse(button.isEnabled());
+		save.setEnabled(true);
+		assertTrue(withText.isEnabled());
+		assertTrue(button.isEnabled());
+	}
+
+	@Test
+	void visibleAndAmpersandMnemonicFromResolvedText()
+	{
+		MenuBuilder builder = new MenuBuilder().withMissingActionPolicy(MissingActionPolicy.IGNORE)
+			.withTextResolver(key -> "menu.file".equals(key) ? "&Datei" : null);
+		JMenu menu = builder
+			.buildMenu(MenuInfo.builder().type(MenuType.MENU).name("m").textKey("menu.file").build()
+				.addChild(MenuInfo.builder().type(MenuType.MENU_ITEM).name("hidden").text("&Hidden")
+					.visible(false).build())
+				.addChild(MenuInfo.builder().type(MenuType.MENU_ITEM).name("explicit").text("&Text")
+					.mnemonic((int)'X').build()));
+		assertEquals("Datei", menu.getText());
+		assertEquals((int)'D', menu.getMnemonic());
+		assertFalse(menu.getItem(0).isVisible());
+		assertEquals("Hidden", menu.getItem(0).getText());
+		assertEquals((int)'H', menu.getItem(0).getMnemonic());
+		assertEquals((int)'X', menu.getItem(1).getMnemonic());
+	}
+
+	@Test
+	void awtPopupMenuForTray()
+	{
+		org.junit.jupiter.api.Assumptions.assumeFalse(java.awt.GraphicsEnvironment.isHeadless());
+		List<String> fired = new ArrayList<>();
+		ActionRegistry actions = ActionRegistry.empty()
+			.register("show", e -> fired.add("show:" + e.getActionCommand()))
+			.register("mute", e -> fired.add("mute:" + e.getActionCommand()));
+		MenuBuilder builder = new MenuBuilder(actions)
+			.withMissingActionPolicy(MissingActionPolicy.DISABLE);
+		MenuInfo trayInfo = MenuXmlReader.fromXml("<tray id=\"tray\" text=\"App\">"
+			+ "<item id=\"tray.show\" text=\"&amp;Show\" action=\"show\" accelerator=\"shift ctrl S\"/>"
+			+ "<checkbox id=\"tray.mute\" text=\"Mute\" action=\"mute\" selected=\"true\"/>"
+			+ "<separator/><menu id=\"tray.more\" text=\"More\"><item id=\"tray.more.x\" text=\"X\"/></menu>"
+			+ "<item id=\"tray.quit\" text=\"Quit\"/></tray>");
+		java.awt.PopupMenu popup = builder.buildAwtPopupMenu(trayInfo);
+		assertEquals("App", popup.getLabel());
+		assertEquals(5, popup.getItemCount());
+		java.awt.MenuItem show = popup.getItem(0);
+		assertEquals("Show", show.getLabel());
+		assertNotNull(show.getShortcut());
+		assertTrue(show.getShortcut().usesShiftModifier());
+		java.awt.CheckboxMenuItem mute = (java.awt.CheckboxMenuItem)popup.getItem(1);
+		assertTrue(mute.getState());
+		assertEquals("-", popup.getItem(2).getLabel());
+		assertInstanceOf(java.awt.Menu.class, popup.getItem(3));
+		assertFalse(popup.getItem(4).isEnabled());
+		assertTrue(builder.getAwtComponent("tray.more.x").isPresent());
+		assertFalse(builder.getAwtComponent("nope").isPresent());
+		assertThrows(IllegalArgumentException.class, () -> builder
+			.buildAwtPopupMenu(MenuInfo.builder().type(MenuType.MENU_BAR).name("b").build()));
+	}
+
+	@Test
 	void anchorsAreApplied()
 	{
 		MenuInfo menu = MenuInfo.builder().type(MenuType.MENU).name("m").build()

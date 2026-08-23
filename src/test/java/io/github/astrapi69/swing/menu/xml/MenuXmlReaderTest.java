@@ -152,6 +152,55 @@ class MenuXmlReaderTest
 	}
 
 	@Test
+	void ampersandMnemonicVisibleAndTray()
+	{
+		MenuInfo tray = MenuXmlReader
+			.fromXml("<tray id=\"tray\" text=\"&amp;Tray &amp;&amp; more\">"
+				+ "<item id=\"tray.show\" text=\"&amp;Show\" visible=\"false\"/>"
+				+ "<item id=\"tray.quit\" text=\"&amp;Quit\" mnemonic=\"X\"/></tray>");
+		assertEquals(MenuType.SYSTEM_TRAY, tray.getType());
+		assertEquals("Tray & more", tray.getText());
+		assertEquals(KeyEvent.VK_T, tray.getMnemonic());
+		MenuInfo show = tray.getChildren().get(0);
+		assertEquals("Show", show.getText());
+		assertEquals(KeyEvent.VK_S, show.getMnemonic());
+		assertEquals(Boolean.FALSE, show.getVisible());
+		// an explicit mnemonic attribute wins over the marker
+		assertEquals(KeyEvent.VK_X, tray.getChildren().get(1).getMnemonic());
+		assertEquals("Quit", tray.getChildren().get(1).getText());
+		String xml = MenuXmlWriter.toXml(tray);
+		assertTrue(xml.contains("<tray "));
+		assertTrue(xml.contains("visible=\"false\""));
+		assertEquals(tray, MenuXmlReader.fromXml(xml));
+	}
+
+	@Test
+	void validate()
+	{
+		for (String resource : List.of("menubar.xml", "popup.xml", "toolbar.xml",
+			"plugin-contribution.xml", "menus.xml"))
+		{
+			List<String> errors = MenuXmlReader
+				.validate(MenuXmlReaderTest.class.getResourceAsStream("/" + resource));
+			assertTrue(errors.isEmpty(), resource + ": " + errors);
+		}
+		assertTrue(MenuXmlReader.validate("<menu id=\"m\"><item id=\"i\"/></menu>").isEmpty());
+
+		List<String> errors = MenuXmlReader.validate(
+			"<menubar id=\"b\"><menu text=\"no id\"><foo/></menu><item id=\"x\" anchor=\"MIDDLE\"/></menubar>");
+		assertFalse(errors.isEmpty());
+		assertTrue(errors.stream().anyMatch(error -> error.matches("\\d+:\\d+: .*")));
+		assertTrue(errors.stream().anyMatch(error -> error.contains("foo")));
+		assertFalse(MenuXmlReader.validate("<menu id=\"m\">").isEmpty());
+
+		assertNotNull(MenuXmlReader.readValidated("<menu id=\"m\"/>"));
+		assertNotNull(MenuXmlReader.readValidatedResource("popup.xml"));
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+			() -> MenuXmlReader.readValidated("<menu><foo/></menu>"));
+		assertTrue(exception.getMessage().contains("foo"));
+	}
+
+	@Test
 	void doctypeIsRejected()
 	{
 		String xml = "<!DOCTYPE menu [<!ENTITY xxe SYSTEM \"file:///etc/passwd\">]>"

@@ -36,8 +36,9 @@ The source code comes under the liberal MIT License, making menu-action great fo
 ## Features
 
 **Declarative menus (xml)**
-- `MenuXmlReader` / `MenuXmlWriter`: load and save menu bars, menus, popup menus and tool bars from a plain xml format (`menubar`, `menu`, `item`, `checkbox`, `radio`, `separator`, `popup`, `toolbar`, container `menus`), xml schema `menu.xsd` shipped in the jar, parser hardened against xml external entities
-- `MenuBuilder`: builds `JMenuBar`, `JMenu`, `JPopupMenu`, `JToolBar` and all item types from the `MenuInfo` tree; actions resolved by id from an `ActionRegistry`; `MissingActionPolicy` (`FAIL`, `DISABLE`, `IGNORE`); texts from a `ResourceBundle` via `textKey`; icons from classpath or file with a pluggable resolver; button groups for radio items; placement with `anchor`/`relativeTo`; lookup of every built component by id
+- `MenuXmlReader` / `MenuXmlWriter`: load and save menu bars, menus, popup menus, tool bars and tray menus from a plain xml format (`menubar`, `menu`, `item`, `checkbox`, `radio`, `separator`, `popup`, `toolbar`, `tray`, container `menus`); ampersand mnemonics (`&amp;File`), `visible`/`enabled` attributes; schema validation with line and column errors against the shipped `menu.xsd`; parser hardened against xml external entities
+- `MenuInfoExporter`: exports existing swing menu bars, menus, popup menus and tool bars to a `MenuInfo` tree for the migration to xml
+- `MenuBuilder`: builds `JMenuBar`, `JMenu`, `JPopupMenu`, `JToolBar`, awt `PopupMenu` for tray icons and all item types from the `MenuInfo` tree; `javax.swing.Action` objects are bound with `setAction` so their enabled state stays in sync; actions resolved by id from an `ActionRegistry`; `MissingActionPolicy` (`FAIL`, `DISABLE`, `IGNORE`); texts from a `ResourceBundle` via `textKey`; icons from classpath or file with a pluggable resolver; button groups for radio items; placement with `anchor`/`relativeTo`; lookup of every built component by id
 - `MenuInfoExtensions`: `find`, `flatten`, `orderByAnchor` (resolves chained anchors), `insertIndex` and `merge` of plugin menu contributions into an existing menu tree
 - runtime changes of built menus: `MenuBuilder.insert` places a new menu, item or separator into a built `JMenuBar`, `JMenu`, `JPopupMenu` or `JToolBar` by its anchor, `MenuBuilder.remove` takes it out again
 - declarative actions: `@MenuAction` annotated controller methods and fields (`ActionRegistry.ofHandlers`), `ActionProvider` services for plugins with an `ActionContext`, `ActionResolver` chain for custom lookups
@@ -56,7 +57,7 @@ The source code comes under the liberal MIT License, making menu-action great fo
 **Actions**
 - `ExitApplicationAction`, `ToggleFullScreenAction`, `OpenFileAction` (template around `JFileChooser`), `OpenBrowserAction` / `BaseOpenBrowserAction`, `ShowDialogAction` / `ShowInfoDialogAction` / `ShowFrameAction` (templates for dialogs and frames), `ShowHelpDialogAction`
 - look and feel actions for GTK, Metal (default and Ocean theme), Motif, Multi, Nimbus, Synth, System and Windows
-- `LookAndFeels` enum: switch the look and feel at runtime and update the component tree or window
+- `LookAndFeels` enum: switch the look and feel at runtime and update the component tree or window; `LookAndFeelMenuFactory` generates the look and feel menu and its actions from the installed look and feels
 
 **Listeners and bindings**
 - `DocumentListenerAdapter`, `EnableButtonBehavior` (enables a button while a document has text), `StringBindingListener` (binds a document to a model-data `IModel`)
@@ -135,7 +136,31 @@ Menus that are built already can be extended at runtime, for instance by a plugi
 later: `builder.insert("global.menu.bar", pluginMenuInfo)` places the new menu according to its
 `anchor`/`relativeTo`, `builder.remove("plugin.menu")` takes it out again.
 
-A `MenuInfo` tree can be written back with `MenuXmlWriter.toXml(menuInfo)`.
+More xml features:
+
+- `text="&amp;File"` marks the mnemonic with an ampersand (`&amp;&amp;` is a literal ampersand), an
+  explicit `mnemonic` attribute wins; the marker also works in resource bundle texts
+- `visible="false"` hides an item, `enabled="false"` disables it
+- `<tray>` describes the popup menu of a `java.awt.TrayIcon`, built with
+  `builder.buildAwtPopupMenu(trayInfo)` (awt `PopupMenu`, `Menu`, `MenuItem`, `CheckboxMenuItem`)
+- `MenuXmlReader.validate(...)` checks a document against the shipped schema `menu.xsd` and returns
+  the errors with line and column, `MenuXmlReader.readValidated(...)` reads only valid documents
+- if a registered action is a `javax.swing.Action` the item is bound with `setAction`, so the
+  enabled state, icon and tool tip of the action stay in sync with every menu item and tool bar
+  button that uses it; the xml text has precedence over the action name
+
+A `MenuInfo` tree can be written back with `MenuXmlWriter.toXml(menuInfo)`. Existing menus that
+were built in java can be exported with `MenuInfoExporter.fromJMenuBar(menuBar)` (also
+`fromJMenu`, `fromJPopupMenu`, `fromJToolBar`) and written to xml, which is the fastest way to
+migrate a programmatic menu to the xml format. Components without a name get an id derived from
+the parent id and the text.
+
+A ready made look and feel menu comes from `LookAndFeelMenuFactory`: `newLookAndFeelMenuInfo()`
+creates a radio item per installed look and feel plus the metal ocean theme,
+`registerActions(actions, frame)` registers the matching actions.
+
+What is not implemented yet and what is deliberately left out is listed in
+[docs/roadmap.md](docs/roadmap.md).
 
 Actions can also be declared on a controller object instead of registering them one by one:
 

@@ -24,9 +24,17 @@
  */
 package io.github.astrapi69.swing.menu.build;
 
+import java.awt.CheckboxMenuItem;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Menu;
+import java.awt.MenuComponent;
+import java.awt.MenuItem;
+import java.awt.MenuShortcut;
+import java.awt.PopupMenu;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -51,6 +59,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
+import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.enumeration.Anchor;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
@@ -93,6 +102,8 @@ public class MenuBuilder
 	private final Map<String, JComponent> components = new LinkedHashMap<>();
 	/** The button groups by group name */
 	private final Map<String, ButtonGroup> buttonGroups = new LinkedHashMap<>();
+	/** The built awt menu components by name, for system tray menus */
+	private final Map<String, MenuComponent> awtComponents = new LinkedHashMap<>();
 
 	/**
 	 * Creates a new {@link MenuBuilder} object with an empty {@link ActionRegistry}
@@ -290,7 +301,8 @@ public class MenuBuilder
 	public JPopupMenu buildPopupMenu(final @NonNull MenuInfo popupInfo)
 	{
 		requireType(popupInfo, MenuType.POPUP);
-		JPopupMenu popupMenu = new JPopupMenu(resolveText(popupInfo));
+		JPopupMenu popupMenu = new JPopupMenu(
+			MenuExtensions.parseMnemonic(resolveText(popupInfo)).text());
 		if (popupInfo.getName() != null)
 		{
 			popupMenu.setName(popupInfo.getName());
@@ -329,7 +341,8 @@ public class MenuBuilder
 	public JToolBar buildToolBar(final @NonNull MenuInfo toolBarInfo)
 	{
 		requireType(toolBarInfo, MenuType.TOOL_BAR);
-		JToolBar toolBar = new JToolBar(resolveText(toolBarInfo));
+		JToolBar toolBar = new JToolBar(
+			MenuExtensions.parseMnemonic(resolveText(toolBarInfo)).text());
 		if (toolBarInfo.getName() != null)
 		{
 			toolBar.setName(toolBarInfo.getName());
@@ -411,6 +424,128 @@ public class MenuBuilder
 			case TOOL_BAR -> buildToolBar(menuInfo);
 			default -> buildMenuComponent(menuInfo);
 		};
+	}
+
+	/**
+	 * Builds an awt {@link PopupMenu} object from the given {@link MenuInfo} tree, for instance for
+	 * a {@link java.awt.TrayIcon}. Menus become {@link Menu} objects, menu items become
+	 * {@link MenuItem} objects, check box and radio button menu items become
+	 * {@link CheckboxMenuItem} objects whose item events are delivered to the action listener as
+	 * action events. The accelerator key code of an item becomes a {@link MenuShortcut}. The built
+	 * awt components are available with {@link #getAwtComponent(String)}
+	 *
+	 * @param popupInfo
+	 *            the {@link MenuInfo} object of type {@link MenuType#SYSTEM_TRAY} or
+	 *            {@link MenuType#POPUP}
+	 * @return the new {@link PopupMenu} object
+	 */
+	public PopupMenu buildAwtPopupMenu(final @NonNull MenuInfo popupInfo)
+	{
+		if (popupInfo.getType() != MenuType.SYSTEM_TRAY && popupInfo.getType() != MenuType.POPUP)
+		{
+			throw new IllegalArgumentException(
+				"Expected a menu of type SYSTEM_TRAY or POPUP but the menu '" + popupInfo.getName()
+					+ "' has the type " + popupInfo.getType());
+		}
+		PopupMenu popupMenu = new PopupMenu(
+			MenuExtensions.parseMnemonic(resolveText(popupInfo)).text());
+		setAwtFields(popupInfo, popupMenu);
+		addAwtChildren(popupInfo, popupMenu);
+		return popupMenu;
+	}
+
+	/**
+	 * Gets the built awt menu component with the given name
+	 *
+	 * @param name
+	 *            the name of the menu component
+	 * @return an optional with the built {@link MenuComponent} or empty if not built
+	 */
+	public Optional<MenuComponent> getAwtComponent(final String name)
+	{
+		return name == null ? Optional.empty() : Optional.ofNullable(awtComponents.get(name));
+	}
+
+	private void addAwtChildren(final MenuInfo parentInfo, final Menu parent)
+	{
+		for (MenuInfo child : MenuInfoExtensions.orderByAnchor(parentInfo.getChildren()))
+		{
+			MenuType type = child.getType() != null ? child.getType() : MenuType.MENU_ITEM;
+			switch (type)
+			{
+				case SEPARATOR -> parent.addSeparator();
+				case MENU -> {
+					Menu menu = new Menu(MenuExtensions.parseMnemonic(resolveText(child)).text());
+					setAwtFields(child, menu);
+					addAwtChildren(child, menu);
+					parent.add(menu);
+				}
+				case CHECK_BOX_MENU_ITEM, RADIO_BUTTON_MENU_ITEM -> {
+					CheckboxMenuItem item = new CheckboxMenuItem(
+						MenuExtensions.parseMnemonic(resolveText(child)).text(),
+						Boolean.TRUE.equals(child.getSelected()));
+					setAwtFields(child, item);
+					ActionListener actionListener = resolveAction(child, true);
+					if (actionListener != null)
+					{
+						String actionCommand = child.getActionCommand() != null
+							? child.getActionCommand()
+							: child.getName();
+						item.addItemListener(event -> actionListener.actionPerformed(
+							new ActionEvent(item, ActionEvent.ACTION_PERFORMED, actionCommand)));
+					}
+					else if (missingActionPolicy == MissingActionPolicy.DISABLE)
+					{
+						item.setEnabled(false);
+					}
+					parent.add(item);
+				}
+				default -> {
+					MenuItem item = new MenuItem(
+						MenuExtensions.parseMnemonic(resolveText(child)).text());
+					setAwtFields(child, item);
+					ActionListener actionListener = resolveAction(child, true);
+					if (actionListener != null)
+					{
+						item.addActionListener(actionListener);
+					}
+					else if (missingActionPolicy == MissingActionPolicy.DISABLE)
+					{
+						item.setEnabled(false);
+					}
+					parent.add(item);
+				}
+			}
+		}
+	}
+
+	private void setAwtFields(final MenuInfo menuInfo, final MenuItem item)
+	{
+		if (menuInfo.getName() != null)
+		{
+			item.setName(menuInfo.getName());
+			awtComponents.put(menuInfo.getName(), item);
+		}
+		if (menuInfo.getEnabled() != null)
+		{
+			item.setEnabled(menuInfo.getEnabled());
+		}
+		String actionCommand = menuInfo.getActionCommand() != null
+			? menuInfo.getActionCommand()
+			: menuInfo.getName();
+		if (actionCommand != null)
+		{
+			item.setActionCommand(actionCommand);
+		}
+		if (menuInfo.getKeyStrokeInfo() != null && menuInfo.getKeyStrokeInfo().getKeyCode() != null
+			&& !(item instanceof Menu))
+		{
+			int modifiers = menuInfo.getKeyStrokeInfo().getModifiers() != null
+				? menuInfo.getKeyStrokeInfo().getModifiers()
+				: 0;
+			boolean shift = (modifiers & InputEvent.SHIFT_DOWN_MASK) != 0;
+			item.setShortcut(new MenuShortcut(menuInfo.getKeyStrokeInfo().getKeyCode(), shift));
+		}
 	}
 
 	/**
@@ -624,12 +759,16 @@ public class MenuBuilder
 		String actionCommand = menuInfo.getActionCommand() != null
 			? menuInfo.getActionCommand()
 			: menuInfo.getName();
-		return MenuItemInfo.builder().name(menuInfo.getName()).text(resolveText(menuInfo))
-			.toolTip(menuInfo.getToolTip()).mnemonic(menuInfo.getMnemonic())
+		MenuExtensions.TextWithMnemonic text = MenuExtensions.parseMnemonic(resolveText(menuInfo));
+		Integer mnemonic = menuInfo.getMnemonic() != null
+			? menuInfo.getMnemonic()
+			: text.mnemonic();
+		return MenuItemInfo.builder().name(menuInfo.getName()).text(text.text())
+			.toolTip(menuInfo.getToolTip()).mnemonic(mnemonic)
 			.keyStrokeInfo(menuInfo.getKeyStrokeInfo()).type(menuInfo.getType())
 			.anchor(menuInfo.getAnchor()).relativeToMenuId(menuInfo.getRelativeToMenuId())
 			.actionCommand(actionCommand).actionListener(actionListener).enabled(enabled)
-			.selected(menuInfo.getSelected()).icon(icon).build();
+			.visible(menuInfo.getVisible()).selected(menuInfo.getSelected()).icon(icon).build();
 	}
 
 	private static boolean isItem(final MenuInfo menuInfo)

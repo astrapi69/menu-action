@@ -13,6 +13,13 @@ ADDED:
 - new Makefile targets central-list, central-upload, central-upload-repository and central-drop for the staging repositories of the Central Portal
 - new methods MenuBuilder.insert and MenuBuilder.remove for add and remove menus, items and separators in already built menu bars, menus, popup menus and tool bars at runtime, placed by anchor and relativeTo
 - new method MenuBuilder.buildToolBarComponent and MenuInfoExtensions.insertIndex
+- new class MenuInfoExporter that exports existing JMenuBar, JMenu, JPopupMenu and JToolBar objects to a MenuInfo tree for the migration to xml
+- new method MenuBuilder.buildAwtPopupMenu for system tray menus (awt PopupMenu, Menu, MenuItem, CheckboxMenuItem) with MenuBuilder.getAwtComponent; new xml element tray for MenuType.SYSTEM_TRAY
+- new methods MenuXmlReader.validate, readValidated and readValidatedResource that validate against the shipped schema menu.xsd and report the errors with line and column
+- new attribute visible and the fields MenuInfo.visible and MenuItemInfo.visible
+- new ampersand mnemonic marker in texts (text="&amp;File"), parsed by MenuXmlReader and by MenuBuilder for resolved resource bundle texts; new method MenuExtensions.parseMnemonic
+- new class LookAndFeelMenuFactory that creates the look and feel menu and the actions from the installed look and feels
+- new documentation docs/roadmap.md with the not yet implemented ideas and the non goals
 
 FIXED:
 
@@ -20,6 +27,7 @@ FIXED:
 
 CHANGED:
 
+- MenuItemInfoConverter.setFields binds a javax.swing.Action with setAction instead of addActionListener, so the enabled state, icon and tool tip of the action stay in sync with all bound components; explicit fields of the MenuItemInfo keep precedence
 - the publish workflow and the Makefile release target upload the staging repository to the Central Portal after publishing, so the deployment is visible there
 - module-info: new uses io.github.astrapi69.swing.menu.build.ActionProvider
 - the javadoc task disables the doclint group 'missing' for the lombok generated members

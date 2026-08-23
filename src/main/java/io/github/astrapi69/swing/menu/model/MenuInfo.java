@@ -126,6 +126,11 @@ public class MenuInfo
 	Boolean enabled;
 
 	/**
+	 * The optional visible state of this menu component. A null value means visible
+	 */
+	Boolean visible;
+
+	/**
 	 * The optional selected state of this menu component. Only relevant for check box and radio
 	 * button menu items
 	 */

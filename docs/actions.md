@@ -20,6 +20,11 @@ JMenuBar menuBar = new MenuBuilder(actions).buildMenuBar(MenuXmlReader.readResou
 If a menu item has no `action` attribute its `id` is used as action id, so
 `<item id="exit" .../>` and `register("exit", ...)` belong together without further configuration.
 
+Registered listeners may be plain `ActionListener` lambdas or `javax.swing.Action` objects. An
+`Action` is bound with `setAction`, so `action.setEnabled(false)` disables every menu item and
+tool bar button that uses it, and its icon and tool tip are used when the xml does not define
+them. The text of the xml always wins over `Action.NAME`.
+
 ## 2. Controller objects with `@MenuAction`
 
 Mark methods or fields of any object with `@MenuAction("<id>")` and register the object. This is

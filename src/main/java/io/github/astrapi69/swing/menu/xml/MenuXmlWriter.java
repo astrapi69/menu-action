@@ -196,6 +196,7 @@ public final class MenuXmlWriter
 		setAttribute(element, MenuXmlElements.ATTR_ACTION, menuInfo.getActionId());
 		setAttribute(element, MenuXmlElements.ATTR_ACTION_COMMAND, menuInfo.getActionCommand());
 		setAttribute(element, MenuXmlElements.ATTR_ENABLED, toString(menuInfo.getEnabled()));
+		setAttribute(element, MenuXmlElements.ATTR_VISIBLE, toString(menuInfo.getVisible()));
 		setAttribute(element, MenuXmlElements.ATTR_SELECTED, toString(menuInfo.getSelected()));
 		setAttribute(element, MenuXmlElements.ATTR_GROUP, menuInfo.getGroup());
 		setAttribute(element, MenuXmlElements.ATTR_ICON, menuInfo.getIcon());

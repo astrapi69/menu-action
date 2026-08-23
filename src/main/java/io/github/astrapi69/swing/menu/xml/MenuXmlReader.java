@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -39,13 +40,20 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import io.github.astrapi69.swing.menu.KeyStrokeExtensions;
 import io.github.astrapi69.swing.menu.MenuExtensions;
@@ -116,20 +124,7 @@ public final class MenuXmlReader
 	 */
 	public static MenuInfo readResource(final @NonNull String resource)
 	{
-		String name = resource.startsWith("/") ? resource.substring(1) : resource;
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		InputStream inputStream = classLoader != null
-			? classLoader.getResourceAsStream(name)
-			: null;
-		if (inputStream == null)
-		{
-			inputStream = MenuXmlReader.class.getClassLoader().getResourceAsStream(name);
-		}
-		if (inputStream == null)
-		{
-			throw new IllegalArgumentException("Menu xml resource not found: " + resource);
-		}
-		try (InputStream in = inputStream)
+		try (InputStream in = openResource(resource))
 		{
 			return read(in);
 		}
@@ -231,18 +226,21 @@ public final class MenuXmlReader
 		String tagName = element.getTagName();
 		MenuType type = MenuXmlElements.toMenuType(tagName)
 			.orElseThrow(() -> new IllegalArgumentException("Unknown menu element <" + tagName
-				+ ">, expected one of menubar, menu, item, checkbox, radio, separator, popup, toolbar"));
+				+ ">, expected one of menubar, menu, item, checkbox, radio, separator, popup, toolbar, tray"));
+		MenuExtensions.TextWithMnemonic text = MenuExtensions
+			.parseMnemonic(attribute(element, MenuXmlElements.ATTR_TEXT));
+		Integer mnemonic = toMnemonic(attribute(element, MenuXmlElements.ATTR_MNEMONIC), element);
 		MenuInfo menuInfo = MenuInfo.builder().type(type)
-			.name(attribute(element, MenuXmlElements.ATTR_ID))
-			.text(attribute(element, MenuXmlElements.ATTR_TEXT))
+			.name(attribute(element, MenuXmlElements.ATTR_ID)).text(text.text())
 			.textKey(attribute(element, MenuXmlElements.ATTR_TEXT_KEY))
 			.toolTip(attribute(element, MenuXmlElements.ATTR_TOOL_TIP))
-			.mnemonic(toMnemonic(attribute(element, MenuXmlElements.ATTR_MNEMONIC), element))
+			.mnemonic(mnemonic != null ? mnemonic : text.mnemonic())
 			.keyStrokeInfo(
 				toKeyStrokeInfo(attribute(element, MenuXmlElements.ATTR_ACCELERATOR), element))
 			.actionId(attribute(element, MenuXmlElements.ATTR_ACTION))
 			.actionCommand(attribute(element, MenuXmlElements.ATTR_ACTION_COMMAND))
 			.enabled(toBoolean(attribute(element, MenuXmlElements.ATTR_ENABLED)))
+			.visible(toBoolean(attribute(element, MenuXmlElements.ATTR_VISIBLE)))
 			.selected(toBoolean(attribute(element, MenuXmlElements.ATTR_SELECTED)))
 			.group(attribute(element, MenuXmlElements.ATTR_GROUP))
 			.icon(attribute(element, MenuXmlElements.ATTR_ICON))
@@ -253,6 +251,198 @@ public final class MenuXmlReader
 			menuInfo.addChild(toMenuInfo(child));
 		}
 		return menuInfo;
+	}
+
+	/**
+	 * Validates the given xml string against the menu schema {@code menu.xsd}
+	 *
+	 * @param xml
+	 *            the xml string
+	 * @return the list with the validation errors, empty if the xml is valid
+	 */
+	public static List<String> validate(final @NonNull String xml)
+	{
+		return validate(new StreamSource(new StringReader(xml)));
+	}
+
+	/**
+	 * Validates the given xml file against the menu schema {@code menu.xsd}
+	 *
+	 * @param path
+	 *            the path of the xml file
+	 * @return the list with the validation errors, empty if the xml is valid
+	 */
+	public static List<String> validate(final @NonNull Path path)
+	{
+		return validate(new StreamSource(path.toFile()));
+	}
+
+	/**
+	 * Validates the given xml stream against the menu schema {@code menu.xsd}. The stream is not
+	 * closed
+	 *
+	 * @param inputStream
+	 *            the {@link InputStream} object
+	 * @return the list with the validation errors, empty if the xml is valid
+	 */
+	public static List<String> validate(final @NonNull InputStream inputStream)
+	{
+		return validate(new StreamSource(inputStream));
+	}
+
+	/**
+	 * Validates the given xml source against the menu schema {@code menu.xsd}
+	 *
+	 * @param source
+	 *            the xml {@link Source} object
+	 * @return the list with the validation errors in the form {@code line:column: message}, empty
+	 *         if the xml is valid
+	 */
+	public static List<String> validate(final @NonNull Source source)
+	{
+		List<String> errors = new ArrayList<>();
+		try
+		{
+			Validator validator = menuSchema().newValidator();
+			validator.setErrorHandler(new ErrorHandler()
+			{
+				@Override
+				public void warning(final SAXParseException exception)
+				{
+				}
+
+				@Override
+				public void error(final SAXParseException exception)
+				{
+					errors.add(describe(exception));
+				}
+
+				@Override
+				public void fatalError(final SAXParseException exception)
+				{
+					errors.add(describe(exception));
+				}
+			});
+			validator.validate(source);
+		}
+		catch (SAXException e)
+		{
+			if (errors.isEmpty())
+			{
+				errors.add(e.getMessage());
+			}
+		}
+		catch (IOException e)
+		{
+			throw new UncheckedIOException("Could not read menu xml for validation", e);
+		}
+		return errors;
+	}
+
+	/**
+	 * Validates the given xml string against the menu schema and reads it if it is valid
+	 *
+	 * @param xml
+	 *            the xml string
+	 * @return the root {@link MenuInfo} object
+	 * @throws IllegalArgumentException
+	 *             with all validation errors if the xml is not valid
+	 */
+	public static MenuInfo readValidated(final @NonNull String xml)
+	{
+		requireValid(validate(xml), xml.length() > 80 ? xml.substring(0, 80) + "..." : xml);
+		return fromXml(xml);
+	}
+
+	/**
+	 * Validates the given xml file against the menu schema and reads it if it is valid
+	 *
+	 * @param path
+	 *            the path of the xml file
+	 * @return the root {@link MenuInfo} object
+	 * @throws IllegalArgumentException
+	 *             with all validation errors if the xml is not valid
+	 */
+	public static MenuInfo readValidated(final @NonNull Path path)
+	{
+		requireValid(validate(path), path.toString());
+		return read(path);
+	}
+
+	/**
+	 * Validates the given classpath resource against the menu schema and reads it if it is valid
+	 *
+	 * @param resource
+	 *            the classpath resource path
+	 * @return the root {@link MenuInfo} object
+	 * @throws IllegalArgumentException
+	 *             with all validation errors if the xml is not valid
+	 */
+	public static MenuInfo readValidatedResource(final @NonNull String resource)
+	{
+		try (InputStream inputStream = openResource(resource))
+		{
+			requireValid(validate(inputStream), resource);
+		}
+		catch (IOException e)
+		{
+			throw new UncheckedIOException("Could not read menu xml resource " + resource, e);
+		}
+		return readResource(resource);
+	}
+
+	private static void requireValid(final List<String> errors, final String source)
+	{
+		if (!errors.isEmpty())
+		{
+			throw new IllegalArgumentException(
+				"Invalid menu xml " + source + ":\n" + String.join("\n", errors));
+		}
+	}
+
+	private static String describe(final SAXParseException exception)
+	{
+		return exception.getLineNumber() + ":" + exception.getColumnNumber() + ": "
+			+ exception.getMessage();
+	}
+
+	private static Schema menuSchema()
+	{
+		try
+		{
+			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+			factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+			URL schemaUrl = MenuXmlReader.class.getResource("/menu.xsd");
+			if (schemaUrl == null)
+			{
+				throw new IllegalStateException(
+					"The menu schema menu.xsd is missing on the classpath");
+			}
+			return factory.newSchema(schemaUrl);
+		}
+		catch (SAXException e)
+		{
+			throw new IllegalStateException("The menu schema menu.xsd is invalid", e);
+		}
+	}
+
+	private static InputStream openResource(final String resource)
+	{
+		String name = resource.startsWith("/") ? resource.substring(1) : resource;
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		InputStream inputStream = classLoader != null
+			? classLoader.getResourceAsStream(name)
+			: null;
+		if (inputStream == null)
+		{
+			inputStream = MenuXmlReader.class.getClassLoader().getResourceAsStream(name);
+		}
+		if (inputStream == null)
+		{
+			throw new IllegalArgumentException("Menu xml resource not found: " + resource);
+		}
+		return inputStream;
 	}
 
 	private static Document parse(final InputSource inputSource)

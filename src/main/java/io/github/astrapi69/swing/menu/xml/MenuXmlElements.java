@@ -54,6 +54,8 @@ public final class MenuXmlElements
 	public static final String POPUP = "popup";
 	/** The element name for a tool bar */
 	public static final String TOOL_BAR = "toolbar";
+	/** The element name for a system tray popup menu */
+	public static final String TRAY = "tray";
 
 	/** The attribute name for the id of a menu component */
 	public static final String ATTR_ID = "id";
@@ -73,6 +75,8 @@ public final class MenuXmlElements
 	public static final String ATTR_ACTION_COMMAND = "actionCommand";
 	/** The attribute name for the enabled state */
 	public static final String ATTR_ENABLED = "enabled";
+	/** The attribute name for the visible state */
+	public static final String ATTR_VISIBLE = "visible";
 	/** The attribute name for the selected state */
 	public static final String ATTR_SELECTED = "selected";
 	/** The attribute name for the button group */
@@ -87,7 +91,7 @@ public final class MenuXmlElements
 	private static final Map<String, MenuType> ELEMENT_TO_TYPE = Map.of(MENU_BAR, MenuType.MENU_BAR,
 		MENU, MenuType.MENU, ITEM, MenuType.MENU_ITEM, CHECKBOX, MenuType.CHECK_BOX_MENU_ITEM,
 		RADIO, MenuType.RADIO_BUTTON_MENU_ITEM, SEPARATOR, MenuType.SEPARATOR, POPUP,
-		MenuType.POPUP, TOOL_BAR, MenuType.TOOL_BAR);
+		MenuType.POPUP, TOOL_BAR, MenuType.TOOL_BAR, TRAY, MenuType.SYSTEM_TRAY);
 
 	private MenuXmlElements()
 	{
@@ -128,6 +132,7 @@ public final class MenuXmlElements
 			case SEPARATOR -> Optional.of(SEPARATOR);
 			case POPUP -> Optional.of(POPUP);
 			case TOOL_BAR -> Optional.of(TOOL_BAR);
+			case SYSTEM_TRAY -> Optional.of(TRAY);
 			default -> Optional.empty();
 		};
 	}

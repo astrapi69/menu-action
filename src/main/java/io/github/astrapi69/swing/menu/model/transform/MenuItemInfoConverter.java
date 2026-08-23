@@ -31,6 +31,7 @@ import java.io.File;
 import java.net.URL;
 
 import javax.swing.AbstractButton;
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
@@ -267,6 +268,10 @@ public final class MenuItemInfoConverter
 		{
 			menuBar.setEnabled(menuItemInfo.getEnabled());
 		}
+		if (menuItemInfo.getVisible() != null)
+		{
+			menuBar.setVisible(menuItemInfo.getVisible());
+		}
 		return menuBar;
 	}
 
@@ -282,6 +287,12 @@ public final class MenuItemInfoConverter
 	public static void setFields(final @NonNull MenuItemInfo menuItemInfo,
 		final @NonNull AbstractButton button)
 	{
+		if (menuItemInfo.getActionListener()instanceof Action action)
+		{
+			// the action provides text, icon, tool tip, mnemonic, accelerator and the enabled
+			// state and keeps them in sync; the explicit fields of the info take precedence
+			button.setAction(action);
+		}
 		if (menuItemInfo.getText() != null)
 		{
 			button.setText(menuItemInfo.getText());
@@ -294,7 +305,8 @@ public final class MenuItemInfoConverter
 		{
 			button.setMnemonic(menuItemInfo.getMnemonic());
 		}
-		if (menuItemInfo.getActionListener() != null)
+		if (menuItemInfo.getActionListener() != null
+			&& !(menuItemInfo.getActionListener() instanceof Action))
 		{
 			button.addActionListener(menuItemInfo.getActionListener());
 		}
@@ -317,6 +329,10 @@ public final class MenuItemInfoConverter
 		if (menuItemInfo.getSelected() != null)
 		{
 			button.setSelected(menuItemInfo.getSelected());
+		}
+		if (menuItemInfo.getVisible() != null)
+		{
+			button.setVisible(menuItemInfo.getVisible());
 		}
 		if (button instanceof JMenuItem jMenuItem && !(button instanceof JMenu)
 			&& menuItemInfo.getKeyStrokeInfo() != null)
@@ -363,7 +379,7 @@ public final class MenuItemInfoConverter
 			.type(menuInfo.getType()).anchor(menuInfo.getAnchor())
 			.relativeToMenuId(menuInfo.getRelativeToMenuId())
 			.actionCommand(menuInfo.getActionCommand()).enabled(menuInfo.getEnabled())
-			.selected(menuInfo.getSelected()).icon(icon).build();
+			.visible(menuInfo.getVisible()).selected(menuInfo.getSelected()).icon(icon).build();
 	}
 
 	/**
@@ -385,7 +401,8 @@ public final class MenuItemInfoConverter
 			.type(menuItemInfo.getType()).anchor(menuItemInfo.getAnchor())
 			.relativeToMenuId(menuItemInfo.getRelativeToMenuId())
 			.actionCommand(menuItemInfo.getActionCommand()).enabled(menuItemInfo.getEnabled())
-			.selected(menuItemInfo.getSelected()).icon(menuItemInfo.getIcon()).build();
+			.visible(menuItemInfo.getVisible()).selected(menuItemInfo.getSelected())
+			.icon(menuItemInfo.getIcon()).build();
 	}
 
 	/**
