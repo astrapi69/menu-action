@@ -11,6 +11,12 @@ ADDED:
 - new functional interface ActionResolver; ActionRegistry implements it and MenuBuilder.withActionResolver adds further resolvers that are asked after the registry
 - new documentation docs/actions.md for the declarative actions and docs/publishing.md for the release process
 - new Makefile targets central-list, central-upload, central-upload-repository and central-drop for the staging repositories of the Central Portal
+- new methods MenuBuilder.insert and MenuBuilder.remove for add and remove menus, items and separators in already built menu bars, menus, popup menus and tool bars at runtime, placed by anchor and relativeTo
+- new method MenuBuilder.buildToolBarComponent and MenuInfoExtensions.insertIndex
+
+FIXED:
+
+- MenuInfoExtensions.orderByAnchor placed a child at the end if its relative child was itself anchored and came later in the document; the placement is now repeated until all references are resolved, cycles are appended
 
 CHANGED:
 

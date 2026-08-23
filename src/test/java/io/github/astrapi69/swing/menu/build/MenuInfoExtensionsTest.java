@@ -89,6 +89,60 @@ class MenuInfoExtensionsTest
 	}
 
 	@Test
+	void orderByAnchorResolvesChains()
+	{
+		MenuInfo b = item("b");
+		b.setAnchor(Anchor.AFTER);
+		b.setRelativeToMenuId("a");
+		MenuInfo c = item("c");
+		c.setAnchor(Anchor.AFTER);
+		c.setRelativeToMenuId("b");
+		MenuInfo d = item("d");
+		d.setAnchor(Anchor.BEFORE);
+		d.setRelativeToMenuId("c");
+		MenuInfo a = item("a");
+		a.setAnchor(Anchor.BEFORE);
+		a.setRelativeToMenuId("z");
+		MenuInfo cycle1 = item("cycle1");
+		cycle1.setAnchor(Anchor.AFTER);
+		cycle1.setRelativeToMenuId("cycle2");
+		MenuInfo cycle2 = item("cycle2");
+		cycle2.setAnchor(Anchor.AFTER);
+		cycle2.setRelativeToMenuId("cycle1");
+
+		// document order has the references before their targets
+		List<MenuInfo> ordered = MenuInfoExtensions
+			.orderByAnchor(List.of(cycle1, d, c, b, a, cycle2, item("z")));
+		assertEquals(List.of("a", "b", "d", "c", "z", "cycle1", "cycle2"),
+			ordered.stream().map(MenuInfo::getName).toList());
+	}
+
+	@Test
+	void insertIndex()
+	{
+		List<String> siblings = List.of("file", "edit", "help");
+		assertEquals(3, MenuInfoExtensions.insertIndex(siblings, item("plain")));
+		MenuInfo first = item("first");
+		first.setAnchor(Anchor.FIRST);
+		assertEquals(0, MenuInfoExtensions.insertIndex(siblings, first));
+		MenuInfo beforeEdit = item("beforeEdit");
+		beforeEdit.setAnchor(Anchor.BEFORE);
+		beforeEdit.setRelativeToMenuId("edit");
+		assertEquals(1, MenuInfoExtensions.insertIndex(siblings, beforeEdit));
+		MenuInfo afterEdit = item("afterEdit");
+		afterEdit.setAnchor(Anchor.AFTER);
+		afterEdit.setRelativeToMenuId("edit");
+		assertEquals(2, MenuInfoExtensions.insertIndex(siblings, afterEdit));
+		MenuInfo unknown = item("unknown");
+		unknown.setAnchor(Anchor.AFTER);
+		unknown.setRelativeToMenuId("nope");
+		assertEquals(3, MenuInfoExtensions.insertIndex(siblings, unknown));
+		MenuInfo last = item("last");
+		last.setAnchor(Anchor.LAST);
+		assertEquals(3, MenuInfoExtensions.insertIndex(siblings, last));
+	}
+
+	@Test
 	void mergePluginContribution()
 	{
 		MenuInfo base = MenuXmlReader.readResource("menubar.xml");

@@ -24,6 +24,8 @@
  */
 package io.github.astrapi69.swing.menu.build;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +49,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
+import io.github.astrapi69.swing.menu.ParentMenuResolver;
+import io.github.astrapi69.swing.menu.enumeration.Anchor;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
 import io.github.astrapi69.swing.menu.model.MenuInfo;
 import io.github.astrapi69.swing.menu.model.MenuItemInfo;
@@ -340,26 +345,7 @@ public class MenuBuilder
 		register(toolBarInfo, toolBar);
 		for (MenuInfo child : MenuInfoExtensions.orderByAnchor(toolBarInfo.getChildren()))
 		{
-			MenuType type = child.getType() != null ? child.getType() : MenuType.MENU_ITEM;
-			switch (type)
-			{
-				case SEPARATOR -> toolBar.addSeparator();
-				case CHECK_BOX_MENU_ITEM, RADIO_BUTTON_MENU_ITEM -> {
-					JToggleButton toggleButton = new JToggleButton();
-					MenuItemInfoConverter
-						.setFields(toMenuItemInfo(child, resolveAction(child, true)), toggleButton);
-					addToButtonGroup(child, toggleButton);
-					register(child, toggleButton);
-					toolBar.add(toggleButton);
-				}
-				default -> {
-					JButton button = new JButton();
-					MenuItemInfoConverter
-						.setFields(toMenuItemInfo(child, resolveAction(child, true)), button);
-					register(child, button);
-					toolBar.add(button);
-				}
-			}
+			toolBar.add(buildToolBarComponent(child));
 		}
 		return toolBar;
 	}
@@ -425,6 +411,151 @@ public class MenuBuilder
 			case TOOL_BAR -> buildToolBar(menuInfo);
 			default -> buildMenuComponent(menuInfo);
 		};
+	}
+
+	/**
+	 * Builds the tool bar component for the given {@link MenuInfo} object. Menu items become
+	 * {@link JButton} objects, check box and radio button menu items become {@link JToggleButton}
+	 * objects and separators become {@link JToolBar.Separator} objects
+	 *
+	 * @param menuInfo
+	 *            the {@link MenuInfo} object
+	 * @return the new {@link JComponent} object
+	 */
+	public JComponent buildToolBarComponent(final @NonNull MenuInfo menuInfo)
+	{
+		MenuType type = menuInfo.getType() != null ? menuInfo.getType() : MenuType.MENU_ITEM;
+		switch (type)
+		{
+			case SEPARATOR :
+				return new JToolBar.Separator();
+			case CHECK_BOX_MENU_ITEM, RADIO_BUTTON_MENU_ITEM :
+				JToggleButton toggleButton = new JToggleButton();
+				MenuItemInfoConverter.setFields(
+					toMenuItemInfo(menuInfo, resolveAction(menuInfo, true)), toggleButton);
+				addToButtonGroup(menuInfo, toggleButton);
+				register(menuInfo, toggleButton);
+				return toggleButton;
+			default :
+				JButton button = new JButton();
+				MenuItemInfoConverter
+					.setFields(toMenuItemInfo(menuInfo, resolveAction(menuInfo, true)), button);
+				register(menuInfo, button);
+				return button;
+		}
+	}
+
+	/**
+	 * Builds the given {@link MenuInfo} object and inserts it into the already built parent with
+	 * the given name. The position is calculated from the anchor of the child: {@link Anchor#FIRST}
+	 * at the front, {@link Anchor#BEFORE} or {@link Anchor#AFTER} relative to the sibling with
+	 * the relative menu id, otherwise at the end. The parent can be a {@link JMenuBar},
+	 * {@link JMenu}, {@link JPopupMenu} or {@link JToolBar}. This is intended for plugins that
+	 * contribute menus after the application menu was built
+	 *
+	 * @param parentName
+	 *            the name of the built parent component
+	 * @param child
+	 *            the {@link MenuInfo} object to build and insert
+	 * @return the new inserted {@link JComponent} object
+	 */
+	public JComponent insert(final @NonNull String parentName, final @NonNull MenuInfo child)
+	{
+		JComponent parent = getComponent(parentName)
+			.orElseThrow(() -> new IllegalArgumentException("No built component with the name '"
+				+ parentName + "', build the parent menu first"));
+		List<String> siblingNames = new ArrayList<>();
+		for (Component sibling : childComponents(parent))
+		{
+			siblingNames.add(sibling.getName());
+		}
+		int index = MenuInfoExtensions.insertIndex(siblingNames, child);
+		JComponent component;
+		switch (parent)
+		{
+			case JMenuBar menuBar ->
+			{
+				component = buildMenuComponent(child);
+				menuBar.add(component, index);
+			}
+			case JMenu menu ->
+			{
+				if (child.getType() == MenuType.SEPARATOR)
+				{
+					menu.insertSeparator(index);
+					component = (JComponent)menu.getMenuComponent(index);
+				}
+				else
+				{
+					component = buildMenuComponent(child);
+					menu.insert((JMenuItem)component, index);
+				}
+			}
+			case JPopupMenu popupMenu ->
+			{
+				component = child.getType() == MenuType.SEPARATOR
+					? new JPopupMenu.Separator()
+					: buildMenuComponent(child);
+				popupMenu.insert(component, index);
+			}
+			case JToolBar toolBar ->
+			{
+				component = buildToolBarComponent(child);
+				toolBar.add(component, index);
+			}
+			default -> throw new IllegalArgumentException("The component '" + parentName
+				+ "' of the type " + parent.getClass().getName()
+				+ " can not take menu children, expected a JMenuBar, JMenu, JPopupMenu or JToolBar");
+		}
+		parent.revalidate();
+		parent.repaint();
+		return component;
+	}
+
+	/**
+	 * Removes the built component with the given name from its parent and forgets it and all its
+	 * descendants in the component lookup
+	 *
+	 * @param name
+	 *            the name of the built component
+	 * @return an optional with the removed component or empty if no component with the name was
+	 *         built
+	 */
+	public Optional<JComponent> remove(final @NonNull String name)
+	{
+		JComponent component = components.get(name);
+		if (component == null)
+		{
+			return Optional.empty();
+		}
+		Container parent = component.getParent();
+		if (parent != null)
+		{
+			parent.remove(component);
+			parent.revalidate();
+			parent.repaint();
+		}
+		components.entrySet().removeIf(entry -> isSameOrDescendant(entry.getValue(), component));
+		return Optional.of(component);
+	}
+
+	private static List<Component> childComponents(final JComponent parent)
+	{
+		if (parent instanceof JMenu menu)
+		{
+			return List.of(menu.getMenuComponents());
+		}
+		return List.of(parent.getComponents());
+	}
+
+	private static boolean isSameOrDescendant(final JComponent candidate, final JComponent removed)
+	{
+		if (candidate == removed || SwingUtilities.isDescendingFrom(candidate, removed))
+		{
+			return true;
+		}
+		return candidate instanceof JMenuItem menuItem
+			&& ParentMenuResolver.getMenuAncestors(menuItem).contains(removed);
 	}
 
 	/**

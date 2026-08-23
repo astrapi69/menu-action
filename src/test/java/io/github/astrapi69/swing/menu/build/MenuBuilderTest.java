@@ -40,6 +40,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -230,6 +231,115 @@ class MenuBuilderTest
 		assertEquals(List.of("registry", "first", "second"), fired);
 		assertThrows(IllegalStateException.class, () -> builder.buildMenuComponent(
 			MenuInfo.builder().type(MenuType.MENU_ITEM).name("unknown").build()));
+	}
+
+	private static MenuInfo anchored(final MenuInfo menuInfo,
+		final io.github.astrapi69.swing.menu.enumeration.Anchor anchor, final String relativeTo)
+	{
+		menuInfo.setAnchor(anchor);
+		menuInfo.setRelativeToMenuId(relativeTo);
+		return menuInfo;
+	}
+
+	@Test
+	void insertAtRuntime()
+	{
+		List<String> fired = new ArrayList<>();
+		MenuBuilder builder = new MenuBuilder(newActions(fired))
+			.withMissingActionPolicy(MissingActionPolicy.IGNORE);
+		JMenuBar menuBar = builder.buildMenuBar(MenuXmlReader.readResource("menubar.xml"));
+
+		// a plugin menu between File and Edit
+		MenuInfo pluginMenu = anchored(
+			MenuInfo.builder().type(MenuType.MENU).name("plugin.menu").text("Plugin").build(),
+			io.github.astrapi69.swing.menu.enumeration.Anchor.AFTER, "global.menu.file")
+				.addChild(MenuInfo.builder().type(MenuType.MENU_ITEM).name("plugin.menu.settings")
+					.text("Settings").actionId("pluginSettings").build());
+		JComponent inserted = builder.insert("global.menu.bar", pluginMenu);
+		assertInstanceOf(JMenu.class, inserted);
+		assertEquals(5, menuBar.getMenuCount());
+		assertEquals("plugin.menu", menuBar.getMenu(1).getName());
+		assertTrue(builder.getComponent("plugin.menu.settings", JMenuItem.class).isPresent());
+
+		// an item before Exit and a separator before it
+		JMenu file = builder.getComponent("global.menu.file", JMenu.class).orElseThrow();
+		int before = file.getMenuComponentCount();
+		builder.insert("global.menu.file",
+			anchored(
+				MenuInfo.builder().type(MenuType.MENU_ITEM).name("plugin.file.export")
+					.text("Export...").actionId("export").build(),
+				io.github.astrapi69.swing.menu.enumeration.Anchor.BEFORE, "global.menu.file.exit"));
+		builder.insert("global.menu.file",
+			anchored(MenuInfo.builder().type(MenuType.SEPARATOR).build(),
+				io.github.astrapi69.swing.menu.enumeration.Anchor.BEFORE, "plugin.file.export"));
+		assertEquals(before + 2, file.getMenuComponentCount());
+		assertInstanceOf(JSeparator.class, file.getMenuComponent(before - 1));
+		assertEquals("plugin.file.export", file.getMenuComponent(before).getName());
+		assertEquals("global.menu.file.exit", file.getMenuComponent(before + 1).getName());
+		builder.getComponent("plugin.file.export", JMenuItem.class).orElseThrow().doClick();
+		assertEquals(List.of("plugin.file.export"), fired);
+
+		// FIRST, unknown relativeTo appends, LAST appends
+		builder.insert("global.menu.file",
+			anchored(
+				MenuInfo.builder().type(MenuType.MENU_ITEM).name("first").text("First").build(),
+				io.github.astrapi69.swing.menu.enumeration.Anchor.FIRST, null));
+		assertEquals("first", file.getMenuComponent(0).getName());
+		builder.insert("global.menu.file",
+			anchored(
+				MenuInfo.builder().type(MenuType.MENU_ITEM).name("orphan").text("Orphan").build(),
+				io.github.astrapi69.swing.menu.enumeration.Anchor.AFTER, "nope"));
+		assertEquals("orphan", file.getMenuComponent(file.getMenuComponentCount() - 1).getName());
+
+		// popup and tool bar
+		JPopupMenu popup = builder.buildPopupMenu(MenuXmlReader.readResource("popup.xml"));
+		builder.insert("tree.popup",
+			anchored(
+				MenuInfo.builder().type(MenuType.MENU_ITEM).name("tree.popup.copy").text("Copy")
+					.build(),
+				io.github.astrapi69.swing.menu.enumeration.Anchor.AFTER, "tree.popup.add"));
+		builder.insert("tree.popup", anchored(MenuInfo.builder().type(MenuType.SEPARATOR).build(),
+			io.github.astrapi69.swing.menu.enumeration.Anchor.FIRST, null));
+		assertInstanceOf(JSeparator.class, popup.getComponent(0));
+		assertEquals("tree.popup.copy", popup.getComponent(2).getName());
+
+		JToolBar toolBar = builder.buildToolBar(MenuXmlReader.readResource("toolbar.xml"));
+		builder.insert("global.tool.bar",
+			anchored(
+				MenuInfo.builder().type(MenuType.MENU_ITEM).name("global.tool.bar.export")
+					.text("Export").actionId("export").build(),
+				io.github.astrapi69.swing.menu.enumeration.Anchor.BEFORE, "global.tool.bar.open"));
+		assertEquals("global.tool.bar.export", toolBar.getComponent(1).getName());
+		assertInstanceOf(JButton.class, toolBar.getComponent(1));
+
+		// invalid parents
+		assertThrows(IllegalArgumentException.class,
+			() -> builder.insert("unknown.parent", pluginMenu));
+		assertThrows(IllegalArgumentException.class,
+			() -> builder.insert("global.menu.file.exit", pluginMenu));
+	}
+
+	@Test
+	void removeAtRuntime()
+	{
+		MenuBuilder builder = new MenuBuilder().withMissingActionPolicy(MissingActionPolicy.IGNORE);
+		JMenuBar menuBar = builder.buildMenuBar(MenuXmlReader.readResource("menubar.xml"));
+		assertTrue(builder.getComponent("global.menu.file.exit").isPresent());
+
+		assertTrue(builder.remove("global.menu.file.exit").isPresent());
+		JMenu file = builder.getComponent("global.menu.file", JMenu.class).orElseThrow();
+		assertEquals(4, file.getMenuComponentCount());
+		assertFalse(builder.getComponent("global.menu.file.exit").isPresent());
+
+		// removing a menu forgets its items as well
+		assertTrue(builder.remove("global.menu.view").isPresent());
+		assertEquals(3, menuBar.getMenuCount());
+		assertFalse(builder.getComponent("global.menu.view").isPresent());
+		assertFalse(builder.getComponent("global.menu.view.statusbar").isPresent());
+		assertFalse(builder.getComponent("global.menu.view.mode.panel").isPresent());
+		assertTrue(builder.getComponent("global.menu.help.info").isPresent());
+
+		assertFalse(builder.remove("nope").isPresent());
 	}
 
 	@Test

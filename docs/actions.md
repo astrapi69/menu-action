@@ -140,6 +140,27 @@ Together with `MenuInfoExtensions.merge` and the `anchor`/`relativeTo` attribute
 ship its own menu xml and its actions, and the application does not know anything about the
 plugin at compile time.
 
+## Plugins at runtime: insert and remove
+
+Menus that are built already can be extended later, for instance when a plugin is loaded after
+the application start. `MenuBuilder.insert` builds a `MenuInfo` and puts it into an already built
+parent at the position given by its `anchor`/`relativeTo`, `MenuBuilder.remove` takes a
+component out again and forgets it and all its children in the component lookup:
+
+```java
+MenuInfo pluginMenu = MenuInfo.builder().type(MenuType.MENU).name("plugin.menu").text("Plugin")
+    .anchor(Anchor.AFTER).relativeToMenuId("global.menu.edit").build()
+    .addChild(MenuInfo.builder().type(MenuType.MENU_ITEM).name("plugin.settings").text("Settings").build());
+
+builder.insert("global.menu.bar", pluginMenu);                 // File | Edit | Plugin | View | Help
+builder.insert("global.menu.file", exportItem);                // anchor BEFORE global.menu.file.exit
+builder.insert("global.menu.file", separator);                 // <separator/> with an anchor
+builder.remove("plugin.menu");                                 // on plugin unload
+```
+
+The parent can be a `JMenuBar`, `JMenu`, `JPopupMenu` or `JToolBar`. The actions of the inserted
+items are resolved like for every other item, so register the plugin actions before the insert.
+
 ## 4. Custom resolvers
 
 `ActionRegistry` implements the functional interface `ActionResolver`

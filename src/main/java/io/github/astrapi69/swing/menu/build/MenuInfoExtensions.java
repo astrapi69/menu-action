@@ -107,8 +107,10 @@ public final class MenuInfoExtensions
 	 * Orders the given children by their anchors. Children without anchor or with the anchor
 	 * {@link Anchor#LAST} keep their order, children with the anchor {@link Anchor#FIRST} are moved
 	 * to the front and children with the anchor {@link Anchor#BEFORE} or {@link Anchor#AFTER} are
-	 * placed relative to the child with the name of their relative menu id. If the relative child
-	 * does not exist the child is appended
+	 * placed relative to the child with the name of their relative menu id. Relative children may
+	 * reference other relative children in any order; the placement is repeated until all
+	 * references are resolved. A child whose relative child does not exist or is part of a cycle is
+	 * appended
 	 *
 	 * @param children
 	 *            the children to order
@@ -117,7 +119,7 @@ public final class MenuInfoExtensions
 	public static List<MenuInfo> orderByAnchor(final @NonNull List<MenuInfo> children)
 	{
 		List<MenuInfo> ordered = new ArrayList<>();
-		List<MenuInfo> relative = new ArrayList<>();
+		List<MenuInfo> pending = new ArrayList<>();
 		int firstIndex = 0;
 		for (MenuInfo child : children)
 		{
@@ -129,26 +131,68 @@ public final class MenuInfoExtensions
 			else if ((anchor == Anchor.BEFORE || anchor == Anchor.AFTER)
 				&& child.getRelativeToMenuId() != null)
 			{
-				relative.add(child);
+				pending.add(child);
 			}
 			else
 			{
 				ordered.add(child);
 			}
 		}
-		for (MenuInfo child : relative)
+		while (!pending.isEmpty())
 		{
-			int index = indexOf(ordered, child.getRelativeToMenuId());
-			if (index < 0)
+			List<MenuInfo> unresolved = new ArrayList<>();
+			for (MenuInfo child : pending)
 			{
-				ordered.add(child);
+				int index = indexOf(ordered, child.getRelativeToMenuId());
+				if (index < 0)
+				{
+					unresolved.add(child);
+				}
+				else
+				{
+					ordered.add(child.getAnchor() == Anchor.BEFORE ? index : index + 1, child);
+				}
 			}
-			else
+			if (unresolved.size() == pending.size())
 			{
-				ordered.add(child.getAnchor() == Anchor.BEFORE ? index : index + 1, child);
+				ordered.addAll(unresolved);
+				break;
 			}
+			pending = unresolved;
 		}
 		return ordered;
+	}
+
+	/**
+	 * Calculates the index where the given child has to be inserted in the given list of siblings
+	 * according to its anchor. {@link Anchor#FIRST} gives 0, {@link Anchor#BEFORE} and
+	 * {@link Anchor#AFTER} the index relative to the sibling with the relative menu id and
+	 * everything else or an unknown sibling the size of the list
+	 *
+	 * @param siblingNames
+	 *            the names of the existing siblings in their order
+	 * @param child
+	 *            the child to insert
+	 * @return the index to insert the child
+	 */
+	public static int insertIndex(final @NonNull List<String> siblingNames,
+		final @NonNull MenuInfo child)
+	{
+		Anchor anchor = child.getAnchor();
+		if (anchor == Anchor.FIRST)
+		{
+			return 0;
+		}
+		if ((anchor == Anchor.BEFORE || anchor == Anchor.AFTER)
+			&& child.getRelativeToMenuId() != null)
+		{
+			int index = siblingNames.indexOf(child.getRelativeToMenuId());
+			if (index >= 0)
+			{
+				return anchor == Anchor.BEFORE ? index : index + 1;
+			}
+		}
+		return siblingNames.size();
 	}
 
 	/**

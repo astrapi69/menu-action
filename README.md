@@ -38,7 +38,8 @@ The source code comes under the liberal MIT License, making menu-action great fo
 **Declarative menus (xml)**
 - `MenuXmlReader` / `MenuXmlWriter`: load and save menu bars, menus, popup menus and tool bars from a plain xml format (`menubar`, `menu`, `item`, `checkbox`, `radio`, `separator`, `popup`, `toolbar`, container `menus`), xml schema `menu.xsd` shipped in the jar, parser hardened against xml external entities
 - `MenuBuilder`: builds `JMenuBar`, `JMenu`, `JPopupMenu`, `JToolBar` and all item types from the `MenuInfo` tree; actions resolved by id from an `ActionRegistry`; `MissingActionPolicy` (`FAIL`, `DISABLE`, `IGNORE`); texts from a `ResourceBundle` via `textKey`; icons from classpath or file with a pluggable resolver; button groups for radio items; placement with `anchor`/`relativeTo`; lookup of every built component by id
-- `MenuInfoExtensions`: `find`, `flatten`, `orderByAnchor` and `merge` of plugin menu contributions into an existing menu tree
+- `MenuInfoExtensions`: `find`, `flatten`, `orderByAnchor` (resolves chained anchors), `insertIndex` and `merge` of plugin menu contributions into an existing menu tree
+- runtime changes of built menus: `MenuBuilder.insert` places a new menu, item or separator into a built `JMenuBar`, `JMenu`, `JPopupMenu` or `JToolBar` by its anchor, `MenuBuilder.remove` takes it out again
 - declarative actions: `@MenuAction` annotated controller methods and fields (`ActionRegistry.ofHandlers`), `ActionProvider` services for plugins with an `ActionContext`, `ActionResolver` chain for custom lookups
 
 **Menu model and conversion**
@@ -129,6 +130,10 @@ path to the target and is merged with `MenuInfoExtensions.merge`:
 ```java
 MenuInfo merged = MenuInfoExtensions.merge(menuBarInfo, MenuXmlReader.readResource("plugin-contribution.xml"));
 ```
+
+Menus that are built already can be extended at runtime, for instance by a plugin that is loaded
+later: `builder.insert("global.menu.bar", pluginMenuInfo)` places the new menu according to its
+`anchor`/`relativeTo`, `builder.remove("plugin.menu")` takes it out again.
 
 A `MenuInfo` tree can be written back with `MenuXmlWriter.toXml(menuInfo)`.
 
