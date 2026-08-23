@@ -15,6 +15,40 @@ These were roadmap items and are part of the library now, see the README for the
 - `accessibleName` and `accessibleDescription`
 - action id strategies for the export of programmatic menus (`MenuInfoExporter.withActionIds`)
 
+## Known limitations
+
+Design tradeoffs that were deliberately left as is during the 5.1 bug fixing round (two
+independent multi agent reviews of the 5.0/5.1 changes), with the reasoning:
+
+- **A tool bar shows its id, not its text, when floated.** `MenuBuilder.buildToolBar` sets the
+  swing name of the `JToolBar` to the id of the `<toolbar>` element, matching the convention that
+  every other built component (menu, item, menu bar, popup) uses its id as its swing name so it
+  can be found again and so `MenuInfoExporter` round trips it correctly. Swing's
+  `BasicToolBarUI` happens to also use the component name as the title of the window that
+  appears when a tool bar is dragged off into a floating window, an implementation detail, not a
+  documented api. Using the resolved text as the name instead would fix the floating title but
+  break the id-as-name convention and the exporter round trip. Given the choice, identity and
+  round trip correctness won over a rarely used cosmetic detail.
+- **`LookAndFeelMenuFactory` does not roll back a failed look and feel change.** Swing's
+  `JRadioButtonMenuItem` moves the button group selection to the clicked item before the action
+  listener runs; if `UIManager.setLookAndFeel` then fails (for instance `GTK+` is listed as
+  installed but unsupported in a headless environment) the menu shows the failed look and feel as
+  selected while the previous one is still in effect. A correct fix needs the menu to be bound to
+  a model of the current look and feel and re-select it on failure (see
+  `MenuBuilder.updateFromModels`), which is more machinery than this factory currently has.
+- **An awt `MenuShortcut` (used by `MenuBuilder.buildAwtPopupMenu` for system tray menus) can
+  only represent an optional shift modifier**, `java.awt.MenuShortcut` has no other constructor;
+  ctrl/alt/meta modifiers of the accelerator are silently dropped for tray menu items. This is an
+  awt api limitation, not something the library can work around; documented in the javadoc of
+  `buildAwtPopupMenu`.
+- **`ParentMenuResolver.getChildMenuElements` returns an empty list when the given parent itself
+  is a `JPopupMenu`** (as opposed to a `JMenu` or `JMenuBar`), because the method identifies a
+  child by comparing the popup menu's invoker to the given parent, and a popup menu is never its
+  own invoker. Passing a `JMenu` or `JMenuBar` (the common case, and the only one exercised by
+  `MenuBuilder`) works correctly. Effort to fix correctly for both parent kinds without
+  regressing the existing behaviour: medium; not done for the 5.1 release given the low real
+  world impact.
+
 ## Candidates for a later version
 
 ### Model change notification

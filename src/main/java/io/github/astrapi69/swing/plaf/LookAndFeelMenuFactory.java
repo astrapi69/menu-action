@@ -61,12 +61,15 @@ public final class LookAndFeelMenuFactory
 	/** The group name of the look and feel radio button menu items */
 	public static final String GROUP = "look.and.feel";
 
+	private static final String METAL_CLASS_NAME = "javax.swing.plaf.metal.MetalLookAndFeel";
+
 	private static final Map<String, String> KNOWN_IDS = Map.of(
 		"com.sun.java.swing.plaf.gtk.GTKLookAndFeel", BaseMenuId.LOOK_AND_FEEL_GTK_KEY,
-		"javax.swing.plaf.metal.MetalLookAndFeel", BaseMenuId.LOOK_AND_FEEL_METAL_KEY,
+		METAL_CLASS_NAME, BaseMenuId.LOOK_AND_FEEL_METAL_KEY,
 		"com.sun.java.swing.plaf.motif.MotifLookAndFeel", BaseMenuId.LOOK_AND_FEEL_MOTIF_KEY,
 		"javax.swing.plaf.nimbus.NimbusLookAndFeel", BaseMenuId.LOOK_AND_FEEL_NIMBUS_KEY,
-		"com.sun.java.swing.plaf.windows.WindowsLookAndFeel", BaseMenuId.LOOK_AND_FEEL_SYSTEM_KEY);
+		"com.sun.java.swing.plaf.windows.WindowsLookAndFeel", BaseMenuId.LOOK_AND_FEEL_SYSTEM_KEY,
+		"com.apple.laf.AquaLookAndFeel", BaseMenuId.LOOK_AND_FEEL_SYSTEM_KEY);
 
 	private LookAndFeelMenuFactory()
 	{
@@ -127,18 +130,20 @@ public final class LookAndFeelMenuFactory
 		for (Map.Entry<String, LookAndFeelInfo> entry : installed().entrySet())
 		{
 			String className = entry.getValue().getClassName();
-			registry.register(entry.getKey(), event -> setLookAndFeel(className, component));
+			if (METAL_CLASS_NAME.equals(className))
+			{
+				// resets the metal theme to the default theme, otherwise a previously activated
+				// ocean theme stays active and the metal action has no visible effect
+				registry.register(entry.getKey(),
+					event -> setLookAndFeel(LookAndFeels.METAL, component));
+			}
+			else
+			{
+				registry.register(entry.getKey(), event -> setLookAndFeel(className, component));
+			}
 		}
-		registry.register(BaseMenuId.LOOK_AND_FEEL_OCEAN_KEY, event -> {
-			try
-			{
-				LookAndFeels.setLookAndFeel(LookAndFeels.OCEAN, component);
-			}
-			catch (Exception e)
-			{
-				log.log(Level.WARNING, "Could not set the ocean look and feel", e);
-			}
-		});
+		registry.register(BaseMenuId.LOOK_AND_FEEL_OCEAN_KEY,
+			event -> setLookAndFeel(LookAndFeels.OCEAN, component));
 		return registry;
 	}
 
@@ -162,10 +167,16 @@ public final class LookAndFeelMenuFactory
 			String id = KNOWN_IDS.get(info.getClassName());
 			if (id == null)
 			{
-				id = BaseMenuId.LOOK_AND_FEEL_KEY + "."
-					+ info.getName().toLowerCase().replaceAll("[^a-z0-9]+", ".");
+				// derived from the class name, not the display name: the class name is unique
+				// and stable, the display name of two installed look and feels can normalise to
+				// the same id (for instance a third party look and feel also named "Nimbus")
+				id = BaseMenuId.LOOK_AND_FEEL_KEY + "." + info.getClassName()
+					.toLowerCase(java.util.Locale.ROOT).replaceAll("[^a-z0-9]+", ".");
 			}
-			result.putIfAbsent(id, info);
+			if (!id.equals(BaseMenuId.LOOK_AND_FEEL_OCEAN_KEY) && !result.containsKey(id))
+			{
+				result.put(id, info);
+			}
 		}
 		return result;
 	}
@@ -187,6 +198,19 @@ public final class LookAndFeelMenuFactory
 		catch (Exception e)
 		{
 			log.log(Level.WARNING, "Could not set the look and feel " + className, e);
+		}
+	}
+
+	private static void setLookAndFeel(final LookAndFeels lookAndFeel, final Component component)
+	{
+		try
+		{
+			LookAndFeels.setLookAndFeel(lookAndFeel, component);
+		}
+		catch (Exception e)
+		{
+			log.log(Level.WARNING,
+				"Could not set the look and feel " + lookAndFeel.getLookAndFeelName(), e);
 		}
 	}
 }

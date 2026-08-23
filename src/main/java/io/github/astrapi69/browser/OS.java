@@ -52,7 +52,7 @@ public enum OS
 	private static final Pattern LINUX_PATTERN = Pattern.compile(".*[L|l]inux.*");
 
 	/** The Constant MAC_PATTERN. */
-	private static final Pattern MAC_PATTERN = Pattern.compile("mac|darwin");
+	private static final Pattern MAC_PATTERN = Pattern.compile(".*([M|m]ac|[D|d]arwin).*");
 
 	/** The Constant OS_NAME. */
 	private static final String OS_NAME = "os.name";
@@ -115,7 +115,7 @@ public enum OS
 	 */
 	public static OS getOperatingSystem()
 	{
-		final String osname = System.getProperty(OS_NAME);
+		final String osname = System.getProperty(OS_NAME, "");
 		if (WINDOWS_PATTERN.matcher(osname).matches())
 		{
 			return WINDOWS;
@@ -135,9 +135,11 @@ public enum OS
 	}
 
 	/**
-	 * Gets the name of the operating system
+	 * Gets the display label of the detected {@link OS} constant, for instance {@code "Mac OS"} for
+	 * every detected macOS variant. This is not the raw value of the system property
+	 * {@code os.name}; use {@code System.getProperty("os.name")} for that
 	 *
-	 * @return the name of the operating system
+	 * @return the display label of the detected operating system
 	 */
 	public static String getOperatingSystemName()
 	{

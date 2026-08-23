@@ -85,10 +85,17 @@ public final class BrowserControlExtensions
 		final @NonNull String url)
 	{
 		boolean opened = displayURLonStandardBrowser(url);
-		if (!opened)
+		if (!opened && !java.awt.GraphicsEnvironment.isHeadless())
 		{
-			JOptionPane.showMessageDialog(parentComponent,
-				"Could not open the default web browser for the url\n" + url);
+			try
+			{
+				JOptionPane.showMessageDialog(parentComponent,
+					"Could not open the default web browser for the url\n" + url);
+			}
+			catch (java.awt.HeadlessException e)
+			{
+				log.log(Level.FINE, "Could not show the browser failure dialog", e);
+			}
 		}
 		return opened;
 	}

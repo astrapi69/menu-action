@@ -31,11 +31,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.MenuItem;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.Icon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -46,13 +50,48 @@ import javax.swing.KeyStroke;
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.swing.menu.MenuExtensions;
+import io.github.astrapi69.swing.menu.enumeration.Anchor;
 import io.github.astrapi69.swing.menu.enumeration.BaseMenuId;
+import io.github.astrapi69.swing.menu.enumeration.MenuType;
 
 /**
  * The unit test class for the class {@link MenuItemInfo}
  */
 class MenuItemInfoTest
 {
+
+	private static final Icon ICON = new Icon()
+	{
+		@Override
+		public void paintIcon(Component c, Graphics g, int x, int y)
+		{
+		}
+
+		@Override
+		public int getIconWidth()
+		{
+			return 4;
+		}
+
+		@Override
+		public int getIconHeight()
+		{
+			return 4;
+		}
+	};
+
+	private static final ActionListener LISTENER = e -> {
+	};
+
+	private static MenuItemInfo.MenuItemInfoBuilder fullBuilder()
+	{
+		return MenuItemInfo.builder().name("id").text("Text").toolTip("tip").mnemonic(KeyEvent.VK_T)
+			.keyStrokeInfo(KeyStrokeInfo.builder().keystrokeAsString("ctrl pressed T").build())
+			.type(MenuType.MENU_ITEM).anchor(Anchor.AFTER).relativeToMenuId("other")
+			.actionCommand("cmd").actionListener(LISTENER).enabled(true).visible(true)
+			.selected(false).icon(ICON).accessibleName("acc-name")
+			.accessibleDescription("acc-desc");
+	}
 
 	private static MenuItemInfo newExitInfo()
 	{
@@ -99,6 +138,60 @@ class MenuItemInfoTest
 
 		JMenuBar menuBar = info.toJMenuBar();
 		assertEquals(BaseMenuId.EXIT.propertiesKey(), menuBar.getName());
+	}
+
+	@Test
+	void equalsAndHashCodeWithAllFields()
+	{
+		MenuItemInfo first = fullBuilder().build();
+		MenuItemInfo second = fullBuilder().build();
+		assertEquals(first, second);
+		assertEquals(first.hashCode(), second.hashCode());
+		assertNotEquals(first, fullBuilder().visible(false).build());
+		assertNotEquals(first, fullBuilder().visible(null).build());
+		assertNotEquals(first, fullBuilder().selected(true).build());
+		assertNotEquals(first, fullBuilder().enabled(false).build());
+		assertNotEquals(first, fullBuilder().accessibleName("other-name").build());
+		assertNotEquals(first, fullBuilder().accessibleDescription("other-desc").build());
+		assertNotEquals(first, fullBuilder().icon(null).build());
+		assertNotEquals(first, fullBuilder().anchor(Anchor.BEFORE).build());
+		assertNotEquals(first, fullBuilder().type(MenuType.MENU).build());
+		assertNotEquals(first, fullBuilder().relativeToMenuId("another").build());
+		assertNotEquals(first, fullBuilder().actionListener(e -> {
+		}).build());
+		assertNotEquals(first, new MenuItemInfo());
+		assertEquals(new MenuItemInfo(), MenuItemInfo.builder().build());
+		assertEquals(new MenuItemInfo().hashCode(), MenuItemInfo.builder().build().hashCode());
+	}
+
+	@Test
+	void toStringWithAllFields()
+	{
+		String string = fullBuilder().build().toString();
+		assertTrue(string.startsWith("MenuItemInfo("), string);
+		assertTrue(string.contains("name=id"), string);
+		assertTrue(string.contains("text=Text"), string);
+		assertTrue(string.contains("toolTip=tip"), string);
+		assertTrue(string.contains("type=MENU_ITEM"), string);
+		assertTrue(string.contains("anchor=AFTER"), string);
+		assertTrue(string.contains("relativeToMenuId=other"), string);
+		assertTrue(string.contains("actionCommand=cmd"), string);
+		assertTrue(string.contains("enabled=true"), string);
+		assertTrue(string.contains("visible=true"), string);
+		assertTrue(string.contains("selected=false"), string);
+		assertTrue(string.contains("accessibleName=acc-name"), string);
+		assertTrue(string.contains("accessibleDescription=acc-desc"), string);
+	}
+
+	@Test
+	void visibleAndAccessibleValuesAreApplied()
+	{
+		JMenuItem menuItem = fullBuilder().visible(false).build().toJMenuItem();
+		assertFalse(menuItem.isVisible());
+		assertEquals("acc-name", menuItem.getAccessibleContext().getAccessibleName());
+		assertEquals("acc-desc", menuItem.getAccessibleContext().getAccessibleDescription());
+		// a null visible value keeps the component visible
+		assertTrue(fullBuilder().visible(null).build().toJMenuItem().isVisible());
 	}
 
 	@Test

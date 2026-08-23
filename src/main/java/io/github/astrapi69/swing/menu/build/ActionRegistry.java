@@ -145,11 +145,22 @@ public final class ActionRegistry implements ActionResolver
 	public ActionRegistry registerHandlers(final @NonNull Object controller)
 	{
 		Map<String, ActionListener> handlers = new LinkedHashMap<>();
+		Set<String> overriddenMethodSignatures = new java.util.HashSet<>();
 		for (Class<?> type = controller.getClass(); type != null
 			&& type != Object.class; type = type.getSuperclass())
 		{
 			for (Method method : type.getDeclaredMethods())
 			{
+				String signature = method.getName()
+					+ java.util.Arrays.toString(method.getParameterTypes());
+				if (method.isBridge() || method.isSynthetic()
+					|| !overriddenMethodSignatures.add(signature))
+				{
+					// a bridge or synthetic method carries a copy of the annotation of the method
+					// it delegates to; a signature seen in a more derived class is the override
+					// of this one and already registered
+					continue;
+				}
 				MenuAction menuAction = method.getAnnotation(MenuAction.class);
 				if (menuAction != null)
 				{
@@ -159,6 +170,10 @@ public final class ActionRegistry implements ActionResolver
 			}
 			for (Field field : type.getDeclaredFields())
 			{
+				if (field.isSynthetic())
+				{
+					continue;
+				}
 				MenuAction menuAction = field.getAnnotation(MenuAction.class);
 				if (menuAction != null)
 				{
@@ -172,8 +187,10 @@ public final class ActionRegistry implements ActionResolver
 	}
 
 	/**
-	 * Loads all {@link ActionProvider} services with the {@link ServiceLoader} of the module layer
-	 * and class loader of this class and lets them register their actions
+	 * Loads all {@link ActionProvider} services with the {@link ServiceLoader} of the class loader
+	 * of this class and lets them register their actions. Unlike the plain
+	 * {@link ServiceLoader#load(Class)} this does not depend on the context class loader of the
+	 * calling thread
 	 *
 	 * @param context
 	 *            the {@link ActionContext} that is passed to the providers
@@ -181,7 +198,9 @@ public final class ActionRegistry implements ActionResolver
 	 */
 	public ActionRegistry loadProviders(final @NonNull ActionContext context)
 	{
-		return registerProviders(ServiceLoader.load(ActionProvider.class), context);
+		return registerProviders(
+			ServiceLoader.load(ActionProvider.class, ActionRegistry.class.getClassLoader()),
+			context);
 	}
 
 	/**
@@ -292,8 +311,7 @@ public final class ActionRegistry implements ActionResolver
 	private static ActionListener toActionListener(final Object controller, final Method method)
 	{
 		Class<?>[] parameterTypes = method.getParameterTypes();
-		boolean withEvent = parameterTypes.length == 1
-			&& parameterTypes[0].isAssignableFrom(ActionEvent.class);
+		boolean withEvent = parameterTypes.length == 1 && parameterTypes[0] == ActionEvent.class;
 		if (parameterTypes.length != 0 && !withEvent)
 		{
 			throw new IllegalArgumentException("The @MenuAction method " + method.getName() + " in "

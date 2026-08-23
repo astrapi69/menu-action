@@ -24,7 +24,6 @@
  */
 package io.github.astrapi69.swing.listener.mouse;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -48,8 +47,7 @@ public class MouseTripleClickCounterListener extends MouseAdapter implements Act
 
 	public MouseTripleClickCounterListener()
 	{
-		this((Integer)Toolkit.getDefaultToolkit()
-			.getDesktopProperty(DESKTOP_PROPERTY_AWT_MULTI_CLICK_INTERVAL_KEY));
+		this(MouseDoubleClickListener.resolveMultiClickInterval());
 	}
 
 	public MouseTripleClickCounterListener(int delay)
@@ -62,15 +60,14 @@ public class MouseTripleClickCounterListener extends MouseAdapter implements Act
 	{
 		setMouseButton(mouseEvent);
 
-		if (mouseEvent.getClickCount() > 3)
+		lastEvent = mouseEvent;
+		if (mouseEvent.getClickCount() > 2)
 		{
 			timer.stop();
 			mouseClickedType = MouseClickedType.TRIPLE;
 			tripleClick(lastEvent);
-		}
-		lastEvent = mouseEvent;
-		if (mouseEvent.getClickCount() > 2)
 			return;
+		}
 
 		if (timer.isRunning())
 		{
@@ -97,7 +94,7 @@ public class MouseTripleClickCounterListener extends MouseAdapter implements Act
 		}
 		if (mouseEvent.getButton() == MouseEvent.BUTTON3)
 		{
-			mouseButton = MouseButton.LEFT;
+			mouseButton = MouseButton.RIGHT;
 		}
 	}
 

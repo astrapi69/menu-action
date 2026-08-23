@@ -37,6 +37,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,8 +111,8 @@ public class MenuBuilder
 	private Function<String, Optional<IModel<?>>> modelResolver = key -> Optional.empty();
 	/** The converter of a radio button value string to the model object */
 	private BiFunction<IModel<?>, String, Object> valueConverter = MenuBuilder::convertValue;
-	/** The model bindings of the built check box and radio button items */
-	private final List<Runnable> modelBindings = new ArrayList<>();
+	/** The model bindings of the built check box and radio button items by button */
+	private final Map<AbstractButton, Runnable> modelBindings = new IdentityHashMap<>();
 	/** The show text flag of the tool bar that is currently built */
 	private Boolean toolBarShowText;
 
@@ -254,7 +255,7 @@ public class MenuBuilder
 	 */
 	public void updateFromModels()
 	{
-		for (Runnable binding : modelBindings)
+		for (Runnable binding : modelBindings.values())
 		{
 			binding.run();
 		}
@@ -488,8 +489,8 @@ public class MenuBuilder
 			case MENU -> buildMenu(menuInfo);
 			case CHECK_BOX_MENU_ITEM ->
 			{
-				JCheckBoxMenuItem checkBox = toMenuItemInfo(menuInfo, resolveAction(menuInfo, true))
-					.toJCheckBoxMenuItem();
+				JCheckBoxMenuItem checkBox = toMenuItemInfo(menuInfo,
+					resolveAction(menuInfo, menuInfo.getModel() == null)).toJCheckBoxMenuItem();
 				addToButtonGroup(menuInfo, checkBox);
 				bindModel(menuInfo, checkBox);
 				register(menuInfo, checkBox);
@@ -498,7 +499,7 @@ public class MenuBuilder
 			case RADIO_BUTTON_MENU_ITEM ->
 			{
 				JRadioButtonMenuItem radioButton = toMenuItemInfo(menuInfo,
-					resolveAction(menuInfo, true)).toJRadioButtonMenuItem();
+					resolveAction(menuInfo, menuInfo.getModel() == null)).toJRadioButtonMenuItem();
 				addToButtonGroup(menuInfo, radioButton);
 				bindModel(menuInfo, radioButton);
 				register(menuInfo, radioButton);
@@ -541,8 +542,10 @@ public class MenuBuilder
 	 * a {@link java.awt.TrayIcon}. Menus become {@link Menu} objects, menu items become
 	 * {@link MenuItem} objects, check box and radio button menu items become
 	 * {@link CheckboxMenuItem} objects whose item events are delivered to the action listener as
-	 * action events. The accelerator key code of an item becomes a {@link MenuShortcut}. The built
-	 * awt components are available with {@link #getAwtComponent(String)}
+	 * action events. The accelerator key code of an item becomes a {@link MenuShortcut}; awt only
+	 * supports an optional shift modifier for menu shortcuts, ctrl/alt/meta modifiers of the
+	 * accelerator can not be represented and are dropped. The built awt components are available
+	 * with {@link #getAwtComponent(String)}
 	 *
 	 * @param popupInfo
 	 *            the {@link MenuInfo} object of type {@link MenuType#SYSTEM_TRAY} or
@@ -677,7 +680,8 @@ public class MenuBuilder
 			case CHECK_BOX_MENU_ITEM, RADIO_BUTTON_MENU_ITEM :
 				JToggleButton toggleButton = new JToggleButton();
 				MenuItemInfoConverter.setFields(
-					toMenuItemInfo(menuInfo, resolveAction(menuInfo, true)), toggleButton);
+					toMenuItemInfo(menuInfo, resolveAction(menuInfo, menuInfo.getModel() == null)),
+					toggleButton);
 				addToButtonGroup(menuInfo, toggleButton);
 				bindModel(menuInfo, toggleButton);
 				applyShowText(menuInfo, toggleButton);
@@ -697,9 +701,10 @@ public class MenuBuilder
 	 * Builds the given {@link MenuInfo} object and inserts it into the already built parent with
 	 * the given name. The position is calculated from the anchor of the child: {@link Anchor#FIRST}
 	 * at the front, {@link Anchor#BEFORE} or {@link Anchor#AFTER} relative to the sibling with
-	 * the relative menu id, otherwise at the end. The parent can be a {@link JMenuBar},
-	 * {@link JMenu}, {@link JPopupMenu} or {@link JToolBar}. This is intended for plugins that
-	 * contribute menus after the application menu was built
+	 * the relative menu id, otherwise at the end. The parent can be a {@link JMenuBar} (menus
+	 * only, standard swing menu bars have no separator), {@link JMenu}, {@link JPopupMenu} or
+	 * {@link JToolBar} (menu, item or separator). This is intended for plugins that contribute
+	 * menus after the application menu was built
 	 *
 	 * @param parentName
 	 *            the name of the built parent component
@@ -723,6 +728,11 @@ public class MenuBuilder
 		{
 			case JMenuBar menuBar ->
 			{
+				if (child.getType() == MenuType.SEPARATOR)
+				{
+					throw new IllegalArgumentException("A JMenuBar has no separator, only menus"
+						+ " can be inserted into '" + parentName + "'");
+				}
 				component = buildMenuComponent(child);
 				menuBar.add(component, index);
 			}
@@ -762,7 +772,7 @@ public class MenuBuilder
 
 	/**
 	 * Removes the built component with the given name from its parent and forgets it and all its
-	 * descendants in the component lookup
+	 * descendants in the component lookup, the model bindings and the button groups
 	 *
 	 * @param name
 	 *            the name of the built component
@@ -784,6 +794,12 @@ public class MenuBuilder
 			parent.repaint();
 		}
 		components.entrySet().removeIf(entry -> isSameOrDescendant(entry.getValue(), component));
+		modelBindings.keySet().removeIf(button -> isSameOrDescendant(button, component));
+		for (ButtonGroup group : buttonGroups.values())
+		{
+			Collections.list(group.getElements()).stream()
+				.filter(button -> isSameOrDescendant(button, component)).forEach(group::remove);
+		}
 		return Optional.of(component);
 	}
 
@@ -862,7 +878,7 @@ public class MenuBuilder
 	{
 		Boolean enabled = menuInfo.getEnabled();
 		if (actionListener == null && missingActionPolicy == MissingActionPolicy.DISABLE
-			&& isItem(menuInfo))
+			&& isItem(menuInfo) && menuInfo.getModel() == null)
 		{
 			enabled = Boolean.FALSE;
 		}
@@ -911,7 +927,9 @@ public class MenuBuilder
 	/**
 	 * Binds the given toggle button to the model of the given {@link MenuInfo} object if a model
 	 * key is set. The button is selected from the model and writes the model when it is selected or
-	 * deselected. The binding is registered for {@link #updateFromModels()}
+	 * deselected. The binding is registered for {@link #updateFromModels()} and removed from it by
+	 * {@link #remove(String)}. Writes triggered by {@link #updateFromModels()} itself are not fed
+	 * back into the model, so a read-only model does not have to support {@code setObject}
 	 *
 	 * @param menuInfo
 	 *            the {@link MenuInfo} object
@@ -932,28 +950,49 @@ public class MenuBuilder
 				throw new IllegalStateException("No model registered for the key '"
 					+ menuInfo.getModel() + "' of the menu '" + menuInfo.getName() + "'");
 			}
+			if (missingActionPolicy == MissingActionPolicy.DISABLE)
+			{
+				button.setEnabled(false);
+			}
 			return;
 		}
 		@SuppressWarnings("unchecked")
 		IModel<Object> model = (IModel<Object>)resolved.get();
 		boolean radio = menuInfo.getType() == MenuType.RADIO_BUTTON_MENU_ITEM;
-		Object value = radio && menuInfo.getValue() != null
-			? valueConverter.apply(model, menuInfo.getValue())
-			: null;
+		String rawValue = menuInfo.getValue();
+		boolean[] updating = { false };
 		Runnable update = () -> {
-			Object current = model.getObject();
-			button.setSelected(radio
-				? value != null && (value.equals(current)
-					|| String.valueOf(value).equals(String.valueOf(current)))
-				: Boolean.TRUE.equals(current));
+			updating[0] = true;
+			try
+			{
+				Object current = model.getObject();
+				if (radio)
+				{
+					Object value = rawValue != null ? valueConverter.apply(model, rawValue) : null;
+					button.setSelected(value != null && (value.equals(current)
+						|| String.valueOf(value).equals(String.valueOf(current))));
+				}
+				else
+				{
+					button.setSelected(Boolean.TRUE.equals(current));
+				}
+			}
+			finally
+			{
+				updating[0] = false;
+			}
 		};
 		update.run();
 		button.addItemListener(event -> {
+			if (updating[0])
+			{
+				return;
+			}
 			if (radio)
 			{
-				if (button.isSelected() && value != null)
+				if (button.isSelected() && rawValue != null)
 				{
-					model.setObject(value);
+					model.setObject(valueConverter.apply(model, rawValue));
 				}
 			}
 			else
@@ -961,7 +1000,7 @@ public class MenuBuilder
 				model.setObject(button.isSelected());
 			}
 		});
-		modelBindings.add(update);
+		modelBindings.put(button, update);
 	}
 
 	private void applyShowText(final MenuInfo menuInfo, final AbstractButton button)
@@ -994,7 +1033,8 @@ public class MenuBuilder
 
 	/**
 	 * Converts the given value string to the type of the current object of the given model. Enums,
-	 * booleans, integers, longs and doubles are converted, everything else stays a string
+	 * booleans and numbers (byte, short, integer, long, float, double, {@link java.math.BigInteger}
+	 * and {@link java.math.BigDecimal}) are converted, everything else stays a string
 	 *
 	 * @param model
 	 *            the model
@@ -1018,6 +1058,14 @@ public class MenuBuilder
 		{
 			return Boolean.valueOf(value);
 		}
+		if (current instanceof Byte)
+		{
+			return Byte.valueOf(value);
+		}
+		if (current instanceof Short)
+		{
+			return Short.valueOf(value);
+		}
 		if (current instanceof Integer)
 		{
 			return Integer.valueOf(value);
@@ -1026,9 +1074,21 @@ public class MenuBuilder
 		{
 			return Long.valueOf(value);
 		}
+		if (current instanceof Float)
+		{
+			return Float.valueOf(value);
+		}
 		if (current instanceof Double)
 		{
 			return Double.valueOf(value);
+		}
+		if (current instanceof java.math.BigInteger)
+		{
+			return new java.math.BigInteger(value);
+		}
+		if (current instanceof java.math.BigDecimal)
+		{
+			return new java.math.BigDecimal(value);
 		}
 		return value;
 	}

@@ -113,16 +113,31 @@ public class LookAndFeelAction extends AbstractAction
 	}
 
 	/**
-	 * Callback method to interact on change of look and feel
+	 * Callback method to interact on change of look and feel. Actions created with the no-arg or
+	 * the name-only constructor have no component to update; the look and feel is then still set,
+	 * only {@code SwingUtilities.updateComponentTreeUI} is skipped. An action without a
+	 * {@link #lookAndFeel} is a no-op
 	 *
 	 * @param event
 	 *            the action event
 	 */
 	protected void onChangeOfLookAndFeel(final ActionEvent event)
 	{
+		if (this.lookAndFeel == null)
+		{
+			log.log(Level.INFO, "No look and feel set on " + getClass().getName());
+			return;
+		}
 		try
 		{
-			LookAndFeels.setLookAndFeel(this.lookAndFeel, this.component);
+			if (this.component != null)
+			{
+				LookAndFeels.setLookAndFeel(this.lookAndFeel, this.component);
+			}
+			else
+			{
+				LookAndFeels.setLookAndFeel(this.lookAndFeel);
+			}
 		}
 		catch (UnsupportedLookAndFeelException e)
 		{

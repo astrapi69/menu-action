@@ -41,6 +41,9 @@
 
     <xs:complexType name="separatorType">
         <xs:attribute name="id" type="xs:string"/>
+        <xs:attribute name="visible" type="xs:boolean"/>
+        <xs:attribute name="anchor" type="anchorType"/>
+        <xs:attribute name="relativeTo" type="xs:string"/>
     </xs:complexType>
 
     <xs:complexType name="itemType">
@@ -90,6 +93,7 @@
             <xs:choice minOccurs="0" maxOccurs="unbounded">
                 <xs:element name="item" type="itemType"/>
                 <xs:element name="checkbox" type="toggleItemType"/>
+                <xs:element name="radio" type="toggleItemType"/>
                 <xs:element name="separator" type="separatorType"/>
             </xs:choice>
         </xs:sequence>

@@ -159,15 +159,17 @@ class MenuXmlReaderTest
 				+ "<item id=\"tray.show\" text=\"&amp;Show\" visible=\"false\"/>"
 				+ "<item id=\"tray.quit\" text=\"&amp;Quit\" mnemonic=\"X\"/></tray>");
 		assertEquals(MenuType.SYSTEM_TRAY, tray.getType());
-		assertEquals("Tray & more", tray.getText());
-		assertEquals(KeyEvent.VK_T, tray.getMnemonic());
+		// the reader no longer resolves the ampersand mnemonic marker at read time, the raw text
+		// attribute is kept verbatim; only MenuBuilder resolves the marker, when the menu is built
+		assertEquals("&Tray && more", tray.getText());
+		assertNull(tray.getMnemonic());
 		MenuInfo show = tray.getChildren().get(0);
-		assertEquals("Show", show.getText());
-		assertEquals(KeyEvent.VK_S, show.getMnemonic());
+		assertEquals("&Show", show.getText());
+		assertNull(show.getMnemonic());
 		assertEquals(Boolean.FALSE, show.getVisible());
-		// an explicit mnemonic attribute wins over the marker
+		// an explicit mnemonic attribute is read regardless of a marker in the text
 		assertEquals(KeyEvent.VK_X, tray.getChildren().get(1).getMnemonic());
-		assertEquals("Quit", tray.getChildren().get(1).getText());
+		assertEquals("&Quit", tray.getChildren().get(1).getText());
 		String xml = MenuXmlWriter.toXml(tray);
 		assertTrue(xml.contains("<tray "));
 		assertTrue(xml.contains("visible=\"false\""));
@@ -218,7 +220,9 @@ class MenuXmlReaderTest
 		List<String> errors = MenuXmlReader.validate(
 			"<menubar id=\"b\"><menu text=\"no id\"><foo/></menu><item id=\"x\" anchor=\"MIDDLE\"/></menubar>");
 		assertFalse(errors.isEmpty());
-		assertTrue(errors.stream().anyMatch(error -> error.matches("\\d+:\\d+: .*")));
+		// the line and column are -1 since the Validator validates a DOMSource object, which does
+		// not carry real locator information
+		assertTrue(errors.stream().anyMatch(error -> error.matches("-?\\d+:-?\\d+: .*")));
 		assertTrue(errors.stream().anyMatch(error -> error.contains("foo")));
 		assertFalse(MenuXmlReader.validate("<menu id=\"m\">").isEmpty());
 

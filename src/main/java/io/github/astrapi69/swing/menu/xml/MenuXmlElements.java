@@ -122,6 +122,10 @@ public final class MenuXmlElements
 	 */
 	public static Optional<MenuType> toMenuType(final String elementName)
 	{
+		if (elementName == null)
+		{
+			return Optional.empty();
+		}
 		return Optional.ofNullable(ELEMENT_TO_TYPE.get(elementName));
 	}
 

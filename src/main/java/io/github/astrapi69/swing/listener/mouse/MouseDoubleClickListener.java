@@ -42,6 +42,9 @@ public abstract class MouseDoubleClickListener extends MouseAdapter implements A
 	/** The key for the multi click interval */
 	private static final String AWT_MULTI_CLICK_INTERVAL_KEY = "awt.multiClickInterval";
 
+	/** The default multi click interval that is used if the desktop property is not available */
+	static final int DEFAULT_MULTI_CLICK_INTERVAL = 500;
+
 	/**
 	 * The {@link Timer} object
 	 */
@@ -57,7 +60,21 @@ public abstract class MouseDoubleClickListener extends MouseAdapter implements A
 	 */
 	public MouseDoubleClickListener()
 	{
-		this((Integer)Toolkit.getDefaultToolkit().getDesktopProperty(AWT_MULTI_CLICK_INTERVAL_KEY));
+		this(resolveMultiClickInterval());
+	}
+
+	/**
+	 * Resolves the multi click interval from the desktop property 'awt.multiClickInterval' and
+	 * falls back to the default value if the desktop property is not available, for instance in a
+	 * headless environment
+	 *
+	 * @return the multi click interval in milliseconds
+	 */
+	static int resolveMultiClickInterval()
+	{
+		final Object interval = Toolkit.getDefaultToolkit()
+			.getDesktopProperty(AWT_MULTI_CLICK_INTERVAL_KEY);
+		return interval instanceof Integer ? (Integer)interval : DEFAULT_MULTI_CLICK_INTERVAL;
 	}
 
 	/**

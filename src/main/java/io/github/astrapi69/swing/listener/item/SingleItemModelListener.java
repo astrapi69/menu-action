@@ -64,7 +64,7 @@ public class SingleItemModelListener<T> implements ItemListener
 	{
 		final ItemSelectable is = e.getItemSelectable();
 		final Object[] selected = is.getSelectedObjects();
-		final T selectedItem = (selected.length == 0) ? null : (T)selected[0];
+		final T selectedItem = (selected == null || selected.length == 0) ? null : (T)selected[0];
 		model.setObject(selectedItem);
 	}
 

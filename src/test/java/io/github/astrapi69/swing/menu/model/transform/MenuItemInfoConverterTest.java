@@ -60,7 +60,7 @@ class MenuItemInfoConverterTest
 	void fromJMenu()
 	{
 		MenuInfo editMenuInfo = MenuInfo.builder().type(MenuType.MENU)
-			.mnemonic(MenuExtensions.toMnemonic('E')).actionCommand("Edit").text("Edit")
+			.mnemonic(MenuExtensions.toMnemonic('E')).actionCommand("editCommand").text("Edit")
 			.name(BaseMenuId.EDIT.propertiesKey()).build();
 		JMenu menu = MenuItemInfoConverter.toMenuItemInfo(editMenuInfo, NO_ACTION).toJMenu();
 		MenuInfo menuInfo = MenuItemInfoConverter.fromJMenu(menu);
@@ -89,7 +89,7 @@ class MenuItemInfoConverterTest
 			.mnemonic(MenuExtensions.toMnemonic('C'))
 			.keyStrokeInfo(
 				KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl alt pressed H")))
-			.actionCommand("Help Content").text("Help Content")
+			.actionCommand("helpContentCommand").text("Help Content")
 			.name(BaseMenuId.HELP_CONTENT.propertiesKey()).build();
 		JMenuItem menu = MenuItemInfoConverter.toMenuItemInfo(helpContentMenuInfo, NO_ACTION)
 			.toJMenuItem();
@@ -104,7 +104,8 @@ class MenuItemInfoConverterTest
 		MenuItemInfo donateMenuInfo = MenuItemInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('Y'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed Y")))
-			.actionCommand("Yes").text("Yes").name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
+			.actionCommand("yesCommand").text("Yes").name(BaseMenuId.HELP_DONATE.propertiesKey())
+			.build();
 		JCheckBoxMenuItem menu = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, NO_ACTION)
 			.toJCheckBoxMenuItem();
 		assertEquals(KeyStroke.getKeyStroke("ctrl pressed Y"), menu.getAccelerator());
@@ -118,8 +119,8 @@ class MenuItemInfoConverterTest
 		MenuItemInfo donateMenuInfo = MenuItemInfo.builder().type(MenuType.RADIO_BUTTON_MENU_ITEM)
 			.mnemonic(MenuExtensions.toMnemonic('R'))
 			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl pressed R")))
-			.actionCommand("Donate").text("Donate").name(BaseMenuId.HELP_DONATE.propertiesKey())
-			.build();
+			.actionCommand("donateCommand").text("Donate")
+			.name(BaseMenuId.HELP_DONATE.propertiesKey()).build();
 		JRadioButtonMenuItem menu = MenuItemInfoConverter.toMenuItemInfo(donateMenuInfo, NO_ACTION)
 			.toJRadioButtonMenuItem();
 		MenuItemInfo menuInfo = MenuItemInfoConverter.fromJRadioButtonMenuItem(menu);

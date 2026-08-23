@@ -40,8 +40,7 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
@@ -227,21 +226,19 @@ public final class MenuXmlReader
 		MenuType type = MenuXmlElements.toMenuType(tagName)
 			.orElseThrow(() -> new IllegalArgumentException("Unknown menu element <" + tagName
 				+ ">, expected one of menubar, menu, item, checkbox, radio, separator, popup, toolbar, tray"));
-		MenuExtensions.TextWithMnemonic text = MenuExtensions
-			.parseMnemonic(attribute(element, MenuXmlElements.ATTR_TEXT));
 		Integer mnemonic = toMnemonic(attribute(element, MenuXmlElements.ATTR_MNEMONIC), element);
 		MenuInfo menuInfo = MenuInfo.builder().type(type)
-			.name(attribute(element, MenuXmlElements.ATTR_ID)).text(text.text())
+			.name(attribute(element, MenuXmlElements.ATTR_ID))
+			.text(attribute(element, MenuXmlElements.ATTR_TEXT))
 			.textKey(attribute(element, MenuXmlElements.ATTR_TEXT_KEY))
-			.toolTip(attribute(element, MenuXmlElements.ATTR_TOOL_TIP))
-			.mnemonic(mnemonic != null ? mnemonic : text.mnemonic())
+			.toolTip(attribute(element, MenuXmlElements.ATTR_TOOL_TIP)).mnemonic(mnemonic)
 			.keyStrokeInfo(
 				toKeyStrokeInfo(attribute(element, MenuXmlElements.ATTR_ACCELERATOR), element))
 			.actionId(attribute(element, MenuXmlElements.ATTR_ACTION))
 			.actionCommand(attribute(element, MenuXmlElements.ATTR_ACTION_COMMAND))
-			.enabled(toBoolean(attribute(element, MenuXmlElements.ATTR_ENABLED)))
-			.visible(toBoolean(attribute(element, MenuXmlElements.ATTR_VISIBLE)))
-			.selected(toBoolean(attribute(element, MenuXmlElements.ATTR_SELECTED)))
+			.enabled(toBoolean(attribute(element, MenuXmlElements.ATTR_ENABLED), element))
+			.visible(toBoolean(attribute(element, MenuXmlElements.ATTR_VISIBLE), element))
+			.selected(toBoolean(attribute(element, MenuXmlElements.ATTR_SELECTED), element))
 			.group(attribute(element, MenuXmlElements.ATTR_GROUP))
 			.icon(attribute(element, MenuXmlElements.ATTR_ICON))
 			.anchor(toAnchor(attribute(element, MenuXmlElements.ATTR_ANCHOR), element))
@@ -249,9 +246,9 @@ public final class MenuXmlReader
 			.toolTipKey(attribute(element, MenuXmlElements.ATTR_TOOL_TIP_KEY))
 			.model(attribute(element, MenuXmlElements.ATTR_MODEL))
 			.value(attribute(element, MenuXmlElements.ATTR_VALUE))
-			.showText(toBoolean(attribute(element, MenuXmlElements.ATTR_SHOW_TEXT)))
-			.floatable(toBoolean(attribute(element, MenuXmlElements.ATTR_FLOATABLE)))
-			.rollover(toBoolean(attribute(element, MenuXmlElements.ATTR_ROLLOVER)))
+			.showText(toBoolean(attribute(element, MenuXmlElements.ATTR_SHOW_TEXT), element))
+			.floatable(toBoolean(attribute(element, MenuXmlElements.ATTR_FLOATABLE), element))
+			.rollover(toBoolean(attribute(element, MenuXmlElements.ATTR_ROLLOVER), element))
 			.accessibleName(attribute(element, MenuXmlElements.ATTR_ACCESSIBLE_NAME))
 			.accessibleDescription(attribute(element, MenuXmlElements.ATTR_ACCESSIBLE_DESCRIPTION))
 			.build();
@@ -263,7 +260,9 @@ public final class MenuXmlReader
 	}
 
 	/**
-	 * Validates the given xml string against the menu schema {@code menu.xsd}
+	 * Validates the given xml string against the menu schema {@code menu.xsd}. The xml is parsed
+	 * with the same hardened parser as {@link #fromXml(String)}, so a disallowed doctype is
+	 * reported as a validation error instead of throwing
 	 *
 	 * @param xml
 	 *            the xml string
@@ -271,7 +270,7 @@ public final class MenuXmlReader
 	 */
 	public static List<String> validate(final @NonNull String xml)
 	{
-		return validate(new StreamSource(new StringReader(xml)));
+		return validate(new InputSource(new StringReader(xml)));
 	}
 
 	/**
@@ -283,7 +282,15 @@ public final class MenuXmlReader
 	 */
 	public static List<String> validate(final @NonNull Path path)
 	{
-		return validate(new StreamSource(path.toFile()));
+		try (InputStream inputStream = Files.newInputStream(path))
+		{
+			return validate(new InputSource(inputStream));
+		}
+		catch (IOException e)
+		{
+			throw new UncheckedIOException("Could not read menu xml for validation from " + path,
+				e);
+		}
 	}
 
 	/**
@@ -296,18 +303,24 @@ public final class MenuXmlReader
 	 */
 	public static List<String> validate(final @NonNull InputStream inputStream)
 	{
-		return validate(new StreamSource(inputStream));
+		return validate(new InputSource(inputStream));
 	}
 
-	/**
-	 * Validates the given xml source against the menu schema {@code menu.xsd}
-	 *
-	 * @param source
-	 *            the xml {@link Source} object
-	 * @return the list with the validation errors in the form {@code line:column: message}, empty
-	 *         if the xml is valid
-	 */
-	public static List<String> validate(final @NonNull Source source)
+	private static List<String> validate(final InputSource inputSource)
+	{
+		Document document;
+		try
+		{
+			document = parse(inputSource);
+		}
+		catch (IllegalArgumentException e)
+		{
+			return List.of(e.getMessage());
+		}
+		return validateDocument(document);
+	}
+
+	private static List<String> validateDocument(final Document document)
 	{
 		List<String> errors = new ArrayList<>();
 		try
@@ -332,7 +345,7 @@ public final class MenuXmlReader
 					errors.add(describe(exception));
 				}
 			});
-			validator.validate(source);
+			validator.validate(new DOMSource(document));
 		}
 		catch (SAXException e)
 		{
@@ -359,8 +372,8 @@ public final class MenuXmlReader
 	 */
 	public static MenuInfo readValidated(final @NonNull String xml)
 	{
-		requireValid(validate(xml), xml.length() > 80 ? xml.substring(0, 80) + "..." : xml);
-		return fromXml(xml);
+		return readValidated(new InputSource(new StringReader(xml)),
+			xml.length() > 80 ? xml.substring(0, 80) + "..." : xml);
 	}
 
 	/**
@@ -374,8 +387,14 @@ public final class MenuXmlReader
 	 */
 	public static MenuInfo readValidated(final @NonNull Path path)
 	{
-		requireValid(validate(path), path.toString());
-		return read(path);
+		try (InputStream inputStream = Files.newInputStream(path))
+		{
+			return readValidated(new InputSource(inputStream), path.toString());
+		}
+		catch (IOException e)
+		{
+			throw new UncheckedIOException("Could not read menu xml from " + path, e);
+		}
 	}
 
 	/**
@@ -391,13 +410,20 @@ public final class MenuXmlReader
 	{
 		try (InputStream inputStream = openResource(resource))
 		{
-			requireValid(validate(inputStream), resource);
+			return readValidated(new InputSource(inputStream), resource);
 		}
 		catch (IOException e)
 		{
 			throw new UncheckedIOException("Could not read menu xml resource " + resource, e);
 		}
-		return readResource(resource);
+	}
+
+	private static MenuInfo readValidated(final InputSource inputSource,
+		final String sourceDescription)
+	{
+		Document document = parse(inputSource);
+		requireValid(validateDocument(document), sourceDescription);
+		return toMenuInfo(document.getDocumentElement());
 	}
 
 	private static void requireValid(final List<String> errors, final String source)
@@ -499,9 +525,23 @@ public final class MenuXmlReader
 		return element.hasAttribute(name) ? element.getAttribute(name) : null;
 	}
 
-	private static Boolean toBoolean(final String value)
+	private static Boolean toBoolean(final String value, final Element element)
 	{
-		return value == null ? null : Boolean.valueOf(value.trim());
+		if (value == null)
+		{
+			return null;
+		}
+		String trimmed = value.trim();
+		if ("true".equals(trimmed) || "1".equals(trimmed))
+		{
+			return Boolean.TRUE;
+		}
+		if ("false".equals(trimmed) || "0".equals(trimmed))
+		{
+			return Boolean.FALSE;
+		}
+		throw new IllegalArgumentException("Invalid boolean '" + value + "' in element "
+			+ describe(element) + ", expected one of true, false, 1 or 0");
 	}
 
 	private static Integer toMnemonic(final String value, final Element element)

@@ -142,8 +142,12 @@ public final class MenuItemInfoConverter
 		KeyStrokeInfo keyStrokeInfo = menu.getAccelerator() != null
 			? KeyStrokeExtensions.toKeyStrokeInfo(menu.getAccelerator())
 			: null;
-		return MenuInfo.builder().type(type).name(menu.getName()).text(menu.getText())
-			.toolTip(menu.getToolTipText()).actionCommand(menu.getActionCommand())
+		String text = menu.getText();
+		String actionCommand = menu.getActionCommand();
+		return MenuInfo.builder().type(type).name(menu.getName()).text(text)
+			.toolTip(menu.getToolTipText())
+			.actionCommand(
+				actionCommand != null && !actionCommand.equals(text) ? actionCommand : null)
 			.mnemonic(menu.getMnemonic()).keyStrokeInfo(keyStrokeInfo).build();
 	}
 
@@ -271,6 +275,15 @@ public final class MenuItemInfoConverter
 		if (menuItemInfo.getVisible() != null)
 		{
 			menuBar.setVisible(menuItemInfo.getVisible());
+		}
+		if (menuItemInfo.getAccessibleName() != null)
+		{
+			menuBar.getAccessibleContext().setAccessibleName(menuItemInfo.getAccessibleName());
+		}
+		if (menuItemInfo.getAccessibleDescription() != null)
+		{
+			menuBar.getAccessibleContext()
+				.setAccessibleDescription(menuItemInfo.getAccessibleDescription());
 		}
 		return menuBar;
 	}
@@ -420,7 +433,9 @@ public final class MenuItemInfoConverter
 	/**
 	 * Resolves the given icon path to an {@link Icon} object. The path is first looked up as
 	 * classpath resource and then as file. If the path is null or can not be resolved null is
-	 * returned
+	 * returned. The description of the returned {@link ImageIcon} is the given path unchanged (not
+	 * the resolved url or absolute file path), so {@link MenuInfoExporter} can export the icon path
+	 * unchanged and read it back
 	 *
 	 * @param iconPath
 	 *            the classpath resource path or the file path of the icon
@@ -440,12 +455,14 @@ public final class MenuItemInfoConverter
 		}
 		if (url != null)
 		{
-			return new ImageIcon(url);
+			ImageIcon icon = new ImageIcon(url);
+			icon.setDescription(iconPath);
+			return icon;
 		}
 		File file = new File(iconPath);
 		if (file.isFile())
 		{
-			return new ImageIcon(file.getAbsolutePath());
+			return new ImageIcon(file.getAbsolutePath(), iconPath);
 		}
 		return null;
 	}

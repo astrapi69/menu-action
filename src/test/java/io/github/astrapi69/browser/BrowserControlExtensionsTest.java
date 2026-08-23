@@ -46,6 +46,25 @@ class BrowserControlExtensionsTest
 	}
 
 	@Test
+	void invalidUrlVariants()
+	{
+		// every url that can not be parsed to an URI returns false without starting a browser
+		assertFalse(BrowserControlExtensions.displayURLonStandardBrowser("http://[::1"));
+		assertFalse(BrowserControlExtensions.displayURLonStandardBrowser(":no-scheme"));
+		assertFalse(BrowserControlExtensions.displayURLonStandardBrowser("http://a^b.com"));
+		assertFalse(BrowserControlExtensions.displayURLonStandardBrowser("foo bar"));
+	}
+
+	@Test
+	void nullArguments()
+	{
+		assertThrows(NullPointerException.class, () -> BrowserControlExtensions.browse(null));
+		// the null check of the url fires before any dialog is shown
+		assertThrows(NullPointerException.class,
+			() -> BrowserControlExtensions.displayURLonStandardBrowser(null, null));
+	}
+
+	@Test
 	@Disabled("opens the real browser")
 	void displayURLonStandardBrowser()
 	{

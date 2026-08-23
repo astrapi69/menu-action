@@ -62,7 +62,7 @@ public class ItemBindListener<T> implements ItemListener
 	{
 		final ItemSelectable is = e.getItemSelectable();
 		final Object[] selected = is.getSelectedObjects();
-		final T sel = (selected.length == 0) ? null : (T)selected[0];
+		final T sel = (selected == null || selected.length == 0) ? null : (T)selected[0];
 		model.setSelectedItem(sel);
 	}
 

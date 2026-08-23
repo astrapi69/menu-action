@@ -25,7 +25,9 @@
 package io.github.astrapi69.swing.menu.build;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -107,10 +109,12 @@ public final class MenuInfoExtensions
 	 * Orders the given children by their anchors. Children without anchor or with the anchor
 	 * {@link Anchor#LAST} keep their order, children with the anchor {@link Anchor#FIRST} are moved
 	 * to the front and children with the anchor {@link Anchor#BEFORE} or {@link Anchor#AFTER} are
-	 * placed relative to the child with the name of their relative menu id. Relative children may
-	 * reference other relative children in any order; the placement is repeated until all
-	 * references are resolved. A child whose relative child does not exist or is part of a cycle is
-	 * appended
+	 * placed relative to the child with the name of their relative menu id. Several children
+	 * anchored to the same relative menu id keep their declaration order as a block, so the result
+	 * is stable under repeated calls, for instance every {@link #merge(MenuInfo, MenuInfo)} of the
+	 * base tree. Relative children may reference other relative children in any order; the
+	 * placement is repeated until all references are resolved. A child whose relative child does
+	 * not exist or is part of a cycle is appended
 	 *
 	 * @param children
 	 *            the children to order
@@ -141,22 +145,37 @@ public final class MenuInfoExtensions
 		while (!pending.isEmpty())
 		{
 			List<MenuInfo> unresolved = new ArrayList<>();
+			Map<String, List<MenuInfo>> afterGroups = new LinkedHashMap<>();
+			Map<String, List<MenuInfo>> beforeGroups = new LinkedHashMap<>();
 			for (MenuInfo child : pending)
 			{
-				int index = indexOf(ordered, child.getRelativeToMenuId());
-				if (index < 0)
+				String target = child.getRelativeToMenuId();
+				if (indexOf(ordered, target) < 0)
 				{
 					unresolved.add(child);
+					continue;
 				}
-				else
-				{
-					ordered.add(child.getAnchor() == Anchor.BEFORE ? index : index + 1, child);
-				}
+				Map<String, List<MenuInfo>> groups = child.getAnchor() == Anchor.BEFORE
+					? beforeGroups
+					: afterGroups;
+				groups.computeIfAbsent(target, key -> new ArrayList<>()).add(child);
 			}
-			if (unresolved.size() == pending.size())
+			if (afterGroups.isEmpty() && beforeGroups.isEmpty())
 			{
 				ordered.addAll(unresolved);
 				break;
+			}
+			// resolve AFTER first: it does not shift the target's own index, so the BEFORE
+			// lookup below still finds the target at its current position
+			for (Map.Entry<String, List<MenuInfo>> entry : afterGroups.entrySet())
+			{
+				int index = indexOf(ordered, entry.getKey());
+				ordered.addAll(index + 1, entry.getValue());
+			}
+			for (Map.Entry<String, List<MenuInfo>> entry : beforeGroups.entrySet())
+			{
+				int index = indexOf(ordered, entry.getKey());
+				ordered.addAll(index, entry.getValue());
 			}
 			pending = unresolved;
 		}
