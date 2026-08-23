@@ -334,6 +334,15 @@ public final class MenuItemInfoConverter
 		{
 			button.setVisible(menuItemInfo.getVisible());
 		}
+		if (menuItemInfo.getAccessibleName() != null)
+		{
+			button.getAccessibleContext().setAccessibleName(menuItemInfo.getAccessibleName());
+		}
+		if (menuItemInfo.getAccessibleDescription() != null)
+		{
+			button.getAccessibleContext()
+				.setAccessibleDescription(menuItemInfo.getAccessibleDescription());
+		}
 		if (button instanceof JMenuItem jMenuItem && !(button instanceof JMenu)
 			&& menuItemInfo.getKeyStrokeInfo() != null)
 		{
@@ -379,7 +388,9 @@ public final class MenuItemInfoConverter
 			.type(menuInfo.getType()).anchor(menuInfo.getAnchor())
 			.relativeToMenuId(menuInfo.getRelativeToMenuId())
 			.actionCommand(menuInfo.getActionCommand()).enabled(menuInfo.getEnabled())
-			.visible(menuInfo.getVisible()).selected(menuInfo.getSelected()).icon(icon).build();
+			.visible(menuInfo.getVisible()).selected(menuInfo.getSelected()).icon(icon)
+			.accessibleName(menuInfo.getAccessibleName())
+			.accessibleDescription(menuInfo.getAccessibleDescription()).build();
 	}
 
 	/**
@@ -402,7 +413,8 @@ public final class MenuItemInfoConverter
 			.relativeToMenuId(menuItemInfo.getRelativeToMenuId())
 			.actionCommand(menuItemInfo.getActionCommand()).enabled(menuItemInfo.getEnabled())
 			.visible(menuItemInfo.getVisible()).selected(menuItemInfo.getSelected())
-			.icon(menuItemInfo.getIcon()).build();
+			.icon(menuItemInfo.getIcon()).accessibleName(menuItemInfo.getAccessibleName())
+			.accessibleDescription(menuItemInfo.getAccessibleDescription()).build();
 	}
 
 	/**

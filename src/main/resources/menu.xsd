@@ -20,12 +20,15 @@
         <xs:attribute name="text" type="xs:string"/>
         <xs:attribute name="textKey" type="xs:string"/>
         <xs:attribute name="toolTip" type="xs:string"/>
+        <xs:attribute name="toolTipKey" type="xs:string"/>
         <xs:attribute name="mnemonic" type="xs:string"/>
         <xs:attribute name="icon" type="xs:string"/>
         <xs:attribute name="enabled" type="xs:boolean"/>
         <xs:attribute name="visible" type="xs:boolean"/>
         <xs:attribute name="anchor" type="anchorType"/>
         <xs:attribute name="relativeTo" type="xs:string"/>
+        <xs:attribute name="accessibleName" type="xs:string"/>
+        <xs:attribute name="accessibleDescription" type="xs:string"/>
     </xs:attributeGroup>
 
     <xs:attributeGroup name="itemAttributes">
@@ -33,6 +36,7 @@
         <xs:attribute name="accelerator" type="xs:string"/>
         <xs:attribute name="action" type="xs:string"/>
         <xs:attribute name="actionCommand" type="xs:string"/>
+        <xs:attribute name="showText" type="xs:boolean"/>
     </xs:attributeGroup>
 
     <xs:complexType name="separatorType">
@@ -47,6 +51,8 @@
         <xs:attributeGroup ref="itemAttributes"/>
         <xs:attribute name="selected" type="xs:boolean"/>
         <xs:attribute name="group" type="xs:string"/>
+        <xs:attribute name="model" type="xs:string"/>
+        <xs:attribute name="value" type="xs:string"/>
     </xs:complexType>
 
     <xs:group name="menuChildren">
@@ -72,7 +78,11 @@
         </xs:sequence>
         <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="toolTip" type="xs:string"/>
+        <xs:attribute name="toolTipKey" type="xs:string"/>
         <xs:attribute name="enabled" type="xs:boolean"/>
+        <xs:attribute name="visible" type="xs:boolean"/>
+        <xs:attribute name="accessibleName" type="xs:string"/>
+        <xs:attribute name="accessibleDescription" type="xs:string"/>
     </xs:complexType>
 
     <xs:complexType name="toolBarType">
@@ -86,7 +96,14 @@
         <xs:attribute name="id" type="xs:string" use="required"/>
         <xs:attribute name="text" type="xs:string"/>
         <xs:attribute name="toolTip" type="xs:string"/>
+        <xs:attribute name="toolTipKey" type="xs:string"/>
         <xs:attribute name="enabled" type="xs:boolean"/>
+        <xs:attribute name="visible" type="xs:boolean"/>
+        <xs:attribute name="showText" type="xs:boolean"/>
+        <xs:attribute name="floatable" type="xs:boolean"/>
+        <xs:attribute name="rollover" type="xs:boolean"/>
+        <xs:attribute name="accessibleName" type="xs:string"/>
+        <xs:attribute name="accessibleDescription" type="xs:string"/>
     </xs:complexType>
 
     <xs:element name="menubar" type="menuBarType"/>

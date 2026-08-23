@@ -148,6 +148,49 @@ public class MenuInfo
 	String icon;
 
 	/**
+	 * The optional resource bundle key for the tool tip of this menu component
+	 */
+	String toolTipKey;
+
+	/**
+	 * The optional key of the model that is bound to this check box or radio button menu item. The
+	 * model is resolved by the menu builder, a check box item expects an {@code IModel<Boolean>}, a
+	 * radio button item writes its {@link #value} to the model when it is selected
+	 */
+	String model;
+
+	/**
+	 * The optional value of this radio button menu item for the bound model
+	 */
+	String value;
+
+	/**
+	 * The optional flag if a tool bar button shows its text. A null value means the text is shown
+	 * if the button has no icon
+	 */
+	Boolean showText;
+
+	/**
+	 * The optional flag if a tool bar is floatable
+	 */
+	Boolean floatable;
+
+	/**
+	 * The optional flag if a tool bar shows rollover effects
+	 */
+	Boolean rollover;
+
+	/**
+	 * The optional accessible name of this menu component
+	 */
+	String accessibleName;
+
+	/**
+	 * The optional accessible description of this menu component
+	 */
+	String accessibleDescription;
+
+	/**
 	 * The child menu components of this menu component
 	 */
 	@Builder.Default

@@ -4,49 +4,31 @@ What the library covers is listed in the [README](../README.md#features). This d
 ideas that are **not** implemented yet with the reasoning, and the things that are deliberately
 left out.
 
+## Implemented from earlier roadmaps
+
+These were roadmap items and are part of the library now, see the README for the usage:
+
+- model binding of check box and radio button items to model-data `IModel` objects
+  (`model`/`value` attributes, `MenuBuilder.withModels`, `updateFromModels`)
+- `toolTipKey` for translated tool tips
+- tool bar options `showText`, `floatable` and `rollover`
+- `accessibleName` and `accessibleDescription`
+- action id strategies for the export of programmatic menus (`MenuInfoExporter.withActionIds`)
+
 ## Candidates for a later version
 
-### Model binding for check box and radio button items
+### Model change notification
 
-Today a `checkbox` or `radio` item has a static `selected` attribute and fires its action. A
-binding to a model-data `IModel<Boolean>` (check box) or `IModel<T>` (radio group with a value per
-item) would keep the menu and the application state in sync in both directions, the same way
-swing-model-components binds its components. Sketch:
+The model binding pulls the model state when the menu is built and on
+`MenuBuilder.updateFromModels()`, and writes the model when the item changes. model-data models
+have no change listeners, so an automatic update of the menu after the application changed a
+model is not possible without an observable model. If model-data gets observable models the
+builder can subscribe to them. Effort: depends on model-data.
 
-```xml
-<checkbox id="view.statusbar" text="Statusbar" model="statusbarVisible"/>
-<radio id="view.mode.desktop" text="Desktop" group="view.mode" model="viewMode" value="DESKTOP"/>
-<radio id="view.mode.panel" text="Panel" group="view.mode" model="viewMode" value="PANEL"/>
-```
+### Icon keys and themed icons
 
-The `model` attribute would be resolved from the `ActionContext` (or a small `ModelRegistry`),
-the builder would add an item listener that writes the model and a model listener that updates the
-item. Effort: medium (new attributes, xsd, builder logic, tests). Wanted as soon as an application
-needs it; until then the action of the item can write the model.
-
-### More i18n keys
-
-Only `textKey` is resolved from the resource bundle. `toolTipKey` (and maybe `iconKey` for
-themed icons) would complete the picture. Effort: small, but it adds attributes to every element;
-wait until a translated application needs tool tips.
-
-### Tool bar options
-
-`JToolBar` buttons show the text of the item. Typical tool bars are icon only with the text as
-tool tip. An attribute like `showText="false"` on `toolbar` or per item, plus `rollover` and
-`floatable` on the tool bar, would cover that. Effort: small.
-
-### Accessibility
-
-`accessibleName` and `accessibleDescription` attributes that are mapped to the accessible context
-of the component. Effort: small, no demand yet.
-
-### Exporting action ids
-
-`MenuInfoExporter` exports existing swing menus to a `MenuInfo` tree, but a swing component does
-not know an action id, so exported items use their id as action id. A mapping from the bound
-`Action` object (for instance by class name or `Action.NAME`) to an id could be offered as an
-optional strategy. Effort: small, only relevant while migrating programmatic menus.
+`icon` is a classpath or file path. An `iconKey` resolved from the resource bundle (per theme or
+look and feel) would allow switching icon sets without touching the menu files. Effort: small.
 
 ## Deliberately not planned
 

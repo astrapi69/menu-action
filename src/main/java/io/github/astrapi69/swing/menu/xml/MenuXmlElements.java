@@ -87,6 +87,22 @@ public final class MenuXmlElements
 	public static final String ATTR_ANCHOR = "anchor";
 	/** The attribute name for the relative menu id of the anchor */
 	public static final String ATTR_RELATIVE_TO = "relativeTo";
+	/** The attribute name for the resource bundle key of the tool tip */
+	public static final String ATTR_TOOL_TIP_KEY = "toolTipKey";
+	/** The attribute name for the bound model */
+	public static final String ATTR_MODEL = "model";
+	/** The attribute name for the model value of a radio button menu item */
+	public static final String ATTR_VALUE = "value";
+	/** The attribute name for the show text flag of tool bar buttons */
+	public static final String ATTR_SHOW_TEXT = "showText";
+	/** The attribute name for the floatable flag of a tool bar */
+	public static final String ATTR_FLOATABLE = "floatable";
+	/** The attribute name for the rollover flag of a tool bar */
+	public static final String ATTR_ROLLOVER = "rollover";
+	/** The attribute name for the accessible name */
+	public static final String ATTR_ACCESSIBLE_NAME = "accessibleName";
+	/** The attribute name for the accessible description */
+	public static final String ATTR_ACCESSIBLE_DESCRIPTION = "accessibleDescription";
 
 	private static final Map<String, MenuType> ELEMENT_TO_TYPE = Map.of(MENU_BAR, MenuType.MENU_BAR,
 		MENU, MenuType.MENU, ITEM, MenuType.MENU_ITEM, CHECKBOX, MenuType.CHECK_BOX_MENU_ITEM,

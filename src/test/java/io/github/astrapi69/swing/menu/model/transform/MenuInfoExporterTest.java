@@ -56,6 +56,19 @@ import io.github.astrapi69.swing.menu.xml.MenuXmlWriter;
 class MenuInfoExporterTest
 {
 
+	static class ExitAction extends javax.swing.AbstractAction
+	{
+		ExitAction()
+		{
+			super("Exit");
+		}
+
+		@Override
+		public void actionPerformed(java.awt.event.ActionEvent e)
+		{
+		}
+	}
+
 	@Test
 	void exportOfBuiltMenuBarKeepsStructure()
 	{
@@ -176,5 +189,45 @@ class MenuInfoExporterTest
 		assertEquals(MenuType.MENU_ITEM,
 			MenuInfoExporter.fromComponent(new JMenuItem("x")).getType());
 		assertNull(MenuInfoExporter.fromComponent(new JLabel("x")));
+	}
+
+	@Test
+	void actionIdStrategiesAndToolBarOptions()
+	{
+		ExitAction exit = new ExitAction();
+		JMenuBar menuBar = new JMenuBar();
+		JMenu file = new JMenu("File");
+		JMenuItem exitItem = new JMenuItem(exit);
+		exitItem.getAccessibleContext().setAccessibleName("Exit the application");
+		exitItem.getAccessibleContext().setAccessibleDescription("Closes all windows");
+		file.add(exitItem);
+		file.add(new JMenuItem("Plain"));
+		menuBar.add(file);
+
+		MenuInfo byClass = MenuInfoExporter
+			.withActionIds(MenuInfoExporter.actionIdFromActionClass()).export(menuBar);
+		MenuInfo exitInfo = byClass.getChildren().get(0).getChildren().get(0);
+		assertEquals("exitAction", exitInfo.getActionId());
+		assertEquals("Exit the application", exitInfo.getAccessibleName());
+		assertEquals("Closes all windows", exitInfo.getAccessibleDescription());
+		assertNull(byClass.getChildren().get(0).getChildren().get(1).getActionId());
+		assertNull(byClass.getChildren().get(0).getChildren().get(1).getAccessibleName());
+
+		MenuInfo byName = MenuInfoExporter.withActionIds(MenuInfoExporter.actionIdFromActionName())
+			.export(menuBar);
+		assertEquals("Exit", byName.getChildren().get(0).getChildren().get(0).getActionId());
+		assertNull(MenuInfoExporter.fromJMenuBar(menuBar).getChildren().get(0).getChildren().get(0)
+			.getActionId());
+
+		JToolBar toolBar = new JToolBar();
+		toolBar.setFloatable(false);
+		toolBar.setRollover(true);
+		toolBar.add(new JButton("x"));
+		MenuInfo toolBarInfo = MenuInfoExporter.withActionIds(button -> "tb").export(toolBar);
+		assertEquals(Boolean.FALSE, toolBarInfo.getFloatable());
+		assertEquals(Boolean.TRUE, toolBarInfo.getRollover());
+		assertEquals("tb", toolBarInfo.getChildren().get(0).getActionId());
+		assertEquals(MenuType.MENU_ITEM,
+			MenuInfoExporter.withActionIds(button -> null).export(new JMenuItem("i")).getType());
 	}
 }

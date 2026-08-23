@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import javax.swing.AbstractButton;
@@ -59,6 +60,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
+import io.github.astrapi69.model.api.IModel;
 import io.github.astrapi69.swing.menu.MenuExtensions;
 import io.github.astrapi69.swing.menu.ParentMenuResolver;
 import io.github.astrapi69.swing.menu.enumeration.Anchor;
@@ -104,6 +106,14 @@ public class MenuBuilder
 	private final Map<String, ButtonGroup> buttonGroups = new LinkedHashMap<>();
 	/** The built awt menu components by name, for system tray menus */
 	private final Map<String, MenuComponent> awtComponents = new LinkedHashMap<>();
+	/** The resolver for the model keys */
+	private Function<String, Optional<IModel<?>>> modelResolver = key -> Optional.empty();
+	/** The converter of a radio button value string to the model object */
+	private BiFunction<IModel<?>, String, Object> valueConverter = MenuBuilder::convertValue;
+	/** The model bindings of the built check box and radio button items */
+	private final List<Runnable> modelBindings = new ArrayList<>();
+	/** The show text flag of the tool bar that is currently built */
+	private Boolean toolBarShowText;
 
 	/**
 	 * Creates a new {@link MenuBuilder} object with an empty {@link ActionRegistry}
@@ -176,6 +186,78 @@ public class MenuBuilder
 	{
 		return withTextResolver(
 			key -> resourceBundle.containsKey(key) ? resourceBundle.getString(key) : null);
+	}
+
+	/**
+	 * Sets the resolver for the model keys of the check box and radio button menu items. A check
+	 * box item expects an {@code IModel<Boolean>}, a radio button item writes its value to the
+	 * model when it is selected and is selected if the model object equals its value
+	 *
+	 * @param modelResolver
+	 *            the resolver that maps a model key to a model
+	 * @return this {@link MenuBuilder} object for method chaining
+	 */
+	public MenuBuilder withModelResolver(
+		final @NonNull Function<String, Optional<IModel<?>>> modelResolver)
+	{
+		this.modelResolver = modelResolver;
+		return this;
+	}
+
+	/**
+	 * Sets the given models as resolver for the model keys
+	 *
+	 * @param models
+	 *            the map with the model keys and the models
+	 * @return this {@link MenuBuilder} object for method chaining
+	 */
+	public MenuBuilder withModels(final @NonNull Map<String, ? extends IModel<?>> models)
+	{
+		return withModelResolver(key -> Optional.ofNullable(models.get(key)));
+	}
+
+	/**
+	 * Sets the given {@link ActionContext} as resolver for the model keys, the models are looked up
+	 * by their key in the context
+	 *
+	 * @param context
+	 *            the {@link ActionContext} object
+	 * @return this {@link MenuBuilder} object for method chaining
+	 */
+	public MenuBuilder withModels(final @NonNull ActionContext context)
+	{
+		return withModelResolver(key -> context.get(key).filter(IModel.class::isInstance)
+			.map(object -> (IModel<?>)object));
+	}
+
+	/**
+	 * Sets the converter that converts the value string of a radio button menu item to the object
+	 * that is written to the model. The default converter derives the type from the current model
+	 * object: enums, booleans, integers, longs and doubles are converted, everything else stays a
+	 * string
+	 *
+	 * @param valueConverter
+	 *            the converter with the model and the value string
+	 * @return this {@link MenuBuilder} object for method chaining
+	 */
+	public MenuBuilder withValueConverter(
+		final @NonNull BiFunction<IModel<?>, String, Object> valueConverter)
+	{
+		this.valueConverter = valueConverter;
+		return this;
+	}
+
+	/**
+	 * Updates the selected state of all built check box and radio button items that are bound to a
+	 * model from the current model objects. Call this after the models were changed by the
+	 * application
+	 */
+	public void updateFromModels()
+	{
+		for (Runnable binding : modelBindings)
+		{
+			binding.run();
+		}
 	}
 
 	/**
@@ -253,6 +335,7 @@ public class MenuBuilder
 	{
 		requireType(menuBarInfo, MenuType.MENU_BAR);
 		JMenuBar menuBar = toMenuItemInfo(menuBarInfo, null).toJMenuBar();
+		applyAccessible(menuBarInfo, menuBar);
 		register(menuBarInfo, menuBar);
 		for (MenuInfo child : MenuInfoExtensions.orderByAnchor(menuBarInfo.getChildren()))
 		{
@@ -307,14 +390,16 @@ public class MenuBuilder
 		{
 			popupMenu.setName(popupInfo.getName());
 		}
-		if (popupInfo.getToolTip() != null)
+		String popupToolTip = resolveToolTip(popupInfo);
+		if (popupToolTip != null)
 		{
-			popupMenu.setToolTipText(popupInfo.getToolTip());
+			popupMenu.setToolTipText(popupToolTip);
 		}
 		if (popupInfo.getEnabled() != null)
 		{
 			popupMenu.setEnabled(popupInfo.getEnabled());
 		}
+		applyAccessible(popupInfo, popupMenu);
 		register(popupInfo, popupMenu);
 		for (MenuInfo child : MenuInfoExtensions.orderByAnchor(popupInfo.getChildren()))
 		{
@@ -347,18 +432,41 @@ public class MenuBuilder
 		{
 			toolBar.setName(toolBarInfo.getName());
 		}
-		if (toolBarInfo.getToolTip() != null)
+		String toolBarToolTip = resolveToolTip(toolBarInfo);
+		if (toolBarToolTip != null)
 		{
-			toolBar.setToolTipText(toolBarInfo.getToolTip());
+			toolBar.setToolTipText(toolBarToolTip);
 		}
 		if (toolBarInfo.getEnabled() != null)
 		{
 			toolBar.setEnabled(toolBarInfo.getEnabled());
 		}
-		register(toolBarInfo, toolBar);
-		for (MenuInfo child : MenuInfoExtensions.orderByAnchor(toolBarInfo.getChildren()))
+		if (toolBarInfo.getFloatable() != null)
 		{
-			toolBar.add(buildToolBarComponent(child));
+			toolBar.setFloatable(toolBarInfo.getFloatable());
+		}
+		if (toolBarInfo.getRollover() != null)
+		{
+			toolBar.setRollover(toolBarInfo.getRollover());
+		}
+		if (toolBarInfo.getVisible() != null)
+		{
+			toolBar.setVisible(toolBarInfo.getVisible());
+		}
+		applyAccessible(toolBarInfo, toolBar);
+		register(toolBarInfo, toolBar);
+		Boolean previousShowText = toolBarShowText;
+		toolBarShowText = toolBarInfo.getShowText();
+		try
+		{
+			for (MenuInfo child : MenuInfoExtensions.orderByAnchor(toolBarInfo.getChildren()))
+			{
+				toolBar.add(buildToolBarComponent(child));
+			}
+		}
+		finally
+		{
+			toolBarShowText = previousShowText;
 		}
 		return toolBar;
 	}
@@ -383,6 +491,7 @@ public class MenuBuilder
 				JCheckBoxMenuItem checkBox = toMenuItemInfo(menuInfo, resolveAction(menuInfo, true))
 					.toJCheckBoxMenuItem();
 				addToButtonGroup(menuInfo, checkBox);
+				bindModel(menuInfo, checkBox);
 				register(menuInfo, checkBox);
 				yield checkBox;
 			}
@@ -391,6 +500,7 @@ public class MenuBuilder
 				JRadioButtonMenuItem radioButton = toMenuItemInfo(menuInfo,
 					resolveAction(menuInfo, true)).toJRadioButtonMenuItem();
 				addToButtonGroup(menuInfo, radioButton);
+				bindModel(menuInfo, radioButton);
 				register(menuInfo, radioButton);
 				yield radioButton;
 			}
@@ -569,12 +679,15 @@ public class MenuBuilder
 				MenuItemInfoConverter.setFields(
 					toMenuItemInfo(menuInfo, resolveAction(menuInfo, true)), toggleButton);
 				addToButtonGroup(menuInfo, toggleButton);
+				bindModel(menuInfo, toggleButton);
+				applyShowText(menuInfo, toggleButton);
 				register(menuInfo, toggleButton);
 				return toggleButton;
 			default :
 				JButton button = new JButton();
 				MenuItemInfoConverter
 					.setFields(toMenuItemInfo(menuInfo, resolveAction(menuInfo, true)), button);
+				applyShowText(menuInfo, button);
 				register(menuInfo, button);
 				return button;
 		}
@@ -764,11 +877,160 @@ public class MenuBuilder
 			? menuInfo.getMnemonic()
 			: text.mnemonic();
 		return MenuItemInfo.builder().name(menuInfo.getName()).text(text.text())
-			.toolTip(menuInfo.getToolTip()).mnemonic(mnemonic)
+			.toolTip(resolveToolTip(menuInfo)).mnemonic(mnemonic)
+			.accessibleName(menuInfo.getAccessibleName())
+			.accessibleDescription(menuInfo.getAccessibleDescription())
 			.keyStrokeInfo(menuInfo.getKeyStrokeInfo()).type(menuInfo.getType())
 			.anchor(menuInfo.getAnchor()).relativeToMenuId(menuInfo.getRelativeToMenuId())
 			.actionCommand(actionCommand).actionListener(actionListener).enabled(enabled)
 			.visible(menuInfo.getVisible()).selected(menuInfo.getSelected()).icon(icon).build();
+	}
+
+	/**
+	 * Resolves the tool tip of the given {@link MenuInfo} object. If a text resolver is set and the
+	 * {@link MenuInfo} object has a tool tip key the tool tip is resolved from the key, otherwise
+	 * the tool tip of the {@link MenuInfo} object is returned
+	 *
+	 * @param menuInfo
+	 *            the {@link MenuInfo} object
+	 * @return the resolved tool tip or null
+	 */
+	protected String resolveToolTip(final MenuInfo menuInfo)
+	{
+		if (menuInfo.getToolTipKey() != null && textResolver != null)
+		{
+			String resolved = textResolver.apply(menuInfo.getToolTipKey());
+			if (resolved != null)
+			{
+				return resolved;
+			}
+		}
+		return menuInfo.getToolTip();
+	}
+
+	/**
+	 * Binds the given toggle button to the model of the given {@link MenuInfo} object if a model
+	 * key is set. The button is selected from the model and writes the model when it is selected or
+	 * deselected. The binding is registered for {@link #updateFromModels()}
+	 *
+	 * @param menuInfo
+	 *            the {@link MenuInfo} object
+	 * @param button
+	 *            the check box or radio button
+	 */
+	protected void bindModel(final MenuInfo menuInfo, final AbstractButton button)
+	{
+		if (menuInfo.getModel() == null)
+		{
+			return;
+		}
+		Optional<IModel<?>> resolved = modelResolver.apply(menuInfo.getModel());
+		if (resolved.isEmpty())
+		{
+			if (missingActionPolicy == MissingActionPolicy.FAIL)
+			{
+				throw new IllegalStateException("No model registered for the key '"
+					+ menuInfo.getModel() + "' of the menu '" + menuInfo.getName() + "'");
+			}
+			return;
+		}
+		@SuppressWarnings("unchecked")
+		IModel<Object> model = (IModel<Object>)resolved.get();
+		boolean radio = menuInfo.getType() == MenuType.RADIO_BUTTON_MENU_ITEM;
+		Object value = radio && menuInfo.getValue() != null
+			? valueConverter.apply(model, menuInfo.getValue())
+			: null;
+		Runnable update = () -> {
+			Object current = model.getObject();
+			button.setSelected(radio
+				? value != null && (value.equals(current)
+					|| String.valueOf(value).equals(String.valueOf(current)))
+				: Boolean.TRUE.equals(current));
+		};
+		update.run();
+		button.addItemListener(event -> {
+			if (radio)
+			{
+				if (button.isSelected() && value != null)
+				{
+					model.setObject(value);
+				}
+			}
+			else
+			{
+				model.setObject(button.isSelected());
+			}
+		});
+		modelBindings.add(update);
+	}
+
+	private void applyShowText(final MenuInfo menuInfo, final AbstractButton button)
+	{
+		Boolean showText = menuInfo.getShowText() != null
+			? menuInfo.getShowText()
+			: toolBarShowText;
+		if (Boolean.FALSE.equals(showText) && button.getIcon() != null)
+		{
+			if (button.getToolTipText() == null)
+			{
+				button.setToolTipText(button.getText());
+			}
+			button.setText(null);
+		}
+	}
+
+	private static void applyAccessible(final MenuInfo menuInfo, final JComponent component)
+	{
+		if (menuInfo.getAccessibleName() != null)
+		{
+			component.getAccessibleContext().setAccessibleName(menuInfo.getAccessibleName());
+		}
+		if (menuInfo.getAccessibleDescription() != null)
+		{
+			component.getAccessibleContext()
+				.setAccessibleDescription(menuInfo.getAccessibleDescription());
+		}
+	}
+
+	/**
+	 * Converts the given value string to the type of the current object of the given model. Enums,
+	 * booleans, integers, longs and doubles are converted, everything else stays a string
+	 *
+	 * @param model
+	 *            the model
+	 * @param value
+	 *            the value string
+	 * @return the converted value
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static Object convertValue(final IModel<?> model, final String value)
+	{
+		Object current = model.getObject();
+		if (current == null || value == null)
+		{
+			return value;
+		}
+		if (current instanceof Enum<?> currentEnum)
+		{
+			return Enum.valueOf((Class<Enum>)currentEnum.getDeclaringClass(), value);
+		}
+		if (current instanceof Boolean)
+		{
+			return Boolean.valueOf(value);
+		}
+		if (current instanceof Integer)
+		{
+			return Integer.valueOf(value);
+		}
+		if (current instanceof Long)
+		{
+			return Long.valueOf(value);
+		}
+		if (current instanceof Double)
+		{
+			return Double.valueOf(value);
+		}
+		return value;
 	}
 
 	private static boolean isItem(final MenuInfo menuInfo)

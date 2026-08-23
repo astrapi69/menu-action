@@ -38,7 +38,7 @@ The source code comes under the liberal MIT License, making menu-action great fo
 **Declarative menus (xml)**
 - `MenuXmlReader` / `MenuXmlWriter`: load and save menu bars, menus, popup menus, tool bars and tray menus from a plain xml format (`menubar`, `menu`, `item`, `checkbox`, `radio`, `separator`, `popup`, `toolbar`, `tray`, container `menus`); ampersand mnemonics (`&amp;File`), `visible`/`enabled` attributes; schema validation with line and column errors against the shipped `menu.xsd`; parser hardened against xml external entities
 - `MenuInfoExporter`: exports existing swing menu bars, menus, popup menus and tool bars to a `MenuInfo` tree for the migration to xml
-- `MenuBuilder`: builds `JMenuBar`, `JMenu`, `JPopupMenu`, `JToolBar`, awt `PopupMenu` for tray icons and all item types from the `MenuInfo` tree; `javax.swing.Action` objects are bound with `setAction` so their enabled state stays in sync; actions resolved by id from an `ActionRegistry`; `MissingActionPolicy` (`FAIL`, `DISABLE`, `IGNORE`); texts from a `ResourceBundle` via `textKey`; icons from classpath or file with a pluggable resolver; button groups for radio items; placement with `anchor`/`relativeTo`; lookup of every built component by id
+- `MenuBuilder`: builds `JMenuBar`, `JMenu`, `JPopupMenu`, `JToolBar`, awt `PopupMenu` for tray icons and all item types from the `MenuInfo` tree; `javax.swing.Action` objects are bound with `setAction` so their enabled state stays in sync; check box and radio items bound to model-data `IModel` objects (`model`/`value`, `updateFromModels`); tool bar options `showText`, `floatable`, `rollover`; `toolTipKey`, `accessibleName`, `accessibleDescription`; actions resolved by id from an `ActionRegistry`; `MissingActionPolicy` (`FAIL`, `DISABLE`, `IGNORE`); texts from a `ResourceBundle` via `textKey`; icons from classpath or file with a pluggable resolver; button groups for radio items; placement with `anchor`/`relativeTo`; lookup of every built component by id
 - `MenuInfoExtensions`: `find`, `flatten`, `orderByAnchor` (resolves chained anchors), `insertIndex` and `merge` of plugin menu contributions into an existing menu tree
 - runtime changes of built menus: `MenuBuilder.insert` places a new menu, item or separator into a built `JMenuBar`, `JMenu`, `JPopupMenu` or `JToolBar` by its anchor, `MenuBuilder.remove` takes it out again
 - declarative actions: `@MenuAction` annotated controller methods and fields (`ActionRegistry.ofHandlers`), `ActionProvider` services for plugins with an `ActionContext`, `ActionResolver` chain for custom lookups
@@ -149,11 +149,37 @@ More xml features:
   enabled state, icon and tool tip of the action stay in sync with every menu item and tool bar
   button that uses it; the xml text has precedence over the action name
 
+Check box and radio button items can be bound to model-data models. A check box writes an
+`IModel<Boolean>`, a radio button writes its `value` to the model of its group and is selected when
+the model holds that value (enums, booleans and numbers are converted from the value string):
+
+```xml
+<checkbox id="view.statusbar" text="Statusbar" model="statusbar"/>
+<radio id="view.mode.desktop" text="Desktop" group="view.mode" model="viewMode" value="DESKTOP"/>
+<radio id="view.mode.panel" text="Panel" group="view.mode" model="viewMode" value="PANEL"/>
+```
+
+```java
+IModel<Boolean> statusbar = BaseModel.of(true);
+IModel<ViewMode> viewMode = BaseModel.of(ViewMode.DESKTOP);
+MenuBuilder builder = new MenuBuilder(actions).withModels(Map.of("statusbar", statusbar, "viewMode", viewMode));
+// or .withModels(actionContext) when the models are registered in the ActionContext
+...
+viewMode.setObject(ViewMode.PANEL);
+builder.updateFromModels(); // pulls the model state into the bound items
+```
+
+Further attributes: `toolTipKey` resolves the tool tip from the resource bundle like `textKey`;
+`showText="false"` on a `toolbar` or a single item shows icon only buttons with the text as tool
+tip, `floatable` and `rollover` configure the tool bar; `accessibleName` and
+`accessibleDescription` set the accessible context of every component.
+
 A `MenuInfo` tree can be written back with `MenuXmlWriter.toXml(menuInfo)`. Existing menus that
 were built in java can be exported with `MenuInfoExporter.fromJMenuBar(menuBar)` (also
 `fromJMenu`, `fromJPopupMenu`, `fromJToolBar`) and written to xml, which is the fastest way to
 migrate a programmatic menu to the xml format. Components without a name get an id derived from
-the parent id and the text.
+the parent id and the text, action ids come from a strategy like
+`MenuInfoExporter.withActionIds(MenuInfoExporter.actionIdFromActionClass()).export(menuBar)`.
 
 A ready made look and feel menu comes from `LookAndFeelMenuFactory`: `newLookAndFeelMenuInfo()`
 creates a radio item per installed look and feel plus the metal ocean theme,

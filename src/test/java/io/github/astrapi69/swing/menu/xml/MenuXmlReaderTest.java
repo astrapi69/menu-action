@@ -175,6 +175,35 @@ class MenuXmlReaderTest
 	}
 
 	@Test
+	void modelToolBarAndAccessibilityAttributes()
+	{
+		String xml = "<toolbar id=\"tb\" toolTipKey=\"tip.bar\" floatable=\"false\" rollover=\"true\""
+			+ " showText=\"false\" accessibleName=\"Bar\" accessibleDescription=\"The bar\">"
+			+ "<checkbox id=\"c\" text=\"C\" model=\"statusbar\" showText=\"true\"/>"
+			+ "<item id=\"i\" text=\"I\" toolTipKey=\"tip.i\" accessibleName=\"Item\"/></toolbar>";
+		assertTrue(MenuXmlReader.validate(xml).isEmpty(), MenuXmlReader.validate(xml).toString());
+		MenuInfo toolBar = MenuXmlReader.readValidated(xml);
+		assertEquals("tip.bar", toolBar.getToolTipKey());
+		assertEquals(Boolean.FALSE, toolBar.getFloatable());
+		assertEquals(Boolean.TRUE, toolBar.getRollover());
+		assertEquals(Boolean.FALSE, toolBar.getShowText());
+		assertEquals("Bar", toolBar.getAccessibleName());
+		assertEquals("The bar", toolBar.getAccessibleDescription());
+		assertEquals("statusbar", toolBar.getChildren().get(0).getModel());
+		assertEquals(Boolean.TRUE, toolBar.getChildren().get(0).getShowText());
+		assertEquals("tip.i", toolBar.getChildren().get(1).getToolTipKey());
+		assertEquals("Item", toolBar.getChildren().get(1).getAccessibleName());
+		assertEquals(toolBar, MenuXmlReader.fromXml(MenuXmlWriter.toXml(toolBar)));
+
+		String radios = "<menu id=\"m\"><radio id=\"a\" group=\"g\" model=\"mode\" value=\"A\"/></menu>";
+		assertTrue(MenuXmlReader.validate(radios).isEmpty());
+		MenuInfo radio = MenuXmlReader.fromXml(radios).getChildren().get(0);
+		assertEquals("mode", radio.getModel());
+		assertEquals("A", radio.getValue());
+		assertEquals(radio, MenuXmlReader.fromXml(MenuXmlWriter.toXml(radio)));
+	}
+
+	@Test
 	void validate()
 	{
 		for (String resource : List.of("menubar.xml", "popup.xml", "toolbar.xml",

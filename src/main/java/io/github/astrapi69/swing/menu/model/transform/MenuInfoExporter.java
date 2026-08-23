@@ -27,6 +27,7 @@ package io.github.astrapi69.swing.menu.model.transform;
 import java.awt.Component;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -62,8 +63,88 @@ public final class MenuInfoExporter
 
 	private final Map<ButtonGroup, String> groupNames = new IdentityHashMap<>();
 
+	private final Function<AbstractButton, String> actionIdResolver;
+
 	private MenuInfoExporter()
 	{
+		this(button -> null);
+	}
+
+	private MenuInfoExporter(final Function<AbstractButton, String> actionIdResolver)
+	{
+		this.actionIdResolver = actionIdResolver;
+	}
+
+	/**
+	 * Factory method that creates an exporter with the given strategy for the action ids. The
+	 * strategy gets every exported button and returns the action id or null. The exporter is used
+	 * with {@link #export(Component)}
+	 *
+	 * @param actionIdResolver
+	 *            the strategy for the action ids
+	 * @return the new {@link MenuInfoExporter} object
+	 */
+	public static MenuInfoExporter withActionIds(
+		final @NonNull Function<AbstractButton, String> actionIdResolver)
+	{
+		return new MenuInfoExporter(actionIdResolver);
+	}
+
+	/**
+	 * A strategy for {@link #withActionIds(Function)} that uses the simple class name of the bound
+	 * {@link javax.swing.Action} object with a lower case first letter as action id, for instance
+	 * {@code exitApplicationAction}. Buttons without action get no action id
+	 *
+	 * @return the strategy
+	 */
+	public static Function<AbstractButton, String> actionIdFromActionClass()
+	{
+		return button -> {
+			if (button.getAction() == null)
+			{
+				return null;
+			}
+			String name = button.getAction().getClass().getSimpleName();
+			if (name.isEmpty())
+			{
+				return null;
+			}
+			return Character.toLowerCase(name.charAt(0)) + name.substring(1);
+		};
+	}
+
+	/**
+	 * A strategy for {@link #withActionIds(Function)} that uses the {@link javax.swing.Action#NAME}
+	 * value of the bound {@link javax.swing.Action} object as action id
+	 *
+	 * @return the strategy
+	 */
+	public static Function<AbstractButton, String> actionIdFromActionName()
+	{
+		return button -> button.getAction() != null
+			&& button.getAction().getValue(javax.swing.Action.NAME) != null
+				? String.valueOf(button.getAction().getValue(javax.swing.Action.NAME))
+				: null;
+	}
+
+	/**
+	 * Exports the given menu component with the action id strategy of this exporter. Supported
+	 * are {@link JMenuBar}, {@link JMenu}, {@link JPopupMenu}, {@link JToolBar},
+	 * {@link JMenuItem} and its subclasses and separators
+	 *
+	 * @param component
+	 *            the component
+	 * @return the {@link MenuInfo} tree or null if the component is not a menu component
+	 */
+	public MenuInfo export(final @NonNull Component component)
+	{
+		return switch (component)
+		{
+			case JMenuBar menuBar -> exportMenuBar(menuBar);
+			case JToolBar toolBar -> exportToolBar(toolBar);
+			case JPopupMenu popupMenu -> exportPopupMenu(popupMenu);
+			default -> fromComponent(component, null);
+		};
 	}
 
 	/**
@@ -75,8 +156,14 @@ public final class MenuInfoExporter
 	 */
 	public static MenuInfo fromJMenuBar(final @NonNull JMenuBar menuBar)
 	{
-		MenuInfoExporter exporter = new MenuInfoExporter();
+		return new MenuInfoExporter().exportMenuBar(menuBar);
+	}
+
+	private MenuInfo exportMenuBar(final JMenuBar menuBar)
+	{
+		MenuInfoExporter exporter = this;
 		MenuInfo menuBarInfo = MenuItemInfoConverter.fromJMenuBar(menuBar);
+		applyAccessible(menuBar, menuBarInfo);
 		if (Boolean.FALSE.equals(visibleOrNull(menuBar)))
 		{
 			menuBarInfo.setVisible(false);
@@ -113,11 +200,17 @@ public final class MenuInfoExporter
 	 */
 	public static MenuInfo fromJPopupMenu(final @NonNull JPopupMenu popupMenu)
 	{
-		MenuInfoExporter exporter = new MenuInfoExporter();
+		return new MenuInfoExporter().exportPopupMenu(popupMenu);
+	}
+
+	private MenuInfo exportPopupMenu(final JPopupMenu popupMenu)
+	{
+		MenuInfoExporter exporter = this;
 		MenuInfo popupInfo = MenuInfo.builder().type(MenuType.POPUP)
 			.name(popupMenu.getName() != null ? popupMenu.getName() : "popup")
 			.text(emptyToNull(popupMenu.getLabel())).toolTip(popupMenu.getToolTipText())
 			.enabled(popupMenu.isEnabled() ? null : Boolean.FALSE).build();
+		applyAccessible(popupMenu, popupInfo);
 		for (Component component : popupMenu.getComponents())
 		{
 			MenuInfo child = exporter.fromComponent(component, popupInfo.getName());
@@ -138,12 +231,19 @@ public final class MenuInfoExporter
 	 */
 	public static MenuInfo fromJToolBar(final @NonNull JToolBar toolBar)
 	{
-		MenuInfoExporter exporter = new MenuInfoExporter();
+		return new MenuInfoExporter().exportToolBar(toolBar);
+	}
+
+	private MenuInfo exportToolBar(final JToolBar toolBar)
+	{
+		MenuInfoExporter exporter = this;
 		MenuInfo toolBarInfo = MenuInfo.builder().type(MenuType.TOOL_BAR)
 			.name(
 				toolBar.getName() != null ? toolBar.getName() : BaseMenuId.TOOL_BAR.propertiesKey())
 			.toolTip(toolBar.getToolTipText()).enabled(toolBar.isEnabled() ? null : Boolean.FALSE)
-			.build();
+			.floatable(toolBar.isFloatable() ? null : Boolean.FALSE)
+			.rollover(toolBar.isRollover() ? Boolean.TRUE : null).build();
+		applyAccessible(toolBar, toolBarInfo);
 		for (Component component : toolBar.getComponents())
 		{
 			MenuInfo child;
@@ -229,7 +329,9 @@ public final class MenuInfoExporter
 			.actionCommand(
 				actionCommand != null && !actionCommand.equals(text) ? actionCommand : null)
 			.enabled(button.isEnabled() ? null : Boolean.FALSE)
-			.visible(button.isVisible() ? null : Boolean.FALSE).icon(iconPath(button.getIcon()));
+			.visible(button.isVisible() ? null : Boolean.FALSE).icon(iconPath(button.getIcon()))
+			.actionId(actionIdResolver.apply(button)).accessibleName(accessibleName(button, text))
+			.accessibleDescription(button.getAccessibleContext().getAccessibleDescription());
 		if (type == MenuType.CHECK_BOX_MENU_ITEM || type == MenuType.RADIO_BUTTON_MENU_ITEM)
 		{
 			builder.selected(button.isSelected() ? Boolean.TRUE : null).group(groupName(button));
@@ -273,6 +375,21 @@ public final class MenuInfoExporter
 			return imageIcon.getDescription();
 		}
 		return null;
+	}
+
+	private static void applyAccessible(final javax.swing.JComponent component,
+		final MenuInfo menuInfo)
+	{
+		menuInfo.setAccessibleName(accessibleName(component, menuInfo.getText()));
+		menuInfo
+			.setAccessibleDescription(component.getAccessibleContext().getAccessibleDescription());
+	}
+
+	private static String accessibleName(final javax.swing.JComponent component, final String text)
+	{
+		String accessibleName = component.getAccessibleContext().getAccessibleName();
+		// swing derives the accessible name from the text, only an explicit name is exported
+		return accessibleName != null && !accessibleName.equals(text) ? accessibleName : null;
 	}
 
 	private static String emptyToNull(final String value)

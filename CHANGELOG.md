@@ -20,6 +20,11 @@ ADDED:
 - new ampersand mnemonic marker in texts (text="&amp;File"), parsed by MenuXmlReader and by MenuBuilder for resolved resource bundle texts; new method MenuExtensions.parseMnemonic
 - new class LookAndFeelMenuFactory that creates the look and feel menu and the actions from the installed look and feels
 - new documentation docs/roadmap.md with the not yet implemented ideas and the non goals
+- new model binding of check box and radio button menu items and tool bar toggle buttons to model-data IModel objects with the attributes model and value, MenuBuilder.withModels, withModelResolver, withValueConverter, updateFromModels and convertValue
+- new attribute toolTipKey that is resolved like textKey from the resource bundle
+- new tool bar attributes showText (tool bar and item), floatable and rollover
+- new attributes accessibleName and accessibleDescription for all menu components, also in MenuItemInfo
+- new action id strategies for the export: MenuInfoExporter.withActionIds(...).export(component) with actionIdFromActionClass and actionIdFromActionName
 
 FIXED:
 

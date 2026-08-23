@@ -134,6 +134,16 @@ public class MenuItemInfo
 	Icon icon;
 
 	/**
+	 * The optional accessible name of this menu component
+	 */
+	String accessibleName;
+
+	/**
+	 * The optional accessible description of this menu component
+	 */
+	String accessibleDescription;
+
+	/**
 	 * Factory method that creates a {@link JCheckBoxMenuItem} object from this {@link MenuItemInfo}
 	 * object
 	 *

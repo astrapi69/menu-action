@@ -203,6 +203,15 @@ public final class MenuXmlWriter
 		setAttribute(element, MenuXmlElements.ATTR_ANCHOR,
 			menuInfo.getAnchor() != null ? menuInfo.getAnchor().name() : null);
 		setAttribute(element, MenuXmlElements.ATTR_RELATIVE_TO, menuInfo.getRelativeToMenuId());
+		setAttribute(element, MenuXmlElements.ATTR_TOOL_TIP_KEY, menuInfo.getToolTipKey());
+		setAttribute(element, MenuXmlElements.ATTR_MODEL, menuInfo.getModel());
+		setAttribute(element, MenuXmlElements.ATTR_VALUE, menuInfo.getValue());
+		setAttribute(element, MenuXmlElements.ATTR_SHOW_TEXT, toString(menuInfo.getShowText()));
+		setAttribute(element, MenuXmlElements.ATTR_FLOATABLE, toString(menuInfo.getFloatable()));
+		setAttribute(element, MenuXmlElements.ATTR_ROLLOVER, toString(menuInfo.getRollover()));
+		setAttribute(element, MenuXmlElements.ATTR_ACCESSIBLE_NAME, menuInfo.getAccessibleName());
+		setAttribute(element, MenuXmlElements.ATTR_ACCESSIBLE_DESCRIPTION,
+			menuInfo.getAccessibleDescription());
 		if (menuInfo.hasChildren())
 		{
 			for (MenuInfo child : menuInfo.getChildren())

@@ -245,7 +245,16 @@ public final class MenuXmlReader
 			.group(attribute(element, MenuXmlElements.ATTR_GROUP))
 			.icon(attribute(element, MenuXmlElements.ATTR_ICON))
 			.anchor(toAnchor(attribute(element, MenuXmlElements.ATTR_ANCHOR), element))
-			.relativeToMenuId(attribute(element, MenuXmlElements.ATTR_RELATIVE_TO)).build();
+			.relativeToMenuId(attribute(element, MenuXmlElements.ATTR_RELATIVE_TO))
+			.toolTipKey(attribute(element, MenuXmlElements.ATTR_TOOL_TIP_KEY))
+			.model(attribute(element, MenuXmlElements.ATTR_MODEL))
+			.value(attribute(element, MenuXmlElements.ATTR_VALUE))
+			.showText(toBoolean(attribute(element, MenuXmlElements.ATTR_SHOW_TEXT)))
+			.floatable(toBoolean(attribute(element, MenuXmlElements.ATTR_FLOATABLE)))
+			.rollover(toBoolean(attribute(element, MenuXmlElements.ATTR_ROLLOVER)))
+			.accessibleName(attribute(element, MenuXmlElements.ATTR_ACCESSIBLE_NAME))
+			.accessibleDescription(attribute(element, MenuXmlElements.ATTR_ACCESSIBLE_DESCRIPTION))
+			.build();
 		for (Element child : childElements(element))
 		{
 			menuInfo.addChild(toMenuInfo(child));
