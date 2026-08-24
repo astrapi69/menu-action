@@ -25,8 +25,10 @@
 package io.github.astrapi69.swing.menu.model.transform;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import org.junit.jupiter.api.Test;
@@ -76,6 +79,10 @@ class MenuItemInfoConverterMutationCoverageTest
 		JMenuItem noTextNoCommand = new JMenuItem();
 		assertNull(MenuItemInfoConverter.fromJMenuItem(noTextNoCommand).getActionCommand());
 
+		JMenu menuSameAsText = new JMenu("File");
+		menuSameAsText.setActionCommand("File");
+		assertNull(MenuItemInfoConverter.fromJMenu(menuSameAsText).getActionCommand());
+
 		JMenu menu = new JMenu("File");
 		menu.setActionCommand("file");
 		MenuInfo menuInfo = MenuItemInfoConverter.fromJMenu(menu);
@@ -104,5 +111,43 @@ class MenuItemInfoConverterMutationCoverageTest
 
 		Icon withoutSlash = MenuItemInfoConverter.resolveIcon("icons/dot.png");
 		assertEquals("icons/dot.png", ((ImageIcon)withoutSlash).getDescription());
+	}
+
+	/**
+	 * {@link MenuItemInfoConverterParameterizedTest#everyMenuTypeFillsTheProducedComponents} only
+	 * ever builds a {@link JMenuBar} from a {@link MenuItemInfo} whose enabled, visible, accessible
+	 * name and accessible description are all null (the sparse "menu.id.open" fixture), so the
+	 * branches that actually call the corresponding setters were never reached by any test
+	 */
+	@Test
+	void toJMenuBarAppliesEnabledVisibleAndAccessibleFieldsWhenSet()
+	{
+		MenuItemInfo menuItemInfo = MenuItemInfo.builder().name("bar").enabled(false).visible(false)
+			.accessibleName("Bar name").accessibleDescription("Bar description").build();
+
+		JMenuBar menuBar = MenuItemInfoConverter.toJMenuBar(menuItemInfo);
+
+		assertFalse(menuBar.isEnabled());
+		assertFalse(menuBar.isVisible());
+		assertEquals("Bar name", menuBar.getAccessibleContext().getAccessibleName());
+		assertEquals("Bar description", menuBar.getAccessibleContext().getAccessibleDescription());
+	}
+
+	/**
+	 * {@code setFields} only ever receives a {@link MenuItemInfo} whose {@code icon} field is
+	 * {@code null} in the existing tests (icon paths are exercised separately through
+	 * {@link #resolveIconFallsBackToTheFileSystemAndKeepsTheOriginalPathAsDescription}, which never
+	 * flows the resolved {@link Icon} back into a component), so {@code button.setIcon(...)} was
+	 * never reached by any test
+	 */
+	@Test
+	void setFieldsAppliesTheIconWhenSet()
+	{
+		Icon icon = new ImageIcon(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+		MenuItemInfo menuItemInfo = MenuItemInfo.builder().text("Open").icon(icon).build();
+
+		JMenuItem menuItem = MenuItemInfoConverter.toJMenuItem(menuItemInfo);
+
+		assertSame(icon, menuItem.getIcon());
 	}
 }
