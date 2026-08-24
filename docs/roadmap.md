@@ -68,6 +68,25 @@ Findings from working through the pitest mutation report introduced in 5.2-SNAPS
   `java.awt.headless=true` (verified directly), unlike the swing components used everywhere else
   in this library. Mutation testing runs headless, so this method's mutants stay uncovered there
   even though the test passes and covers it on a normal desktop run.
+- **`ActionRegistry.toActionListener` builds its reflective invocation target with
+  `Modifier.isStatic(member.getModifiers()) ? null : controller`, and pitest can remove that
+  check for both the `Method` and the `Field` overload without a test noticing.** Verified
+  directly against the JDK javadoc: `Method.invoke(Object, ...)` and `Field.get(Object)` both
+  explicitly ignore the `obj`/target argument when the underlying member is static, so forcing
+  the ternary to always pass `controller` instead of `null` is unobservable. Equivalent mutant.
+- **`ActionRegistry.registerHandlers`'s class-hierarchy walk
+  (`type != null && type != Object.class`) has two equivalent survivors on the same line.**
+  `controller.getClass()` is always a concrete class, whose superclass chain always reaches
+  `Object.class` before it could ever reach `null`; removing the `type != null` half of the
+  guard never changes anything for a real object, and removing the `type != Object.class` half
+  just adds one harmless extra iteration over `Object.class`'s own (never `@MenuAction`
+  annotated) members. Equivalent mutants; see the analogous `ActionRegistry.find`/`.contains`
+  survivors below for the same defense-in-depth pattern.
+- **`ActionRegistry.find`/`.contains` have one equivalent survivor each for their
+  `actionId != null`/`actionId == null` guard.** `LinkedHashMap.get(null)`/`.containsKey(null)`
+  are both legal, safe no-ops that return the same result (`null`/`false`) the guard would have
+  short-circuited to, since this registry only ever stores non-null keys (`register` requires a
+  `@NonNull` id). Removing the guard is unobservable.
 
 ## Candidates for a later version
 
