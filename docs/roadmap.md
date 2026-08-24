@@ -60,14 +60,19 @@ Findings from working through the pitest mutation report introduced in 5.2-SNAPS
   all produce the exact same observable state as never calling the setter, since swing already
   treats an absent value the same as an explicit `null`. No test can ever kill these mutants; they
   are expected to stay SURVIVED.
-- **`MenuItemInfoConverter.toMenuItem` (the `java.awt.MenuItem` factory for system tray menus)
-  shows 0% mutation coverage because its one exercising test,
-  `MenuItemInfoConverterParameterizedTest.toAwtMenuItem`, is guarded with
-  `assumeFalse(GraphicsEnvironment.isHeadless())`.** The guard is required, not optional:
-  constructing a `java.awt.MenuItem` throws `HeadlessException` when
-  `java.awt.headless=true` (verified directly), unlike the swing components used everywhere else
-  in this library. Mutation testing runs headless, so this method's mutants stay uncovered there
-  even though the test passes and covers it on a normal desktop run.
+- **Every `java.awt.MenuItem`/`java.awt.Menu`/`java.awt.PopupMenu`-based code path shows near-zero
+  pitest mutation coverage: `MenuItemInfoConverter.toMenuItem` and `MenuBuilder`'s
+  `setAwtFields`/`addAwtChildren`/`buildAwtPopupMenu`/`getAwtComponent` (roughly 55 of
+  `MenuBuilder`'s own survivors alone).** Their exercising tests
+  (`MenuItemInfoConverterParameterizedTest.toAwtMenuItem`, `MenuBuilderTest.awtPopupMenuForTray`)
+  are correctly guarded with `assumeFalse(GraphicsEnvironment.isHeadless())`, and pitest's
+  mutation JVMs always run headless regardless of the actual desktop environment: verified that
+  `./gradlew test` runs these tests successfully in this sandbox (`DISPLAY` is set,
+  `GraphicsEnvironment.isHeadless()` is `false`), while the exact same tests show 0% coverage
+  under `./gradlew pitest` in the same shell, and directly confirmed that constructing a
+  `java.awt.MenuItem` throws `HeadlessException` under `-Djava.awt.headless=true`. This is a
+  structural limitation of measuring AWT-based code with pitest, not a coverage gap; the guard
+  must stay as is (removing it would break real headless CI runs of the normal test suite).
 - **`ActionRegistry.toActionListener` builds its reflective invocation target with
   `Modifier.isStatic(member.getModifiers()) ? null : controller`, and pitest can remove that
   check for both the `Method` and the `Field` overload without a test noticing.** Verified
@@ -98,6 +103,31 @@ Findings from working through the pitest mutation report introduced in 5.2-SNAPS
   tests) — improved the class from 65% to 88% mutation score, the remaining three were not
   fully root-caused (unlike the entries above, these are not confirmed equivalent, just not
   successfully killed after a couple of test attempts each).
+- **`MenuBuilder.buildMenuBar`'s own `applyAccessible(menuBarInfo, menuBar)` call is redundant,
+  hence an equivalent survivor.** `JMenuBar` is built via
+  `toMenuItemInfo(menuBarInfo, null).toJMenuBar()` just above it, and both
+  `MenuBuilder.toMenuItemInfo` (copies `accessibleName`/`accessibleDescription` into the
+  `MenuItemInfo`) and `MenuItemInfoConverter.toJMenuBar` (copies them onto the `JMenuBar`) already
+  apply the exact same two fields from the exact same source before this call runs; removing it
+  sets nothing that was not already set. `buildPopupMenu`'s and `buildToolBar`'s own
+  `applyAccessible` calls are not redundant (those components are built with `new JPopupMenu(...)`
+  / `new JToolBar(...)` directly) and are covered by `MenuBuilderMutationCoverageTest`.
+  `applyAccessible`'s own two null guards (`getAccessibleName()`/`getAccessibleDescription() !=
+  null`) are separately equivalent for the same reason as the
+  `MenuItemInfoConverter.setFields`/`toJMenuBar` survivors above:
+  `AccessibleContext.setAccessibleName/setAccessibleDescription(null)` is a no-op matching the
+  unset default.
+- **`MenuBuilder.convertValue`, `.getComponent(String)` and `.getButtonGroup(String)` have one
+  survivor each for a leading `null`-input guard, all equivalent for the same reason as the
+  `ActionRegistry.find`/`.contains` survivors above** (a `LinkedHashMap` lookup with a `null` key
+  is a safe no-op returning the same result the guard would have short-circuited to; for
+  `convertValue` specifically, `current == null || value == null` reduces to "return the raw
+  `value` unconverted", which is also what every conversion branch below it would produce anyway
+  since none of them can be reached with a `null` operand).
+- **`MenuBuilder.toMenuItemInfo`'s `iconResolver != null` guard is unreachable-false, hence
+  equivalent.** The `iconResolver` field defaults to `MenuItemInfoConverter::resolveIcon` and
+  `withIconResolver` is `@NonNull`, so no reachable `MenuBuilder` state ever has a `null`
+  `iconResolver`.
 
 ## Candidates for a later version
 
