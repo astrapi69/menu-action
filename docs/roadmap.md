@@ -87,6 +87,17 @@ Findings from working through the pitest mutation report introduced in 5.2-SNAPS
   are both legal, safe no-ops that return the same result (`null`/`false`) the guard would have
   short-circuited to, since this registry only ever stores non-null keys (`register` requires a
   `@NonNull` id). Removing the guard is unobservable.
+- **`LookAndFeelMenuFactory.newLookAndFeelMenuInfo`'s `UIManager.getLookAndFeel() != null` guard
+  is an equivalent survivor in practice.** Swing always has a default look and feel installed
+  from the moment `UIManager` is first touched by any code in the same JVM, so this branch's
+  `null` side is not reachable in a real test without reflectively resetting `UIManager`'s
+  internal state; not done given the low value. `LookAndFeelMenuFactory.installed()`'s
+  `!result.containsKey(id)` dedup guard and one of the two `instanceof` checks in
+  `isOceanActive()` also still have one survivor each after adding
+  `LookAndFeelMenuFactoryMutationCoverageTest` (dedup collision and ocean/non-ocean-selection
+  tests) — improved the class from 65% to 88% mutation score, the remaining three were not
+  fully root-caused (unlike the entries above, these are not confirmed equivalent, just not
+  successfully killed after a couple of test attempts each).
 
 ## Candidates for a later version
 
