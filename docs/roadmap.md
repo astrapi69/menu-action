@@ -49,6 +49,26 @@ independent multi agent reviews of the 5.0/5.1 changes), with the reasoning:
   regressing the existing behaviour: medium; not done for the 5.1 release given the low real
   world impact.
 
+Findings from working through the pitest mutation report introduced in 5.2-SNAPSHOT:
+
+- **A whole class of pitest survivors in `MenuItemInfoConverter` (`setFields`, `toJMenuBar`) are
+  equivalent mutants, not coverage gaps.** Both methods guard a swing setter with
+  `if (value != null) { component.setX(value); }`; pitest's "replaced equality check with true"
+  mutation forces the setter to run with a `null` argument when the guard is skipped. Manually
+  verified (`JButton`/`JMenuItem`) that `setActionCommand(null)`, `setName(null)`, `setIcon(null)`,
+  `addActionListener(null)` and `AccessibleContext.setAccessibleName/setAccessibleDescription(null)`
+  all produce the exact same observable state as never calling the setter, since swing already
+  treats an absent value the same as an explicit `null`. No test can ever kill these mutants; they
+  are expected to stay SURVIVED.
+- **`MenuItemInfoConverter.toMenuItem` (the `java.awt.MenuItem` factory for system tray menus)
+  shows 0% mutation coverage because its one exercising test,
+  `MenuItemInfoConverterParameterizedTest.toAwtMenuItem`, is guarded with
+  `assumeFalse(GraphicsEnvironment.isHeadless())`.** The guard is required, not optional:
+  constructing a `java.awt.MenuItem` throws `HeadlessException` when
+  `java.awt.headless=true` (verified directly), unlike the swing components used everywhere else
+  in this library. Mutation testing runs headless, so this method's mutants stay uncovered there
+  even though the test passes and covers it on a normal desktop run.
+
 ## Candidates for a later version
 
 ### Model change notification
