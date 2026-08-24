@@ -25,9 +25,12 @@
 package io.github.astrapi69.swing.menu.xml;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,6 +40,8 @@ import javax.swing.KeyStroke;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import io.github.astrapi69.swing.menu.enumeration.Anchor;
 import io.github.astrapi69.swing.menu.enumeration.MenuType;
@@ -106,5 +111,90 @@ class MenuXmlWriterTest
 	{
 		MenuInfo unknown = MenuInfo.builder().type(MenuType.UNKNOWN).name("unknown").build();
 		assertThrows(IllegalArgumentException.class, () -> MenuXmlWriter.toXml(unknown));
+	}
+
+	/**
+	 * The mnemonic is written as the character on the boundaries of A-Z and 0-9 (inclusive) and as
+	 * the plain key code just outside those boundaries
+	 */
+	@ParameterizedTest
+	@CsvSource({ "65, A", "90, Z", "48, 0", "57, 9", "64, 64", "91, 91", "47, 47", "58, 58" })
+	void mnemonicBoundaries(final int mnemonic, final String expected)
+	{
+		MenuInfo menuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).name("i").mnemonic(mnemonic)
+			.build();
+		String xml = MenuXmlWriter.toXml(menuInfo);
+		assertTrue(xml.contains("mnemonic=\"" + expected + "\""), xml);
+	}
+
+	@Test
+	void mnemonicIsOmittedWhenNull()
+	{
+		MenuInfo menuInfo = MenuInfo.builder().type(MenuType.MENU_ITEM).name("i").build();
+		assertFalse(MenuXmlWriter.toXml(menuInfo).contains("mnemonic="));
+	}
+
+	/**
+	 * The accelerator is written verbatim from the keystroke string if present, otherwise
+	 * reconstructed from the key code and modifiers, and omitted entirely if neither yields a
+	 * keystroke
+	 */
+	@Test
+	void acceleratorFallsBackFromStringToKeyCode()
+	{
+		MenuInfo withString = MenuInfo.builder().type(MenuType.MENU_ITEM).name("i")
+			.keyStrokeInfo(KeyStrokeInfo.builder().keystrokeAsString("ctrl S").build()).build();
+		assertTrue(MenuXmlWriter.toXml(withString).contains("accelerator=\"ctrl S\""));
+
+		MenuInfo withKeyCode = MenuInfo.builder().type(MenuType.MENU_ITEM).name("i")
+			.keyStrokeInfo(KeyStrokeInfo.builder().keyCode(KeyEvent.VK_S)
+				.modifiers(InputEvent.CTRL_DOWN_MASK).build())
+			.build();
+		assertTrue(MenuXmlWriter.toXml(withKeyCode).contains("accelerator=\"ctrl pressed S\""));
+
+		MenuInfo neither = MenuInfo.builder().type(MenuType.MENU_ITEM).name("i")
+			.keyStrokeInfo(KeyStrokeInfo.builder().build()).build();
+		assertFalse(MenuXmlWriter.toXml(neither).contains("accelerator="));
+
+		MenuInfo none = MenuInfo.builder().type(MenuType.MENU_ITEM).name("i").build();
+		assertFalse(MenuXmlWriter.toXml(none).contains("accelerator="));
+	}
+
+	/**
+	 * Every optional attribute is written when set and omitted when null, exercised through a round
+	 * trip so both directions (writer presence, reader absence) are covered
+	 */
+	@Test
+	void everyOptionalAttributeIsWrittenWhenSetAndOmittedWhenNull()
+	{
+		MenuInfo full = MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name("i").text("T")
+			.textKey("tk").toolTip("tip").toolTipKey("tk2").mnemonic((int)'X')
+			.keyStrokeInfo(KeyStrokeInfo.toKeyStrokeInfo(KeyStroke.getKeyStroke("ctrl X")))
+			.actionId("act").actionCommand("cmd").enabled(true).visible(true).selected(true)
+			.group("g").icon("i.png").anchor(Anchor.AFTER).relativeToMenuId("other").model("m")
+			.value("v").showText(true).floatable(true).rollover(true).accessibleName("an")
+			.accessibleDescription("ad").build();
+		String xml = MenuXmlWriter.toXml(full);
+		for (String attribute : new String[] { "text=", "textKey=", "toolTip=", "toolTipKey=",
+				"mnemonic=", "accelerator=", "action=", "actionCommand=", "enabled=", "visible=",
+				"selected=", "group=", "icon=", "anchor=", "relativeTo=", "model=", "value=",
+				"showText=", "floatable=", "rollover=", "accessibleName=",
+				"accessibleDescription=" })
+		{
+			assertTrue(xml.contains(attribute), attribute + " missing in " + xml);
+		}
+		assertEquals(full, MenuXmlReader.fromXml(xml));
+
+		MenuInfo empty = MenuInfo.builder().type(MenuType.CHECK_BOX_MENU_ITEM).name("i").build();
+		String emptyXml = MenuXmlWriter.toXml(empty);
+		for (String attribute : new String[] { "text=", "textKey=", "toolTip=", "toolTipKey=",
+				"mnemonic=", "accelerator=", "action=", "actionCommand=", "enabled=", "visible=",
+				"selected=", "group=", "icon=", "anchor=", "relativeTo=", "model=", "value=",
+				"showText=", "floatable=", "rollover=", "accessibleName=",
+				"accessibleDescription=" })
+		{
+			assertFalse(emptyXml.contains(attribute), attribute + " unexpectedly in " + emptyXml);
+		}
+		assertEquals(empty, MenuXmlReader.fromXml(emptyXml));
 	}
 }

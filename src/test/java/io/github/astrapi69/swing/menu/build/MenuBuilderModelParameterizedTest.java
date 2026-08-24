@@ -62,9 +62,14 @@ class MenuBuilderModelParameterizedTest
 		{
 			case "ENUM" -> BaseModel.of(ViewMode.DESKTOP);
 			case "BOOLEAN" -> BaseModel.of(Boolean.TRUE);
+			case "BYTE" -> BaseModel.of(Byte.valueOf((byte)2));
+			case "SHORT" -> BaseModel.of(Short.valueOf((short)2));
 			case "INTEGER" -> BaseModel.of(Integer.valueOf(2));
 			case "LONG" -> BaseModel.of(Long.valueOf(2L));
+			case "FLOAT" -> BaseModel.of(Float.valueOf(2f));
 			case "DOUBLE" -> BaseModel.of(Double.valueOf(2d));
+			case "BIG_INTEGER" -> BaseModel.of(java.math.BigInteger.valueOf(2));
+			case "BIG_DECIMAL" -> BaseModel.of(java.math.BigDecimal.valueOf(2));
 			case "STRING" -> BaseModel.of("s");
 			case "NULL_OBJECT" -> BaseModel.of();
 			default -> throw new IllegalArgumentException(modelObjectType);
@@ -81,12 +86,14 @@ class MenuBuilderModelParameterizedTest
 	 * Parameterized test for {@link MenuBuilder#convertValue(IModel, String)}
 	 */
 	@ParameterizedTest(name = "convertValue of a {0} model with the value {1} gives the {2} {3}")
-	@CsvSource(nullValues = "NULL", value = { "ENUM,        PANEL, ViewMode, PANEL",
-			"BOOLEAN,     true,  Boolean,  true", "BOOLEAN,     false, Boolean,  false",
-			"BOOLEAN,     yes,   Boolean,  false", "INTEGER,     7,     Integer,  7",
-			"LONG,        7,     Long,     7", "DOUBLE,      1.5,   Double,   1.5",
-			"STRING,      x,     String,   x", "NULL_OBJECT, x,     String,   x",
-			"INTEGER,     NULL,  NULL,     NULL" })
+	@CsvSource(nullValues = "NULL", value = { "ENUM,        PANEL, ViewMode,    PANEL",
+			"BOOLEAN,     true,  Boolean,     true", "BOOLEAN,     false, Boolean,     false",
+			"BOOLEAN,     yes,   Boolean,     false", "BYTE,        7,     Byte,        7",
+			"SHORT,       7,     Short,       7", "INTEGER,     7,     Integer,     7",
+			"LONG,        7,     Long,        7", "FLOAT,       1.5,   Float,       1.5",
+			"DOUBLE,      1.5,   Double,      1.5", "BIG_INTEGER, 7,     BigInteger,  7",
+			"BIG_DECIMAL, 1.5,   BigDecimal,  1.5", "STRING,      x,     String,      x",
+			"NULL_OBJECT, x,     String,      x", "INTEGER,     NULL,  NULL,        NULL" })
 	void convertValueWithEveryModelObjectType(final String modelObjectType, final String value,
 		final String expectedType, final String expectedValue)
 	{
@@ -108,10 +115,14 @@ class MenuBuilderModelParameterizedTest
 	 * not be converted to the type of the model object
 	 */
 	@ParameterizedTest(name = "convertValue of a {0} model with the invalid value {1} throws {2}")
-	@CsvSource({ "ENUM,    NOPE, IllegalArgumentException, No enum constant",
-			"INTEGER, x,    NumberFormatException,    For input string",
-			"LONG,    x,    NumberFormatException,    For input string",
-			"DOUBLE,  x,    NumberFormatException,    For input string" })
+	@CsvSource({ "ENUM,        NOPE, IllegalArgumentException, No enum constant",
+			"BYTE,        x,    NumberFormatException,    For input string",
+			"SHORT,       x,    NumberFormatException,    For input string",
+			"INTEGER,     x,    NumberFormatException,    For input string",
+			"LONG,        x,    NumberFormatException,    For input string",
+			"FLOAT,       x,    NumberFormatException,    For input string",
+			"DOUBLE,      x,    NumberFormatException,    For input string",
+			"BIG_INTEGER, x,    NumberFormatException,    For input string" })
 	void convertValueWithInvalidValues(final String modelObjectType, final String value,
 		final String expectedExceptionType, final String expectedMessagePart)
 	{
