@@ -4,6 +4,10 @@
 Version 5.2-SNAPSHOT
 -------------
 
+ADDED:
+
+- mutation testing with the info.solidsoft.pitest gradle plugin (pitest, pitest-junit5-plugin), targeting io.github.astrapi69.*; new Makefile target mutation-test and new github-actions workflow mutation.yml that runs pitest weekly and on demand and uploads the html report as an artifact, without gating the normal build
+- README: new Codecov coverage badge and a mutation testing badge, and a short section on running the coverage and mutation reports
 
 Version 5.1
 -------------

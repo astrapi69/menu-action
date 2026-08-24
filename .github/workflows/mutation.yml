@@ -1,0 +1,33 @@
+# Runs mutation testing with pitest on a weekly schedule and on demand. Uploads the html
+# report as a workflow artifact. This does not gate merges, it surfaces weak tests.
+
+name: Mutation Testing
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+jobs:
+  pitest:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Run pitest
+        run: ./gradlew pitest
+      - name: Upload the mutation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pitest-report
+          path: build/reports/pitest
+          retention-days: 30

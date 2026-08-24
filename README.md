@@ -10,6 +10,8 @@
 [![Donate](https://img.shields.io/badge/donate-❤-ff2244.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8)
 [![Hits Of Code](https://hitsofcode.com/github/astrapi69/menu-action?branch=main)](https://hitsofcode.com/github/astrapi69/menu-action/view?branch=main)
 [![Lines Of Code](https://sloc.xyz/github/astrapi69/menu-action)](https://github.com/astrapi69/menu-action)
+[![Coverage Status](https://codecov.io/gh/astrapi69/menu-action/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/menu-action)
+[![Mutation Testing](https://img.shields.io/badge/mutation%20testing-pitest-6c2eb1)](https://github.com/astrapi69/menu-action/actions/workflows/mutation.yml)
 
 </div>
 
@@ -227,7 +229,14 @@ make test
 make spotless-apply         # formats the sources and adds missing license headers
 make dependency-updates     # shows newer versions of dependencies and plugins
 make publish-local          # installs the artifact into the local maven repository
+make mutation-test          # runs pitest, report in build/reports/pitest/index.html
 ```
+
+Line coverage is reported to [Codecov](https://codecov.io/gh/astrapi69/menu-action) on every
+build. Mutation testing with [pitest](https://pitest.org) runs weekly and on demand (the
+[Mutation Testing workflow](https://github.com/astrapi69/menu-action/actions/workflows/mutation.yml)),
+not on every push, since it takes noticeably longer than the test suite itself; run
+`make mutation-test` locally for the same report.
 
 ## Release and publishing
 

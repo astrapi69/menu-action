@@ -1,0 +1,17 @@
+pitest {
+    // kept in sync with gradle/libs.versions.toml (pitest-core-version, pitest-junit5-plugin-version)
+    pitestVersion = '1.25.9'
+    junit5PluginVersion = '1.2.3'
+    targetClasses = ['io.github.astrapi69.*']
+    targetTests = ['io.github.astrapi69.*']
+    threads = 4
+    outputFormats = ['HTML', 'XML']
+    timestampedReports = false
+    mutators = ['STRONGER']
+    timeoutFactor = 3.0
+    failWhenNoMutations = false
+}
+
+dependencies {
+    pitest libs.pitest.junit5.plugin
+}
