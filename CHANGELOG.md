@@ -8,6 +8,7 @@ ADDED:
 
 - mutation testing with the info.solidsoft.pitest gradle plugin (pitest, pitest-junit5-plugin), targeting io.github.astrapi69.*; new Makefile target mutation-test and new github-actions workflow mutation.yml that runs pitest weekly and on demand and uploads the html report as an artifact, without gating the normal build
 - README: new Codecov coverage badge and a mutation testing badge, and a short section on running the coverage and mutation reports
+- systematically worked through the pitest mutation report class by class, adding targeted tests for real coverage gaps (mnemonic/accelerator boundaries, model-binding and missing-action-policy interplay, remove() cleanup of descendants/model bindings/button groups, look and feel selection and activation, action registry override/private-member handling, xml hardening and validation edge cases) and hunting for undiscovered bugs in the surviving mutants along the way; found none, only missing test coverage and several equivalent mutants (documented with the reasoning in docs/roadmap.md, including a class of java.awt.MenuItem/Menu/PopupMenu-based code that pitest's headless mutation JVM cannot measure). Raised the overall mutation score from 76% to 85% and the test strength from 85% to 93%
 
 Version 5.1
 -------------
