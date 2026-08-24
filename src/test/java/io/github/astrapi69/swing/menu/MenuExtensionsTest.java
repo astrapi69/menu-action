@@ -88,6 +88,17 @@ class MenuExtensionsTest
 	}
 
 	@Test
+	void toMnemonicOnTheExactLowerCaseBoundaries()
+	{
+		// 'a' and 'z' are the inclusive boundaries of the shifted range, '`' and '{' are the
+		// characters immediately outside it and must be returned unchanged
+		assertEquals((int)'A', MenuExtensions.toMnemonic('a'));
+		assertEquals((int)'Z', MenuExtensions.toMnemonic('z'));
+		assertEquals((int)'`', MenuExtensions.toMnemonic('`'));
+		assertEquals((int)'{', MenuExtensions.toMnemonic('{'));
+	}
+
+	@Test
 	void setAcceleratorWithKeyChar()
 	{
 		JMenuItem menuItem = new JMenuItem("Save");

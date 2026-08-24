@@ -84,6 +84,11 @@ class KeyStrokeInfoExtensionsTest
 		// an invalid keystroke string falls back to the key code
 		keyStrokeInfo.setKeystrokeAsString("not a keystroke");
 		assertNotNull(KeyStrokeInfoExtensions.toKeyStroke(keyStrokeInfo));
+
+		// an empty (not null) keystroke string is treated the same as absent and falls back too
+		keyStrokeInfo.setKeystrokeAsString("");
+		assertEquals(KeyStroke.getKeyStroke(expected.getKeyCode(), expected.getModifiers(), true),
+			KeyStrokeInfoExtensions.toKeyStroke(keyStrokeInfo));
 	}
 
 	@Test
@@ -110,5 +115,9 @@ class KeyStrokeInfoExtensionsTest
 		menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
 		assertEquals(KeyStroke.getKeyStroke("ctrl O"),
 			KeyStrokeInfoExtensions.getKeyStrokeInfo(menuItem).toKeyStroke());
+
+		// a JMenuItem without an accelerator contributes no entry for it
+		JMenuItem withoutAccelerator = new JMenuItem("Save");
+		assertTrue(KeyStrokeInfoExtensions.getKeyStrokeInfos(withoutAccelerator).isEmpty());
 	}
 }

@@ -68,6 +68,18 @@ class LookAndFeelActionTest extends AbstractLookAndFeelActionTest
 	}
 
 	@Test
+	void actionPerformedWithoutAComponentStillSetsTheLookAndFeel()
+	{
+		// every other actionPerformed test uses a constructor that sets a component; without one,
+		// onChangeOfLookAndFeel must call the LookAndFeels.setLookAndFeel(lookAndFeel) overload
+		// instead of the component overload, and still skip the tree update, not throw
+		LookAndFeelAction action = new LookAndFeelAction(LookAndFeels.NIMBUS);
+		assertNull(action.getComponent());
+
+		applyAndExpect(action, LookAndFeels.NIMBUS);
+	}
+
+	@Test
 	void constructorWithNameAndSetters()
 	{
 		JLabel label = new JLabel();

@@ -25,6 +25,7 @@
 package io.github.astrapi69.swing.listener.mouse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -118,6 +119,42 @@ class MouseTripleClickCounterListenerTest
 		final MouseEvent fourth = newClick(4, MouseEvent.BUTTON1);
 		SwingUtilities.invokeAndWait(() -> listener.mouseClicked(fourth));
 		assertEquals(List.of(third, fourth), listener.tripleClicks);
+	}
+
+	@Test
+	void singleClickStopsTheTimerSoItDoesNotFireASecondTime() throws Exception
+	{
+		final RecordingListener listener = new RecordingListener(DELAY);
+		final MouseEvent event = newClick(1, MouseEvent.BUTTON1);
+
+		SwingUtilities.invokeAndWait(() -> listener.mouseClicked(event));
+		MouseDoubleClickListenerTest.await(() -> !listener.singleClicks.isEmpty());
+
+		// javax.swing.Timer repeats by default; without actionPerformed calling timer.stop() the
+		// same single click would fire again after another delay
+		assertFalse(listener.timer.isRunning());
+		Thread.sleep(DELAY * 4);
+		assertEquals(List.of(event), listener.singleClicks);
+	}
+
+	@Test
+	void tripleClickStopsAPendingTimerFromAPriorSingleClick() throws Exception
+	{
+		final RecordingListener listener = new RecordingListener(DELAY);
+		final MouseEvent first = newClick(1, MouseEvent.BUTTON1);
+		final MouseEvent third = newClick(3, MouseEvent.BUTTON1);
+
+		SwingUtilities.invokeAndWait(() -> {
+			listener.mouseClicked(first);
+			assertTrue(listener.timer.isRunning());
+			// a third click event arrives directly, without an intervening double click
+			listener.mouseClicked(third);
+		});
+
+		assertFalse(listener.timer.isRunning());
+		assertEquals(List.of(third), listener.tripleClicks);
+		Thread.sleep(DELAY * 4);
+		assertTrue(listener.singleClicks.isEmpty());
 	}
 
 	@Test

@@ -102,6 +102,21 @@ class MouseDoubleClickListenerTest
 	}
 
 	@Test
+	void singleClickStopsTheTimerSoItDoesNotFireASecondTime() throws Exception
+	{
+		final MouseDoubleClickListener listener = newListener(DELAY);
+		final MouseEvent event = newClick(1);
+
+		SwingUtilities.invokeAndWait(() -> listener.mouseClicked(event));
+		await(() -> !singleClicks.isEmpty());
+
+		// javax.swing.Timer repeats by default; without actionPerformed calling timer.stop() the
+		// same single click would fire again after another delay, growing the list past 1 entry
+		Thread.sleep(DELAY * 4);
+		assertEquals(List.of(event), singleClicks);
+	}
+
+	@Test
 	void doubleClickCancelsThePendingSingleClick() throws Exception
 	{
 		final MouseDoubleClickListener listener = newListener(DELAY);

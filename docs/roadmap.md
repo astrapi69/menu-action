@@ -129,6 +129,70 @@ Findings from working through the pitest mutation report introduced in 5.2-SNAPS
   `withIconResolver` is `@NonNull`, so no reachable `MenuBuilder` state ever has a `null`
   `iconResolver`.
 
+Survivors that are genuinely unsafe to execute in an automated test (as opposed to equivalent
+mutants, these are real gaps that stay open on purpose):
+
+- **`BrowserControlExtensions.browse`/`browseWithPlatformCommand` (20 survivors) launch a real
+  web browser or OS process** (`Desktop.getDesktop().browse(uri)`, or
+  `new ProcessBuilder("xdg-open"/"open"/"rundll32", ...).start()` as a headless fallback — pitest's
+  JVM is headless, so `Desktop.isDesktopSupported()` is `false` there and every mutation run would
+  actually spawn `xdg-open`). The one test that exercises a valid, resolvable url is deliberately
+  `@Disabled("opens the real browser")`; that was a considered decision already, not an oversight,
+  confirmed by checking that PIT's own coverage pass shows 0% coverage past the url-parsing/null
+  checks (both under `./gradlew test`, where the url-parsing failure paths are covered, and under
+  `./gradlew pitest`, which additionally confirms none of the disabled paths ever run).
+- **`ToggleFullScreenAction.toggleFullScreen` (6 survivors) actually enters and leaves OS level
+  full screen mode** (`GraphicsDevice.setFullScreenWindow`). Its one real test,
+  `toggleFullScreenTogglesTheFullScreenWindow`, is guarded with
+  `assumeFalse(GraphicsEnvironment.isHeadless())` for the same reason the AWT-headless entries
+  above are guarded, and is skipped under pitest's headless JVM.
+- **`LookAndFeels.setLookAndFeel(LookAndFeels, Window)` (4 survivors) calls `window.pack()`**,
+  which needs a real display to compute a native layout; its test
+  `setLookAndFeelWithWindow` is `assumeFalse(GraphicsEnvironment.isHeadless())`-guarded like the
+  other window/frame-based tests above.
+- **`ShowHelpDialogAction.onShowHelpDialog`, `ShowDialogAction.onShowDialog` (4 survivors
+  combined) show a real `JDialog`**, and **`ExitApplicationAction.onExit` (1 survivor) calls
+  `System.exit`, which would kill the test JVM itself if ever actually invoked**. All three
+  already use the best available strategy: the logic is verified through an overridden callback
+  (`onShowDialog`/`onExit` overridden in the test to record the call instead of running the real
+  side effect) and the real side effect has one `assumeFalse(isHeadless())`-guarded integration
+  test where showing a dialog is unavoidable.
+- **The legacy `java.awt.MenuItem`/`PopupMenu` factories (`MenuItemFactory`, `PopupMenuFactory`,
+  `JPopupMenuFactory.newPopupMenu`, `MenuItemInfo.toMenuItem`, 4 survivors) join the AWT-headless
+  entry above**: `MenuItemInfo.toMenuItem()` delegates to `MenuItemInfoConverter.toMenuItem`, and
+  `PopupMenuFactory`/`JPopupMenuFactory.newPopupMenu` construct `new java.awt.PopupMenu()`
+  directly, another `MenuComponent` subclass that throws `HeadlessException` under
+  `java.awt.headless=true`.
+
+A few survivors from this last pass were not chased further given diminishing returns; they may
+or may not be equivalent, the following were not conclusively root-caused (tracing that succeeded
+for the `MenuInfoExtensions` entry below did not succeed for these):
+
+- `ParentMenuResolver.getChildMenuElements` (the `JPopupMenu`/invoker-equality checks),
+  `.getRootType` and `.toMenuClass`'s `instanceof` chain, despite `ParentMenuResolverTest`
+  and `ParentMenuResolverParameterizedTest` already covering the equivalent scenarios by
+  inspection.
+- `KeyStrokeInfoExtensions.getKeyStrokeInfos`'s `inputMap != null` guard and one direction of the
+  `JMenuItem`/accelerator conjunct.
+- `LookAndFeelAction.onChangeOfLookAndFeel`'s remaining `component != null` direction, after
+  `actionPerformedWithoutAComponentStillSetsTheLookAndFeel` already killed two of the three
+  survivors on the same lines.
+- `MouseDoubleClickListener.resolveMultiClickInterval`'s `instanceof Integer` check: forcing a
+  real (non-headless-null) `awt.multiClickInterval` desktop property value would require calling
+  `Toolkit.setDesktopProperty`, which is `protected` and not reachable without subclassing the
+  process-wide `Toolkit` singleton — judged not worth the engineering effort for one mutator.
+
+**`MenuInfoExtensions` (5 survivors: `find`, `collect`, `merge`×2, `orderByAnchor`) are all
+equivalent, confirmed by tracing rather than by elimination.** `MenuInfo.children` is
+`@Builder.Default List<MenuInfo> children = new ArrayList<>()`, so `getChildren()` never returns
+`null` — only empty. Every survivor here guards a `for` loop or an `indexOf` call with a
+`hasChildren()`/`isEmpty()` check whose only purpose is to skip work on an empty list; forcing the
+guard to run anyway just iterates zero elements (or calls `indexOf` on an empty list, which
+already returns `-1`, the same value the guard would have produced directly). `MenuExtensions
+.parseMnemonic`'s `text.indexOf('&') < 0` guard is equivalent for the same reason: with no `&` in
+the text, forcing the early return away just runs the character-copy loop instead, which
+reconstructs the identical string.
+
 ## Candidates for a later version
 
 ### Model change notification
