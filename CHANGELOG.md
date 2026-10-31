@@ -4,6 +4,12 @@
 Version 5.2-SNAPSHOT
 -------------
 
+CHANGED:
+
+- publishing as in the rest of the family (#7): the Central Portal through the nmcp settings plugin, a release
+  waiting for the maintainer (USER_MANAGED), the signing subkey through GPG_KEY_ID, a refused upload when only half
+  of the key is set, and uploads only from CI, a release only from its RELEASE-* tag
+
 ADDED:
 
 - mutation testing with the info.solidsoft.pitest gradle plugin (pitest, pitest-junit5-plugin), targeting io.github.astrapi69.*; new Makefile target mutation-test and new github-actions workflow mutation.yml that runs pitest weekly and on demand and uploads the html report as an artifact, without gating the normal build
