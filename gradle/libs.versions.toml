@@ -1,5 +1,6 @@
 [versions]
 gradle-plugin-lombok-version = "9.5.0"
+gradle-plugin-own-display-version = "1.0"
 gradle-plugin-pitest-version = "1.19.0"
 gradle-plugin-spotless-version = "8.10.4"
 gradle-plugin-version-catalog-update-version = "1.1.1"
@@ -53,4 +54,5 @@ gradle-versions-plugin = { id = "io.github.ben-manes.versions", version.ref = "g
 lombok-plugin = { id = "io.freefair.lombok", version.ref = "gradle-plugin-lombok-version" }
 pitest-plugin = { id = "info.solidsoft.pitest", version.ref = "gradle-plugin-pitest-version" }
 spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
+test-results-complete = { id = "io.github.astrapi69.test-results-complete", version.ref = "gradle-plugin-own-display-version" }
 versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "gradle-plugin-version-catalog-update-version" }
