@@ -85,6 +85,12 @@ KNOWN LIMITATIONS (see docs/roadmap.md):
 - MenuBuilder.buildToolBar uses the id of a tool bar as its swing name, so the resolved text of the toolbar element has no effect on the title swing shows when the tool bar is floated; changing this would break the name-as-id convention that MenuInfoExporter and every other built component relies on
 - LookAndFeelMenuFactory does not roll back the radio button selection if installing the chosen look and feel fails (for instance GTK+ is listed as installed but unsupported in a headless environment); bind the look and feel menu to a model to keep it in sync in that case
 
+KNOWN ISSUES:
+
+- binary break from 5.0, named afterwards: the no-argument constructor ActionRegistry() became private, so code compiled against 5.0 that calls new ActionRegistry() fails at run time with IllegalAccessError; replace the call with ActionRegistry.empty() or ActionRegistry.of(Map), which 5.0 already had, and recompile against 5.1. No repository of the family is affected (measured 2026-11-18)
+- binary break from 5.0, named afterwards: the all-arguments constructor of MenuInfo grew from 16 to 25 parameters with the fields added in 5.1, so code compiled against 5.0 that calls MenuInfo(String, String, String, String, Integer, KeyStrokeInfo, MenuType, Anchor, String, String, String, Boolean, Boolean, String, String, List) fails at run time with NoSuchMethodError; build the MenuInfo with MenuInfo.builder(), which 5.0 already had and which new fields do not break, and recompile against 5.1. No repository of the family is affected (measured 2026-11-18)
+- binary break from 5.0, named afterwards: the all-arguments constructor of MenuItemInfo grew from 13 to 16 parameters with the fields added in 5.1, so code compiled against 5.0 that calls MenuItemInfo(String, String, String, Integer, KeyStrokeInfo, MenuType, Anchor, String, String, ActionListener, Boolean, Boolean, Icon) fails at run time with NoSuchMethodError; build the MenuItemInfo with MenuItemInfo.builder(), which 5.0 already had and which new fields do not break, and recompile against 5.1. No repository of the family is affected (measured 2026-11-18)
+
 
 Version 5.0
 -------------
