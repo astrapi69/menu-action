@@ -1,4 +1,5 @@
 [versions]
+gradle-plugin-japicmp-version = "0.4.6"
 gradle-plugin-lombok-version = "9.5.0"
 gradle-plugin-own-display-version = "1.0"
 gradle-plugin-pitest-version = "1.19.0"
@@ -51,6 +52,7 @@ unit-testing = [
 
 [plugins]
 gradle-versions-plugin = { id = "io.github.ben-manes.versions", version.ref = "gradle-plugin-versions-version" }
+japicmp-plugin = { id = "me.champeau.gradle.japicmp", version.ref = "gradle-plugin-japicmp-version" }
 lombok-plugin = { id = "io.freefair.lombok", version.ref = "gradle-plugin-lombok-version" }
 pitest-plugin = { id = "info.solidsoft.pitest", version.ref = "gradle-plugin-pitest-version" }
 spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "gradle-plugin-spotless-version" }
