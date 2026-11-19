@@ -232,10 +232,7 @@ make publish-local          # installs the artifact into the local maven reposit
 make mutation-test          # runs pitest, report in build/reports/pitest/index.html
 ```
 
-`./gradlew build` also runs the task `japicmp`, which compares the jar with the last release on
-Maven Central and fails on a binary incompatible change within the same major version, so a minor
-or patch release can not break a caller compiled against the release before; a higher major only
-writes the report to `build/reports/japicmp/`.
+`./gradlew build` runs `apiCompatibility`, which compares the public API with the last release on Maven Central and, within the same major version, fails on a binary or source incompatible change unless a documented entry (element, reason, issue) in `gradle/api-compatibility-exclusions.gradle` accepts it; a higher major only reports it.
 
 Line coverage is reported to [Codecov](https://codecov.io/gh/astrapi69/menu-action) on every
 build. Mutation testing with [pitest](https://pitest.org) runs weekly and on demand (the
