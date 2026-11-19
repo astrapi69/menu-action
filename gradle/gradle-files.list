@@ -1,6 +1,5 @@
 gradle/dependencies.gradle
 gradle/formatting.gradle
-gradle/japicmp.gradle
 gradle/mutation-testing.gradle
 gradle/packaging.gradle
 gradle/publishing.gradle
@@ -8,3 +7,4 @@ gradle/repositories.gradle
 gradle/tagging.gradle
 gradle/testing.gradle
 gradle/version-catalog-update.gradle
+gradle/api-compatibility.gradle
